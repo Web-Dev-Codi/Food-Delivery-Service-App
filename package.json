@@ -1,0 +1,35 @@
+{
+  "name": "food-delivery-service-app",
+  "version": "1.1.0",
+  "description": "A Food Delivery App for ordering food to your door fast , and with ease.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
+    "client": "npm run dev --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Web-Dev-Codi/Food-Delivery-Service-App.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Web-Dev-Codi/Food-Delivery-Service-App/issues"
+  },
+  "homepage": "https://github.com/Web-Dev-Codi/Food-Delivery-Service-App#readme",
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5"
+  }
+}
