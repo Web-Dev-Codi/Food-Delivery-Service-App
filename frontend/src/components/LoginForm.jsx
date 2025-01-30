@@ -1,4 +1,5 @@
 import  { useState } from 'react';
+import axios from 'axios';  
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -7,7 +8,15 @@ function LoginForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log({ email, password });
-    // Add your login logic here
+
+    axios.post('http://localhost:3006/data/login', { email, password })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
   };
 
   return (
