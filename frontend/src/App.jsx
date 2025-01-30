@@ -1,10 +1,14 @@
-import "./App.css";
+
+import LoginForm from './components/LoginForm'; // Adjust path
+import SignupForm from './components/SignupForm'; // Adjust path
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
-      Check http:localhost:8000 Using Postman Api Client{" "}
-    </h1>
+    <div>
+      {/* Uncomment the one you want to render */}
+      <LoginForm /> 
+    */ <SignupForm /> */
+    </div>
   );
 }
 
