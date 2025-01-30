@@ -1,15 +1,14 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 // Mock Home screen for demonstration purposes
 const HomeScreen = () => {
   return (
-    <React.Fragment>
-      HomeScreen
-      <Link className="" to="/menu">
-        Go to Demo Menu Page
+    <div className="flex flex-col gap-3">
+      <h1 className="text-center">Homescreen</h1>
+      <Link className="rounded-md bg-yellow-500 h-7 w-auto" to="/menu">
+        Click me to Demo Menu Page
       </Link>
-    </React.Fragment>
+    </div>
   );
 };
 
