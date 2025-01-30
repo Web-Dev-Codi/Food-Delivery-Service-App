@@ -1,10 +1,17 @@
 import "./App.css";
+import LoginForm from "./components/LoginForm";
+import SignupForm from "./components/SignupForm";
 
 function App() {
   return (
+    <>
     <h1 className="text-3xl font-bold underline">
-      Check http:localhost:8000 Using Postman Api Client{" "}
-    </h1>
+   login form and signup form
+  
+   </h1>
+
+   <SignupForm />
+    </>
   );
 }
 
