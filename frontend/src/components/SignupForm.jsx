@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import axios from 'axios';
+import { set } from 'mongoose';
 
 function SignupForm() {
   const [name, setName] = useState('');
@@ -8,16 +10,37 @@ function SignupForm() {
   const [city, setCity] = useState('');
   const [zipCode, setZipCode] = useState('');
   const [password, setPassword] = useState('');
+  const [successMessage, setSuccessMessage] = useState(''); // State for success message
+  const [errorMessage, setErrorMessage] = useState(''); // State for error message
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log({ name, email, contact, street, city, zipCode, password });
+
+    axios.post('http://localhost:3006/data/create', { name, email, contact, address: { street, city, zipCode }, password })
+      .then((res) => {
+        setSuccessMessage(res.data.message);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setErrorMessage(err.response.data.message);
+        console.error(err);
+      });
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md" onSubmit={handleSubmit}>
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Sign Up</h2>
+         {/* Display Success or Error Messages */}
+         {successMessage && (
+          <div className="mb-4 text-green-600">{successMessage}</div>
+        )}
+        {errorMessage && (
+          <div className="mb-4 text-red-600">{errorMessage}</div>
+        )}
+
         <div className="mb-4">
           <label htmlFor="name" className="block text-sm font-medium text-gray-600">Name</label>
           <input

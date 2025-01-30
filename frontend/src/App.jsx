@@ -1,14 +1,13 @@
-
-import LoginForm from './components/LoginForm'; // Adjust path
-import SignupForm from './components/SignupForm'; // Adjust path
+import "./App.css";
+import LoginForm from "./components/LoginForm";
+import SignupForm from "./components/SignupForm";
 
 function App() {
   return (
-    <div>
-      {/* Uncomment the one you want to render */}
-      <LoginForm /> 
-    */ <SignupForm /> */
-    </div>
+    <>
+    <LoginForm/>
+    <SignupForm />
+    </>
   );
 }
 
