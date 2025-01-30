@@ -1,5 +1,30 @@
 # Git Workflow Guidelines
 
+### Pushing to GitHub Steps
+
+#### In terminal
+
+- CD into root folder
+- git status (see if the changes you did are correct. If correct onto the next step)
+- git add . (This command adds all of the changes at one)
+- git commit -m "Your commit message here"
+- git push -u origin NAME_OF_YOUR_BRANCH ( The -u means upstream. The upsteam creates the branch on GitHub)
+- Now heaad to GitHub
+
+#### Creating your Pull Request
+
+- On the GitHub repo select Pull Request
+- Make sure to compare your feature branch with the development branch (VERY IMPORTANT)
+- Write a detailed comment explaining what you did and why.
+- Hit the green button
+- DO NOT HANDLE CONFLICTS ( Thats my job ;), Hugs and Kisses )
+
+#### Running the server
+
+- In the terminal make sure you are in the root folder
+- npm run all
+- This will run the backend & frontend simultaneously
+
 ## Branch Structure
 
 - `main` - Production-ready code
@@ -79,4 +104,3 @@ Contact the project lead for:
 
 Following these guidelines ensures a smooth and organized development process while maintaining code quality and stability.
 ```
-
