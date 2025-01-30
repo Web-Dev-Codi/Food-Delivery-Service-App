@@ -18,3 +18,5 @@ const errorHandler = (err, req, res, next) => {
 // Returns JSON with the error message
 // Includes stack traces only in development mode
 // Adds a timestamp to help with debugging
+
+export default errorHandler;
