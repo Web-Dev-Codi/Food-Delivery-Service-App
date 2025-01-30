@@ -13,9 +13,11 @@ function SignupForm() {
   const [successMessage, setSuccessMessage] = useState(''); // State for success message
   const [errorMessage, setErrorMessage] = useState(''); // State for error message
 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log({ name, email, contact, street, city, zipCode, password });
+
     axios.post('http://localhost:3006/data/create', { name, email, contact, address: { street, city, zipCode }, password })
       .then((res) => {
         setSuccessMessage(res.data.message);
@@ -25,7 +27,6 @@ function SignupForm() {
         setErrorMessage(err.response.data.message);
         console.error(err);
       });
-
   };
 
   return (
@@ -39,6 +40,7 @@ function SignupForm() {
         {errorMessage && (
           <div className="mb-4 text-red-600">{errorMessage}</div>
         )}
+
         <div className="mb-4">
           <label htmlFor="name" className="block text-sm font-medium text-gray-600">Name</label>
           <input
@@ -132,17 +134,3 @@ function SignupForm() {
 }
 
 export default SignupForm;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
