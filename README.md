@@ -57,7 +57,9 @@ git push origin feature/your-feature-name
 
 - All code reviews and merges will be handled by the project lead
 - This applies to all branches, including feature branches to development
-- Wait for approval and merge completion before starting dependent work
+- While waiting for pull request review, and merge, keep your feature branch updated with the development branch.
+
+```bash
 
 ## Best Practices
 
@@ -76,3 +78,5 @@ Contact the project lead for:
 - Priority concerns
 
 Following these guidelines ensures a smooth and organized development process while maintaining code quality and stability.
+```
+
