@@ -2,11 +2,13 @@ import express from "express";
 import mongoose from "mongoose";
 import router from "./routes/userRouter.js";
 import dotenv from "dotenv";
-import cors from "cors";
-import router from "./routes/routes.js";
+import restaurantRouter from "./routes/restaurantRoute.js";
+
+
 dotenv.config();
-import errorHandler from "./middleware/error.js";
-import notFound from "./middleware/notFound.js";
+
+import cors from "cors";
+
 
 const app = express();
 
@@ -33,8 +35,8 @@ app.use("/", router);
 // 404 handler
 app.use(notFound);
 
-// Error handler - must be last
-app.use(errorHandler);
+app.use("/data", router);
+app.use("/api", restaurantRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running on port ${port}`));

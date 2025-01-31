@@ -5,8 +5,12 @@ import SignupForm from "./components/SignupForm";
 function App() {
   return (
     <>
-    <LoginForm/>
-    <SignupForm />
+    <h1 className="text-3xl font-bold underline">
+   login form and signup form
+  
+   </h1>
+<SignupForm />
+<LoginForm />
     </>
   );
 }
