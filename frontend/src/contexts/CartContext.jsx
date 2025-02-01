@@ -1,108 +1,103 @@
-import { createContext, useReducer } from "react";
-import PropTypes from "prop-types";
+import { createContext, useState, useEffect } from "react";
 
-const CartContext = createContext();
-
-const initialState = {
-  items: [],
-  total: 0,
-};
-
-const cartReducer = (state, action) => {
-  switch (action.type) {
-    case "ADD_ITEM": {
-      const existingItem = state.items.find(
-        (item) => item.id === action.payload.id,
-      );
-
-      if (existingItem) {
-        return {
-          ...state,
-          items: state.items.map((item) =>
-            item.id === action.payload.id
-              ? { ...item, quantity: item.quantity + 1 }
-              : item,
-          ),
-          total: state.total + action.payload.price,
-        };
-      }
-
-      return {
-        ...state,
-        items: [...state.items, { ...action.payload, quantity: 1 }],
-        total: state.total + action.payload.price,
-      };
-    }
-
-    case "REMOVE_ITEM": {
-      const itemToRemove = state.items.find(
-        (item) => item.id === action.payload,
-      );
-      return {
-        ...state,
-        items: state.items.filter((item) => item.id !== action.payload),
-        total: state.total - itemToRemove.price * itemToRemove.quantity,
-      };
-    }
-
-    case "UPDATE_QUANTITY": {
-      const { id, quantity } = action.payload;
-      const item = state.items.find((item) => item.id === id);
-      const quantityDiff = quantity - item.quantity;
-
-      return {
-        ...state,
-        items: state.items.map((item) =>
-          item.id === id ? { ...item, quantity } : item,
-        ),
-        total: state.total + item.price * quantityDiff,
-      };
-    }
-
-    case "CLEAR_CART":
-      return initialState;
-
-    default:
-      return state;
-  }
-};
+export const cartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(cartReducer, initialState);
+  const [items, setItems] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-  const addItem = (item) => {
-    dispatch({ type: "ADD_ITEM", payload: item });
+  // Load cart from localStorage on initial render
+  useEffect(() => {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      try {
+        setItems(JSON.parse(savedCart));
+      } catch (error) {
+        console.error("Error loading cart from localStorage:", error);
+        setItems([]);
+      }
+    }
+    setLoading(false);
+  }, []);
+
+  // Update localStorage whenever cart changes
+  useEffect(() => {
+    if (!loading) {
+      localStorage.setItem("cart", JSON.stringify(items));
+      calculateTotal();
+    }
+  }, [items, loading]);
+
+  // Calculate total price
+  const calculateTotal = () => {
+    const newTotal = items.reduce((sum, item) => {
+      return sum + item.price * item.quantity;
+    }, 0);
+    setTotal(newTotal);
   };
 
-  const removeItem = (itemId) => {
-    dispatch({ type: "REMOVE_ITEM", payload: itemId });
-  };
+  // Add item to cart
+  const addItem = (newItem) => {
+    setItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item.id === newItem.id);
 
-  const updateQuantity = (itemId, quantity) => {
-    dispatch({
-      type: "UPDATE_QUANTITY",
-      payload: { id: itemId, quantity: parseInt(quantity) },
+      if (existingItem) {
+        return prevItems.map((item) =>
+          item.id === newItem.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+        );
+      }
+
+      return [...prevItems, { ...newItem, quantity: 1 }];
     });
   };
 
+  // Remove item from cart
+  const removeItem = (itemId) => {
+    setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+  };
+
+  // Update item quantity
+  const updateQuantity = (itemId, newQuantity) => {
+    if (newQuantity < 1) return;
+
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === itemId ? { ...item, quantity: newQuantity } : item,
+      ),
+    );
+  };
+
+  // Clear entire cart
   const clearCart = () => {
-    dispatch({ type: "CLEAR_CART" });
+    setItems([]);
+    setTotal(0);
+  };
+
+  // Check if an item exists in cart
+  const isInCart = (itemId) => {
+    return items.some((item) => item.id === itemId);
+  };
+
+  // Get item quantity
+  const getItemQuantity = (itemId) => {
+    const item = items.find((item) => item.id === itemId);
+    return item ? item.quantity : 0;
   };
 
   const value = {
-    items: state.items,
-    total: state.total,
+    items,
+    total,
+    loading,
     addItem,
     removeItem,
     updateQuantity,
     clearCart,
+    isInCart,
+    getItemQuantity,
   };
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+  return <cartContext.Provider value={value}>{children}</cartContext.Provider>;
 };
-
-CartProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export default CartContext;

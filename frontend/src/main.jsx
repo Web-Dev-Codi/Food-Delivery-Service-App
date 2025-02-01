@@ -8,7 +8,6 @@ import HomeScreen from "./components/Homescreen";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
-import { CartProvider } from "./contexts/CartContext"; // Adjust the path as necessary
 import Menu from "./components/Menu.jsx";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
@@ -27,7 +26,5 @@ const router = createBrowserRouter(
 );
 
 createRoot(document.getElementById("root")).render(
-  <CartProvider>
-    <RouterProvider router={router} />
-  </CartProvider>,
+  <RouterProvider router={router} />,
 );
