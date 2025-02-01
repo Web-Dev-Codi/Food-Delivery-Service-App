@@ -4,6 +4,7 @@ import router from "./routes/routes.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import userRouter from "./routes/userRouter.js";
+import cartRoutes from "./routes/cartRoutes.js";
 dotenv.config();
 import errorHandler from "./middleware/error.js";
 import notFound from "./middleware/notFound.js";
@@ -16,8 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 
 connectDB();
 
-app.use("/data", userRouter);
 app.use("/", router);
+app.use("/data", userRouter);
+app.use("/api/cart", cartRoutes);
 
 // 404 handler
 app.use(notFound);
