@@ -3,16 +3,20 @@ import mongoose from "mongoose";
 import router from "./routes/userRouter.js";
 import dotenv from "dotenv";
 import restaurantRouter from "./routes/restaurantRoute.js";
-
+import cors from "cors";
 
 dotenv.config();
 
-import cors from "cors";
+
 
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: ' http://localhost:5173', // Replace with your front-end URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -32,8 +36,7 @@ connectDB();
 
 app.use("/", router);
 
-// 404 handler
-app.use(notFound);
+
 
 app.use("/data", router);
 app.use("/api", restaurantRouter);

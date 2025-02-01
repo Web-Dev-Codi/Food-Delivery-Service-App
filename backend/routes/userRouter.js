@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { createUsers, getUsers, getUserById, updateUser, deleteUser ,loginUser} from '../controllers/User.js';
-import { verifyToken } from '../middlewares/auth.js';
+import { verifyToken } from '../middleware/auth.js';
 
 const router = Router();
 
-router.get('/users',verifyToken, getUsers);
+router.get('/users', getUsers);
 router.get('/users/:id',verifyToken, getUserById);
 router.post('/create',createUsers);
 router.patch('/update/:id',verifyToken, updateUser);

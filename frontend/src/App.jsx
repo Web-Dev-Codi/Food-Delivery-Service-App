@@ -1,17 +1,21 @@
 import "./App.css";
-import LoginForm from "./components/LoginForm";
-import SignupForm from "./components/SignupForm";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ListRestaurant from "./components/ListRestaurant";
+import AddRestaurant from  "./components/AddRestaurant";
+import SingleRestaurant from "./components/SingleRestaurant";
+
+
 
 function App() {
   return (
-    <>
-    <h1 className="text-3xl font-bold underline">
-   login form and signup form
-  
-   </h1>
-<SignupForm />
-<LoginForm />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<AddRestaurant/>} />
+        <Route path="/restaurants" element={<ListRestaurant />} />
+      
+        <Route path="/restaurants/:id" element={<SingleRestaurant />} />
+      </Routes>
+    </Router>
   );
 }
 

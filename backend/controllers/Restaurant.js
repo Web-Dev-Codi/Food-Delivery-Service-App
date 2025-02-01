@@ -52,7 +52,16 @@ export const createRestaurant = async (req, res) => {
                 message: "Please provide all required fields",
             });
         }
+        const validImageURLs = images.every((imageUrl) => {
+            return imageUrl.startsWith("https://res.cloudinary.com/");
+          });
+          if (!validImageURLs) {
+            return res.status(400).json({
+              message: "All image URLs must be from Cloudinary.",
+            });
+          }
         const newRestaurant = await Restaurant.create({ name,location,images,contact,operatingHours});
+       
         if(!newRestaurant){
             return res.status(400).json({
                 message: "An error occurred while creating restaurant",
@@ -111,4 +120,39 @@ export const deleteRestaurant = async (req, res) => {
         });
     }
 }
+
+export const postReview = async (req, res) => {
+    try{
+        const { rating, comment } = req.body;
+        const userId = req.user.userId; // Extract the user ID from the request object
+        if (!rating || !comment) {
+          return res.status(400).json({
+            message: "Please provide a rating and comment.",
+          });
+        }
+        const restaurant = await Restaurant.findById(req.params.id);
+        if (!restaurant) {
+          return res.status(404).json({
+            message: "Restaurant not found.",
+          });
+        }
+        restaurant.reviews.push({ rating, comment, user: userId });
+
+        // Recalculate the average rating
+    restaurant.calculateAverageRating();
+
+        await restaurant.save();
+        res.status(201).json({
+          message: "Review added successfully.",
+          data: restaurant,
+        });
+
+    }
+    catch(err){
+        res.status(500).json({
+            message: "An error occurred while adding review",
+            error: err.message
+        });
+    }
+};
 

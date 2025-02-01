@@ -32,7 +32,12 @@ export const createUsers = async (req, res) => {
     // Respond with success
     res.status(201).json({
       message: "User signed successfully",
-      data: user,
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
       token: token,
     });
   } catch (err) {
@@ -68,7 +73,12 @@ export const loginUser = async (req, res) => {
        res.cookie("token", token, {httpOnly: true, maxAge: 3600000});
       return res.status(200).json({
         message: "Login successful",
-        data: validateUser,
+        data: {
+            _id: validateUser._id,
+            name: validateUser.name,
+            email: validateUser.email,
+            role: validateUser.role,
+          },
         token: token,
       });
  }catch(err){
