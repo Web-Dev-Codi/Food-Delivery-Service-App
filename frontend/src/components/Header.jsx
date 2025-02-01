@@ -5,7 +5,7 @@ const Header = () => {
     <header className="flex justify-around bg-blue-500 text-white text-center text-2xl p-4">
       <Link
         className="group flex items-center justify-between gap-4 rounded-lg border border-indigo-600 bg-indigo-600  transition-colors hover:bg-transparent focus:outline-none focus:ring"
-        to="/login"
+        to="/cart"
       >
         <span className="font-medium text-white transition-colors group-hover:text-indigo-600 group-active:text-indigo-500">
           Log In

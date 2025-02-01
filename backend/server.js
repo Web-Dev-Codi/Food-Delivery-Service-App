@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import restaurantRouter from "./routes/restaurantRoute.js";
 import cors from "cors";
 import userRouter from "./routes/userRouter.js";
+import cartRoutes from "./routes/cartRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -19,8 +20,9 @@ app.use(express.urlencoded({ extended: true }));
 
 connectDB();
 
-app.use("/data", userRouter);
 app.use("/", router);
+app.use("/data", userRouter);
+app.use("/api/cart", cartRoutes);
 
 
 
