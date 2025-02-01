@@ -1,9 +1,5 @@
-import React from "react";
 import { useState } from "react";
 import axios from "axios";
-
-
-
 
 function AddRestaurant() {
   const [successMessage, setSuccessMessage] = useState(""); // State for success message
@@ -26,24 +22,24 @@ function AddRestaurant() {
   const openCloudinaryWidget = () => {
     window.cloudinary.openUploadWidget(
       {
-        cloudName: 'difmxsysx', // Your Cloudinary cloud name
-        uploadPreset: 'restaurant_images_upload', // Your unsigned upload preset
+        cloudName: "difmxsysx", // Your Cloudinary cloud name
+        uploadPreset: "restaurant_images_upload", // Your unsigned upload preset
         multiple: true, // Allow multiple image uploads
-        sources: ['local', 'url', 'camera'], // Allow various sources
+        sources: ["local", "url", "camera"], // Allow various sources
         maxFiles: 5, // Limit the number of files
       },
       (error, result) => {
-        if (!error && result && result.event === 'success') {
+        if (!error && result && result.event === "success") {
           // Add the uploaded image URL to the images state
           setImages((prevImages) => [...prevImages, result.info.secure_url]);
         }
-      }
+      },
     );
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload
-  
+
     // Perform basic validation
     if (!name || !location || images.length === 0 || !contact) {
       setErrorMessage("All fields are required, including images.");
@@ -55,7 +51,7 @@ function AddRestaurant() {
       setSuccessMessage("");
       return;
     }
-  
+
     setIsLoading(true);
     try {
       // Sending data to your backend
@@ -66,9 +62,9 @@ function AddRestaurant() {
         contact,
         operatingHours,
       });
-  
+
       console.log(response.data); // Log the response for debugging
-  
+
       setSuccessMessage("Restaurant added successfully!");
       setErrorMessage("");
       // Optionally reset the form fields
@@ -89,11 +85,10 @@ function AddRestaurant() {
       console.error(error.response?.data || error.message); // Log detailed error
       setErrorMessage("An error occurred while adding the restaurant.");
       setSuccessMessage("");
-    } 
-      setIsLoading(false);
-   
+    }
+    setIsLoading(false);
   };
-  
+
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">Add Restaurant</h1>
