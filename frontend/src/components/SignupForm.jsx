@@ -1,16 +1,19 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState } from 'react';
+import axios from 'axios';
+
 
 function SignupForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [contact, setContact] = useState("");
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [password, setPassword] = useState("");
-  const [successMessage, setSuccessMessage] = useState(""); // State for success message
-  const [errorMessage, setErrorMessage] = useState(""); // State for error message
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [contact, setContact] = useState('');
+  const [street, setStreet] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [zipCode, setZipCode] = useState('');
+  const [password, setPassword] = useState('');
+  const [successMessage, setSuccessMessage] = useState(''); // State for success message
+  const [errorMessage, setErrorMessage] = useState(''); // State for error message
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,11 +28,14 @@ function SignupForm() {
         password,
       })
       .then((res) => {
+        localStorage.setItem('token', res.data.token);
         setSuccessMessage(res.data.message);
+        setErrorMessage('');
         console.log(res.data);
       })
       .catch((err) => {
         setErrorMessage(err.response.data.message);
+        setSuccessMessage('');
         console.error(err);
       });
   };
@@ -137,12 +143,19 @@ function SignupForm() {
           />
         </div>
         <div className="mb-4">
-          <label
-            htmlFor="zipCode"
-            className="block text-sm font-medium text-gray-600"
-          >
-            Zip Code
-          </label>
+        <label htmlFor="state" className="block text-sm font-medium text-gray-600">State</label>
+        <input
+          type="text"
+          id="state"
+          name="state"
+          required
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={state}
+          onChange={(e) => setState(e.target.value)}
+        />
+      </div>
+        <div className="mb-4">
+          <label htmlFor="zipCode" className="block text-sm font-medium text-gray-600">Zip Code</label>
           <input
             type="text"
             id="zipCode"
