@@ -7,6 +7,7 @@ function SignupForm() {
   const [contact, setContact] = useState("");
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
+  const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState(""); // State for success message
@@ -24,18 +25,29 @@ function SignupForm() {
         address: { street, city, zipCode },
         password,
       })
+    axios
+      .post("http://localhost:3006/data/create", {
+        name,
+        email,
+        contact,
+        address: { street, city, zipCode },
+        password,
+      })
       .then((res) => {
+        localStorage.setItem("token", res.data.token);
         setSuccessMessage(res.data.message);
+        setErrorMessage("");
         console.log(res.data);
       })
       .catch((err) => {
         setErrorMessage(err.response.data.message);
+        setSuccessMessage("");
         console.error(err);
       });
   };
 
   return (
-    <div className="flex items-center  bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form
         className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
         onSubmit={handleSubmit}
@@ -52,6 +64,12 @@ function SignupForm() {
         )}
 
         <div className="mb-4">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Name
+          </label>
           <label
             htmlFor="name"
             className="block text-sm font-medium text-gray-600"
@@ -134,6 +152,23 @@ function SignupForm() {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={city}
             onChange={(e) => setCity(e.target.value)}
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="state"
+            className="block text-sm font-medium text-gray-600"
+          >
+            State
+          </label>
+          <input
+            type="text"
+            id="state"
+            name="state"
+            required
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
           />
         </div>
         <div className="mb-4">

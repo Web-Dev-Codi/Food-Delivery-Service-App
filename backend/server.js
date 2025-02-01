@@ -2,16 +2,19 @@ import express from "express";
 import connectDB from "./utils/db.js";
 import router from "./routes/routes.js";
 import dotenv from "dotenv";
+import restaurantRouter from "./routes/restaurantRoute.js";
 import cors from "cors";
 import userRouter from "./routes/userRouter.js";
 import cartRoutes from "./routes/cartRoutes.js";
 dotenv.config();
-import errorHandler from "./middleware/error.js";
-import notFound from "./middleware/notFound.js";
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: ' http://localhost:5173', // Replace with your front-end URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -21,11 +24,10 @@ app.use("/", router);
 app.use("/data", userRouter);
 app.use("/api/cart", cartRoutes);
 
-// 404 handler
-app.use(notFound);
 
-// Error handler - must be last
-app.use(errorHandler);
+
+app.use("/data", router);
+app.use("/api", restaurantRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
