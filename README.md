@@ -9,7 +9,7 @@
 - git add . (This command adds all of the changes at one)
 - git commit -m "Your commit message here"
 - git push -u origin NAME_OF_YOUR_BRANCH ( The -u means upstream. The upsteam creates the branch on GitHub)
-- Now heaad to GitHub
+- Now head to GitHub
 
 #### Creating your Pull Request
 

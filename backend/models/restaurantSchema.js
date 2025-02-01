@@ -1,4 +1,4 @@
-import { Schema,model } from "mongoose";
+import { Schema, model } from "mongoose";
 import moment from "moment";
 
 const ReviewSchema = new Schema({
@@ -48,15 +48,16 @@ const RestaurantSchema = new Schema(
         max: 5 
       }
     },
-    { timestamps: true } // Automatically manages createdAt and updatedAt
-  );
+  },
+  { timestamps: true } // Automatically manages createdAt and updatedAt
+);
 
-  RestaurantSchema.pre("save", function (next) {
-    const format = "MMMM Do YYYY, h:mm:ss a"; 
-    this.createdAt = moment(this.createdAt).format(format);
-    this.updatedAt = moment(this.updatedAt).format(format);
-    next();
-    });
+RestaurantSchema.pre("save", function (next) {
+  const format = "MMMM Do YYYY, h:mm:ss a";
+  this.createdAt = moment(this.createdAt).format(format);
+  this.updatedAt = moment(this.updatedAt).format(format);
+  next();
+});
 
     RestaurantSchema.methods.calculateAverageRating = function() {
       if (this.reviews.length === 0) {

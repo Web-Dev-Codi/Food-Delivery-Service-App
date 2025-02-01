@@ -18,14 +18,14 @@ const UserSchema = new Schema(
     password: { type: String, required: true },
     role: { type: String, enum: ["admin", "customer"], default: "customer" },
     contact: { type: String, default: "" },
-    address: 
-      {
-        street: { type: String },
-        city: { type: String },
-        state: { type: String },
-        zipCode: { type: String },
-      }
-    
+    address:
+    {
+      street: { type: String },
+      city: { type: String },
+      state: { type: String },
+      zipCode: { type: String },
+    }
+
     //orderHistory: [{ type: Schema.Types.ObjectId, ref: "Order" }], // Ref to Order collection
   },
   { timestamps: true }
@@ -34,7 +34,7 @@ const UserSchema = new Schema(
 
 // Hash password before saving
 UserSchema.pre("save", async function (next) {
-  const format = "MMMM Do YYYY, h:mm:ss a"; 
+  const format = "MMMM Do YYYY, h:mm:ss a";
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 10);
   }
