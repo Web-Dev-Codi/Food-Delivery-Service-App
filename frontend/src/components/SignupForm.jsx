@@ -13,13 +13,20 @@ function SignupForm() {
   const [password, setPassword] = useState('');
   const [successMessage, setSuccessMessage] = useState(''); // State for success message
   const [errorMessage, setErrorMessage] = useState(''); // State for error message
-
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log({ name, email, contact, street, city, zipCode, password });
 
-    axios.post('http://localhost:3006/data/create', { name, email, contact, address: { street, city, zipCode }, password })
+    axios
+      .post("http://localhost:3006/data/create", {
+        name,
+        email,
+        contact,
+        address: { street, city, zipCode },
+        password,
+      })
       .then((res) => {
         localStorage.setItem('token', res.data.token);
         setSuccessMessage(res.data.message);
@@ -34,11 +41,16 @@ function SignupForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md" onSubmit={handleSubmit}>
-        <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Sign Up</h2>
-         {/* Display Success or Error Messages */}
-         {successMessage && (
+    <div className="flex items-center  bg-gray-100">
+      <form
+        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
+        onSubmit={handleSubmit}
+      >
+        <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
+          Sign Up
+        </h2>
+        {/* Display Success or Error Messages */}
+        {successMessage && (
           <div className="mb-4 text-green-600">{successMessage}</div>
         )}
         {errorMessage && (
@@ -46,7 +58,12 @@ function SignupForm() {
         )}
 
         <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-600">Name</label>
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Name
+          </label>
           <input
             type="text"
             id="name"
@@ -58,7 +75,12 @@ function SignupForm() {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-600">Email</label>
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Email
+          </label>
           <input
             type="email"
             id="email"
@@ -70,7 +92,12 @@ function SignupForm() {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="contact" className="block text-sm font-medium text-gray-600">Contact Number</label>
+          <label
+            htmlFor="contact"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Contact Number
+          </label>
           <input
             type="text"
             id="contact"
@@ -82,7 +109,12 @@ function SignupForm() {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="street" className="block text-sm font-medium text-gray-600">Street</label>
+          <label
+            htmlFor="street"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Street
+          </label>
           <input
             type="text"
             id="street"
@@ -94,7 +126,12 @@ function SignupForm() {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="city" className="block text-sm font-medium text-gray-600">City</label>
+          <label
+            htmlFor="city"
+            className="block text-sm font-medium text-gray-600"
+          >
+            City
+          </label>
           <input
             type="text"
             id="city"
@@ -130,7 +167,12 @@ function SignupForm() {
           />
         </div>
         <div className="mb-6">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-600">Password</label>
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-600"
+          >
+            Password
+          </label>
           <input
             type="password"
             id="password"
@@ -141,7 +183,10 @@ function SignupForm() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit" className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        <button
+          type="submit"
+          className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
           Sign Up
         </button>
       </form>
