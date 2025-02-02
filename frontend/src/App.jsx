@@ -1,14 +1,19 @@
 import "./App.css";
-import LoginForm from "./components/LoginForm";
-import SignupForm from "./components/SignupForm";
+import React from "react";
+import { Outlet } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 function App() {
-  return (
-    <>
-    <LoginForm/>
-    <SignupForm />
-    </>
-  );
+	return (
+		<React.Fragment>
+			<Header />
+			<main className="flex  h-svh place-items-center justify-center w-full">
+				<Outlet />
+			</main>
+			<Footer />
+		</React.Fragment>
+	);
 }
 
 export default App;
