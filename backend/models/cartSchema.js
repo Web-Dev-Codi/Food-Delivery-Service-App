@@ -27,7 +27,9 @@ const CartSchema = new Schema({
   items: [CartItemSchema],
   total: {
     type: Number,
-    default: 0
+    default: 0,
+    get: (v) => Number(v.toFixed(2)),
+    set: (v) => Number(v.toFixed(2))
   },
   createdAt: {
     type: Date,
@@ -41,7 +43,8 @@ const CartSchema = new Schema({
 
 // Update total when items change
 CartSchema.pre('save', function(next) {
-  this.total = this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const calculatedTotal = this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  this.total = Number(calculatedTotal.toFixed(2));
   this.updatedAt = new Date();
   next();
 });

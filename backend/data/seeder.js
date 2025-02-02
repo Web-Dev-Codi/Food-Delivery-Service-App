@@ -67,19 +67,26 @@ const generateCarts = async (count = 10) => {
 			// Generate 1-5 items per cart
 			const numberOfItems = faker.number.int({ min: 1, max: 5 });
 			const items = [];
+			let total = 0;
 
 			for (let j = 0; j < numberOfItems; j++) {
 				const randomMenuItem = faker.helpers.arrayElement(menuItems);
+				const quantity = faker.number.int({ min: 1, max: 5 });
+				const price = Number(randomMenuItem.price.toFixed(2)); // Round price to 2 decimals
+				
 				items.push({
 					menuItem: randomMenuItem._id,
-					quantity: faker.number.int({ min: 1, max: 5 }),
-					price: randomMenuItem.price,
+					quantity: quantity,
+					price: price,
 				});
+				
+				total += price * quantity;
 			}
 
 			const cart = {
 				user: sampleUserId,
 				items: items,
+				total: Number(total.toFixed(2)), // Round total to 2 decimals
 				createdAt: faker.date.recent({ days: 30 }),
 				updatedAt: faker.date.recent({ days: 30 }),
 			};

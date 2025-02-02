@@ -7,11 +7,11 @@ export const getCart = async (req, res) => {
     const userId = req.user._id; // Assuming user is attached by auth middleware
     let cart = await Cart.findOne({ user: userId })
       .populate('items.menuItem');
-    
+
     if (!cart) {
       cart = await Cart.create({ user: userId, items: [] });
     }
-    
+
     res.status(200).json(cart);
   } catch (error) {
     res.status(500).json({ message: "Error fetching cart", error: error.message });
@@ -54,7 +54,7 @@ export const addToCart = async (req, res) => {
 
     await cart.save();
     await cart.populate('items.menuItem');
-    
+
     res.status(200).json(cart);
   } catch (error) {
     res.status(500).json({ message: "Error adding item to cart", error: error.message });
@@ -94,7 +94,7 @@ export const updateQuantity = async (req, res) => {
 
     await cart.save();
     await cart.populate('items.menuItem');
-    
+
     res.status(200).json(cart);
   } catch (error) {
     res.status(500).json({ message: "Error updating quantity", error: error.message });
@@ -118,7 +118,7 @@ export const removeFromCart = async (req, res) => {
 
     await cart.save();
     await cart.populate('items.menuItem');
-    
+
     res.status(200).json(cart);
   } catch (error) {
     res.status(500).json({ message: "Error removing item from cart", error: error.message });
@@ -137,7 +137,7 @@ export const clearCart = async (req, res) => {
 
     cart.items = [];
     await cart.save();
-    
+
     res.status(200).json(cart);
   } catch (error) {
     res.status(500).json({ message: "Error clearing cart", error: error.message });
@@ -158,7 +158,7 @@ export const syncCart = async (req, res) => {
 
         // Update cart items
         cart.items = items.map(item => ({
-            menuItem: item.menuItem._id,
+            menuItem: item.menuItem,
             quantity: item.quantity,
             price: item.price
         }));

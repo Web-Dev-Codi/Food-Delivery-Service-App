@@ -41,7 +41,7 @@ const getInitialState = () => {
 
 // Helper function to calculate total
 const calculateTotal = (items) => {
-	return items.reduce((total, item) => total + item.price * item.quantity, 0);
+	return Number(items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2));
 };
 
 // Reducer function
@@ -54,41 +54,59 @@ const cartReducer = (state, action) => {
 				...state,
 				items: action.payload,
 				total: calculateTotal(action.payload),
+				loading: false,
+				error: null,
 			};
 			break;
 		case ACTIONS.ADD_TO_CART:
+			const existingItem = state.items.find(
+				(item) => item._id === action.payload._id
+			);
+			let updatedItems;
+			if (existingItem) {
+				updatedItems = state.items.map((item) =>
+					item._id === action.payload._id
+						? {
+								...item,
+								quantity: item.quantity + action.payload.quantity,
+						  }
+						: item
+				);
+			} else {
+				updatedItems = [...state.items, action.payload];
+			}
 			newState = {
 				...state,
-				items: [...state.items, action.payload],
-				total: calculateTotal([...state.items, action.payload]),
+				items: updatedItems,
+				total: calculateTotal(updatedItems),
+				loading: false,
+				error: null,
 			};
 			break;
 		case ACTIONS.REMOVE_FROM_CART:
+			const filteredItems = state.items.filter(
+				(item) => item._id !== action.payload
+			);
 			newState = {
 				...state,
-				items: state.items.filter(
-					(item) => item._id !== action.payload
-				),
-				total: calculateTotal(
-					state.items.filter((item) => item._id !== action.payload)
-				),
+				items: filteredItems,
+				total: calculateTotal(filteredItems),
+				loading: false,
+				error: null,
 			};
 			break;
 		case ACTIONS.UPDATE_QUANTITY:
+			const updatedCartItems = state.items.map((item) =>
+				item._id === action.payload.itemId
+					? { ...item, quantity: action.payload.quantity }
+					: item
+			);
 			newState = {
 				...state,
-				items: state.items.map((item) =>
-					item._id === action.payload.itemId
-						? { ...item, quantity: action.payload.quantity }
-						: item
-				),
-				total: calculateTotal(
-					state.items.map((item) =>
-						item._id === action.payload.itemId
-							? { ...item, quantity: action.payload.quantity }
-							: item
-					)
-				),
+				items: updatedCartItems,
+				total: calculateTotal(updatedCartItems),
+				loading: false,
+				error: null,
 			};
 			break;
 		case ACTIONS.CLEAR_CART:
@@ -96,6 +114,8 @@ const cartReducer = (state, action) => {
 				...state,
 				items: [],
 				total: 0,
+				loading: false,
+				error: null,
 			};
 			break;
 		case ACTIONS.SET_LOADING:
@@ -108,6 +128,7 @@ const cartReducer = (state, action) => {
 			newState = {
 				...state,
 				error: action.payload,
+				loading: false,
 			};
 			break;
 		default:
@@ -134,13 +155,10 @@ export const CartProvider = ({ children }) => {
 	// Get auth token
 	const getAuthHeader = () => {
 		const token = localStorage.getItem("token");
-		if (!token) {
-			throw new Error("No authentication token found");
-		}
-		return {
+		return token ? {
 			Authorization: `Bearer ${token}`,
 			"Content-Type": "application/json",
-		};
+		} : null;
 	};
 
 	// Load cart from database when component mounts or token changes
@@ -154,17 +172,19 @@ export const CartProvider = ({ children }) => {
 	// Sync cart with database whenever it changes
 	useEffect(() => {
 		const syncCartWithDatabase = async () => {
+			const headers = getAuthHeader();
+			if (!headers) return; // Skip if not authenticated
+
 			if (state.items.length > 0 && !state.loading) {
 				try {
 					await axios.post(
 						`${API_URL}/sync`,
 						{ items: state.items },
-						{
-							headers: getAuthHeader(),
-						}
+						{ headers }
 					);
 				} catch (error) {
 					console.error("Error syncing cart with database:", error);
+					// Don't set error state here as it's a background sync
 				}
 			}
 		};
@@ -174,13 +194,14 @@ export const CartProvider = ({ children }) => {
 
 	// Fetch cart items from backend
 	const fetchCart = async () => {
+		const headers = getAuthHeader();
+		if (!headers) return; // Skip if not authenticated
+
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
 			dispatch({ type: ACTIONS.SET_ERROR, payload: null });
 
-			const response = await axios.get(`${API_URL}`, {
-				headers: getAuthHeader(),
-			});
+			const response = await axios.get(API_URL, { headers });
 
 			if (response.data && Array.isArray(response.data.items)) {
 				dispatch({
@@ -196,70 +217,49 @@ export const CartProvider = ({ children }) => {
 			}
 		} catch (error) {
 			console.error("Cart fetch error:", error);
+			if (error.response?.status === 401) {
+				// Handle unauthorized error silently
+				return;
+			}
 			dispatch({
 				type: ACTIONS.SET_ERROR,
-				payload:
-					error.response?.data?.message ||
-					"Error fetching cart. Please make sure you are logged in.",
+				payload: "Error fetching cart. Please try again later.",
 			});
-			// Clear cart if unauthorized
-			if (error.response?.status === 401) {
-				dispatch({ type: ACTIONS.CLEAR_CART });
-				localStorage.removeItem("cart"); // Clear localStorage cart on auth error
-			}
 		} finally {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: false });
 		}
 	};
 
 	// Add item to cart
-	const addToCart = async (menuItem) => {
+	const addToCart = async (item) => {
+		const headers = getAuthHeader();
+		
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
 			dispatch({ type: ACTIONS.SET_ERROR, payload: null });
 
-			const cartItem = {
-				menuItem: menuItem._id,
-				quantity: 1,
-				price: menuItem.price,
-			};
+			if (headers) {
+				// If authenticated, add to database
+				await axios.post(
+					`${API_URL}/add`,
+					{
+						menuItemId: item._id,
+						quantity: item.quantity,
+					},
+					{ headers }
+				);
+			}
 
-			const response = await axios.post(`${API_URL}/add`, cartItem, {
-				headers: getAuthHeader(),
+			// Update local state regardless of authentication
+			dispatch({
+				type: ACTIONS.ADD_TO_CART,
+				payload: item,
 			});
-
-			dispatch({ type: ACTIONS.ADD_TO_CART, payload: response.data });
 		} catch (error) {
 			console.error("Add to cart error:", error);
 			dispatch({
 				type: ACTIONS.SET_ERROR,
-				payload:
-					error.response?.data?.message ||
-					"Failed to add item to cart",
-			});
-		} finally {
-			dispatch({ type: ACTIONS.SET_LOADING, payload: false });
-		}
-	};
-
-	// Remove item from cart
-	const removeFromCart = async (menuItemId) => {
-		try {
-			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-			dispatch({ type: ACTIONS.SET_ERROR, payload: null });
-
-			await axios.delete(`${API_URL}/remove/${menuItemId}`, {
-				headers: getAuthHeader(),
-			});
-
-			dispatch({ type: ACTIONS.REMOVE_FROM_CART, payload: menuItemId });
-		} catch (error) {
-			console.error("Remove from cart error:", error);
-			dispatch({
-				type: ACTIONS.SET_ERROR,
-				payload:
-					error.response?.data?.message ||
-					"Failed to remove item from cart",
+				payload: "Error adding item to cart. Please try again.",
 			});
 		} finally {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: false });
@@ -267,30 +267,62 @@ export const CartProvider = ({ children }) => {
 	};
 
 	// Update item quantity
-	const updateQuantity = async (menuItemId, quantity) => {
+	const updateQuantity = async (itemId, quantity) => {
+		const headers = getAuthHeader();
+		
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
 			dispatch({ type: ACTIONS.SET_ERROR, payload: null });
 
-			await axios.put(
-				`${API_URL}/update-quantity`,
-				{ menuItemId, quantity },
-				{
-					headers: getAuthHeader(),
-				}
-			);
+			if (headers) {
+				// If authenticated, update in database
+				await axios.put(
+					`${API_URL}/update-quantity`,
+					{
+						menuItemId: itemId,
+						quantity,
+					},
+					{ headers }
+				);
+			}
 
 			dispatch({
 				type: ACTIONS.UPDATE_QUANTITY,
-				payload: { itemId: menuItemId, quantity },
+				payload: { itemId, quantity },
 			});
 		} catch (error) {
 			console.error("Update quantity error:", error);
 			dispatch({
 				type: ACTIONS.SET_ERROR,
-				payload:
-					error.response?.data?.message ||
-					"Failed to update quantity",
+				payload: "Error updating quantity. Please try again.",
+			});
+		} finally {
+			dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+		}
+	};
+
+	// Remove item from cart
+	const removeFromCart = async (itemId) => {
+		const headers = getAuthHeader();
+		
+		try {
+			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+			dispatch({ type: ACTIONS.SET_ERROR, payload: null });
+
+			if (headers) {
+				// If authenticated, remove from database
+				await axios.delete(`${API_URL}/remove/${itemId}`, { headers });
+			}
+
+			dispatch({
+				type: ACTIONS.REMOVE_FROM_CART,
+				payload: itemId,
+			});
+		} catch (error) {
+			console.error("Remove from cart error:", error);
+			dispatch({
+				type: ACTIONS.SET_ERROR,
+				payload: "Error removing item from cart. Please try again.",
 			});
 		} finally {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: false });
@@ -299,40 +331,40 @@ export const CartProvider = ({ children }) => {
 
 	// Clear cart
 	const clearCart = async () => {
+		const headers = getAuthHeader();
+		
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
 			dispatch({ type: ACTIONS.SET_ERROR, payload: null });
 
-			await axios.delete(`${API_URL}/clear`, {
-				headers: getAuthHeader(),
-			});
+			if (headers) {
+				// If authenticated, clear in database
+				await axios.delete(`${API_URL}/clear`, { headers });
+			}
 
 			dispatch({ type: ACTIONS.CLEAR_CART });
 		} catch (error) {
 			console.error("Clear cart error:", error);
 			dispatch({
 				type: ACTIONS.SET_ERROR,
-				payload:
-					error.response?.data?.message || "Failed to clear cart",
+				payload: "Error clearing cart. Please try again.",
 			});
 		} finally {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: false });
 		}
 	};
 
-	const value = {
-		cart: state.items,
-		total: state.total,
-		loading: state.loading,
-		error: state.error,
-		addToCart,
-		removeFromCart,
-		updateQuantity,
-		clearCart,
-	};
-
 	return (
-		<CartContext.Provider value={value}>{children}</CartContext.Provider>
+		<CartContext.Provider
+			value={{
+				...state,
+				addToCart,
+				removeFromCart,
+				updateQuantity,
+				clearCart,
+			}}>
+			{children}
+		</CartContext.Provider>
 	);
 };
 

@@ -1,6 +1,7 @@
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import CartItems from "./CartItems";
 
 function Cart() {
 	const {
@@ -8,8 +9,6 @@ function Cart() {
 		total,
 		loading,
 		error,
-		removeFromCart,
-		updateQuantity,
 		clearCart,
 	} = useCart();
 	const navigate = useNavigate();
@@ -47,40 +46,33 @@ function Cart() {
 	}
 
 	return (
-		<div className="p-4">
-			<h2 className="text-2xl font-bold mb-4">Your Cart</h2>
-			<div className="space-y-4">
-				{cart.map((item) => (
-					<div key={item._id} className="border p-4 rounded-lg shadow">
-						<h3 className="text-lg font-semibold">{item.menuItem.name}</h3>
-						<p className="text-gray-600">Price: ${item.menuItem.price}</p>
-						<div className="flex items-center mt-2">
-							<input
-								type="number"
-								value={item.quantity}
-								onChange={(e) =>
-									updateQuantity(item._id, parseInt(e.target.value))
-								}
-								min="1"
-								className="w-20 p-1 border rounded mr-2"
-							/>
-							<button 
-								onClick={() => removeFromCart(item._id)}
-								className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-							>
-								Remove
-							</button>
-						</div>
-					</div>
-				))}
-			</div>
-			<div className="mt-6">
-				<div className="text-xl font-bold">Total: ${total.toFixed(2)}</div>
-				<button 
+		<div className="max-w-4xl mx-auto p-4">
+			<div className="flex justify-between items-center mb-6">
+				<h2 className="text-2xl font-bold">Your Cart</h2>
+				<button
 					onClick={clearCart}
-					className="mt-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+					className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
 				>
 					Clear Cart
+				</button>
+			</div>
+
+			<div className="space-y-4 mb-6">
+				{cart.map((item) => (
+					<CartItems key={item._id} item={item} />
+				))}
+			</div>
+
+			<div className="border-t pt-4">
+				<div className="flex justify-between items-center mb-4">
+					<span className="text-xl font-semibold">Total:</span>
+					<span className="text-2xl font-bold">${total.toFixed(2)}</span>
+				</div>
+				<button
+					onClick={() => navigate("/checkout")}
+					className="w-full bg-green-500 text-white py-3 rounded-md hover:bg-green-600 transition-colors"
+				>
+					Proceed to Checkout
 				</button>
 			</div>
 		</div>

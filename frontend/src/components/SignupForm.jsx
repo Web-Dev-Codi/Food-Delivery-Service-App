@@ -67,11 +67,6 @@ function SignupForm() {
 						className="block text-sm font-medium text-gray-600">
 						Name
 					</label>
-					<label
-						htmlFor="name"
-						className="block text-sm font-medium text-gray-600">
-						Name
-					</label>
 					<input
 						type="text"
 						id="name"
