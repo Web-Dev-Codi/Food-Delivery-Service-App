@@ -41,7 +41,11 @@ const getInitialState = () => {
 
 // Helper function to calculate total
 const calculateTotal = (items) => {
-	return Number(items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2));
+	return Number(
+		items
+			.reduce((total, item) => total + item.price * item.quantity, 0)
+			.toFixed(2)
+	);
 };
 
 // Reducer function
@@ -68,7 +72,8 @@ const cartReducer = (state, action) => {
 					item._id === action.payload._id
 						? {
 								...item,
-								quantity: item.quantity + action.payload.quantity,
+								quantity:
+									item.quantity + action.payload.quantity,
 						  }
 						: item
 				);
@@ -155,10 +160,12 @@ export const CartProvider = ({ children }) => {
 	// Get auth token
 	const getAuthHeader = () => {
 		const token = localStorage.getItem("token");
-		return token ? {
-			Authorization: `Bearer ${token}`,
-			"Content-Type": "application/json",
-		} : null;
+		return token
+			? {
+					Authorization: `Bearer ${token}`,
+					"Content-Type": "application/json",
+			  }
+			: null;
 	};
 
 	// Load cart from database when component mounts or token changes
@@ -233,7 +240,7 @@ export const CartProvider = ({ children }) => {
 	// Add item to cart
 	const addToCart = async (item) => {
 		const headers = getAuthHeader();
-		
+
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
 			dispatch({ type: ACTIONS.SET_ERROR, payload: null });
@@ -269,7 +276,7 @@ export const CartProvider = ({ children }) => {
 	// Update item quantity
 	const updateQuantity = async (itemId, quantity) => {
 		const headers = getAuthHeader();
-		
+
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
 			dispatch({ type: ACTIONS.SET_ERROR, payload: null });
@@ -304,7 +311,7 @@ export const CartProvider = ({ children }) => {
 	// Remove item from cart
 	const removeFromCart = async (itemId) => {
 		const headers = getAuthHeader();
-		
+
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
 			dispatch({ type: ACTIONS.SET_ERROR, payload: null });
@@ -332,7 +339,7 @@ export const CartProvider = ({ children }) => {
 	// Clear cart
 	const clearCart = async () => {
 		const headers = getAuthHeader();
-		
+
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
 			dispatch({ type: ACTIONS.SET_ERROR, payload: null });

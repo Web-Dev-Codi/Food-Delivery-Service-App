@@ -29,16 +29,16 @@ router.get("/orders/:id", (req, res) => {
 	});
 });
 
-// Restaurant routes
-router.get("/restaurants", (req, res) => {
-	res.send({ message: "Restaurants listing endpoint is live" });
-});
+// // Restaurant routes
+// router.get("/restaurants", (req, res) => {
+// 	res.send({ message: "Restaurants listing endpoint is live" });
+// });
 
-router.get("/restaurants/:id", (req, res) => {
-	res.send({
-		message: `Restaurant details endpoint is live for restaurant ${req.params.id}`,
-	});
-});
+// router.get("/restaurants/:id", (req, res) => {
+// 	res.send({
+// 		message: `Restaurant details endpoint is live for restaurant ${req.params.id}`,
+// 	});
+// });
 
 // User profile routes
 router.get("/profile", (req, res) => {
