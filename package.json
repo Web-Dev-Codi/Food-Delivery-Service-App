@@ -8,7 +8,9 @@
     "start": "nodemon backend/server.js",
     "server": "nodemon backend/server.js",
     "client": "npm run dev --prefix frontend",
-    "all": "concurrently \"npm run server\" \"npm run client\""
+    "all": "concurrently \"npm run server\" \"npm run client\"",
+    "data:import": "node backend/data/seeder.js",
+    "data:destroy": "node backend/data/seeder.js -d"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,7 @@
   },
   "homepage": "https://github.com/Web-Dev-Codi/Food-Delivery-Service-App#readme",
   "devDependencies": {
+    "@faker-js/faker": "^9.4.0",
     "concurrently": "^9.1.2",
     "nodemon": "^3.1.9"
   },

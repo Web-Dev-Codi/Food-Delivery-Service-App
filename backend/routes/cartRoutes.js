@@ -5,6 +5,7 @@ import {
 	updateQuantity,
 	removeFromCart,
 	clearCart,
+	syncCart,
 } from "../controllers/cartController.js";
 import {
 	protect,
@@ -20,7 +21,10 @@ cartRouter.use(protect);
 cartRouter.use(verifyCartOwnership);
 
 // Get user's cart
-cartRouter.get("/cart", getCart);
+cartRouter.get("/", getCart);
+
+// Sync cart with database
+cartRouter.post("/sync", syncCart);
 
 // Add item to cart
 cartRouter.post("/add", verifyCartItem, verifyCartQuantity, addToCart);

@@ -143,3 +143,32 @@ export const clearCart = async (req, res) => {
     res.status(500).json({ message: "Error clearing cart", error: error.message });
   }
 };
+
+// Sync cart with database
+export const syncCart = async (req, res) => {
+    try {
+        const { items } = req.body;
+        const userId = req.user._id;
+
+        // Find or create cart for user
+        let cart = await Cart.findOne({ user: userId });
+        if (!cart) {
+            cart = new Cart({ user: userId, items: [] });
+        }
+
+        // Update cart items
+        cart.items = items.map(item => ({
+            menuItem: item.menuItem._id,
+            quantity: item.quantity,
+            price: item.price
+        }));
+
+        // Save cart
+        await cart.save();
+
+        res.status(200).json({ message: 'Cart synced successfully' });
+    } catch (error) {
+        console.error('Error syncing cart:', error);
+        res.status(500).json({ message: 'Error syncing cart' });
+    }
+};
