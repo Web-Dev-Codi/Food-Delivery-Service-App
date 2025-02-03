@@ -30,12 +30,20 @@ function ListRestaurant() {
             <p className="text-gray-700 mb-6">{restaurant.location}</p>
             <p className="text-gray-700 mb-6">{restaurant.contact}</p>
             <div>
-              {restaurant.images.length > 0 ? (
-                <img src={restaurant.images[0]} alt={restaurant.name} className="w-full h-64 object-cover mb-4"/>
-              ) : (
-                <div className="w-full h-64 bg-gray-300 mb-4"></div>
-              )}
-            </div>
+            {restaurant.images && restaurant.images.length > 0 ? (
+              restaurant.images.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`${restaurant.name} - Image ${index + 1}`}
+                  className="w-full h-64 object-cover mb-4"
+                />
+              ))
+            ) : (
+              <div className="w-full h-64 bg-gray-300 mb-4">No images available</div>
+            )}
+          </div>
+          
             <div className="text-center">
               {restaurant.reviews.length > 0 ? (
                 <div>
