@@ -25,14 +25,6 @@ function SignupForm() {
         address: { street, city, zipCode },
         password,
       })
-    axios
-      .post("http://localhost:3006/data/create", {
-        name,
-        email,
-        contact,
-        address: { street, city, zipCode },
-        password,
-      })
       .then((res) => {
         localStorage.setItem("token", res.data.token);
         setSuccessMessage(res.data.message);
