@@ -48,7 +48,7 @@ const RestaurantSchema = new Schema(
         max: 5 
       }
     },
-  },
+  
   { timestamps: true } // Automatically manages createdAt and updatedAt
 );
 
