@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import { useCart } from '../context/CartContext';
+import PropTypes from "prop-types";
+import { useCart } from "../context/CartContext";
 
 function CartItems({ item }) {
   const { updateQuantity, removeFromCart } = useCart();
@@ -18,11 +18,13 @@ function CartItems({ item }) {
           <p className="text-green-600 font-medium">${item.price.toFixed(2)}</p>
         </div>
       </div>
-      
+
       <div className="flex items-center space-x-4">
         <div className="flex items-center border rounded-md">
           <button
-            onClick={() => updateQuantity(item._id, Math.max(0, item.quantity - 1))}
+            onClick={() =>
+              updateQuantity(item._id, Math.max(0, item.quantity - 1))
+            }
             className="px-3 py-1 text-gray-600 hover:bg-gray-100"
           >
             -

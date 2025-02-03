@@ -11,11 +11,11 @@ dotenv.config();
 const app = express();
 
 app.use(
-	cors({
-		origin: "http://localhost:5173", // Replace with your front-end URL
-		methods: ["GET", "POST", "PUT", "DELETE"],
-		credentials: true,
-	})
+  cors({
+    origin: "http://localhost:5173", // Replace with your front-end URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  }),
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

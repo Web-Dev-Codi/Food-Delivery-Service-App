@@ -3,47 +3,50 @@ import { Schema, model } from "mongoose";
 const CartItemSchema = new Schema({
   menuItem: {
     type: Schema.Types.ObjectId,
-    ref: 'MenuItem',
-    required: true
+    ref: "MenuItem",
+    required: true,
   },
   quantity: {
     type: Number,
     required: true,
-    min: 1
+    min: 1,
   },
   price: {
     type: Number,
     required: true,
-    min: 0
-  }
+    min: 0,
+  },
 });
 
 const CartSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: "User",
+    required: true,
   },
   items: [CartItemSchema],
   total: {
     type: Number,
     default: 0,
     get: (v) => Number(v.toFixed(2)),
-    set: (v) => Number(v.toFixed(2))
+    set: (v) => Number(v.toFixed(2)),
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   updatedAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 // Update total when items change
-CartSchema.pre('save', function(next) {
-  const calculatedTotal = this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+CartSchema.pre("save", function (next) {
+  const calculatedTotal = this.items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
   this.total = Number(calculatedTotal.toFixed(2));
   this.updatedAt = new Date();
   next();
