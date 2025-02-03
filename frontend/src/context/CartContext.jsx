@@ -1,5 +1,11 @@
 // src/context/CartContext.jsx
-import { createContext, useContext, useReducer, useEffect } from "react";
+import {
+	createContext,
+	useContext,
+	useReducer,
+	useEffect,
+	useState,
+} from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 
@@ -7,385 +13,470 @@ export const CartContext = createContext();
 
 // Define action types
 const ACTIONS = {
-  SET_CART: "SET_CART",
-  ADD_TO_CART: "ADD_TO_CART",
-  REMOVE_FROM_CART: "REMOVE_FROM_CART",
-  UPDATE_QUANTITY: "UPDATE_QUANTITY",
-  CLEAR_CART: "CLEAR_CART",
-  SET_LOADING: "SET_LOADING",
-  SET_ERROR: "SET_ERROR",
+	SET_CART: "SET_CART",
+	ADD_TO_CART: "ADD_TO_CART",
+	REMOVE_FROM_CART: "REMOVE_FROM_CART",
+	UPDATE_QUANTITY: "UPDATE_QUANTITY",
+	CLEAR_CART: "CLEAR_CART",
+	SET_LOADING: "SET_LOADING",
+	SET_ERROR: "SET_ERROR",
 };
 
 // Get initial state from localStorage or use default
 const getInitialState = () => {
-  try {
-    const savedCart = localStorage.getItem("cart");
-    return savedCart
-      ? JSON.parse(savedCart)
-      : {
-          items: [],
-          total: 0,
-          loading: false,
-          error: null,
-        };
-  } catch (error) {
-    console.error("Error reading cart from localStorage:", error);
-    return {
-      items: [],
-      total: 0,
-      loading: false,
-      error: null,
-    };
-  }
+	try {
+		const savedCart = localStorage.getItem("cart");
+		return savedCart
+			? JSON.parse(savedCart)
+			: {
+					items: [],
+					total: 0,
+					loading: false,
+					error: null,
+					isGuest: !localStorage.getItem("token"),
+			  };
+	} catch (error) {
+		console.error("Error reading cart from localStorage:", error);
+		return {
+			items: [],
+			total: 0,
+			loading: false,
+			error: null,
+			isGuest: !localStorage.getItem("token"),
+		};
+	}
 };
 
 // Helper function to calculate total
 const calculateTotal = (items) => {
-  return Number(
-    items
-      .reduce((total, item) => total + item.price * item.quantity, 0)
-      .toFixed(2),
-  );
+	return Number(
+		items
+			.reduce((total, item) => total + item.price * item.quantity, 0)
+			.toFixed(2)
+	);
 };
 
 // Reducer function
 const cartReducer = (state, action) => {
-  let newState;
+	let newState;
 
-  switch (action.type) {
-    case ACTIONS.SET_CART:
-      newState = {
-        ...state,
-        items: action.payload,
-        total: calculateTotal(action.payload),
-        loading: false,
-        error: null,
-      };
-      break;
-    case ACTIONS.ADD_TO_CART:
-      const existingItem = state.items.find(
-        (item) => item._id === action.payload._id,
-      );
-      let updatedItems;
-      if (existingItem) {
-        updatedItems = state.items.map((item) =>
-          item._id === action.payload._id
-            ? {
-                ...item,
-                quantity: item.quantity + action.payload.quantity,
-              }
-            : item,
-        );
-      } else {
-        updatedItems = [...state.items, action.payload];
-      }
-      newState = {
-        ...state,
-        items: updatedItems,
-        total: calculateTotal(updatedItems),
-        loading: false,
-        error: null,
-      };
-      break;
-    case ACTIONS.REMOVE_FROM_CART: {
-      const filteredItems = state.items.filter(
-        (item) => item._id !== action.payload,
-      );
-      newState = {
-        ...state,
-        items: filteredItems,
-        total: calculateTotal(filteredItems),
-        loading: false,
-        error: null,
-      };
-      break;
-    }
-    case ACTIONS.UPDATE_QUANTITY: {
-      const updatedCartItems = state.items.map((item) =>
-        item._id === action.payload.itemId
-          ? { ...item, quantity: action.payload.quantity }
-          : item,
-      );
-      newState = {
-        ...state,
-        items: updatedCartItems,
-        total: calculateTotal(updatedCartItems),
-        loading: false,
-        error: null,
-      };
-      break;
-    }
-    case ACTIONS.CLEAR_CART:
-      newState = {
-        ...state,
-        items: [],
-        total: 0,
-        loading: false,
-        error: null,
-      };
-      break;
-    case ACTIONS.SET_LOADING:
-      newState = {
-        ...state,
-        loading: action.payload,
-      };
-      break;
-    case ACTIONS.SET_ERROR:
-      newState = {
-        ...state,
-        error: action.payload,
-        loading: false,
-      };
-      break;
-    default:
-      return state;
-  }
+	switch (action.type) {
+		case ACTIONS.SET_CART:
+			newState = {
+				...state,
+				items: action.payload,
+				total: calculateTotal(action.payload),
+				loading: false,
+				error: null,
+			};
+			break;
+		case ACTIONS.ADD_TO_CART: {
+			const existingItem = state.items.find(
+				(item) => item.menuItem === action.payload.menuItem
+			);
+			let updatedItems;
+			if (existingItem) {
+				updatedItems = state.items.map((item) =>
+					item.menuItem === action.payload.menuItem
+						? {
+								...item,
+								quantity:
+									item.quantity + action.payload.quantity,
+						  }
+						: item
+				);
+			} else {
+				updatedItems = [...state.items, action.payload];
+			}
+			newState = {
+				...state,
+				items: updatedItems,
+				total: calculateTotal(updatedItems),
+				loading: false,
+				error: null,
+			};
+			break;
+		}
+		case ACTIONS.REMOVE_FROM_CART: {
+			const filteredItems = state.items.filter(
+				(item) => item.menuItem !== action.payload
+			);
+			newState = {
+				...state,
+				items: filteredItems,
+				total: calculateTotal(filteredItems),
+				loading: false,
+				error: null,
+			};
+			break;
+		}
+		case ACTIONS.UPDATE_QUANTITY: {
+			const updatedItems = state.items.map((item) => {
+				if (item.menuItem === action.payload.menuItemId) {
+					return { ...item, quantity: action.payload.quantity };
+				}
+				return item;
+			});
+			newState = {
+				...state,
+				items: updatedItems,
+				total: calculateTotal(updatedItems),
+				loading: false,
+				error: null,
+			};
+			break;
+		}
+		case ACTIONS.CLEAR_CART:
+			newState = {
+				...state,
+				items: [],
+				total: 0,
+				loading: false,
+				error: null,
+			};
+			break;
+		case ACTIONS.SET_LOADING:
+			newState = { ...state, loading: action.payload };
+			break;
+		case ACTIONS.SET_ERROR:
+			newState = { ...state, error: action.payload, loading: false };
+			break;
+		default:
+			throw new Error(`Unhandled action type: ${action.type}`);
+	}
 
-  // Save to localStorage after each state change
-  try {
-    localStorage.setItem("cart", JSON.stringify(newState));
-  } catch (error) {
-    console.error("Error saving cart to localStorage:", error);
-  }
-
-  return newState;
+	return newState;
 };
 
 // Cart Provider component
 export const CartProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(cartReducer, getInitialState());
+	const [state, dispatch] = useReducer(cartReducer, getInitialState());
+	const [authToken, setAuthToken] = useState(localStorage.getItem("token"));
+	const [syncNeeded, setSyncNeeded] = useState(false);
 
-  // API base URL
-  const API_URL = "http://localhost:8000/api/cart";
+	// Watch for auth token changes
+	useEffect(() => {
+		const handleStorageChange = () => {
+			const newToken = localStorage.getItem("token");
+			if (newToken !== authToken) {
+				setAuthToken(newToken);
+			}
+		};
 
-  // Get auth token
-  const getAuthHeader = () => {
-    const token = localStorage.getItem("token");
-    return token
-      ? {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        }
-      : null;
-  };
+		window.addEventListener("storage", handleStorageChange);
+		return () => window.removeEventListener("storage", handleStorageChange);
+	}, [authToken]);
 
-  // Load cart from database when component mounts or token changes
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      fetchCart();
-    }
-  }, []);
+	// Mark sync as needed when cart items change
+	useEffect(() => {
+		setSyncNeeded(true);
+	}, [state.items]);
 
-  // Sync cart with database whenever it changes
-  useEffect(() => {
-    const syncCartWithDatabase = async () => {
-      const headers = getAuthHeader();
-      if (!headers) return; // Skip if not authenticated
+	// Save to localStorage whenever cart state changes
+	useEffect(() => {
+		if (!state.loading) {  // Only save when not in loading state
+			try {
+				localStorage.setItem(
+					"cart",
+					JSON.stringify({
+						items: state.items,
+						total: state.total,
+						loading: false,  // Don't persist loading state
+						error: null,    // Don't persist error state
+						isGuest: !localStorage.getItem("token"),
+					})
+				);
+			} catch (error) {
+				console.error("Error saving cart to localStorage:", error);
+			}
+		}
+	}, [state.items, state.total]);
 
-      if (state.items.length > 0 && !state.loading) {
-        try {
-          await axios.post(
-            `${API_URL}/sync`,
-            { items: state.items },
-            { headers },
-          );
-        } catch (error) {
-          console.error("Error syncing cart with database:", error);
-          // Don't set error state here as it's a background sync
-        }
-      }
-    };
+	// Sync cart with database when needed
+	useEffect(() => {
+		const syncCartWithDatabase = async () => {
+			if (!syncNeeded) return;
 
-    syncCartWithDatabase();
-  }, [state.items]);
+			const headers = getHeaders();
 
-  // Fetch cart items from backend
-  const fetchCart = async () => {
-    const headers = getAuthHeader();
-    if (!headers) return; // Skip if not authenticated
+			// Only sync if we have proper authentication
+			if (
+				(state.items.length > 0 &&
+					!state.loading &&
+					headers["Authorization"]) ||
+				headers["X-Guest-ID"]
+			) {
+				try {
+					const response = await axios.post(
+						`${API_URL}/sync`,
+						{ items: state.items },
+						{ headers }
+					);
 
-    try {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-      dispatch({ type: ACTIONS.SET_ERROR, payload: null });
+					// Only update if the server response is different
+					if (
+						response.data?.items &&
+						JSON.stringify(response.data.items) !==
+							JSON.stringify(state.items)
+					) {
+						dispatch({
+							type: ACTIONS.SET_CART,
+							payload: response.data.items,
+						});
+					}
+					setSyncNeeded(false);
+				} catch (error) {
+					console.error("Error syncing cart with database:", error);
+					setSyncNeeded(false);
+				}
+			}
+		};
 
-      const response = await axios.get(API_URL, { headers });
+		syncCartWithDatabase();
+	}, [syncNeeded, state.items, state.loading]);
 
-      if (response.data && Array.isArray(response.data.items)) {
-        dispatch({
-          type: ACTIONS.SET_CART,
-          payload: response.data.items,
-        });
-      } else {
-        console.error("Invalid cart data format:", response.data);
-        dispatch({
-          type: ACTIONS.SET_ERROR,
-          payload: "Invalid cart data received from server",
-        });
-      }
-    } catch (error) {
-      console.error("Cart fetch error:", error);
-      if (error.response?.status === 401) {
-        // Handle unauthorized error silently
-        return;
-      }
-      dispatch({
-        type: ACTIONS.SET_ERROR,
-        payload: "Error fetching cart. Please try again later.",
-      });
-    } finally {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
-    }
-  };
+	// API base URL
+	const API_URL = "http://localhost:8000/api/cart";
 
-  // Add item to cart
-  const addToCart = async (item) => {
-    const headers = getAuthHeader();
+	// Get headers for API requests
+	const getHeaders = () => {
+		const token = localStorage.getItem("token");
+		const guestId = localStorage.getItem("guestId");
+		const headers = {
+			"Content-Type": "application/json",
+		};
 
-    try {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-      dispatch({ type: ACTIONS.SET_ERROR, payload: null });
+		if (token) {
+			headers.Authorization = `Bearer ${token}`;
+		} else if (guestId) {
+			headers["X-Guest-ID"] = guestId;
+		}
 
-      if (headers) {
-        // If authenticated, add to database
-        await axios.post(
-          `${API_URL}/add`,
-          {
-            menuItemId: item._id,
-            quantity: item.quantity,
-          },
-          { headers },
-        );
-      }
+		return headers;
+	};
 
-      // Update local state regardless of authentication
-      dispatch({
-        type: ACTIONS.ADD_TO_CART,
-        payload: item,
-      });
-    } catch (error) {
-      console.error("Add to cart error:", error);
-      dispatch({
-        type: ACTIONS.SET_ERROR,
-        payload: "Error adding item to cart. Please try again.",
-      });
-    } finally {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
-    }
-  };
+	// Load cart when component mounts or auth status changes
+	useEffect(() => {
+		const loadCart = async () => {
+			const guestId = localStorage.getItem("guestId");
+			const savedCart = localStorage.getItem("cart");
 
-  // Update item quantity
-  const updateQuantity = async (itemId, quantity) => {
-    const headers = getAuthHeader();
+			// Create a guest ID if needed
+			if (!authToken && !guestId) {
+				const newGuestId =
+					Math.random().toString(36).substr(2, 9) +
+					Date.now().toString(36);
+				localStorage.setItem("guestId", newGuestId);
+			}
 
-    try {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-      dispatch({ type: ACTIONS.SET_ERROR, payload: null });
+			// If there's a saved cart in localStorage, use it first
+			if (savedCart) {
+				try {
+					const parsedCart = JSON.parse(savedCart);
+					if (parsedCart.items && Array.isArray(parsedCart.items)) {
+						dispatch({
+							type: ACTIONS.SET_CART,
+							payload: parsedCart.items,
+						});
+						return; // Don't fetch from backend if we have local data
+					}
+				} catch (error) {
+					console.error("Error parsing saved cart:", error);
+				}
+			}
 
-      if (headers) {
-        // If authenticated, update in database
-        await axios.put(
-          `${API_URL}/update-quantity`,
-          {
-            menuItemId: itemId,
-            quantity,
-          },
-          { headers },
-        );
-      }
+			// Only fetch from backend if we don't have local data
+			await fetchCart();
+		};
 
-      dispatch({
-        type: ACTIONS.UPDATE_QUANTITY,
-        payload: { itemId, quantity },
-      });
-    } catch (error) {
-      console.error("Update quantity error:", error);
-      dispatch({
-        type: ACTIONS.SET_ERROR,
-        payload: "Error updating quantity. Please try again.",
-      });
-    } finally {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
-    }
-  };
+		loadCart();
+	}, [authToken]); // Only re-run when auth token changes
 
-  // Remove item from cart
-  const removeFromCart = async (itemId) => {
-    const headers = getAuthHeader();
+	// Fetch cart items from backend
+	const fetchCart = async () => {
+		const headers = getHeaders();
 
-    try {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-      dispatch({ type: ACTIONS.SET_ERROR, payload: null });
+		// Only fetch if we have proper authentication
+		if (!headers["Authorization"] && !headers["X-Guest-ID"]) {
+			return;
+		}
 
-      if (headers) {
-        // If authenticated, remove from database
-        await axios.delete(`${API_URL}/remove/${itemId}`, { headers });
-      }
+		try {
+			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+			dispatch({ type: ACTIONS.SET_ERROR, payload: null });
 
-      dispatch({
-        type: ACTIONS.REMOVE_FROM_CART,
-        payload: itemId,
-      });
-    } catch (error) {
-      console.error("Remove from cart error:", error);
-      dispatch({
-        type: ACTIONS.SET_ERROR,
-        payload: "Error removing item from cart. Please try again.",
-      });
-    } finally {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
-    }
-  };
+			const response = await axios.get(API_URL, { headers });
 
-  // Clear cart
-  const clearCart = async () => {
-    const headers = getAuthHeader();
+			if (response.data && Array.isArray(response.data.items)) {
+				dispatch({
+					type: ACTIONS.SET_CART,
+					payload: response.data.items,
+				});
+			} else {
+				console.error("Invalid cart data format:", response.data);
+				dispatch({
+					type: ACTIONS.SET_ERROR,
+					payload: "Invalid cart data received from server",
+				});
+			}
+		} catch (error) {
+			console.error("Cart fetch error:", error);
+			if (error.response?.status === 401) {
+				// Handle unauthorized error silently for guests
+				return;
+			}
+			dispatch({
+				type: ACTIONS.SET_ERROR,
+				payload: "Error fetching cart. Please try again later.",
+			});
+		} finally {
+			dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+		}
+	};
 
-    try {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-      dispatch({ type: ACTIONS.SET_ERROR, payload: null });
+	// Add item to cart
+	const addToCart = async (item) => {
+		const headers = getHeaders();
 
-      if (headers) {
-        // If authenticated, clear in database
-        await axios.delete(`${API_URL}/clear`, { headers });
-      }
+		try {
+			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+			dispatch({ type: ACTIONS.SET_ERROR, payload: null });
 
-      dispatch({ type: ACTIONS.CLEAR_CART });
-    } catch (error) {
-      console.error("Clear cart error:", error);
-      dispatch({
-        type: ACTIONS.SET_ERROR,
-        payload: "Error clearing cart. Please try again.",
-      });
-    } finally {
-      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
-    }
-  };
+			// Always try to sync with backend
+			await axios.post(
+				`${API_URL}/add`,
+				{
+					menuItemId: item.menuItem,
+					quantity: item.quantity,
+				},
+				{ headers }
+			);
 
-  return (
-    <CartContext.Provider
-      value={{
-        ...state,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
-  );
+			dispatch({
+				type: ACTIONS.ADD_TO_CART,
+				payload: item,
+			});
+		} catch (error) {
+			console.error("Add to cart error:", error);
+			dispatch({
+				type: ACTIONS.SET_ERROR,
+				payload: "Error adding item to cart. Please try again.",
+			});
+		} finally {
+			dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+		}
+	};
+
+	// Update item quantity
+	const updateQuantity = async (menuItemId, quantity) => {
+		const headers = getHeaders();
+
+		try {
+			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+			dispatch({ type: ACTIONS.SET_ERROR, payload: null });
+
+			// Always try to sync with backend
+			await axios.put(
+				`${API_URL}/update-quantity`,
+				{
+					menuItemId,
+					quantity,
+				},
+				{ headers }
+			);
+
+			dispatch({
+				type: ACTIONS.UPDATE_QUANTITY,
+				payload: { menuItemId, quantity },
+			});
+		} catch (error) {
+			console.error("Update quantity error:", error);
+			dispatch({
+				type: ACTIONS.SET_ERROR,
+				payload: "Error updating quantity. Please try again.",
+			});
+		} finally {
+			dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+		}
+	};
+
+	// Remove item from cart
+	const removeFromCart = async (itemId) => {
+		const headers = getHeaders();
+
+		try {
+			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+			dispatch({ type: ACTIONS.SET_ERROR, payload: null });
+
+			// Always try to sync with backend
+			await axios.delete(`${API_URL}/remove/${itemId}`, { headers });
+
+			dispatch({
+				type: ACTIONS.REMOVE_FROM_CART,
+				payload: itemId,
+			});
+		} catch (error) {
+			console.error("Remove from cart error:", error);
+			dispatch({
+				type: ACTIONS.SET_ERROR,
+				payload: "Error removing item from cart. Please try again.",
+			});
+		} finally {
+			dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+		}
+	};
+
+	// Clear cart
+	const clearCart = async () => {
+		const headers = getHeaders();
+
+		try {
+			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+			dispatch({ type: ACTIONS.SET_ERROR, payload: null });
+
+			// Always try to sync with backend
+			await axios.delete(`${API_URL}/clear`, { headers });
+
+			dispatch({ type: ACTIONS.CLEAR_CART });
+			localStorage.removeItem("cart"); // Also clear from localStorage
+		} catch (error) {
+			console.error("Clear cart error:", error);
+			dispatch({
+				type: ACTIONS.SET_ERROR,
+				payload: "Error clearing cart. Please try again.",
+			});
+		} finally {
+			dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+		}
+	};
+
+	return (
+		<CartContext.Provider
+			value={{
+				cart: state,
+				total: state.total,
+				loading: state.loading,
+				error: state.error,
+				isGuest: !localStorage.getItem("token"),
+				addToCart,
+				removeFromCart,
+				updateQuantity,
+				clearCart,
+			}}>
+			{children}
+		</CartContext.Provider>
+	);
 };
 
 CartProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+	children: PropTypes.node.isRequired,
 };
 
 // Custom hook to use cart context
 export const useCart = () => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error("useCart must be used within a CartProvider");
-  }
-  return context;
+	const context = useContext(CartContext);
+	if (!context) {
+		throw new Error("useCart must be used within a CartProvider");
+	}
+	return context;
 };

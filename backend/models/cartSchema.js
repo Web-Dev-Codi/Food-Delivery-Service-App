@@ -1,10 +1,16 @@
 import { Schema, model } from "mongoose";
+import mongoose from "mongoose";
 
 const CartItemSchema = new Schema({
   menuItem: {
-    type: Schema.Types.ObjectId,
-    ref: "MenuItem",
+    type: Schema.Types.Mixed, 
     required: true,
+    validate: {
+      validator: function(v) {
+        return mongoose.Types.ObjectId.isValid(v) || typeof v === 'string';
+      },
+      message: 'Invalid menuItem ID format'
+    }
   },
   quantity: {
     type: Number,
@@ -20,9 +26,12 @@ const CartItemSchema = new Schema({
 
 const CartSchema = new Schema({
   user: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
+    type: String, 
     required: true,
+  },
+  isGuestCart: {
+    type: Boolean,
+    default: false
   },
   items: [CartItemSchema],
   total: {
@@ -52,5 +61,7 @@ CartSchema.pre("save", function (next) {
   next();
 });
 
-const Cart = model("Cart", CartSchema);
-export default Cart;
+// Add index for better query performance
+CartSchema.index({ user: 1 });
+
+export default model("Cart", CartSchema);

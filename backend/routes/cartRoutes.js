@@ -8,16 +8,16 @@ import {
   syncCart,
 } from "../controllers/cartController.js";
 import {
-  protect,
   verifyCartOwnership,
   verifyCartItem,
   verifyCartQuantity,
+  verifyGuestOrAuth,
 } from "../middleware/authMiddleware.js";
 
 const cartRouter = Router();
 
-// All routes are protected - require authentication
-cartRouter.use(protect);
+// All routes can be accessed by either authenticated users or guests
+cartRouter.use(verifyGuestOrAuth);
 cartRouter.use(verifyCartOwnership);
 
 // Get user's cart

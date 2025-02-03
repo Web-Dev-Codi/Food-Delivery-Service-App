@@ -21,6 +21,8 @@ const generateMenuItems = async (count = 20) => {
 
 	// Create a sample restaurant ID (you'll need to replace this with a real one)
 	const sampleRestaurantId = new mongoose.Types.ObjectId();
+	// Create a sample menu ID
+	const sampleMenuId = new mongoose.Types.ObjectId();
 
 	for (let i = 0; i < count; i++) {
 		const menuItem = {
@@ -33,6 +35,7 @@ const generateMenuItems = async (count = 20) => {
 			imageUrl: faker.image.urlLoremFlickr({ category: "food" }),
 			availability: faker.datatype.boolean(),
 			restaurant: sampleRestaurantId,
+			menuId: sampleMenuId,
 		};
 		menuItems.push(menuItem);
 	}
@@ -73,13 +76,13 @@ const generateCarts = async (count = 10) => {
 				const randomMenuItem = faker.helpers.arrayElement(menuItems);
 				const quantity = faker.number.int({ min: 1, max: 5 });
 				const price = Number(randomMenuItem.price.toFixed(2)); // Round price to 2 decimals
-				
+
 				items.push({
 					menuItem: randomMenuItem._id,
 					quantity: quantity,
 					price: price,
 				});
-				
+
 				total += price * quantity;
 			}
 
