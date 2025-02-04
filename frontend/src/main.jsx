@@ -10,6 +10,10 @@ import "./index.css";
 import App from "./App.jsx";
 import { CartProvider } from "./context/CartContext";
 import Menu from "./components/Menu.jsx";
+import ListRestaurant from "./components/ListRestaurant";
+import AddRestaurant from "./components/AddRestaurant";
+import SingleRestaurant from "./components/SingleRestaurant";
+import AddMenu from "./components/AddMenu";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import Cart from "./components/Cart";
@@ -39,6 +43,22 @@ const router = createBrowserRouter(
 			<Route
 				path="/cart"
 				element={<Cart />}
+			/>
+			<Route
+				path="/addRestaurant"
+				element={<AddRestaurant />}
+			/>
+			<Route
+				path="/restaurants"
+				element={<ListRestaurant />}
+			/>
+			<Route
+				path="/restaurants/:id"
+				element={<SingleRestaurant />}
+			/>
+			<Route
+				path="/menu"
+				element={<AddMenu />}
 			/>
 		</Route>
 	)

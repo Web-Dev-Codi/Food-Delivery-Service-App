@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { set } from "mongoose";
+
 
 function AddRestaurant() {
   const [successMessage, setSuccessMessage] = useState(""); // State for success message
@@ -56,7 +56,7 @@ function AddRestaurant() {
     setIsLoading(true);
     try {
       // Sending data to your backend
-      const response = await axios.post("http://localhost:3006/api/create", {
+      const response = await axios.post("http://localhost:8000/api/create", {
         name,
         location,
         images,

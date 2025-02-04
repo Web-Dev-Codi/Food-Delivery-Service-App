@@ -20,7 +20,7 @@ function ReviewForm({ restaurantId }) {
 
     try {
       const response = await axios.post(
-        `http://localhost:3006/data/${restaurantId}/review`,
+        `http://localhost:8000/data/${restaurantId}/review`,
         { rating, comment },
         {
           headers: {
