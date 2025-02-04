@@ -128,11 +128,14 @@ export const CartProvider = ({ children }) => {
 
 	// Save cart to localStorage
 	const saveToLocalStorage = (cartItems) => {
+		if (!Array.isArray(cartItems)) return;
+		
 		const transformedItems = cartItems.map(item => ({
 			menuItem: item._id,
 			quantity: item.quantity,
 			price: item.price
 		}));
+		
 		localStorage.setItem("cart", JSON.stringify({
 			user: localStorage.getItem("guestId") || "guest",
 			isGuestCart: true,
@@ -217,10 +220,10 @@ export const CartProvider = ({ children }) => {
 		const token = localStorage.getItem("token");
 		if (!token) {
 			// Guest user - update localStorage
-			dispatch({ type: ACTIONS.REMOVE_FROM_CART, payload: itemId });
-			const updatedItems = state.items.filter(
+			const updatedItems = state.cart.filter(
 				(item) => item._id !== itemId
 			);
+			dispatch({ type: ACTIONS.REMOVE_FROM_CART, payload: itemId });
 			saveToLocalStorage(updatedItems);
 			return;
 		}
@@ -254,13 +257,13 @@ export const CartProvider = ({ children }) => {
 		const token = localStorage.getItem("token");
 		if (!token) {
 			// Guest user - update localStorage
+			const updatedItems = state.cart.map((item) =>
+				item._id === itemId ? { ...item, quantity } : item
+			);
 			dispatch({
 				type: ACTIONS.UPDATE_QUANTITY,
 				payload: { itemId, quantity },
 			});
-			const updatedItems = state.items.map((item) =>
-				item._id === itemId ? { ...item, quantity } : item
-			);
 			saveToLocalStorage(updatedItems);
 			return;
 		}
