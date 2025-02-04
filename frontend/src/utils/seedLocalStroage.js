@@ -51,8 +51,11 @@ export const seedCartToLocalStorage = () => {
 		isGuestCart: true,
 		items: sampleMenuItems.map((item) => ({
 			menuItem: item._id,
+			name: item.name,
 			quantity: item.quantity,
 			price: item.price,
+			imageUrl: item.imageUrl,
+			description: item.description
 		})),
 		total: Number(
 			sampleMenuItems

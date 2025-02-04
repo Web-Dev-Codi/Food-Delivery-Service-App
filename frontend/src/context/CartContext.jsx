@@ -118,11 +118,16 @@ export const CartProvider = ({ children }) => {
 			// No token but has guest cart - load it
 			const transformedItems = parsedCart.items.map(item => ({
 				_id: item.menuItem,
-				name: item.menuItem,
+				name: item.name,
 				price: item.price,
-				quantity: item.quantity
+				quantity: item.quantity,
+				imageUrl: item.imageUrl,
+				description: item.description
 			}));
 			dispatch({ type: ACTIONS.SET_CART, payload: transformedItems });
+		} else {
+			// No cart data at all - initialize empty cart
+			dispatch({ type: ACTIONS.SET_CART, payload: [] });
 		}
 	}, []);
 
@@ -133,6 +138,9 @@ export const CartProvider = ({ children }) => {
 
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+			// Clear guest cart from localStorage before merging to prevent duplication
+			localStorage.removeItem("cart");
+			
 			const response = await axios.post(
 				`${API_URL}/cart/merge`,
 				{
@@ -144,18 +152,21 @@ export const CartProvider = ({ children }) => {
 				}
 			);
 
-			// Clear guest cart from localStorage
-			localStorage.removeItem("cart");
-			
-			// Set the merged cart and save to localStorage
-			const cartItems = response.data.items || [];
-			dispatch({ type: ACTIONS.SET_CART, payload: cartItems });
-			saveToLocalStorage(cartItems);
+			// Set the merged cart from the response
+			if (response.data && response.data.items) {
+				dispatch({ type: ACTIONS.SET_CART, payload: response.data.items });
+			} else {
+				// If no items in response, set empty cart
+				dispatch({ type: ACTIONS.SET_CART, payload: [] });
+			}
 		} catch (error) {
+			console.error('Error merging carts:', error);
 			dispatch({
 				type: ACTIONS.SET_ERROR,
 				payload: error.response?.data?.message || "Failed to merge carts"
 			});
+			// Reset cart to empty on error
+			dispatch({ type: ACTIONS.SET_CART, payload: [] });
 		} finally {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: false });
 		}
@@ -165,10 +176,17 @@ export const CartProvider = ({ children }) => {
 	const saveToLocalStorage = (cartItems) => {
 		if (!Array.isArray(cartItems)) return;
 		
+		// Only save to localStorage for guest users
+		const token = localStorage.getItem("token");
+		if (token) return;
+		
 		const transformedItems = cartItems.map(item => ({
 			menuItem: item._id,
+			name: item.name,
 			quantity: item.quantity,
-			price: item.price
+			price: item.price,
+			imageUrl: item.imageUrl,
+			description: item.description
 		}));
 		
 		localStorage.setItem("cart", JSON.stringify({

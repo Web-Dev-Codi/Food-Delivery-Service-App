@@ -27,7 +27,15 @@ export const mergeGuestCart = async (req, res) => {
 				if (existingItem) {
 					existingItem.quantity += guestItem.quantity;
 				} else {
-					userCart.items.push(guestItem);
+					// Add all item details when adding to cart
+					userCart.items.push({
+						menuItem: guestItem.menuItem,
+						name: guestItem.name,
+						quantity: guestItem.quantity,
+						price: guestItem.price,
+						imageUrl: guestItem.imageUrl,
+						description: guestItem.description
+					});
 				}
 			}
 		}
@@ -98,11 +106,14 @@ export const addToCart = async (req, res) => {
 			// Update existing item quantity
 			cart.items[existingItemIndex].quantity += quantity;
 		} else {
-			// Add new item
+			// Add new item with all details
 			cart.items.push({
 				menuItem: menuItemId,
+				name: menuItem.name,
 				quantity,
 				price: menuItem.price,
+				imageUrl: menuItem.imageUrl,
+				description: menuItem.description
 			});
 		}
 

@@ -44,10 +44,9 @@ function Cart() {
 			</div>
 
 			<div className="space-y-4 mb-6">
-				{console.log(cart)};
-				{cart.map((item) => (
+				{Array.isArray(cart) && cart.map((item) => (
 					<CartItems
-						key={item._id}
+						key={item._id || item.menuItem}
 						item={item}
 					/>
 				))}

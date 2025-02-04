@@ -14,6 +14,10 @@ const CartItemSchema = new Schema({
 			message: "Invalid menuItem ID format",
 		},
 	},
+	name: {
+		type: String,
+		required: true
+	},
 	quantity: {
 		type: Number,
 		required: true,
@@ -24,6 +28,14 @@ const CartItemSchema = new Schema({
 		required: true,
 		min: 0,
 	},
+	imageUrl: {
+		type: String,
+		required: false
+	},
+	description: {
+		type: String,
+		required: false
+	}
 });
 
 const CartSchema = new Schema({
