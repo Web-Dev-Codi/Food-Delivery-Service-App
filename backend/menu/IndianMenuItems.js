@@ -3,7 +3,7 @@
 const IndianMenuItems = [
   {
     name: "Chicken tandoori",
-    price: 350,
+    price: 6,
     description:
       "Juicy chicken marinated in spiced yogurt, roasted to perfection in a tandoor, and served with fresh lemon wedges and mint chutney.",
     category: "Starters",
@@ -14,7 +14,7 @@ const IndianMenuItems = [
   },
   {
     name: "Matar Paneer",
-    price: 250,
+    price: 10,
     description:
       "Soft paneer cubes cooked with green peas in a rich, spiced tomato-based gravy, served with fresh coriander garnish.",
     category: "Main Course",
@@ -25,7 +25,7 @@ const IndianMenuItems = [
   },
   {
     name: "GulabJamun",
-    price: 120,
+    price: 5,
     description: "Soft and spongy deep-fried milk balls soaked in sugar syrup.",
     category: "Dessert",
     imageUrl:
@@ -35,7 +35,7 @@ const IndianMenuItems = [
   },
   {
     name: "Mango Lassi",
-    price: 50,
+    price: 5,
     description:
       "A traditional yogurt-based drink, sweetened and flavored with Mango.",
     category: "Beverages",
@@ -46,7 +46,7 @@ const IndianMenuItems = [
   },
   {
     name: "Hyderabadi Chiken Biryani",
-    price: 400,
+    price: 15,
     description:
       "Fragrant basmati rice cooked with marinated chicken and aromatic spices.",
     category: "Main Course",
@@ -57,7 +57,7 @@ const IndianMenuItems = [
   },
   {
     name: "VegPuff",
-    price: 40,
+    price: 4,
     description:
       "Crispy deep-fried pastry filled with spiced potatoes and peas and onions.",
     category: "Starters",
@@ -68,7 +68,7 @@ const IndianMenuItems = [
   },
   {
     name: "Pastries",
-    price: 100,
+    price: 5,
     description:
       "Delightful, flaky pastries with a buttery texture, available in a variety of flavors, from rich chocolate to fruity delights, perfect for a sweet treat.",
     category: "Dessert",
@@ -79,7 +79,7 @@ const IndianMenuItems = [
   },
   {
     name: "Egg Biryani",
-    price: 180,
+    price: 12,
     description:
       "Fragrant basmati rice cooked with boiled eggs, aromatic spices, and herbs, served with raita for a flavorful experience.",
     category: "Main Course",
@@ -89,7 +89,7 @@ const IndianMenuItems = [
   },
   {
     name: "Rasamalai",
-    price: 100,
+    price: 8,
     description:
       "Soft and spongy cottage cheese dumplings soaked in sweet, saffron-infused milk, garnished with chopped nuts for a rich and creamy dessert experience.",
     category: "Dessert",
@@ -100,7 +100,7 @@ const IndianMenuItems = [
   },
   {
     name: "Mutton Biryani",
-    price: 180,
+    price: 16,
     description:
       "Fragrant basmati rice cooked with tender mutton pieces, aromatic spices, and herbs, served with raita for a flavorful experience.",
     category: "Main Course",
@@ -111,7 +111,7 @@ const IndianMenuItems = [
   },
   {
     name: "Idli",
-    price: 180,
+    price: 10,
     description:
       "Soft and fluffy steamed rice cakes made from a fermented batter of rice and lentils, served with coconut chutney and flavorful sambar for a wholesome and healthy meal.",
     category: "Starters",
@@ -123,7 +123,7 @@ const IndianMenuItems = [
 
   {
     name: "omelette",
-    price: 180,
+    price: 6,
     description:
       "A versatile egg dish that can be made plain or with a variety of fillings, perfect for breakfast or snacke item.",
     category: "Starters",
@@ -134,7 +134,7 @@ const IndianMenuItems = [
   },
   {
     name: "Plain Dosa",
-    price: 180,
+    price: 8,
     description:
       "A crispy, golden-brown dosa filled with a spicy potato filling, served with coconut chutney and sambar for a delicious and satisfying meal.",
     category: "Starters",
@@ -146,7 +146,7 @@ const IndianMenuItems = [
 
   {
     name: "Pani Puri",
-    price: 80,
+    price: 6,
     description:
       "Crispy, hollow puris filled with a spicy and tangy mixture of flavored water, tamarind chutney, chaat masala, potato, onion, and chickpeas, perfect for a flavorful and refreshing snack.",
     category: "Starters",
@@ -158,7 +158,7 @@ const IndianMenuItems = [
 
   {
     name: "Veg Pulav",
-    price: 180,
+    price: 10,
     description:
       "A fragrant and flavorful rice dish made with basmati rice, mixed vegetables, and aromatic spices, served with raita for a delicious and satisfying meal.",
     category: "Main Course",

@@ -1,10 +1,9 @@
 // Initilising items for Mexican Menu (Restaurant id ?)
 
-
 const MexicanMenuItems = [
   {
     name: "Tres Leches Cake",
-    price: 350,
+    price: 4,
     description:
       "A light, airy sponge cake soaked in a sweet mixture of three kinds of milk, topped with whipped cream and fresh berries.",
     category: "Dessert",
@@ -15,7 +14,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Quesadilla",
-    price: 250,
+    price: 4,
     description:
       "A flour tortilla filled with a savory mixture of cheese, meat, beans, and vegetables, folded in half and grilled until crispy.",
     category: "Starters",
@@ -26,7 +25,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Mole Poblano",
-    price: 120,
+    price: 12,
     description:
       "A rich, flavorful sauce made from a blend of chilies, chocolate, and spices, served over chicken or turkey for a delicious and hearty meal.",
     category: "Main Course",
@@ -37,7 +36,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Guacamole",
-    price: 50,
+    price: 6,
     description:
       "A creamy dip made from mashed avocados, onions, tomatoes, and spices, perfect for dipping tortilla chips or spreading on tacos and burritos.",
     category: "Starters",
@@ -48,7 +47,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Chicken ranchero",
-    price: 400,
+    price: 14,
     description:
       "Tender chicken breasts cooked in a spicy tomato sauce with onions, peppers, and garlic, served with rice and beans for a satisfying meal.",
     category: "Main Course",
@@ -60,7 +59,7 @@ const MexicanMenuItems = [
 
   {
     name: "Chiken fajitas",
-    price: 100,
+    price: 12,
     description:
       "Sizzling strips of chicken cooked with bell peppers and onions, served with warm tortillas, guacamole, and sour cream for a fun and interactive meal.",
     category: "Main Course",
@@ -71,7 +70,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Salsa bjruzi",
-    price: 180,
+    price: 8,
     description:
       "A spicy and tangy sauce made from tomatoes, onions, chilies, and cilantro, perfect for dipping tortilla chips or topping tacos and burritos.",
     category: "Starters",
@@ -82,7 +81,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Enchiladas",
-    price: 100,
+    price: 10,
     description:
       "Corn tortillas filled with a savory mixture of meat, cheese, and beans, rolled up and topped with a spicy sauce and melted cheese.",
     category: "Main Course",
@@ -93,7 +92,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Burrito",
-    price: 180,
+    price: 12,
     description:
       "A large flour tortilla filled with a savory mixture of meat, rice, beans, and cheese, rolled up and grilled until crispy, served with salsa and sour cream.",
     category: "Main Course",
@@ -104,7 +103,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Flan",
-    price: 180,
+    price: 5,
     description:
       "A rich and creamy custard dessert topped with caramel sauce, perfect for a sweet treat after a meal.",
     category: "Dessert",
@@ -115,7 +114,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Molletes",
-    price: 180,
+    price: 5,
     description:
       "A traditional Mexican dish made with bolillo bread, refried beans, cheese, and salsa, perfect for breakfast or a light meal.",
     category: "Starters",
@@ -126,7 +125,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Empanadas",
-    price: 180,
+    price: 6,
     description:
       "A flaky pastry filled with a savory mixture of meat, cheese, and vegetables, perfect for a snack or light meal.",
     category: "Starters",
@@ -138,7 +137,7 @@ const MexicanMenuItems = [
 
   {
     name: "Margarita",
-    price: 180,
+    price: 4,
     description:
       "A classic cocktail made with tequila, lime juice, and orange liqueur, served in a salt-rimmed glass for a refreshing and tangy drink.",
     category: "Beverages",
@@ -149,7 +148,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Paloma",
-    price: 680,
+    price: 6,
     description:
       "A refreshing cocktail made with tequila, grapefruit soda, and lime juice, served over ice for a tangy and bubbly drink.",
     category: "Beverages",
@@ -161,7 +160,7 @@ const MexicanMenuItems = [
 
   {
     name: "Esquites",
-    price: 380,
+    price: 8,
     description:
       "A popular Mexican street food made with corn kernels cooked with mayonnaise, cheese, chili powder, and lime juice, served in a cup for a flavorful and spicy snack.",
     category: "Starters",

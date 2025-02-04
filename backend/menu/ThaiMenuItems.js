@@ -3,7 +3,7 @@
 const MexicanMenuItems = [
   {
     name: "Tom Yum Soup",
-    price: 350,
+    price: 5,
     description: " A spicy and sour soup made with lemonegrass, kaff",
     category: "Starters",
     imageUrl:
@@ -13,7 +13,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Som Tum Papaya Salad",
-    price: 250,
+    price: 6,
     description:
       "A spicy and tangy salad made with shredded green papaya, tomatoes, green beans, and peanuts, dressed with a lime and fish sauce vinaigrette.",
     category: "Starters",
@@ -24,7 +24,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Chiken Satay",
-    price: 120,
+    price: 8,
     description:
       " Grilled chicken skewers marinated in a blend of spices and served with a creamy peanut sauce for dipping.",
     category: "Starters",
@@ -35,7 +35,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Pad Thai",
-    price: 50,
+    price: 12,
     description:
       "A classic stir-fried noodle dish made with rice noodles, shrimp, tofu, eggs, and bean sprouts, flavored with tamarind, fish sauce, and peanuts.",
     category: "Main Course",
@@ -46,7 +46,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Green Curry",
-    price: 400,
+    price: 10,
     description:
       "A spicy and aromatic curry made with green chilies, lemone, Chicken, and coconut milk, served with steamed rice for a satisfying meal.",
     category: "Main Course",
@@ -58,7 +58,7 @@ const MexicanMenuItems = [
 
   {
     name: "Chiken Massaman Curry",
-    price: 100,
+    price: 14,
     description:
       " A rich and flavorful curry made with Chicken, potatoes, onions, and peanuts, flavored with a blend of spices and coconut milk.",
     category: "Main Course",
@@ -69,7 +69,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Thai Basil Fried Rice",
-    price: 180,
+    price: 12,
     description:
       "A fragrant and spicy stir-fried rice dish made with Chicken, basil, chilies, and garlic, served with a fried egg on top for a delicious and satisfying meal.",
     category: "Main Course",
@@ -80,7 +80,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Mango Sticky Rice",
-    price: 100,
+    price: 6,
     description:
       "A classic Thai dessert made with sweet sticky rice, fresh mango slices, and coconut milk, perfect for a sweet treat after a meal.",
     category: "Dessert",
@@ -91,7 +91,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Steamed Fish with Lime",
-    price: 180,
+    price: 15,
     description:
       "A light and flavorful dish made with steamed fish fillets, lime juice, garlic, and cilantro, perfect for a healthy and delicious meal.",
     category: "Main Course",
@@ -102,7 +102,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Coconut Ice Cream",
-    price: 180,
+    price: 6,
     description:
       "A creamy and refreshing dessert made with coconut milk, sugar, and shredded coconut, perfect for a sweet and tropical treat.",
     category: "Dessert",
@@ -113,7 +113,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Thai Pumpkin Custard",
-    price: 180,
+    price: 5,
     description:
       "A sweet and creamy dessert made with pumpkin, coconut milk, eggs, and sugar, steamed to perfection for a rich and satisfying treat.",
     category: "Dessert",
@@ -124,7 +124,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Thai Iced Tea",
-    price: 180,
+    price: 4,
     description:
       "A sweet and creamy iced tea made with black tea, condensed milk, and sugar, served over ice for a refreshing and indulgent drink.",
     category: "Beverages",
@@ -136,7 +136,7 @@ const MexicanMenuItems = [
 
   {
     name: "Roselle Juice",
-    price: 180,
+    price: 3,
     description:
       "A tangy and refreshing juice made from the calyces of the roselle plant, sweetened with sugar and served over ice for a cooling and invigorating drink.",
     category: "Beverages",
@@ -147,7 +147,7 @@ const MexicanMenuItems = [
   },
   {
     name: "Thai Coconut Water",
-    price: 680,
+    price: 5,
     description:
       "Fresh and hydrating coconut water served in a young coconut for a natural and refreshing drink.",
     category: "Beverages",
