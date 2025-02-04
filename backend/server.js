@@ -6,6 +6,8 @@ import restaurantRouter from "./routes/restaurantRoute.js";
 import cors from "cors";
 import menuRouter from "./routes/menuRouter.js";
 import { seedData } from "./controllers/Menu.js";
+import userRouter from "./routes/userRouter.js";
+import cartRouter from "./routes/cartRoutes.js";
 
 dotenv.config();
 
@@ -16,6 +18,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -25,12 +28,12 @@ app.get('/seed', (req, res) => {
 });
 
 
-app.use("/data", userRouter);
 app.use("/", router);
+app.use("/data", userRouter);
+app.use("/api/cart", cartRouter);
 
-
-
-app.use("/data", router);
+// Not sure why we have both 2 /data endpoints
+// app.use("/data", router);
 app.use("/api", restaurantRouter);
 app.use("/food",menuRouter);
 

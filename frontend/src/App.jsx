@@ -1,24 +1,19 @@
 import "./App.css";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ListRestaurant from "./components/ListRestaurant";
-import AddRestaurant from  "./components/AddRestaurant";
-import SingleRestaurant from "./components/SingleRestaurant";
-import AddMenu from "./components/AddMenu";
-
-
+import React from "react";
+import { Outlet } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<AddRestaurant/>} />
-        <Route path="/restaurants" element={<ListRestaurant />} />
-      
-        <Route path="/restaurants/:id" element={<SingleRestaurant />} />
-        <Route path="/menu" element={<AddMenu />} />
-      </Routes>
-    </Router>
-  );
+	return (
+		<React.Fragment>
+			<Header />
+			<main className="flex  h-svh place-items-center justify-center w-full">
+				<Outlet />
+			</main>
+			<Footer />
+		</React.Fragment>
+	);
 }
 
 export default App;

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom'
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 
 function SingleRestaurant() {
@@ -25,7 +25,6 @@ useEffect(() => {
       console.error(error);
     } 
       setLoading(false); // Set loading to false after fetching
-    
   };
   fetchRestaurant();
 }, [id]);
@@ -34,9 +33,9 @@ if (loading) {
   return <div>Loading...</div>; // Show a loading message while fetching data
 }
 
-if (!restaurant) {
-  return <div>Loading...</div>;
-}
+  if (!restaurant) {
+    return <div>Loading...</div>;
+  }
 
  const handleclick = async () => {
   try {
@@ -47,9 +46,7 @@ if (!restaurant) {
   }
 };
 
-
   return (
-
     <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mx-auto">
     <h2 className="text-2xl font-bold text-center text-gray-700 mb-6 bg-red-400">{restaurant.name}</h2>
     <p className="text-gray-700 mb-6 bg-blue-400">{restaurant.location}</p>
@@ -82,7 +79,6 @@ if (!restaurant) {
      
       {errorMessage && <div className="text-red-600">{errorMessage}</div>}
   </div>
- 
 </div>
 );
 }
