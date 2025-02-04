@@ -22,6 +22,34 @@ cartRouter.use(verifyCartOwnership);
 // Get user's cart
 cartRouter.get("/cart", getCart);
 
+// Sync cart with backend
+cartRouter.post("/sync", async (req, res) => {
+	try {
+		const userId = req.user.isGuest ? req.user._id : req.user.userId;
+		const { items } = req.body;
+
+		let cart = await Cart.findOne({ user: userId });
+		if (!cart) {
+			cart = new Cart({
+				user: userId,
+				items: [],
+				isGuestCart: req.user.isGuest
+			});
+		}
+
+		cart.items = items;
+		await cart.save();
+		await cart.populate("items.menuItem");
+
+		res.status(200).json(cart);
+	} catch (error) {
+		res.status(500).json({
+			message: "Error syncing cart",
+			error: error.message
+		});
+	}
+});
+
 // Add item to cart
 cartRouter.post("/add", verifyCartItem, verifyCartQuantity, addToCart);
 

@@ -4,13 +4,15 @@ import MenuItem from "../models/menuItemSchema.js";
 // Get user's cart
 export const getCart = async (req, res) => {
 	try {
-		const userId = req.user._id; // Assuming user is attached by auth middleware
-		let cart = await Cart.findOne({ user: userId }).populate(
-			"items.menuItem"
-		);
+		const userId = req.user.isGuest ? req.user._id : req.user.userId;
+		let cart = await Cart.findOne({ user: userId }).populate("items.menuItem");
 
 		if (!cart) {
-			cart = await Cart.create({ user: userId, items: [] });
+			cart = await Cart.create({
+				user: userId,
+				items: [],
+				isGuestCart: req.user.isGuest
+			});
 		}
 
 		res.status(200).json(cart);
