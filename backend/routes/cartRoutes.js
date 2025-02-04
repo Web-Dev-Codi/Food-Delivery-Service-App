@@ -5,6 +5,7 @@ import {
 	updateQuantity,
 	removeFromCart,
 	clearCart,
+	mergeGuestCart,
 } from "../controllers/cartController.js";
 import {
 	protect,
@@ -21,6 +22,9 @@ cartRouter.use(verifyCartOwnership);
 
 // Get user's cart
 cartRouter.get("/cart", getCart);
+
+// Merge guest cart with user cart
+cartRouter.post("/cart/merge", mergeGuestCart);
 
 // Sync cart with backend
 cartRouter.post("/sync", async (req, res) => {

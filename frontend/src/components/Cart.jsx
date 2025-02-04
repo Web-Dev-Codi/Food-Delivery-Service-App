@@ -1,6 +1,5 @@
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import CartItems from "./CartItems";
 
 function Cart() {
@@ -45,6 +44,7 @@ function Cart() {
 			</div>
 
 			<div className="space-y-4 mb-6">
+				{console.log(cart)};
 				{cart.map((item) => (
 					<CartItems
 						key={item._id}

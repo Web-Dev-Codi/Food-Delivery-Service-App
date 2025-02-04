@@ -27,6 +27,12 @@ const CartItemSchema = new Schema({
 });
 
 const CartSchema = new Schema({
+	cartId: {
+		type: String,
+		required: true,
+		unique: true,
+		default: () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+	},
 	user: {
 		type: String,
 		required: true,

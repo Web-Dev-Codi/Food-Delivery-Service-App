@@ -1,6 +1,54 @@
 import Cart from "../models/cartSchema.js";
 import MenuItem from "../models/menuItemSchema.js";
 
+// Merge guest cart with user cart
+export const mergeGuestCart = async (req, res) => {
+	try {
+		const { guestCartId, guestCartItems } = req.body;
+		const userId = req.user._id;
+
+		// Find or create user's cart
+		let userCart = await Cart.findOne({ user: userId, isGuestCart: false });
+		if (!userCart) {
+			userCart = new Cart({
+				user: userId,
+				isGuestCart: false,
+				items: []
+			});
+		}
+
+		// Merge items from guest cart
+		if (guestCartItems && Array.isArray(guestCartItems)) {
+			for (const guestItem of guestCartItems) {
+				const existingItem = userCart.items.find(
+					item => item.menuItem.toString() === guestItem.menuItem.toString()
+				);
+
+				if (existingItem) {
+					existingItem.quantity += guestItem.quantity;
+				} else {
+					userCart.items.push(guestItem);
+				}
+			}
+		}
+
+		await userCart.save();
+		await userCart.populate('items.menuItem');
+
+		// Delete the guest cart if it exists in the database
+		if (guestCartId) {
+			await Cart.findOneAndDelete({ cartId: guestCartId, isGuestCart: true });
+		}
+
+		res.status(200).json(userCart);
+	} catch (error) {
+		res.status(500).json({
+			message: 'Error merging cart',
+			error: error.message
+		});
+	}
+};
+
 // Get user's cart
 export const getCart = async (req, res) => {
 	try {
