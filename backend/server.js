@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import restaurantRouter from "./routes/restaurantRoute.js";
 import cors from "cors";
 import menuRouter from "./routes/menuRouter.js";
-import { seedData } from "./controllers/Menu.js";
+import { seedData } from "./controllers/seed.js";
 
 dotenv.config();
 
@@ -35,10 +35,8 @@ const connectDB = async () => {
 }
 
 connectDB();
-app.get('/seed', (req, res) => {
-  seedData(req, res);
-});
 
+app.post("/seed", seedData);
 
 app.use("/", router);
 
