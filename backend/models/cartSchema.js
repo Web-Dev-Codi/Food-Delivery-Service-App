@@ -43,15 +43,24 @@ const CartSchema = new Schema({
 		type: String,
 		required: true,
 		unique: true,
-		default: () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+		default: () => `cart_${Math.random().toString(36).substring(2, 15)}`
 	},
 	user: {
+		type: Schema.Types.ObjectId,
+		ref: 'User',
+		required: function() { return !this.isGuestCart; }
+	},
+	guestId: {
 		type: String,
-		required: true,
+		required: function() { return this.isGuestCart; }
 	},
 	isGuestCart: {
 		type: Boolean,
-		default: false,
+		required: true
+	},
+	lastAccessed: {
+		type: Date,
+		default: Date.now
 	},
 	items: [CartItemSchema],
 	total: {
@@ -60,15 +69,7 @@ const CartSchema = new Schema({
 		get: (v) => Number(v.toFixed(2)),
 		set: (v) => Number(v.toFixed(2)),
 	},
-	createdAt: {
-		type: Date,
-		default: Date.now,
-	},
-	updatedAt: {
-		type: Date,
-		default: Date.now,
-	},
-});
+}, { timestamps: true });
 
 // Update total when items change
 CartSchema.pre("save", function (next) {
@@ -81,7 +82,19 @@ CartSchema.pre("save", function (next) {
 	next();
 });
 
-// Add index for better query performance
+// Update lastAccessed timestamp on find
+CartSchema.pre(/^find/, function(next) {
+  if (!this._update) {
+    this._update = {};
+  }
+  this._update.lastAccessed = new Date();
+  next();
+});
+
+// Add indexes for better query performance
 CartSchema.index({ user: 1 });
+CartSchema.index({ guestId: 1 });
+CartSchema.index({ lastAccessed: 1 });
+CartSchema.index({ isGuestCart: 1 });
 
 export default model("Cart", CartSchema);

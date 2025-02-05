@@ -27,6 +27,16 @@ const UserSchema = new Schema(
 			state: { type: String },
 			zipCode: { type: String },
 		},
+		cartId: {
+			type: String,
+			unique: true,
+			sparse: true,
+		},
+		guestCartId: {
+			type: String,
+			unique: true,
+			sparse: true,
+		},
 
 		//orderHistory: [{ type: Schema.Types.ObjectId, ref: "Order" }], // Ref to Order collection
 	},
