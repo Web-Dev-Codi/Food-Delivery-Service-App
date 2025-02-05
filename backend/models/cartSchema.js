@@ -43,7 +43,13 @@ const CartSchema = new Schema({
 		type: String,
 		required: true,
 		unique: true,
-		default: () => `cart_${Math.random().toString(36).substring(2, 15)}`
+		default: () => `cart_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`,
+		validate: {
+			validator: function(v) {
+				return /^cart_\d+_[a-z0-9]+$/.test(v);
+			},
+			message: props => `${props.value} is not a valid cart ID format!`
+		}
 	},
 	user: {
 		type: Schema.Types.ObjectId,

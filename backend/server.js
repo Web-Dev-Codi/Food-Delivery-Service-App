@@ -24,7 +24,7 @@ connectDB();
 
 app.use("/", router);
 app.use("/data", userRouter);
-app.use("/api", cartRouter);
+app.use("/api/cart", cartRouter);
 
 // Not sure why we have both 2 /data endpoints
 // app.use("/data", router);

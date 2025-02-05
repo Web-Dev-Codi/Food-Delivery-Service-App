@@ -1,386 +1,456 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 import Cart from "../models/cartSchema.js";
 import MenuItem from "../models/menuItemSchema.js";
 import User from "../models/userSchema.js";
 
-// Helper function to clean menu item IDs
+// Helper Functions
+const createNewCart = async ({ userId = null, guestId = null }) => {
+	const cartData = {
+		items: [],
+		isGuestCart: !userId,
+		...(userId ? { user: userId } : { guestId }),
+	};
+	const cart = new Cart(cartData);
+	await cart.save();
+	return cart;
+};
+
+const findUserCart = async (userId) => {
+	return await Cart.findOne({ user: userId, isGuestCart: false })
+		.populate("items.menuItem")
+		.populate("user", "email name");
+};
+
+const findGuestCart = async (guestId) => {
+	return await Cart.findOne({ guestId, isGuestCart: true }).populate(
+		"items.menuItem"
+	);
+};
+
+const validateMenuItem = async (menuItemId) => {
+	const menuItem = await MenuItem.findById(menuItemId);
+	if (!menuItem) {
+		throw new Error(`Menu item not found: ${menuItemId}`);
+	}
+	return menuItem;
+};
+
+const formatCartItem = (menuItem, quantity) => ({
+	menuItem: menuItem._id,
+	name: menuItem.name,
+	quantity: Number(quantity),
+	price: menuItem.price,
+	imageUrl: menuItem.imageUrl,
+	description: menuItem.description,
+});
+
+// Controller Functions
+
+/**
+ * Get cart for authenticated user or guest
+ */
+export const getCart = async (req, res) => {
+	try {
+		const { user, guestId } = req;
+		let cart;
+
+		if (user?._id) {
+			cart = await findUserCart(user._id);
+		} else if (guestId) {
+			cart = await findGuestCart(guestId);
+		}
+
+		if (!cart) {
+			cart = await createNewCart({
+				userId: user?._id,
+				guestId: guestId,
+			});
+		}
+
+		res.status(200).json({
+			success: true,
+			cart,
+		});
+	} catch (error) {
+		console.error("Get cart error:", error);
+		res.status(500).json({
+			success: false,
+			message: "Failed to retrieve cart",
+			error: error.message,
+		});
+	}
+};
+
+// backend/controllers/cartController.js
+// backend/controllers/cartController.js
+export const convertGuestToUserCart = async (req, res) => {
+	try {
+		const { items } = req.body;
+		const userId = req.user._id;
+
+		// Validate items and check menu item existence
+		const validItems = await Promise.all(
+			items.map(async (item) => {
+				if (!mongoose.Types.ObjectId.isValid(item.menuItem)) {
+					console.warn("Invalid menuItem ID format:", item.menuItem);
+					return null;
+				}
+
+				// Verify menu item exists
+				const menuItemExists = await MenuItem.exists({
+					_id: item.menuItem,
+				});
+				if (!menuItemExists) {
+					console.warn("Missing menu item ID:", item.menuItem);
+					return null;
+				}
+
+				return {
+					menuItem: new mongoose.Types.ObjectId(item.menuItem),
+					quantity: Math.max(1, Number(item.quantity) || 1),
+				};
+			})
+		).then((results) => results.filter(Boolean));
+
+		if (validItems.length === 0) {
+			console.warn('Invalid cart items:', items);
+			return res.status(400).json({
+				success: false,
+				message: 'No valid menu items found in cart',
+				invalidIds: items.map(item => item.menuItem)
+			});
+		}
+
+		// Create new user cart with validated items
+		const newCart = new Cart({
+			cartId: `cart_${Date.now()}_${Math.random()
+				.toString(36)
+				.substring(2, 10)}`,
+			user: userId,
+			isGuestCart: false,
+			items: validItems,
+		});
+
+		const savedCart = await newCart.save();
+		const populatedCart = await Cart.findById(savedCart._id)
+			.populate({
+				path: "items.menuItem",
+				select: "name price imageUrl",
+			})
+			.exec();
+
+		res.status(201).json({
+			success: true,
+			message: "Cart converted successfully",
+			cart: populatedCart,
+		});
+	} catch (error) {
+		console.error("Cart conversion failed:", error);
+		res.status(500).json({
+			success: false,
+			message: "Cart conversion failed",
+			error: error.message,
+		});
+	}
+};
+
+/**
+ * Add item to cart
+ */
+export const addToCart = async (req, res) => {
+	try {
+		const { menuItemId, quantity } = req.body;
+		const { user, guestId } = req;
+
+		// Validate menu item
+		const menuItem = await validateMenuItem(menuItemId);
+
+		// Find or create cart
+		let cart = user?._id
+			? await findUserCart(user._id)
+			: await findGuestCart(guestId);
+
+		if (!cart) {
+			cart = await createNewCart({
+				userId: user?._id,
+				guestId: guestId,
+			});
+		}
+
+		// Check if item already exists
+		const existingItemIndex = cart.items.findIndex(
+			(item) => item.menuItem.toString() === menuItemId
+		);
+
+		if (existingItemIndex > -1) {
+			cart.items[existingItemIndex].quantity += Number(quantity);
+		} else {
+			cart.items.push(formatCartItem(menuItem, quantity));
+		}
+
+		await cart.save();
+		await cart.populate("items.menuItem");
+
+		res.status(200).json({
+			success: true,
+			cart,
+		});
+	} catch (error) {
+		console.error("Add to cart error:", error);
+		res.status(500).json({
+			success: false,
+			message: "Failed to add item to cart",
+			error: error.message,
+		});
+	}
+};
+
+/**
+ * Update item quantity in cart
+ */
+export const updateCartItem = async (req, res) => {
+	try {
+		const { menuItemId, quantity } = req.body;
+		const { user, guestId } = req;
+
+		let cart = user?._id
+			? await findUserCart(user._id)
+			: await findGuestCart(guestId);
+
+		if (!cart) {
+			return res.status(404).json({
+				success: false,
+				message: "Cart not found",
+			});
+		}
+
+		const itemIndex = cart.items.findIndex(
+			(item) => item.menuItem.toString() === menuItemId
+		);
+
+		if (itemIndex === -1) {
+			return res.status(404).json({
+				success: false,
+				message: "Item not found in cart",
+			});
+		}
+
+		if (quantity <= 0) {
+			cart.items.splice(itemIndex, 1);
+		} else {
+			cart.items[itemIndex].quantity = Number(quantity);
+		}
+
+		await cart.save();
+		await cart.populate("items.menuItem");
+
+		res.status(200).json({
+			success: true,
+			cart,
+		});
+	} catch (error) {
+		console.error("Update cart item error:", error);
+		res.status(500).json({
+			success: false,
+			message: "Failed to update cart item",
+			error: error.message,
+		});
+	}
+};
+
+/**
+ * Remove item from cart
+ */
+export const deleteCartItemByMenuItemId = async (req, res) => {
+	try {
+		const { menuItemId } = req.params;
+		const { user, guestId } = req;
+
+		let cart = user?._id
+			? await findUserCart(user._id)
+			: await findGuestCart(guestId);
+
+		if (!cart) {
+			return res.status(404).json({
+				success: false,
+				message: "Cart not found",
+			});
+		}
+
+		const itemIndex = cart.items.findIndex(
+			(item) => item.menuItem.toString() === menuItemId
+		);
+
+		if (itemIndex === -1) {
+			return res.status(404).json({
+				success: false,
+				message: "Item not found in cart",
+			});
+		}
+
+		// Remove the item at the found index
+		cart.items.splice(itemIndex, 1);
+
+		await cart.save();
+		await cart.populate("items.menuItem");
+
+		res.status(200).json({
+			success: true,
+			cart,
+		});
+	} catch (error) {
+		console.error("Delete cart item error:", error);
+		res.status(500).json({
+			success: false,
+			message: "Failed to delete item from cart",
+			error: error.message,
+		});
+	}
+};
+
+/**
+ * Clear cart
+ */
+export const clearCart = async (req, res) => {
+	try {
+		const { user, guestId } = req;
+
+		let cart = user?._id
+			? await findUserCart(user._id)
+			: await findGuestCart(guestId);
+
+		if (!cart) {
+			return res.status(404).json({
+				success: false,
+				message: "Cart not found",
+			});
+		}
+
+		cart.items = [];
+		await cart.save();
+
+		res.status(200).json({
+			success: true,
+			cart,
+		});
+	} catch (error) {
+		console.error("Clear cart error:", error);
+		res.status(500).json({
+			success: false,
+			message: "Failed to clear cart",
+			error: error.message,
+		});
+	}
+};
+
+/**
+ * Merge guest cart with user cart after authentication
+ */
+export const mergeGuestCartToUserCartByID = async (req, res) => {
+	try {
+		const { guestCartId } = req.params;
+		const userId = req.user._id;
+
+		console.log("Attempting to merge cart:", {
+			guestCartId,
+			userId,
+			time: new Date().toISOString(),
+		});
+
+		// Find the guest cart by its cartId field
+		const guestCart = await Cart.findOne({ cartId: guestCartId }).populate(
+			"items.menuItem"
+		);
+		console.log("Found guest cart:", guestCart ? "yes" : "no");
+
+		if (!guestCart) {
+			console.log("Guest cart not found with ID:", guestCartId);
+			return res.status(404).json({
+				success: false,
+				message: "Guest cart not found",
+				details: { guestCartId },
+			});
+		}
+
+		// Find or create user cart
+		let userCart = await findUserCart(userId);
+		if (!userCart) {
+			userCart = await createNewCart({ userId });
+		}
+
+		if (guestCart.items.length > 0) {
+			// Merge items from guest cart to user cart
+			for (const guestItem of guestCart.items) {
+				const existingItemIndex = userCart.items.findIndex(
+					(item) =>
+						item.menuItem.toString() ===
+						guestItem.menuItem.toString()
+				);
+
+				if (existingItemIndex > -1) {
+					// If item exists, add quantities
+					userCart.items[existingItemIndex].quantity +=
+						guestItem.quantity;
+				} else {
+					// If item doesn't exist, add it with a new _id
+					userCart.items.push({
+						...guestItem.toObject(),
+						_id: new mongoose.Types.ObjectId(),
+					});
+				}
+			}
+
+			await userCart.save();
+			await userCart.populate("items.menuItem");
+
+			// Delete the guest cart after successful merge
+			await Cart.findOneAndDelete({ cartId: guestCartId });
+		}
+
+		res.status(200).json({
+			success: true,
+			cart: userCart,
+			message: "Guest cart successfully merged with user cart",
+		});
+	} catch (error) {
+		console.error("Merge cart error:", error);
+		res.status(500).json({
+			success: false,
+			message: "Failed to merge carts",
+			error: error.message,
+		});
+	}
+};
 const cleanMenuItemId = (id) => {
-    if (!id) return null;
-    return typeof id === 'string' ? id.replace(/[^a-zA-Z0-9]/g, '') : id;
+	if (!id) return null;
+	return typeof id === "string" ? id.replace(/[^a-zA-Z0-9]/g, "") : id;
 };
 
 // Helper function to find menu item
 const findMenuItem = async (item, session) => {
-    const menuItemId = cleanMenuItemId(item.menuItem || item.menuItemId);
+	const menuItemId = cleanMenuItemId(item.menuItem || item.menuItemId);
 
-    // Try to find by ID first
-    if (menuItemId) {
-        try {
-            const menuItem = await MenuItem.findById(menuItemId).session(session);
-            if (menuItem) return menuItem;
-        } catch (err) {
-            console.log(`Error finding menu item by ID ${menuItemId}:`, err.message);
-        }
-    }
+	// Try to find by ID first
+	if (menuItemId) {
+		try {
+			const menuItem = await MenuItem.findById(menuItemId).session(
+				session
+			);
+			if (menuItem) return menuItem;
+		} catch (err) {
+			console.log(
+				`Error finding menu item by ID ${menuItemId}:`,
+				err.message
+			);
+		}
+	}
 
-    // Try to find by name as fallback
-    if (item.name) {
-        return await MenuItem.findOne({
-            name: { $regex: new RegExp(`^${item.name}$`, 'i') }
-        }).session(session);
-    }
+	// Try to find by name as fallback
+	if (item.name) {
+		return await MenuItem.findOne({
+			name: { $regex: new RegExp(`^${item.name}$`, "i") },
+		}).session(session);
+	}
 
-    return null;
-};
-
-// Merge guest cart with user cart
-export const mergeGuestCart = async (req, res) => {
-    try {
-        console.log('=== Starting Cart Merge Process ===');
-
-        // Validate request
-        const { guestCartId, items } = req.body;
-
-        if (!req.user?._id || !guestCartId || !Array.isArray(items)) {
-            return res.status(400).json({
-                message: 'Invalid request data',
-                details: !req.user?._id ? 'Authentication required' :
-                         !guestCartId ? 'Guest cart ID required' :
-                         'Invalid items format'
-            });
-        }
-
-        console.log('Processing cart merge:', {
-            userId: req.user._id,
-            guestCartId,
-            itemCount: items.length
-        });
-
-        // Find or create user cart
-        let userCart = await Cart.findOne({
-            user: req.user._id,
-            isGuestCart: false
-        });
-
-        if (!userCart) {
-            console.log('Creating new user cart...');
-            userCart = new Cart({
-                user: req.user._id,
-                isGuestCart: false,
-                cartId: `cart_${Date.now()}_${req.user._id}`,
-                items: []
-            });
-
-            // Save the cart first to get its _id
-            await userCart.save();
-
-            // Update user's cartId reference
-            await User.findByIdAndUpdate(
-                req.user._id,
-                { cartId: userCart._id }
-            );
-
-            console.log('Created new cart and updated user reference:', {
-                cartId: userCart.cartId,
-                _id: userCart._id
-            });
-        } else {
-            console.log('Found existing user cart:', {
-                cartId: userCart.cartId,
-                _id: userCart._id,
-                itemCount: userCart.items.length
-            });
-        }
-
-        // Process items
-        const processedItems = [];
-        const errors = [];
-
-        for (const item of items) {
-            try {
-                const menuItem = await findMenuItem(item);
-
-                if (!menuItem) {
-                    throw new Error(`Menu item not found: ${item.name || item.menuItem}`);
-                }
-
-                processedItems.push({
-                    menuItem: menuItem._id,
-                    name: menuItem.name,
-                    quantity: Number(item.quantity) || 1,
-                    price: menuItem.price,
-                    imageUrl: menuItem.imageUrl,
-                    description: menuItem.description
-                });
-            } catch (err) {
-                console.error('Error processing item:', err);
-                errors.push({
-                    item: item.name || item.menuItem,
-                    error: err.message
-                });
-            }
-        }
-
-        // Update cart items
-        for (const item of processedItems) {
-            const existingItemIndex = userCart.items.findIndex(
-                i => i.menuItem.toString() === item.menuItem.toString()
-            );
-
-            if (existingItemIndex !== -1) {
-                userCart.items[existingItemIndex].quantity += item.quantity;
-            } else {
-                userCart.items.push(item);
-            }
-        }
-
-        // Save all changes
-        await userCart.save();
-
-        // Delete guest cart
-        await Cart.findOneAndDelete(
-            { cartId: guestCartId, isGuestCart: true }
-        );
-
-        // Get final cart with populated items
-        const finalCart = await Cart.findById(userCart._id)
-            .populate('items.menuItem')
-            .lean();
-
-        console.log('Cart merge completed successfully:', {
-            processedItems: processedItems.length,
-            errors: errors.length,
-            finalItemCount: finalCart.items.length
-        });
-
-        res.status(200).json({
-            cart: finalCart,
-            processedItems: processedItems.length,
-            errors: errors.length ? errors : undefined
-        });
-
-    } catch (error) {
-        console.error('Cart merge error:', error);
-        res.status(500).json({
-            message: 'Failed to merge carts',
-            error: error.message
-        });
-    } finally {
-        if (mongoose.connection.session) {
-            try {
-                await mongoose.connection.session.endSession();
-            } catch (sessionError) {
-                console.error('Error ending session:', sessionError);
-            }
-        }
-    }
-}
-
-// Get user's cart
-export const getCart = async (req, res) => {
-    try {
-        console.log('=== Fetching User Cart ===');
-        console.log('User:', req.user);
-
-        if (!req.user || !req.user._id) {
-            console.log('No user found in request');
-            return res.status(401).json({ message: 'Authentication required' });
-        }
-
-        // First try to find cart by user ID
-        let cart = await Cart.findOne({ user: req.user._id, isGuestCart: false })
-            .populate('items.menuItem');
-
-        if (!cart) {
-            console.log('No cart found by user ID, checking user document for cartId...');
-            // Try to find cart ID from user document
-            const user = await User.findById(req.user._id);
-            if (user && user.cartId) {
-                console.log('Found cartId in user document:', user.cartId);
-                cart = await Cart.findById(user.cartId).populate('items.menuItem');
-            }
-        }
-
-        if (!cart) {
-            console.log('Creating new cart for user...');
-            // Create new cart
-            cart = await Cart.create({
-                user: req.user._id,
-                items: [],
-                isGuestCart: false,
-                cartId: `cart_${Math.random().toString(36).substring(2, 15)}`
-            });
-
-            // Update user's cartId reference
-            await User.findByIdAndUpdate(req.user._id, { cartId: cart._id });
-            console.log('Created new cart:', cart._id);
-        } else {
-            console.log('Found existing cart:', cart._id);
-        }
-
-        console.log('Returning cart with items:', cart.items?.length || 0);
-        res.status(200).json(cart);
-    } catch (error) {
-        console.error('Error in getCart:', error);
-        res.status(500).json({
-            message: "Error fetching cart",
-            error: error.message,
-            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-        });
-    }
-};
-
-// Add item to cart
-export const addToCart = async (req, res) => {
-    try {
-        const userId = req.user._id;
-        const { menuItemId, quantity = 1 } = req.body;
-
-        // Validate menu item
-        const menuItem = await MenuItem.findById(menuItemId);
-        if (!menuItem) {
-            return res.status(404).json({ message: "Menu item not found" });
-        }
-
-        let cart = await Cart.findOne({ user: userId, isGuestCart: false });
-        if (!cart) {
-            cart = new Cart({
-                user: userId,
-                items: [],
-                isGuestCart: false,
-                cartId: `cart_${Date.now()}_${userId}`
-            });
-        }
-
-        // Check if item already exists in cart
-        const existingItemIndex = cart.items.findIndex(
-            (item) => item.menuItem.toString() === menuItemId
-        );
-
-        if (existingItemIndex > -1) {
-            // Update existing item quantity
-            cart.items[existingItemIndex].quantity += quantity;
-        } else {
-            // Add new item with all details
-            cart.items.push({
-                menuItem: menuItemId,
-                name: menuItem.name,
-                quantity,
-                price: menuItem.price,
-                imageUrl: menuItem.imageUrl,
-                description: menuItem.description
-            });
-        }
-
-        await cart.save();
-        await cart.populate("items.menuItem");
-
-        res.status(200).json(cart);
-    } catch (error) {
-        res.status(500).json({
-            message: "Error adding item to cart",
-            error: error.message,
-        });
-    }
-};
-
-// Update item quantity
-export const updateQuantity = async (req, res) => {
-    try {
-        const userId = req.user._id;
-        const { menuItemId, quantity } = req.body;
-
-        if (!menuItemId) {
-            return res.status(400).json({ message: "Menu item ID is required" });
-        }
-
-        if (quantity < 0) {
-            return res.status(400).json({ message: "Quantity cannot be negative" });
-        }
-
-        let cart = await Cart.findOne({ user: userId });
-        if (!cart) {
-            cart = new Cart({
-                user: userId,
-                items: [],
-                isGuestCart: req.user.isGuest
-            });
-        }
-
-        const itemIndex = cart.items.findIndex(
-            (item) => item.menuItem.toString() === menuItemId
-        );
-
-        if (itemIndex === -1) {
-            return res.status(404).json({ message: "Item not found in cart" });
-        }
-
-        if (quantity === 0) {
-            // Remove item if quantity is 0
-            cart.items.splice(itemIndex, 1);
-        } else {
-            // Update quantity
-            cart.items[itemIndex].quantity = quantity;
-        }
-
-        await cart.save();
-        await cart.populate("items.menuItem");
-
-        res.status(200).json(cart);
-    } catch (error) {
-        console.error('Error in updateQuantity:', error);
-        res.status(500).json({
-            message: "Error updating quantity",
-            error: error.message,
-        });
-    }
-};
-
-// Remove item from cart
-export const removeFromCart = async (req, res) => {
-    try {
-        const userId = req.user._id;
-        const { menuItemId } = req.params;
-
-        const cart = await Cart.findOne({ user: userId });
-        if (!cart) {
-            return res.status(404).json({ message: "Cart not found" });
-        }
-
-        cart.items = cart.items.filter(
-            (item) => item.menuItem.toString() !== menuItemId
-        );
-
-        await cart.save();
-        await cart.populate("items.menuItem");
-
-        res.status(200).json(cart);
-    } catch (error) {
-        res.status(500).json({
-            message: "Error removing item from cart",
-            error: error.message,
-        });
-    }
-};
-
-// Clear cart
-export const clearCart = async (req, res) => {
-    try {
-        const userId = req.user._id;
-
-        const cart = await Cart.findOne({ user: userId });
-        if (!cart) {
-            return res.status(404).json({ message: "Cart not found" });
-        }
-
-        cart.items = [];
-        await cart.save();
-
-        res.status(200).json(cart);
-    } catch (error) {
-        res.status(500).json({
-            message: "Error clearing cart",
-            error: error.message,
-        });
-    }
+	return null;
 };
