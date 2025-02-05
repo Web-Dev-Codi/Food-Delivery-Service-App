@@ -55,7 +55,7 @@ export const seedCartToLocalStorage = () => {
 			quantity: item.quantity,
 			price: item.price,
 			imageUrl: item.imageUrl,
-			description: item.description
+			description: item.description,
 		})),
 		total: Number(
 			sampleMenuItems

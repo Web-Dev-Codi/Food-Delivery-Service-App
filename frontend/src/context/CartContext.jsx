@@ -14,6 +14,7 @@ const ACTIONS = {
 	CLEAR_CART: "CLEAR_CART",
 	SET_LOADING: "SET_LOADING",
 	SET_ERROR: "SET_ERROR",
+	SET_CART_ID: "SET_CART_ID",
 };
 
 // Initial state
@@ -22,7 +23,8 @@ const initialState = {
 	total: 0,
 	loading: false,
 	error: null,
-	isGuest: true, // New flag to track guest status
+	isGuest: true,
+	cartId: null
 };
 
 // Reducer function
@@ -33,6 +35,11 @@ const cartReducer = (state, action) => {
 				...state,
 				cart: Array.isArray(action.payload) ? action.payload : [],
 				total: calculateTotal(action.payload),
+			};
+		case ACTIONS.SET_CART_ID:
+			return {
+				...state,
+				cartId: action.payload,
 			};
 		case ACTIONS.ADD_TO_CART: {
 			const updatedItemsAdd = [...(state.cart || []), action.payload];
@@ -104,18 +111,33 @@ export const CartProvider = ({ children }) => {
 
 	// Handle cart initialization and merging on mount/login
 	useEffect(() => {
+		console.log('Initializing cart...');
 		const token = localStorage.getItem("token");
 		const cartData = localStorage.getItem("cart");
-		const parsedCart = cartData ? JSON.parse(cartData) : null;
+		let parsedCart = null;
+
+		try {
+			parsedCart = cartData ? JSON.parse(cartData) : null;
+			console.log('Parsed cart data:', parsedCart);
+		} catch (error) {
+			console.error('Error parsing cart data:', error);
+		}
+
+		// Ensure cart has an ID
+		if (parsedCart && !parsedCart.cartId) {
+			parsedCart.cartId = `cart_${Math.random().toString(36).substring(2, 15)}`;
+			localStorage.setItem("cart", JSON.stringify(parsedCart));
+			console.log('Generated new cart ID:', parsedCart.cartId);
+		}
 
 		if (token && parsedCart?.isGuestCart) {
-			// User is logged in and has a guest cart - merge them
+			console.log('User logged in with guest cart - merging...');
 			mergeCartsOnLogin(parsedCart);
 		} else if (token) {
-			// User is logged in but no guest cart - just fetch their cart
+			console.log('User logged in without guest cart - fetching user cart...');
 			fetchCart();
 		} else if (parsedCart) {
-			// No token but has guest cart - load it
+			console.log('Loading guest cart from localStorage...');
 			const transformedItems = parsedCart.items.map(item => ({
 				_id: item.menuItem,
 				name: item.name,
@@ -124,62 +146,227 @@ export const CartProvider = ({ children }) => {
 				imageUrl: item.imageUrl,
 				description: item.description
 			}));
+
+			// Set both cart items and cartId
 			dispatch({ type: ACTIONS.SET_CART, payload: transformedItems });
+			dispatch({ type: ACTIONS.SET_CART_ID, payload: parsedCart.cartId });
+			console.log('Loaded guest cart with ID:', parsedCart.cartId);
 		} else {
-			// No cart data at all - initialize empty cart
+			console.log('No existing cart - initializing empty cart...');
+			const newCartId = `cart_${Math.random().toString(36).substring(2, 15)}`;
 			dispatch({ type: ACTIONS.SET_CART, payload: [] });
+			dispatch({ type: ACTIONS.SET_CART_ID, payload: newCartId });
+			console.log('Initialized empty cart with ID:', newCartId);
 		}
+	}, []);
+
+	// Monitor authentication state
+	useEffect(() => {
+		const checkAuthAndFetchCart = () => {
+			const token = localStorage.getItem("token");
+			if (token) {
+				console.log('Token detected, fetching user cart...');
+				fetchCart();
+			}
+		};
+
+		// Initial check
+		checkAuthAndFetchCart();
+
+		// Listen for storage changes
+		const handleStorageChange = (e) => {
+			if (e.key === "token") {
+				console.log('Token changed, updating cart...');
+				checkAuthAndFetchCart();
+			}
+		};
+
+		window.addEventListener('storage', handleStorageChange);
+		return () => window.removeEventListener('storage', handleStorageChange);
 	}, []);
 
 	// Merge guest cart with user cart on login
 	const mergeCartsOnLogin = async (guestCart) => {
+		console.log('=== Starting Cart Merge Process (Frontend) ===');
 		const token = localStorage.getItem("token");
-		if (!token || !guestCart) return;
+		console.log('Token present:', !!token);
+		console.log('Guest cart:', guestCart);
+
+		// Validate token
+		if (!token) {
+			console.log('Merge aborted - missing token');
+			return;
+		}
+
+		// Validate guest cart
+		if (!guestCart || !guestCart.items || !Array.isArray(guestCart.items)) {
+			console.log('No guest cart to merge');
+			return;
+		}
+
+		// Ensure guest cart has an ID
+		if (!guestCart.cartId) {
+			guestCart.cartId = `cart_${Math.random().toString(36).substring(2, 15)}`;
+			localStorage.setItem("cart", JSON.stringify(guestCart));
+			console.log('Generated new cart ID for merge:', guestCart.cartId);
+		}
 
 		try {
+			console.log('Starting merge process with guest cart:', {
+				cartId: guestCart.cartId,
+				itemCount: guestCart.items?.length || 0,
+				isGuestCart: guestCart.isGuestCart
+			});
+
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-			// Clear guest cart from localStorage before merging to prevent duplication
-			localStorage.removeItem("cart");
 			
+			console.log('Transforming guest cart items...');
+			// Transform items to match the CartItemSchema
+			const transformedItems = guestCart.items.map(item => {
+				// Use menuItem as _id if available, otherwise use menuItemId
+				const itemId = item.menuItem || item.menuItemId || item._id;
+				return {
+					_id: itemId, // Ensure _id is set
+					menuItem: itemId,
+					menuItemId: itemId,  // Include both for compatibility
+					name: item.name,
+					quantity: Number(item.quantity) || 1,
+					price: Number(item.price),
+					imageUrl: item.imageUrl || '',
+					description: item.description || ''
+				};
+			});
+			console.log('Transformed items:', transformedItems);
+
+			console.log('Final payload for merge:', {
+				guestCartId: guestCart.cartId,
+				itemCount: transformedItems.length,
+				items: transformedItems
+			});
+
+			if (!guestCart.cartId) {
+				throw new Error('Guest cart ID is required for merging');
+			}
+
+			console.log('Merging carts with payload:', {
+				guestCartId: guestCart.cartId,
+				guestCartItems: transformedItems
+			});
+
+			// Get token and decode it to get user information
+			const token = localStorage.getItem('token');
+			if (!token) {
+				console.error('Token missing before API call');
+				throw new Error('Authentication required for cart merging');
+			}
+
+			console.log('Making API call to merge carts...');
 			const response = await axios.post(
 				`${API_URL}/cart/merge`,
 				{
 					guestCartId: guestCart.cartId,
-					guestCartItems: guestCart.items
+					guestCartItems: transformedItems
 				},
 				{
-					headers: { Authorization: `Bearer ${token}` }
+					headers: { 
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'application/json'
+					}
 				}
 			);
+			console.log('API Response:', response.data);
 
 			// Set the merged cart from the response
 			if (response.data && response.data.items) {
-				dispatch({ type: ACTIONS.SET_CART, payload: response.data.items });
+				console.log('Processing merged cart response...');
+				// Transform response items to match frontend format
+				const cartItems = response.data.items.map(item => {
+					const transformedItem = {
+						_id: item.menuItem._id || item.menuItem,
+						name: item.name,
+						quantity: item.quantity,
+						price: item.price,
+						imageUrl: item.imageUrl || '',
+						description: item.description || ''
+					};
+					console.log('Transformed response item:', transformedItem);
+					return transformedItem;
+				});
+
+				// Only clear localStorage after we have the transformed items
+				console.log('Setting cart with items:', cartItems.length);
+				dispatch({ type: ACTIONS.SET_CART, payload: cartItems });
+
+				// Wait 1 second before clearing localStorage to ensure state is updated
+				setTimeout(() => {
+					console.log('Clearing localStorage cart data...');
+					localStorage.removeItem("cart");
+					console.log('Guest cart cleared from localStorage');
+				}, 1000);
 			} else {
-				// If no items in response, set empty cart
-				dispatch({ type: ACTIONS.SET_CART, payload: [] });
+				console.log('No items in response, keeping existing cart');
+				dispatch({ type: ACTIONS.SET_CART, payload: guestCart.items });
 			}
 		} catch (error) {
+			console.log('=== Cart Merge Error Details ===');
 			console.error('Error merging carts:', error);
+			console.log('Error response:', error.response);
+			console.log('Error status:', error.response?.status);
+			console.log('Error data:', error.response?.data);
+			console.log('Error message:', error.message);
+			console.log('Error config:', {
+				url: error.config?.url,
+				method: error.config?.method,
+				headers: error.config?.headers,
+				data: error.config?.data
+			});
+
 			dispatch({
 				type: ACTIONS.SET_ERROR,
 				payload: error.response?.data?.message || "Failed to merge carts"
 			});
+
 			// Reset cart to empty on error
+			console.log('Resetting cart due to error');
 			dispatch({ type: ACTIONS.SET_CART, payload: [] });
 		} finally {
+			console.log('Cart merge process completed');
 			dispatch({ type: ACTIONS.SET_LOADING, payload: false });
 		}
 	};
 
 	// Save cart to localStorage
 	const saveToLocalStorage = (cartItems) => {
-		if (!Array.isArray(cartItems)) return;
+		if (!Array.isArray(cartItems)) {
+			console.log('Invalid cart items format, not saving');
+			return;
+		}
 		
 		// Only save to localStorage for guest users
 		const token = localStorage.getItem("token");
-		if (token) return;
+		if (token) {
+			console.log('User is logged in, not saving to localStorage');
+			return;
+		}
 		
+		// Get existing cart data first
+		const existingCartData = localStorage.getItem("cart");
+		let existingCart = null;
+		try {
+			existingCart = existingCartData ? JSON.parse(existingCartData) : null;
+		} catch (error) {
+			console.error('Error parsing existing cart:', error);
+		}
+
+		// Use existing cartId or generate new one
+		let cartId = existingCart?.cartId || state.cartId;
+		if (!cartId) {
+			cartId = `cart_${Math.random().toString(36).substring(2, 15)}`;
+			dispatch({ type: ACTIONS.SET_CART_ID, payload: cartId });
+		}
+
+		console.log('Using cart ID:', cartId);
+
 		const transformedItems = cartItems.map(item => ({
 			menuItem: item._id,
 			name: item.name,
@@ -189,11 +376,15 @@ export const CartProvider = ({ children }) => {
 			description: item.description
 		}));
 		
-		localStorage.setItem("cart", JSON.stringify({
+		const cartData = {
+			cartId,
 			user: localStorage.getItem("guestId") || "guest",
 			isGuestCart: true,
 			items: transformedItems
-		}));
+		};
+
+		console.log('Saving cart to localStorage:', cartData);
+		localStorage.setItem("cart", JSON.stringify(cartData));
 	};
 
 	// Fetch cart items from backend or localStorage
@@ -205,18 +396,27 @@ export const CartProvider = ({ children }) => {
 			if (cartData) {
 				const parsedCart = JSON.parse(cartData);
 				if (parsedCart.items && Array.isArray(parsedCart.items)) {
+					// Set cartId from localStorage
+					if (parsedCart.cartId) {
+						dispatch({ type: ACTIONS.SET_CART_ID, payload: parsedCart.cartId });
+					}
+
 					// Transform items to match expected structure
 					const transformedItems = parsedCart.items.map(item => ({
 						_id: item.menuItem,
-						name: item.menuItem, // We'll need to fetch actual menu item data
+						name: item.name,
 						price: item.price,
-						quantity: item.quantity
+						quantity: item.quantity,
+						imageUrl: item.imageUrl,
+						description: item.description
 					}));
 					dispatch({ type: ACTIONS.SET_CART, payload: transformedItems });
 				}
 			}
 			return;
 		}
+
+		console.log('Fetching cart from backend...');
 
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
@@ -251,7 +451,7 @@ export const CartProvider = ({ children }) => {
 
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-			const response = await axios.post(`${API_URL}/cart/add`, item, {
+			const response = await axios.post(`${API_URL}/api/cart/add`, item, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			dispatch({ type: ACTIONS.ADD_TO_CART, payload: response.data });
@@ -285,7 +485,7 @@ export const CartProvider = ({ children }) => {
 
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-			await axios.delete(`${API_URL}/cart/remove/${itemId}`, {
+			await axios.delete(`${API_URL}/api/cart/remove/${itemId}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			dispatch({ type: ACTIONS.REMOVE_FROM_CART, payload: itemId });
@@ -326,7 +526,7 @@ export const CartProvider = ({ children }) => {
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
 			await axios.put(
-				`${API_URL}/cart/update-quantity`,
+				`${API_URL}/api/cart/update-quantity`,
 				{ menuItemId: itemId, quantity },
 				{ headers: { Authorization: `Bearer ${token}` } }
 			);
@@ -367,7 +567,7 @@ export const CartProvider = ({ children }) => {
 
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-			await axios.delete(`${API_URL}/cart/clear`, {
+			await axios.delete(`${API_URL}/api/cart/clear`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			dispatch({ type: ACTIONS.CLEAR_CART });

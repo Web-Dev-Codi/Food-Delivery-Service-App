@@ -2,14 +2,17 @@ import jwt from "jsonwebtoken";
 
 export const verifyToken = (req, res, next) => {
 	const authHeader = req.headers.authorization;
+	console.log('Auth Check - Headers:', req.headers);
+	console.log('Auth Check - Path:', req.path);
 
 	// For cart operations, allow guest access with a temporary user ID
-	if (req.path.startsWith("/api/cart")) {
+	if (req.path.startsWith("/cart")) {
 		const guestId = req.headers["x-guest-id"];
 		if (guestId) {
+			console.log('Using guest ID:', guestId);
 			req.user = {
 				_id: guestId,
-				userId: guestId, // Add userId for consistency
+				userId: guestId,
 				isGuest: true,
 			};
 			return next();
@@ -32,14 +35,25 @@ export const verifyToken = (req, res, next) => {
 	try {
 		// Verify the token
 		const decoded = jwt.verify(token, process.env.JWT_SECRET);
+		console.log('Decoded token:', decoded);
 
-		// Structure the user object consistently for both guest and authenticated users
+		// Ensure we have a userId from the token
+		if (!decoded.userId && !decoded._id) {
+			console.error('No userId found in token');
+			return res.status(401).json({
+				message: 'Invalid token format - no user ID found'
+			});
+		}
+
+		// Structure the user object consistently
 		req.user = {
 			...decoded,
-			_id: decoded.userId, // Add _id for consistency with guest users
+			_id: decoded.userId || decoded._id,
+			userId: decoded.userId || decoded._id,
 			isGuest: false,
 		};
 
+		console.log('Auth successful - User:', req.user);
 		next(); // Proceed to the next middleware
 	} catch (err) {
 		// Handle specific JWT errors

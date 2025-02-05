@@ -28,14 +28,14 @@ const UserSchema = new Schema(
 			zipCode: { type: String },
 		},
 		cartId: {
-			type: String,
+			type: Schema.Types.ObjectId,
+			ref: 'Cart',
 			unique: true,
-			sparse: true,
+			sparse: true
 		},
 		guestCartId: {
 			type: String,
-			unique: true,
-			sparse: true,
+			sparse: true
 		},
 
 		//orderHistory: [{ type: Schema.Types.ObjectId, ref: "Order" }], // Ref to Order collection

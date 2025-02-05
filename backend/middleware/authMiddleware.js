@@ -10,13 +10,19 @@ export { verifyToken };
 
 // Verify either guest ID or auth token
 export const verifyGuestOrAuth = (req, res, next) => {
+	console.log('=== verifyGuestOrAuth Check ===');
+	console.log('Headers:', req.headers);
+	console.log('Path:', req.path);
+
 	const authHeader = req.headers.authorization;
 	const guestId = req.headers["x-guest-id"];
 
 	// If there's a guest ID, use that
 	if (guestId) {
+		console.log('Using guest ID:', guestId);
 		req.user = {
 			_id: guestId,
+			userId: guestId,
 			isGuest: true,
 		};
 		return next();
@@ -39,9 +45,28 @@ export const verifyGuestOrAuth = (req, res, next) => {
 
 	try {
 		const decoded = jwt.verify(token, process.env.JWT_SECRET);
-		req.user = { ...decoded, isGuest: false };
+		console.log('Decoded token:', decoded);
+
+		// Ensure we have a userId
+		if (!decoded.userId && !decoded._id) {
+			console.error('No userId found in token');
+			return res.status(401).json({
+				message: 'Invalid token format - no user ID found'
+			});
+		}
+
+		// Structure the user object consistently
+		req.user = {
+			...decoded,
+			_id: decoded.userId || decoded._id,
+			userId: decoded.userId || decoded._id,
+			isGuest: false
+		};
+
+		console.log('Auth successful - User:', req.user);
 		next();
 	} catch (err) {
+		console.error('Token verification failed:', err);
 		return res.status(401).json({
 			message: "Invalid or expired token.",
 			error: err.message,
