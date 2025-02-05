@@ -1,9 +1,10 @@
 import Restaurant from "../models/restaurantSchema.js";
+import User from "../models/userSchema.js";
 
 export const getRestaurants = async (req, res) => {
     try{
         const restaurants = await Restaurant.find();
-        if(!restaurants){
+        if(restaurants.length === 0){
             return res.status(404).json({
                 message: "No restaurants found",
             });
@@ -50,6 +51,11 @@ export const createRestaurant = async (req, res) => {
         if(!name || !location || !images || !contact || !operatingHours){
             return res.status(400).json({
                 message: "Please provide all required fields",
+            });
+        }
+        if(!Array.isArray(images) || images.length === 0){
+            return res.status(400).json({
+                message: "Images must be an array with at least one image URL",
             });
         }
         const validImageURLs = images.every((imageUrl) => {
@@ -121,26 +127,63 @@ export const deleteRestaurant = async (req, res) => {
     }
 }
 
-export const postReview = async (req, res) => {
+
+export const addReview = async (req, res) => {
     try{
         const { rating, comment } = req.body;
-        const userId = req.user.userId; // Extract the user ID from the request object
-        if (!rating || !comment) {
-          return res.status(400).json({
-            message: "Please provide a rating and comment.",
+           //  Ensure user exists
+        const validUser = await User.findById(req.user._id);
+        if (!validUser) {
+          return res.status(401).json({
+            message: "User needs to sign up or log in to add a review.",
           });
+
         }
+
+    // Prevent admins from reviewing
+        if(validUser.role === "admin"){
+            return res.status(403).json({
+                message: "Admins are not allowed to add reviews.",
+              });
+        }
+
+       // Ensure restaurant exists 
         const restaurant = await Restaurant.findById(req.params.id);
         if (!restaurant) {
           return res.status(404).json({
             message: "Restaurant not found.",
           });
         }
-        restaurant.reviews.push({ rating, comment, user: userId });
 
-        // Recalculate the average rating
-    restaurant.calculateAverageRating();
+        // Ensure rating and comment are provided
+        if(!rating || rating < 1 || rating >= 5){
+            return res.status(400).json({
+                message: "Rating must be between 1 and 6.",
+              });
+        }
+        if(!comment || comment.trim().length === 0 || comment.trim().length > 500){
+            return res.status(400).json({
+                message: "Comment must be less than 500 characters.",
+              });
+        }
 
+        // Ensure user has not already reviewed
+        const alreadyReviewed = restaurant.reviews.find(
+            (review) => review.user.toString() === req.user._id.toString()
+          );
+          if (alreadyReviewed) {
+            return res.status(400).json({
+              message: "You have already reviewed this restaurant.",
+            });
+          }
+          const newReview = {
+            user: req.user._id,
+            userName: validUser.name, // Store user's name in the review
+            rating,
+            comment,
+          };
+        restaurant.reviews.push(newReview);
+        restaurant.calculateAverageRating();
         await restaurant.save();
         res.status(201).json({
           message: "Review added successfully.",
@@ -155,4 +198,5 @@ export const postReview = async (req, res) => {
         });
     }
 };
+
 

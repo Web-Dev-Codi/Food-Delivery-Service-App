@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
+import User from "../models/userSchema.js";
 
 
-export const verifyToken = (req, res, next) => {
+export const verifyToken = async (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
@@ -20,7 +21,15 @@ export const verifyToken = (req, res, next) => {
       try {
         // Verify the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded; // Attach user data to the request object
+      if (!decoded.userId) {
+        return res.status(401).json({
+          message: "Invalid token. No user id found.",
+        });
+      }
+        const validUser = await User.findById(decoded.userId);
+        if (!validUser) return res.status(401).json({ message: "Invalid user. Please sign up or log in." });
+        req.user = validUser; // Attach user data to request object
+        console.log("Verified User:", req.user);
         next(); // Proceed to the next middleware
       } 
       catch (err) {

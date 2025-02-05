@@ -7,6 +7,10 @@ const ReviewSchema = new Schema({
     ref: "User", 
     required: true 
   },
+  userName: { // Store user's name
+    type: String,
+    
+  },
   rating: { 
     type: Number, 
     required: true, 
@@ -58,14 +62,15 @@ const RestaurantSchema = new Schema(
     next();
     });
 
-    RestaurantSchema.methods.calculateAverageRating = function() {
+    RestaurantSchema.methods.calculateAverageRating = function () {
       if (this.reviews.length === 0) {
         this.averageRating = 0;
       } else {
         const totalRating = this.reviews.reduce((sum, review) => sum + review.rating, 0);
-        this.averageRating = (totalRating / this.reviews.length).toFixed(1);
+        this.averageRating = Number((totalRating / this.reviews.length).toFixed(1)); // ✅ Convert to Number
       }
     };
+    
 
 const Restaurant = model("Restaurant", RestaurantSchema);
 export default Restaurant;
