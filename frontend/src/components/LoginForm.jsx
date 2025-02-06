@@ -11,6 +11,7 @@ function LoginForm() {
 		e.preventDefault();
 		console.log({ email, password });
 
+
 		axios
 			.post("http://localhost:8000/data/login", { email, password })
 			.then((res) => {

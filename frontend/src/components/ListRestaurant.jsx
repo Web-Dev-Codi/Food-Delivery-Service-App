@@ -11,14 +11,14 @@ function ListRestaurant() {
     const fetchRestaurant = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3006/api/restaurants",
+          "http://localhost:8000/api/restaurants",
         );
         setRestaurants(response.data.data); // Access the `data` field
         console.log("restaurants", response.data.data);
       } catch (error) {
         setErrorMessage(
           error.response?.data?.message ||
-            "An error occurred while fetching restaurants",
+          "An error occurred while fetching restaurants",
         );
         console.error(error);
       }
@@ -32,8 +32,7 @@ function ListRestaurant() {
         restaurants.map((restaurant) => (
           <div
             key={restaurant._id}
-            className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mb-4 mx-auto"
-          >
+            className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mb-4 mx-auto">
             <Link to={`/restaurants/${restaurant._id}`}>
               <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
                 {restaurant.name}
@@ -42,14 +41,17 @@ function ListRestaurant() {
             <p className="text-gray-700 mb-6">{restaurant.location}</p>
             <p className="text-gray-700 mb-6">{restaurant.contact}</p>
             <div>
-              {restaurant.images.length > 0 ? (
-                <img
-                  src={restaurant.images[0]}
-                  alt={restaurant.name}
-                  className="w-full h-64 object-cover mb-4"
-                />
+              {restaurant.images && restaurant.images.length > 0 ? (
+                restaurant.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`${restaurant.name} - Image ${index + 1}`}
+                    className="w-full h-64 object-cover mb-4"
+                  />
+                ))
               ) : (
-                <div className="w-full h-64 bg-gray-300 mb-4"></div>
+                <div className="w-full h-64 bg-gray-300 mb-4">No images available</div>
               )}
             </div>
             <div className="text-center">

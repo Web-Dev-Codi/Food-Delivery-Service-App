@@ -11,13 +11,14 @@ function ReviewForm({ restaurantId }) {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const token = localStorage.getItem("token");
+    
 		if (!token) {
 			setTimeout(() => {
 				window.location.href = "/login";
 			}, 2000);
 			return;
 		}
-
+    
 		try {
 			const response = await axios.post(
 				`http://localhost:8000/data/${restaurantId}/review`,
