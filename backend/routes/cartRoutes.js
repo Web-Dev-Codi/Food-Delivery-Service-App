@@ -1,18 +1,18 @@
 import { Router } from "express";
 import {
-  getCart,
-  addToCart,
-  updateQuantity,
-  removeFromCart,
-  clearCart,
-  mergeGuestCart,
-  syncCart,
+	getCart,
+	addToCart,
+	updateQuantity,
+	removeFromCart,
+	clearCart,
+	mergeGuestCart,
+	syncCart,
 } from "../controllers/cartController.js";
 import {
-  protect,
-  verifyCartOwnership,
-  verifyCartItem,
-  verifyCartQuantity,
+	protect,
+	verifyCartOwnership,
+	verifyCartItem,
+	verifyCartQuantity,
 } from "../middleware/authMiddleware.js";
 
 const cartRouter = Router();
@@ -28,17 +28,17 @@ cartRouter.get("/cart", getCart);
 cartRouter.post("/cart/merge", mergeGuestCart);
 
 // Sync cart with backend
-cartRouter.post("/sync", syncCart);
+cartRouter.post("/cart/sync", syncCart);
 
 // Add item to cart
 cartRouter.post("/add", verifyCartItem, verifyCartQuantity, addToCart);
 
 // Update item quantity
 cartRouter.put(
-  "/update-quantity",
-  verifyCartItem,
-  verifyCartQuantity,
-  updateQuantity,
+	"/update-quantity/:menuItemId",
+	verifyCartItem,
+	verifyCartQuantity,
+	updateQuantity
 );
 
 // Remove item from cart

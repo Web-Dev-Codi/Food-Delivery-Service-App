@@ -7,30 +7,39 @@ const generateId = () => {
 const sampleMenuItems = [
   {
     _id: generateId(),
-    name: "Margherita Pizza",
-    price: 12.99,
-    description: "Classic pizza with tomato sauce, mozzarella, and basil",
-    imageUrl: "https://source.unsplash.com/random?pizza",
-    category: "Main Course",
+    name: "Samosa",
     quantity: 2,
-  },
-  {
-    _id: generateId(),
-    name: "Caesar Salad",
-    price: 8.99,
-    description: "Fresh romaine lettuce with Caesar dressing and croutons",
-    imageUrl: "https://source.unsplash.com/random?salad",
+    price: 5,
+    description: "Crispy fried pastry with spicy potato filling",
     category: "Starters",
-    quantity: 1,
+    imageUrl:
+      "https://res.cloudinary.com/difmxsysx/image/upload/v1738584143/samosa_yyuhnl.webp",
+    availability: "Available",
+    restaurant: "67a08c18a817ad598a39bd54",
   },
   {
     _id: generateId(),
-    name: "Chocolate Brownie",
-    price: 5.99,
-    description: "Rich chocolate brownie with vanilla ice cream",
-    imageUrl: "https://source.unsplash.com/random?brownie",
-    category: "Dessert",
+    name: "Butter Chicken",
+    price: 15,
+    quantity: 2,
+    description: "Creamy tomato-based chicken curry",
+    category: "Main Course",
+    imageUrl:
+      "https://res.cloudinary.com/difmxsysx/image/upload/v1738584143/butter-chicken_tsnbga.jpg",
+    availability: "Available",
+    restaurant: "67a08c18a817ad598a39bd54",
+  },
+  {
+    _id: generateId(),
+    name: "Gulab Jamun",
+    price: 7,
     quantity: 3,
+    description: "Deep-fried dumplings soaked in sugar syrup",
+    category: "Dessert",
+    imageUrl:
+      "https://res.cloudinary.com/difmxsysx/image/upload/v1738584143/Gulab-Jamun_ry0uvd.jpg",
+    availability: "Available",
+    restaurant: "67a08c18a817ad598a39bd54",
   },
 ];
 
@@ -52,10 +61,10 @@ export const seedCartToLocalStorage = () => {
     items: sampleMenuItems.map((item) => ({
       menuItem: item._id,
       name: item.name,
-      quantity: item.quantity,
       price: item.price,
-      imageUrl: item.imageUrl,
+      quantity: item.quantity,
       description: item.description,
+      imageUrl: item.imageUrl,
     })),
     total: Number(
       sampleMenuItems
@@ -66,37 +75,11 @@ export const seedCartToLocalStorage = () => {
 
   localStorage.setItem("cart", JSON.stringify(cartData));
 
-  // Sync with backend
-  syncCartWithBackend(cartData, guestId);
-
   console.log("Cart seeded successfully:", cartData);
   return cartData;
 };
 
 /**
- * Syncs the cart with the backend
- */
-const syncCartWithBackend = async (cartData, guestId) => {
-  try {
-    const response = await fetch("http://localhost:8000/api/cart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Guest-ID": guestId,
-      },
-      body: JSON.stringify({ items: cartData.items }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to sync cart with backend");
-    }
-
-    console.log("Cart synced with backend successfully");
-  } catch (error) {
-    console.error("Error syncing cart with backend:", error);
-  }
-};
-
 /**
  * Clears the cart data from localStorage
  */
