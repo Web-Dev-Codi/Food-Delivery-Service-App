@@ -51,10 +51,10 @@ const RestaurantSchema = new Schema(
 );
 
 RestaurantSchema.pre("save", function (next) {
-	const format = "MMMM Do YYYY, h:mm:ss a";
-	this.createdAt = moment(this.createdAt).format(format);
-	this.updatedAt = moment(this.updatedAt).format(format);
-	next();
+  const format = "MMMM Do YYYY, h:mm:ss a";
+  this.createdAt = moment(this.createdAt).format(format);
+  this.updatedAt = moment(this.updatedAt).format(format);
+  next();
 });
 
 RestaurantSchema.methods.calculateAverageRating = function () {

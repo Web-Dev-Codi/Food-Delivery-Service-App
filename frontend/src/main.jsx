@@ -9,6 +9,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { CartProvider } from "./context/CartContext";
+import Checkout from "./components/Checkouts.jsx";
 import Menu from "./components/Menu.jsx";
 import ListRestaurant from "./components/ListRestaurant";
 import AddRestaurant from "./components/AddRestaurant";
@@ -17,6 +18,7 @@ import AddMenu from "./components/AddMenu";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import Cart from "./components/Cart";
+import TestCart from "./components/TestCart";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -24,8 +26,7 @@ const router = createBrowserRouter(
 			path="/"
 			element={<App />}>
 			<Route
-				index={true}
-				path="/"
+				index
 				element={<HomeScreen />}
 			/>
 			<Route
@@ -45,6 +46,12 @@ const router = createBrowserRouter(
 				element={<Cart />}
 			/>
 			<Route
+				path="/checkout"
+				element={<Checkout />}
+			/>
+			<Route
+				path="/test-cart"
+				element={<TestCart />}
 				path="/addRestaurant"
 				element={<AddRestaurant />}
 			/>

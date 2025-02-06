@@ -13,12 +13,14 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({
-  origin: 'http://localhost:5173', // Replace with your front-end URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
-}));
 
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your front-end URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  }),
+)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -30,7 +32,7 @@ app.get('/seed', (req, res) => {
 
 app.use("/", router);
 app.use("/data", userRouter);
-app.use("/api/cart", cartRouter);
+app.use("/api", cartRouter);
 
 // Not sure why we have both 2 /data endpoints
 // app.use("/data", router);
