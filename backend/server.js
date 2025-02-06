@@ -6,6 +6,7 @@ import restaurantRouter from "./routes/restaurantRoute.js";
 import cors from "cors";
 import userRouter from "./routes/userRouter.js";
 import cartRouter from "./routes/cartRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -25,6 +26,7 @@ connectDB();
 app.use("/", router);
 app.use("/data", userRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/auth", authRoutes);
 
 // Not sure why we have both 2 /data endpoints
 // app.use("/data", router);
