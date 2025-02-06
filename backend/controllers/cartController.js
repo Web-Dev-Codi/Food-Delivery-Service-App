@@ -204,6 +204,13 @@ export const updateQuantity = async (req, res) => {
     const userId = req.user._id;
     const { menuItemId, quantity } = req.body;
 
+    if (!menuItemId) {
+      return res.status(400).json({
+        success: false,
+        message: "Menu item ID is required",
+      });
+    }
+
     if (quantity < 0) {
       return res.status(400).json({
         success: false,
@@ -219,8 +226,9 @@ export const updateQuantity = async (req, res) => {
       });
     }
 
+    // Find the item in the cart
     const itemIndex = cart.items.findIndex(
-      (item) => item.menuItem.toString() === menuItemId,
+      (item) => item.menuItem.toString() === menuItemId.toString()
     );
 
     if (itemIndex === -1) {
@@ -238,20 +246,34 @@ export const updateQuantity = async (req, res) => {
       cart.items[itemIndex].quantity = Number(quantity);
     }
 
+    // Mark the items array as modified
+    cart.markModified('items');
+    
+    // Save the updated cart
     await cart.save();
-    await cart.populate("items.menuItem");
+
+    // Populate the cart items with menu item details
+    const populatedCart = await Cart.findById(cart._id)
+      .populate('items.menuItem')
+      .lean();
+
+    // Transform the response to match the expected format
+    const transformedItems = populatedCart.items.map(item => ({
+      menuItem: item.menuItem._id,
+      name: item.name,
+      quantity: item.quantity,
+      price: item.price,
+      imageUrl: item.imageUrl,
+      description: item.description
+    }));
 
     res.status(200).json({
       success: true,
-      cart: cart,
-      items: cart.items.map((item) => ({
-        menuItem: item.menuItem._id || item.menuItem,
-        name: item.menuItem.foodItem.name,
-        quantity: item.quantity,
-        price: item.menuItem.foodItem.price,
-        imageUrl: item.menuItem.foodItem.imageUrl,
-        description: item.menuItem.foodItem.description,
-      })),
+      message: 'Cart updated successfully',
+      cart: {
+        ...populatedCart,
+        items: transformedItems
+      }
     });
   } catch (error) {
     console.error("Error updating quantity:", error);

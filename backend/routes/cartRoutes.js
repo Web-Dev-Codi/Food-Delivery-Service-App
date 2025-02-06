@@ -35,14 +35,14 @@ cartRouter.post("/add", verifyCartItem, verifyCartQuantity, addToCart);
 
 // Update item quantity
 cartRouter.put(
-	"/update-quantity/:menuItemId",
+	"/update-quantity",
 	verifyCartItem,
 	verifyCartQuantity,
 	updateQuantity
 );
 
 // Remove item from cart
-cartRouter.delete("/remove/:menuItemId", verifyCartItem, removeFromCart);
+cartRouter.delete("/remove", verifyCartItem, removeFromCart);
 
 // Clear entire cart
 cartRouter.delete("/clear", clearCart);

@@ -154,17 +154,19 @@ export const CartProvider = ({ children }) => {
 
 			// Set the merged cart from the response
 			if (response.data?.cart?.items) {
-				const transformedItems = response.data.cart.items.map(item => ({
-					_id: item.menuItem,
-					name: item.name,
-					quantity: item.quantity,
-					price: item.price,
-					imageUrl: item.imageUrl,
-					description: item.description
-				}));
+				const transformedItems = response.data.cart.items.map(
+					(item) => ({
+						_id: item.menuItem,
+						name: item.name,
+						quantity: item.quantity,
+						price: item.price,
+						imageUrl: item.imageUrl,
+						description: item.description,
+					})
+				);
 				dispatch({
 					type: ACTIONS.SET_CART,
-					payload: transformedItems
+					payload: transformedItems,
 				});
 			} else {
 				// If no items in response, set empty cart
@@ -278,7 +280,7 @@ export const CartProvider = ({ children }) => {
 
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-			const response = await axios.post(`${API_URL}/cart/add`, item, {
+			const response = await axios.post(`${API_URL}/add`, item, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			dispatch({ type: ACTIONS.ADD_TO_CART, payload: response.data });
@@ -312,7 +314,7 @@ export const CartProvider = ({ children }) => {
 
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-			await axios.delete(`${API_URL}/cart/remove/${itemId}`, {
+			await axios.delete(`${API_URL}/remove`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			dispatch({ type: ACTIONS.REMOVE_FROM_CART, payload: itemId });
@@ -340,7 +342,7 @@ export const CartProvider = ({ children }) => {
 		if (!token) {
 			// Guest user - update localStorage
 			const updatedItems = state.cart.map((item) =>
-				item._id === itemId ? { ...item, quantity } : item
+				item.menuItem === itemId ? { ...item, quantity } : item
 			);
 			dispatch({
 				type: ACTIONS.UPDATE_QUANTITY,
@@ -352,25 +354,23 @@ export const CartProvider = ({ children }) => {
 
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-			await axios.put(
-				`${API_URL}/cart/update-quantity`,
+			const response = await axios.put(
+				`${API_URL}/update-quantity`,
 				{ menuItemId: itemId, quantity },
 				{ headers: { Authorization: `Bearer ${token}` } }
 			);
-			dispatch({
-				type: ACTIONS.UPDATE_QUANTITY,
-				payload: { itemId, quantity },
-			});
+
+			if (response.data.success) {
+				dispatch({
+					type: ACTIONS.SET_CART,
+					payload: response.data.cart.items,
+				});
+			} else {
+				throw new Error(
+					response.data.message || "Failed to update cart"
+				);
+			}
 		} catch (error) {
-			// Fallback to localStorage on API failure
-			dispatch({
-				type: ACTIONS.UPDATE_QUANTITY,
-				payload: { itemId, quantity },
-			});
-			const updatedItems = state.items.map((item) =>
-				item._id === itemId ? { ...item, quantity } : item
-			);
-			saveToLocalStorage(updatedItems);
 			dispatch({
 				type: ACTIONS.SET_ERROR,
 				payload:
@@ -394,7 +394,7 @@ export const CartProvider = ({ children }) => {
 
 		try {
 			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-			await axios.delete(`${API_URL}/cart/clear`, {
+			await axios.delete(`${API_URL}/clear`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			dispatch({ type: ACTIONS.CLEAR_CART });
