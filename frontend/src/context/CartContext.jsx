@@ -153,10 +153,18 @@ export const CartProvider = ({ children }) => {
 			);
 
 			// Set the merged cart from the response
-			if (response.data?.items) {
+			if (response.data?.cart?.items) {
+				const transformedItems = response.data.cart.items.map(item => ({
+					_id: item.menuItem,
+					name: item.name,
+					quantity: item.quantity,
+					price: item.price,
+					imageUrl: item.imageUrl,
+					description: item.description
+				}));
 				dispatch({
 					type: ACTIONS.SET_CART,
-					payload: response.data.items,
+					payload: transformedItems
 				});
 			} else {
 				// If no items in response, set empty cart

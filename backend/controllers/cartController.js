@@ -7,41 +7,71 @@ export const mergeGuestCart = async (req, res) => {
     const { guestCartId, guestCartItems } = req.body;
     const userId = req.user._id;
 
+    console.log('Received guest cart items:', guestCartItems); // Debug log
+
+    // Validate guest cart items
+    if (!guestCartItems || !Array.isArray(guestCartItems)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid guest cart items'
+      });
+    }
+
     // Find or create user's cart
     let userCart = await Cart.findOne({ user: userId, isGuestCart: false });
     if (!userCart) {
       userCart = new Cart({
         user: userId,
         isGuestCart: false,
+        cartId: `cart_${Math.random().toString(36).substring(2, 15)}`,
         items: [],
       });
     }
 
-    // Merge items from guest cart
-    if (guestCartItems && Array.isArray(guestCartItems)) {
-      for (const guestItem of guestCartItems) {
-        const existingItem = userCart.items.find(
-          (item) => item.menuItem.toString() === guestItem.menuItem.toString(),
-        );
+    console.log('Found/Created user cart:', userCart); // Debug log
 
-        if (existingItem) {
-          existingItem.quantity += guestItem.quantity;
-        } else {
-          // Add all item details when adding to cart
-          userCart.items.push({
-            menuItem: guestItem.menuItem,
-            name: guestItem.name,
-            quantity: guestItem.quantity,
-            price: guestItem.price,
-            imageUrl: guestItem.imageUrl,
-            description: guestItem.description,
-          });
-        }
+    // Merge items from guest cart
+    for (const guestItem of guestCartItems) {
+      if (!guestItem.menuItem) {
+        console.log('Skipping invalid guest item:', guestItem);
+        continue;
+      }
+
+      const menuItemId = guestItem.menuItem;
+      const existingItemIndex = userCart.items.findIndex(
+        (item) => item.menuItem.toString() === menuItemId.toString()
+      );
+
+      if (existingItemIndex !== -1) {
+        // Update existing item quantity
+        userCart.items[existingItemIndex].quantity += Number(guestItem.quantity || 1);
+      } else {
+        // Add new item
+        userCart.items.push({
+          menuItem: menuItemId,
+          name: guestItem.name || 'Unknown Item',
+          quantity: Number(guestItem.quantity || 1),
+          price: Number(guestItem.price || 0),
+          imageUrl: guestItem.imageUrl || '',
+          description: guestItem.description || ''
+        });
       }
     }
 
+    console.log('Updated cart before save:', userCart); // Debug log
+
+    // Mark the items array as modified
+    userCart.markModified('items');
+    
+    // Save the updated cart
     await userCart.save();
-    await userCart.populate("items.menuItem");
+
+    // Populate the cart items with menu item details
+    const populatedCart = await Cart.findById(userCart._id)
+      .populate('items.menuItem')
+      .lean(); // Convert to plain JavaScript object
+
+    console.log('Saved cart:', populatedCart); // Debug log
 
     // Delete the guest cart if it exists in the database
     if (guestCartId) {
@@ -51,10 +81,26 @@ export const mergeGuestCart = async (req, res) => {
       });
     }
 
-    res.status(200).json(userCart);
+    res.status(200).json({
+      success: true,
+      message: 'Cart merged successfully',
+      cart: {
+        ...populatedCart,
+        items: populatedCart.items.map(item => ({
+          menuItem: item.menuItem,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          imageUrl: item.imageUrl,
+          description: item.description
+        }))
+      }
+    });
   } catch (error) {
+    console.error('Error merging cart:', error); // Debug log
     res.status(500).json({
-      message: "Error merging cart",
+      success: false,
+      message: 'Error merging cart',
       error: error.message,
     });
   }

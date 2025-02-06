@@ -3,24 +3,15 @@ import mongoose from "mongoose";
 
 const CartItemSchema = new Schema({
   menuItem: {
-    type: Schema.Types.Mixed,
-    required: true,
-    validate: {
-      validator: (v) =>
-        mongoose.Types.ObjectId.isValid(v) || typeof v === "string",
-      message: "Invalid menuItem ID format",
-    },
-    foodItem: {
-      type: Schema.Types.ObjectId,
-      ref: "FoodItem",
-      required: true,
-    },
-    quantity: {
-      type: Number,
-      required: true,
-      min: 1,
-    },
+    type: Schema.Types.ObjectId,
+    ref: 'MenuItem',
+    required: true
   },
+  name: { type: String, required: true },
+  quantity: { type: Number, required: true, min: 1 },
+  price: { type: Number, required: true },
+  imageUrl: { type: String },
+  description: { type: String }
 });
 
 const CartSchema = new Schema(

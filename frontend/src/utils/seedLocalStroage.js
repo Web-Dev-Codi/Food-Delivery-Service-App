@@ -1,12 +1,15 @@
-// Function to generate a unique ID (simple implementation for testing)
-const generateId = () => {
-  return Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+// Function to generate a MongoDB-like ObjectId
+const generateObjectId = () => {
+  const timestamp = Math.floor(Date.now() / 1000).toString(16).padStart(8, '0');
+  const randomPart = Math.random().toString(16).slice(2, 14).padStart(12, '0');
+  const counter = Math.floor(Math.random() * 16777215).toString(16).padStart(4, '0');
+  return timestamp + randomPart + counter;
 };
 
-// Sample menu items to use for seeding
+// Sample menu items to use for seeding with fixed ObjectIds
 const sampleMenuItems = [
   {
-    _id: generateId(),
+    _id: "65c37a1f8e88d4e234567801", // Fixed ObjectId for Samosa
     name: "Samosa",
     quantity: 2,
     price: 5,
@@ -18,7 +21,7 @@ const sampleMenuItems = [
     restaurant: "67a08c18a817ad598a39bd54",
   },
   {
-    _id: generateId(),
+    _id: "65c37a1f8e88d4e234567802", // Fixed ObjectId for Butter Chicken
     name: "Butter Chicken",
     price: 15,
     quantity: 2,
@@ -30,7 +33,7 @@ const sampleMenuItems = [
     restaurant: "67a08c18a817ad598a39bd54",
   },
   {
-    _id: generateId(),
+    _id: "65c37a1f8e88d4e234567803", // Fixed ObjectId for Gulab Jamun
     name: "Gulab Jamun",
     price: 7,
     quantity: 3,
@@ -51,7 +54,7 @@ export const seedCartToLocalStorage = () => {
   // Create a guest ID if none exists
   let guestId = localStorage.getItem("guestId");
   if (!guestId) {
-    guestId = generateId();
+    guestId = generateObjectId();
     localStorage.setItem("guestId", guestId);
   }
 
