@@ -1,4 +1,4 @@
-import FoodItem from "../models/menuSchema.js";
+import FoodItem from "../models/foodItemSchema.js";
 import { ObjectId } from "mongodb";
 import menuItems from "../data/seeder.js";
 
