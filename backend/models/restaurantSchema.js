@@ -45,16 +45,16 @@ const RestaurantSchema = new Schema(
       default: 0,
       min: 0,
       max: 5,
-    },
+    }
   },
-  { timestamps: true }, // Automatically manages createdAt and updatedAt
+  { timestamps: true } // Automatically manages createdAt and updatedAt
 );
 
 RestaurantSchema.pre("save", function (next) {
-	const format = "MMMM Do YYYY, h:mm:ss a";
-	this.createdAt = moment(this.createdAt).format(format);
-	this.updatedAt = moment(this.updatedAt).format(format);
-	next();
+  const format = "MMMM Do YYYY, h:mm:ss a";
+  this.createdAt = moment(this.createdAt).format(format);
+  this.updatedAt = moment(this.updatedAt).format(format);
+  next();
 });
 
 RestaurantSchema.methods.calculateAverageRating = function () {

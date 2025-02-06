@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
+
 function AddRestaurant() {
   const [successMessage, setSuccessMessage] = useState(""); // State for success message
   const [errorMessage, setErrorMessage] = useState(""); // State for error message
@@ -55,7 +56,7 @@ function AddRestaurant() {
     setIsLoading(true);
     try {
       // Sending data to your backend
-      const response = await axios.post("http://localhost:3006/api/create", {
+      const response = await axios.post("http://localhost:8000/api/create", {
         name,
         location,
         images,
@@ -81,6 +82,7 @@ function AddRestaurant() {
         saturday: "",
         sunday: "",
       });
+      setSuccessMessage("");
     } catch (error) {
       console.error(error.response?.data || error.message); // Log detailed error
       setErrorMessage("An error occurred while adding the restaurant.");
