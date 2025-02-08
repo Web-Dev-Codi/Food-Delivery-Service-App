@@ -158,8 +158,8 @@ export const CartProvider = ({ children }) => {
 					(item) => ({
 						_id: item.menuItem,
 						name: item.name,
-						quantity: item.quantity,
 						price: item.price,
+						quantity: item.quantity,
 						imageUrl: item.imageUrl,
 						description: item.description,
 					})

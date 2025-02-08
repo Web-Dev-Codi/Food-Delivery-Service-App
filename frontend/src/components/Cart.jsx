@@ -47,7 +47,7 @@ function Cart() {
 				{Array.isArray(cart) &&
 					cart.map((item) => (
 						<CartItems
-							key={item.menuItem}
+							key={item._id}
 							item={item}
 						/>
 					))}
