@@ -8,6 +8,7 @@ import menuRouter from "./routes/menuRouter.js";
 import { seedData } from "./controllers/Menu.js";
 import userRouter from "./routes/userRouter.js";
 import cartRouter from "./routes/cartRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
@@ -32,10 +33,10 @@ app.get('/seed', (req, res) => {
 
 app.use("/", router);
 app.use("/data", userRouter);
-app.use("/api", cartRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/auth", authRoutes);
 
-// Not sure why we have both 2 /data endpoints
-// app.use("/data", router);
+
 app.use("/api", restaurantRouter);
 app.use("/food",menuRouter);
 

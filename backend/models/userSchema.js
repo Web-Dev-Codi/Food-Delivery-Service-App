@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 import moment from "moment";
+import crypto from "crypto";
 
 const UserSchema = new Schema(
   {
@@ -27,6 +28,8 @@ const UserSchema = new Schema(
       state: { type: String },
       zipCode: { type: String },
     },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
     cartId: {
       type: String,
       unique: true,
@@ -37,10 +40,9 @@ const UserSchema = new Schema(
       unique: true,
       sparse: true,
     },
-
-    //orderHistory: [{ type: Schema.Types.ObjectId, ref: "Order" }], // Ref to Order collection
   },
   { timestamps: true },
+
 );
 
 // Hash password before saving
@@ -58,6 +60,14 @@ UserSchema.pre("save", async function (next) {
 UserSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
+
+ // Method to generate a reset password token
+UserSchema.methods.generateResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  this.resetPasswordToken = resetToken;
+  this.resetPasswordExpires = Date.now() + 3600000; // Token expires in 1 hour
+  return resetToken;
+}; 
 
 const User = model("User", UserSchema);
 export default User;
