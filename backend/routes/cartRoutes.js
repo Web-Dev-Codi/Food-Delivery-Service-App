@@ -2,11 +2,10 @@ import { Router } from "express";
 import {
 	getCart,
 	addToCart,
-	updateQuantity,
+	updateCartItem,
 	removeFromCart,
 	clearCart,
-	mergeGuestCart,
-	syncCart,
+	transferGuestCart,
 } from "../controllers/cartController.js";
 import {
 	protect,
@@ -22,29 +21,21 @@ cartRouter.use(protect);
 cartRouter.use(verifyCartOwnership);
 
 // Get user's cart
-cartRouter.get("/cart", getCart);
-
-// Merge guest cart with user cart
-cartRouter.post("/cart/merge", mergeGuestCart);
-
-// Sync cart with backend
-cartRouter.post("/cart/sync", syncCart);
+cartRouter.get("/:cartId", getCart);
 
 // Add item to cart
 cartRouter.post("/add", verifyCartItem, verifyCartQuantity, addToCart);
 
 // Update item quantity
-cartRouter.put(
-	"/update-quantity",
-	verifyCartItem,
-	verifyCartQuantity,
-	updateQuantity
-);
+cartRouter.put("/update", verifyCartItem, verifyCartQuantity, updateCartItem);
 
 // Remove item from cart
-cartRouter.delete("/remove", verifyCartItem, removeFromCart);
+cartRouter.delete("/:cartId/item/:foodItemId", verifyCartItem, removeFromCart);
 
 // Clear entire cart
-cartRouter.delete("/clear", clearCart);
+cartRouter.delete("/:cartId", clearCart);
+
+// Merge guest cart with user cart
+cartRouter.post("/transfer", transferGuestCart);
 
 export default cartRouter;
