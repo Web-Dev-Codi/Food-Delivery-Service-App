@@ -30,9 +30,19 @@ const UserSchema = new Schema(
     },
     resetPasswordToken: String,
     resetPasswordExpires: Date,
-    //orderHistory: [{ type: Schema.Types.ObjectId, ref: "Order" }], // Ref to Order collection
+    cartId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+    guestCartId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
+
 );
 
 // Hash password before saving
