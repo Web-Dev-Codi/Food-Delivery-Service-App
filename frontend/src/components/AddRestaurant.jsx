@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import { set } from "mongoose";
 
 
 
@@ -85,6 +86,7 @@ function AddRestaurant() {
         saturday: "",
         sunday: "",
       });
+      setSuccessMessage("");
     } catch (error) {
       console.error(error.response?.data || error.message); // Log detailed error
       setErrorMessage("An error occurred while adding the restaurant.");
