@@ -11,7 +11,16 @@ const foodItemSchema = new Schema(
     },
     imageUrl: { type: String },
     availability: { type: String, enum: ["Available", "Not Available"] },
-    restaurant: { type: Schema.Types.ObjectId, ref: "Restaurant" },
+    restaurant: {
+      type: Schema.Types.ObjectId,
+      ref: "Restaurant",
+      required: true,
+    },
+    menuId: {
+      type: Schema.Types.ObjectId,
+      ref: "Menu",
+      required: true,
+    },
   },
   {
     timestamps: true,
