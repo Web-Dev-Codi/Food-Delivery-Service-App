@@ -1,4 +1,4 @@
-
+// switched to email service branch
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -18,3 +18,5 @@
         
          return transporter.sendMail(mailOptions);
         };
+
+
