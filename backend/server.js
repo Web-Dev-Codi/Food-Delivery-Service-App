@@ -19,6 +19,7 @@ app.use(
 		origin: "http://localhost:5173", // Replace with your front-end URL
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true,
+		allowedHeaders: "Content-Type, Authorization",
 	})
 );
 app.use(express.json());
@@ -30,7 +31,7 @@ app.get("/seed", (req, res) => {
 
 app.use("/", router);
 app.use("/data", userRouter);
-app.use("/api", cartRouter);
+app.use("/api/cart", cartRouter);
 
 // Not sure why we have both 2 /data endpoints
 // app.use("/data", router);

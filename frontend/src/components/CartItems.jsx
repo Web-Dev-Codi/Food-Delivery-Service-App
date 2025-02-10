@@ -3,26 +3,27 @@ import { useCart } from "../context/CartContext";
 
 function CartItems({ item }) {
 	const { updateQuantity, removeFromCart } = useCart();
+	const menuItem = item.menuItem || item;
 
 	return (
 		<div className="flex items-center justify-between p-4 border-b border-gray-200">
 			<div className="flex items-center space-x-4">
-				{item.imageUrl && (
+				{menuItem.imageUrl && (
 					<img
-						src={item.imageUrl}
-						alt={item.name || "Menu Item"}
+						src={menuItem.imageUrl}
+						alt={menuItem.name || "Menu Item"}
 						className="w-20 h-20 object-cover rounded-md"
 					/>
 				)}
 				<div>
 					<h3 className="font-semibold text-lg">
-						{item.name || `Menu Item ${item.name}`}
+						{menuItem.name || `Menu Item ${menuItem.name}`}
 					</h3>
-					{item.description && (
-						<p className="text-gray-600">{item.description}</p>
+					{menuItem.description && (
+						<p className="text-gray-600">{menuItem.description}</p>
 					)}
 					<p className="text-green-600 font-medium">
-						${Number(item.price).toFixed(2)}
+						${Number(menuItem.price).toFixed(2)}
 					</p>
 				</div>
 			</div>
@@ -33,7 +34,7 @@ function CartItems({ item }) {
 					<button
 						onClick={() =>
 							updateQuantity(
-								item._id,
+								menuItem._id,
 								Math.max(1, item.quantity - 1)
 							)
 						}
@@ -45,7 +46,7 @@ function CartItems({ item }) {
 					{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 					<button
 						onClick={() =>
-							updateQuantity(item._id, item.quantity + 1)
+							updateQuantity(menuItem._id, item.quantity + 1)
 						}
 						className="px-3 py-1 text-gray-600 hover:bg-gray-100">
 						+
@@ -53,7 +54,7 @@ function CartItems({ item }) {
 				</div>
 				{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 				<button
-					onClick={() => removeFromCart(item._id)}
+					onClick={() => removeFromCart(menuItem._id)}
 					className="text-red-500 hover:text-red-700">
 					Remove
 				</button>
@@ -64,13 +65,14 @@ function CartItems({ item }) {
 
 CartItems.propTypes = {
 	item: PropTypes.shape({
-		_id: PropTypes.string,
-		name: PropTypes.string,
-		description: PropTypes.string,
-		price: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-			.isRequired,
+		menuItem: PropTypes.shape({
+			_id: PropTypes.string,
+			name: PropTypes.string,
+			description: PropTypes.string,
+			price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+			imageUrl: PropTypes.string,
+		}),
 		quantity: PropTypes.number.isRequired,
-		imageUrl: PropTypes.string,
 	}).isRequired,
 };
 
