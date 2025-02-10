@@ -4,12 +4,12 @@ import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-gray-200 text-center py-6">
+    <footer className="flex flex-col bg-gradient-to-r from-[#4436BD] via-[#392679] to-[#050913] text-gray-200 text-center py-6">
       <div className="container mx-auto px-6">
         {/* 🚀 Quick Links */}
-        <nav className="flex flex-col md:flex-row justify-center space-y-3 md:space-y-0 md:space-x-6 text-lg font-medium">
+        <nav className="flex flex-wrap justify-center gap-3 md:gap-6 text-xs sm:text-sm md:text-base font-medium">
           <Link
-            to="/"
+            to="/dashboard"
             className="hover:text-white transition-all hover:scale-105"
           >
             Home
@@ -39,7 +39,6 @@ const Footer = () => {
             Contact
           </Link>
         </nav>
-
         {/* 📢 Newsletter Signup */}
         <div className="mt-6">
           <p className="text-sm">Subscribe to our newsletter for updates!</p>

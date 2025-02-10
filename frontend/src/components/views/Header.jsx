@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import LoginForm from "../LoginForm";
 
 const Header = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false); // Toggle for mobile menu
 
   return (
-    <header className="backdrop-blur-lg bg-neutral-800/10 text-neutral-300 py-4 px-6 flex justify-between items-center rounded-lg shadow-lg">
+    <header className="bg-gradient-to-b from-[#4436BD] via-[#33246C] to-[#050913] text-neutral-300 py-4 px-6 flex justify-between items-center rounded-lg shadow-lg">
       {/* 🍽️ Logo */}
       <Link to="/" className="text-xl font-bold text-yellow-400">
         🍽️ Food Delivery
@@ -77,7 +76,6 @@ const Header = () => {
             >
               ✖
             </button>
-            <LoginForm />
           </div>
         </div>
       )}

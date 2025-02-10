@@ -6,7 +6,8 @@ import AddRestaurant from "./components/AddRestaurant";
 import AddMenu from "./components/AddMenu";
 import AddReview from "./components/AddReview";
 import SingleRestaurant from "./components/SingleRestaurant";
-import LoginForm from "./components/LoginForm"; // Import LoginForm
+import LoginForm from "./components/LoginForm";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   return (
@@ -20,6 +21,12 @@ function App() {
           <Route path="restaurants/:id" element={<SingleRestaurant />} />
           <Route path="restaurants/:id/review" element={<AddReview />} />
           <Route path="menu" element={<AddMenu />} />
+        </Route>
+
+        {/* Dashboard route with nested routes */}
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route path="add-restaurant" element={<AddRestaurant />} />
+          <Route path="add-menu" element={<AddMenu />} />
         </Route>
 
         {/* Add the login route outside of Layouts to appear separately */}
