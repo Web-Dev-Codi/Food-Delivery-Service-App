@@ -1,7 +1,8 @@
 
 import FoodItem from "../models/menuSchema.js";
-import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
 import  menuItems from "../data/seeder.js";
+
 
 export const getMenus = async (req, res) => {
     try {
@@ -11,26 +12,18 @@ export const getMenus = async (req, res) => {
         }
         res.status(200).json({ message: "Food items found", data: foodItems });
     } catch (error) {
-        res.status(500).json({ message: error.message }); 
-    }
-};
-
-export const seedData = async (req, res) => {
-    try {  
-        await FoodItem.deleteMany({});
-        const data = await FoodItem.insertMany(menuItems);
-        res.status(200).json({ message: "Data seeded successfully", data: data });
-    } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
+
 
 export const getMenusByRestaurant = async (req, res) => {
     try {
         const { id } = req.params;
 
         // Validate the ID (if it's a MongoDB ObjectId)
-        if (!ObjectId.isValid(id)) {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ message: "Invalid restaurant ID" });
         }
 
@@ -50,9 +43,13 @@ export const getMenusByRestaurant = async (req, res) => {
 export const getMenusByCategory = async (req, res) => {
     try {
         const category = req.params.category;
-        const menus = await FoodItem.find({ category: category });
+        const menus = await FoodItem.find({ category: { $regex: category, $options: "i" } });
         if (menus.length === 0) {
             return res.status(404).json({ message: "No food items found" });
+        }
+        const allowedCategories = ['Main Course', 'Dessert', 'Starters', 'Beverages'];
+        if (!allowedCategories.includes(category)) {
+            return res.status(400).json({ message: "Invalid category" });
         }
         res.status(200).json({ message: "Food items found", data: menus });
     } catch (error) {

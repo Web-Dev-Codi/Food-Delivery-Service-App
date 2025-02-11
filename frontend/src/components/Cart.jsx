@@ -44,12 +44,13 @@ function Cart() {
 			</div>
 
 			<div className="space-y-4 mb-6">
-				{Array.isArray(cart) && cart.map((item) => (
-					<CartItems
-						key={item._id || item.menuItem}
-						item={item}
-					/>
-				))}
+				{Array.isArray(cart) &&
+					cart.map((item, index) => (
+						<CartItems
+							key={index}
+							item={item}
+						/>
+					))}
 			</div>
 
 			<div className="border-t pt-4">
