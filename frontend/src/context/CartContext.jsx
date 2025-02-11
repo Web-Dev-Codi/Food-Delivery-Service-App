@@ -149,92 +149,6 @@ export const CartProvider = ({ children }) => {
 		}
 	}, []);
 
-	// Merge guest cart with user cart on login
-	const mergeCartsOnLogin = async (guestCart) => {
-		const token = localStorage.getItem("token");
-		if (!token || !guestCart) return;
-
-		try {
-			dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-			// Clear guest cart from localStorage before merging to prevent duplication
-			localStorage.removeItem("cart");
-
-			const response = await axios.post(
-				`${API_URL}/merge`,
-				{
-					guestCartId: guestCart.cartId,
-					guestCartItems: guestCart.items,
-				},
-				{
-					headers: { Authorization: `Bearer ${token}` },
-				}
-			);
-
-			// Set the merged cart from the response
-			if (response.data?.cart?.items) {
-				const transformedItems = response.data.cart.items.map(
-					(item) => ({
-						menuItem: {
-							_id: item.menuItem?._id,
-							name: item.menuItem?.name,
-							price: item.menuItem?.price,
-							description: item.menuItem?.description,
-							imageUrl: item.menuItem?.imageUrl,
-						},
-						quantity: item.quantity,
-					})
-				);
-				dispatch({
-					type: ACTIONS.SET_CART,
-					payload: transformedItems,
-				});
-			} else {
-				// If no items in response, set empty cart
-				dispatch({ type: ACTIONS.SET_CART, payload: [] });
-			}
-		} catch (error) {
-			console.error("Error merging carts:", error);
-			dispatch({
-				type: ACTIONS.SET_ERROR,
-				payload:
-					error.response?.data?.message || "Failed to merge carts",
-			});
-			// Reset cart to empty on error
-			dispatch({ type: ACTIONS.SET_CART, payload: [] });
-		} finally {
-			dispatch({ type: ACTIONS.SET_LOADING, payload: false });
-		}
-	};
-
-	// Save cart to localStorage
-	const saveToLocalStorage = (cartItems) => {
-		if (!Array.isArray(cartItems)) return;
-
-		// Only save to localStorage for guest users
-		const token = localStorage.getItem("token");
-		if (token) return;
-
-		const transformedItems = cartItems.map((item) => ({
-			menuItem: {
-				_id: item.menuItem._id,
-				name: item.menuItem.name,
-				price: item.menuItem.price,
-				description: item.menuItem.description,
-				imageUrl: item.menuItem.imageUrl,
-			},
-			quantity: item.quantity,
-		}));
-
-		localStorage.setItem(
-			"cart",
-			JSON.stringify({
-				user: localStorage.getItem("guestId") || "guest",
-				isGuestCart: true,
-				items: transformedItems,
-			})
-		);
-	};
-
 	// Fetch cart items from backend or localStorage
 	const fetchCart = async () => {
 		const token = localStorage.getItem("token");
@@ -247,14 +161,15 @@ export const CartProvider = ({ children }) => {
 					// Transform items to match expected structure
 					// Keep the original structure with menuItem object
 					const transformedItems = parsedCart.items.map((item) => ({
-						menuItem: {
-							_id: item.menuItem?._id,
-							name: item.menuItem?.name,
-							price: item.menuItem?.price,
-							description: item.menuItem?.description,
-							imageUrl: item.menuItem?.imageUrl,
-						},
-						quantity: item.quantity,
+						cartItems: [
+							{
+								name: item.menuItem?.name,
+								price: item.menuItem?.price,
+								description: item.menuItem?.description,
+								imageUrl: item.menuItem?.imageUrl,
+								availability: item.menuItem?.availability,
+							}
+						]
 					}));
 					dispatch({
 						type: ACTIONS.SET_CART,

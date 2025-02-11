@@ -18,7 +18,7 @@ import AddMenu from "./components/AddMenu";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import Cart from "./components/Cart";
-import TestCart from "./components/TestCart";
+// import TestCart from "./components/TestCart";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,7 +29,7 @@ const router = createBrowserRouter(
       <Route path="/login" element={<LoginForm />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={<Checkout />} />
-      <Route path="/test-cart" element={<TestCart />} />
+      {/* <Route path="/test-cart" element={<TestCart />} /> */}
       <Route path="/add-restaurant" element={<AddRestaurant />} />
       <Route path="/restaurants" element={<ListRestaurant />} />
       <Route path="/restaurants/:id" element={<SingleRestaurant />} />

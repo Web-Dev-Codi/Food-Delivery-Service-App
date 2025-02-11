@@ -27,9 +27,16 @@ const UserSchema = new Schema(
 			state: { type: String },
 			zipCode: { type: String },
 		},
-		cart: {
-			type: String,
-		},
+		cartItems: [
+			{
+				foodItem: {
+					type: Schema.Types.ObjectId,
+					ref: "FoodItem",
+					required: true,
+				},
+				quantity: { type: Number, default: 1 },
+			},
+		],
 	},
 	{ timestamps: true }
 );

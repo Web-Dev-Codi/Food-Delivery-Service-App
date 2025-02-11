@@ -15,26 +15,24 @@ connectDB();
 const app = express();
 
 app.use(
-	cors({
-		origin: "http://localhost:5173", // Replace with your front-end URL
-		methods: ["GET", "POST", "PUT", "DELETE"],
-		credentials: true,
-		allowedHeaders: "Content-Type, Authorization",
-	})
+  cors({
+    origin: "http://localhost:5173", // Replace with your front-end URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+    allowedHeaders: "Content-Type, Authorization",
+  }),
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/seed", (req, res) => {
-	seedData(req, res);
+  seedData(req, res);
 });
 
 app.use("/", router);
 app.use("/data", userRouter);
 app.use("/api/cart", cartRouter);
 
-// Not sure why we have both 2 /data endpoints
-// app.use("/data", router);
 app.use("/api", restaurantRouter);
 app.use("/food", menuRouter);
 

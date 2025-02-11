@@ -5,30 +5,26 @@ import {
 	updateQuantity,
 	removeFromCart,
 	clearCart,
-	syncCart,
 } from "../controllers/cartController.js";
-// import { protect, verifyCartOwnership } from "../middleware/authMiddleware.js";
+import { protect, verifyCartOwnership } from "../middleware/authMiddleware.js";
 
 const cartRouter = Router();
 
 // All routes are protected - require authentication
-// cartRouter.use(protect);
-// cartRouter.use(verifyCartOwnership);
+cartRouter.use(protect);
+cartRouter.use(verifyCartOwnership);
 
 // Get user's cart
 cartRouter.get("/", getCart);
-
-// Sync cart with backend
-cartRouter.post("/sync", syncCart);
 
 // Add item to cart
 cartRouter.post("/add", addToCart);
 
 // Update item quantity
-cartRouter.put("/update/:menuItemId", updateQuantity);
+cartRouter.put("/update-quantity", updateQuantity);
 
 // Remove item from cart
-cartRouter.delete("/remove/:menuItemId", removeFromCart);
+cartRouter.delete("/remove/:foodItemId", removeFromCart);
 
 // Clear entire cart
 cartRouter.delete("/clear", clearCart);
