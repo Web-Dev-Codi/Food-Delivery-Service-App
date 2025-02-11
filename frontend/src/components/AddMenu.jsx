@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const AddMenuForm = () => {
@@ -144,28 +144,28 @@ const AddMenuForm = () => {
         </select>
       </div>
 
-      {/* Image Upload */}
-      <div>
-        <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">
-          Image:
-        </label>
-        <button
-          type="button"
-          onClick={openCloudinaryWidget}
-          className="mt-2 inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none"
-        >
-          Upload Image
-        </button>
-        {formData.imageUrl && (
-          <div className="mt-4">
-            <img
-              src={formData.imageUrl}
-              alt="Uploaded"
-              className="w-32 h-32 object-cover rounded-md"
-            />
-          </div>
-        )}
-      </div>
+     {/* Image Upload */}
+     <div>
+     <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">
+       Image:
+     </label>
+     <button
+       type="button"
+       onClick={openCloudinaryWidget}
+       className="mt-2 inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md shadow-sm hover:bg-blue-700 focus:outline-none"
+     >
+       Upload Image
+     </button>
+     {formData.imageUrl && (
+       <div className="mt-4">
+         <img
+           src={formData.imageUrl}
+           alt="Uploaded"
+           className="w-32 h-32 object-cover rounded-md"
+         />
+       </div>
+     )}
+   </div>
 
 
       <div>
