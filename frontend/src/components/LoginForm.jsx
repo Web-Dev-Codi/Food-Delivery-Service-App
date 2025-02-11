@@ -13,7 +13,7 @@ function LoginForm() {
 
 
 		axios
-			.post("http://localhost:8000/data/login", { email, password })
+			.post("http://localhost:3006/data/login", { email, password })
 			.then((res) => {
 				localStorage.setItem("token", res.data.token);
 				setSuccessMessage(res.data.message);

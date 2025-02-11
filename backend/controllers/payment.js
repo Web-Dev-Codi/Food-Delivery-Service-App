@@ -2,7 +2,7 @@ import Stripe from 'stripe';
 import User from '../models/userSchema.js';
 import Payment from '../models/paymentSchema.js';
 import dotenv from 'dotenv';
-import nodemailer from 'nodemailer';
+import {  sendPaymentSuccessEmail } from './emailService.js';
 
 dotenv.config();
 
@@ -122,12 +122,20 @@ export const handleStripeWebhook = async (req, res) => {
                     { stripePaymentIntentId: paymentIntent.id },
                     { status: "Succeeded" },
                     { new: true }
-                );
+                ).populate('userId');
 
                 if (!updatedPayment) {
                     console.error("❌ Payment record NOT FOUND in DB!");
+                    return res.status(404).json({ message: "Payment record not found" });
+                }
+
+                console.log("✅ Payment updated in DB:", updatedPayment);
+
+                if (!updatedPayment.userId) {
+                     console.error("❌ User not found for email notification.");
                 } else {
-                    console.log("✅ Payment updated in DB:", updatedPayment);
+                    await sendPaymentSuccessEmail(updatedPayment.userId, updatedPayment);
+                    console.log(`📧 Payment success email sent to: ${updatedPayment.userId.email}`);
                 }
 
                 break;
