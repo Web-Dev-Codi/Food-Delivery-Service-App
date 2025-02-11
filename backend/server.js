@@ -8,8 +8,10 @@ import { seedData } from "./controllers/seed.js";
 import { handleStripeWebhook } from "./controllers/payment.js";
 import paymentRoutes from "./routes/paymentRoute.js";
 import menuRouter from "./routes/menuRouter.js";
-// import userRouter from "./routes/userRouter.js";
-// import cartRouter from "./routes/cartRoutes.js";
+import { seedData } from "./controllers/Menu.js";
+import userRouter from "./routes/userRouter.js";
+import cartRouter from "./routes/cartRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 connectDB();
 
@@ -29,9 +31,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/payment', paymentRoutes);  //paymentRouter
 
-
-app.use("/", router); //userRouter
-app.use("/data", router);  //userRouter
+app.use("/", router);
+app.use("/data", userRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/auth", authRoutes);
 app.use("/api", restaurantRouter);
 app.use("/food", menuRouter);
 
