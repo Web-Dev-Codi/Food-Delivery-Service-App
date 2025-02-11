@@ -76,7 +76,7 @@ export const seedCartToLocalStorage = () => {
 				availability: item.availability,
 				restaurant: item.restaurant,
 			},
-			quantity: index === 0 ? 2 : index === 1 ? 2 : 3, // Fixed quantities for each item
+			quantity: 
 		})),
 		total: Number(
 			sampleMenuItems

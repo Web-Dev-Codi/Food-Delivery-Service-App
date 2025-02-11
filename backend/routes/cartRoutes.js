@@ -5,22 +5,18 @@ import {
 	updateQuantity,
 	removeFromCart,
 	clearCart,
-	mergeGuestCart,
 	syncCart,
 } from "../controllers/cartController.js";
-import { protect, verifyCartOwnership } from "../middleware/authMiddleware.js";
+// import { protect, verifyCartOwnership } from "../middleware/authMiddleware.js";
 
 const cartRouter = Router();
 
 // All routes are protected - require authentication
-cartRouter.use(protect);
-cartRouter.use(verifyCartOwnership);
+// cartRouter.use(protect);
+// cartRouter.use(verifyCartOwnership);
 
 // Get user's cart
 cartRouter.get("/", getCart);
-
-// Merge guest cart with user cart
-cartRouter.post("/merge", mergeGuestCart);
 
 // Sync cart with backend
 cartRouter.post("/sync", syncCart);

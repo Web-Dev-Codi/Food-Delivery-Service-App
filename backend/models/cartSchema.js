@@ -1,13 +1,13 @@
 import { Schema, model } from "mongoose";
 
-const CartItemSchema = new Schema({
-	menuItem: {
-		type: Schema.Types.ObjectId,
-		ref: "FoodItem",
-		required: true,
-	},
-	quantity: { type: Number, required: true, min: 1 },
-});
+// const CartItemSchema = new Schema({
+// 	menuItem: {
+// 		type: Schema.Types.ObjectId,
+// 		ref: "FoodItem",
+// 		required: true,
+// 	},
+// 	quantity: { type: Number, required: true, min: 1 },
+// });
 
 const CartSchema = new Schema(
 	{
@@ -36,7 +36,8 @@ const CartSchema = new Schema(
 			type: Date,
 			default: Date.now,
 		},
-		items: [CartItemSchema],
+		// items: [CartItemSchema],
+		items: String,
 		total: {
 			type: Number,
 			default: 0,
