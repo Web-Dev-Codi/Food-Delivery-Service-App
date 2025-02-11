@@ -4,7 +4,7 @@
 
 
 const menuItems = [
-  
+
     {
       "name": "Samosa",
       "price": 5,
@@ -249,7 +249,7 @@ const menuItems = [
       availability: "Available",
       restaurant: "67a08dfda817ad598a39bd58",
     },
-  
+
     {
       name: "Chicken fajitas",
       price: 12,
@@ -327,7 +327,7 @@ const menuItems = [
       availability: "Available",
       restaurant: "67a08dfda817ad598a39bd58",
     },
-  
+
     {
       name: "Margarita",
       price: 4,
@@ -350,7 +350,7 @@ const menuItems = [
       availability: "Available",
       restaurant: "67a08dfda817ad598a39bd58",
     },
-  
+
     {
       name: "Esquites",
       price: 8,
@@ -395,7 +395,7 @@ const menuItems = [
       availability: "Available",
       restaurant: "67a08f0fa817ad598a39bd5a",
     },
-  
+
     {
       name: "Pollo Asado",
       price: 8,
@@ -407,7 +407,7 @@ const menuItems = [
       availability: "Available",
       restaurant: "67a08f0fa817ad598a39bd5a",
     },
-  
+
     {
       name: "pabellon Criollo",
       price: 10,
@@ -485,7 +485,7 @@ const menuItems = [
       availability: "Available",
       restaurant: "67a08f0fa817ad598a39bd5a",
     },
-  
+
     {
       name: "De Dulce de Leche",
       price: 6,
@@ -508,7 +508,7 @@ const menuItems = [
       availability: "Available",
       restaurant: "67a08f0fa817ad598a39bd5a",
     },
-  
+
     {
       name: "Torta Tres Leches",
       price: 4,
@@ -573,7 +573,7 @@ const menuItems = [
       availability: "Available",
       restaurant: "67a08cdba817ad598a39bd56",
     },
-  
+
     {
       name: "Chicken Massaman Curry",
       price: 14,
@@ -651,7 +651,7 @@ const menuItems = [
       availability: "Available",
       restaurant: "67a08cdba817ad598a39bd56",
     },
-  
+
     {
       name: "Roselle Juice",
       price: 3,
@@ -674,9 +674,9 @@ const menuItems = [
       availability: "Available",
       restaurant: "67a08cdba817ad598a39bd56",
     }
-  
-  
-  
+
+
+
 ];
 export default menuItems;
 

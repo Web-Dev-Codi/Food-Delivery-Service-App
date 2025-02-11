@@ -12,7 +12,7 @@ export const getMenus = async (req, res) => {
         }
         res.status(200).json({ message: "Food items found", data: foodItems });
     } catch (error) {
-        res.status(500).json({ message: error.message }); 
+        res.status(500).json({ message: error.message });
     }
 };
 

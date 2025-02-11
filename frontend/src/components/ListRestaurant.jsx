@@ -13,7 +13,10 @@ function ListRestaurant() {
         setRestaurants(response.data.data);
         console.log("restaurants", response.data.data);
       } catch (error) {
-        setErrorMessage(error.response?.data?.message || "An error occurred while fetching restaurants");
+        setErrorMessage(
+          error.response?.data?.message ||
+          "An error occurred while fetching restaurants",
+        );
         console.error(error);
       }
     };
@@ -93,3 +96,4 @@ function ListRestaurant() {
 }
 
 export default ListRestaurant;
+

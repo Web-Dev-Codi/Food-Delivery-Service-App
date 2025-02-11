@@ -1,9 +1,22 @@
 import jwt from "jsonwebtoken";
-import User from "../models/userSchema.js";
+// import User from "../models/userSchema.js";
 
 
-export const verifyToken = async (req, res, next) => {
-    const authHeader = req.headers.authorization;
+export const verifyToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  // // For cart operations, allow guest access with a temporary user ID
+  // if (req.path.startsWith("/api/cart")) {
+  //   const guestId = req.headers["x-guest-id"];
+  //   if (guestId) {
+  //     req.user = {
+  //       _id: guestId,
+  //       userId: guestId, // Add userId for consistency
+  //       isGuest: true,
+  //     };
+  //     return next();
+  //   }
+  // }
 
     if (!authHeader) {
         return res.status(401).json({
@@ -17,21 +30,13 @@ export const verifyToken = async (req, res, next) => {
           message: "Malformed token. Ensure you are using 'Bearer <token>'.",
         });
       }
-    
+
       try {
         // Verify the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      if (!decoded.userId) {
-        return res.status(401).json({
-          message: "Invalid token. No user id found.",
-        });
-      }
-        const validUser = await User.findById(decoded.userId);
-        if (!validUser) return res.status(401).json({ message: "Invalid user. Please sign up or log in." });
-        req.user = validUser; // Attach user data to request object
-        console.log("Verified User:", req.user);
+        req.user = decoded; // Attach user data to the request object
         next(); // Proceed to the next middleware
-      } 
+      }
       catch (err) {
         // Handle specific JWT errors
         if (err.name === "TokenExpiredError") {

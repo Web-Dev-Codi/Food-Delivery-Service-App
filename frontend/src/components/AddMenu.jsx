@@ -11,7 +11,7 @@ const AddMenuForm = () => {
     availability: "Available", // Match backend enum
     restaurant: "", // Store restaurant ID here
   });
- 
+
   const [restaurants, setRestaurants] = useState([]); // Store list of restaurants
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const AddMenuForm = () => {
       [name]: value,
     });
   };
-   
+
   const openCloudinaryWidget = () => {
     window.cloudinary.openUploadWidget(
       {
@@ -42,7 +42,7 @@ const AddMenuForm = () => {
         uploadPreset: 'menu_upload', // Your unsigned upload preset
         multiple: false,
         sources: ['local', 'url', 'camera'], // Allow various sources
-       
+
       },
       (error, result) => {
         if (!error && result && result.event === "success") {
@@ -214,7 +214,7 @@ const AddMenuForm = () => {
           Add Menu
         </button>
       </div>
-     
+
     </form>
   );
 };

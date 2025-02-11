@@ -1,16 +1,17 @@
 import express from "express";
-import mongoose from "mongoose";
+import connectDB from "./utils/db.js";
+import router from "./routes/routes.js";
 import dotenv from "dotenv";
-import cors from "cors";
-
-import router from "./routes/userRouter.js";
+dotenv.config();
 import restaurantRouter from "./routes/restaurantRoute.js";
-import menuRouter from "./routes/menuRouter.js";
 import { seedData } from "./controllers/seed.js";
 import { handleStripeWebhook } from "./controllers/payment.js";
 import paymentRoutes from "./routes/paymentRoute.js";
+import menuRouter from "./routes/menuRouter.js";
+// import userRouter from "./routes/userRouter.js";
+// import cartRouter from "./routes/cartRoutes.js";
 
-dotenv.config();
+connectDB();
 
 const app = express();
 
@@ -37,17 +38,6 @@ app.use("/food", menuRouter);
 // ✅ Seed database
 app.post("/seed", seedData);
 
-// ✅ Connect to MongoDB
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.DB_URI);
-    console.log("✅ MongoDB connected");
-  } catch (error) {
-    console.error("❌ MongoDB connection failed", error);
-    process.exit(1);
-  }
-};
-connectDB();
 
 // ✅ Start server
 const port = process.env.PORT || 5000;

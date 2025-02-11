@@ -4,7 +4,7 @@ import User from "../models/userSchema.js";
 export const getRestaurants = async (req, res) => {
     try{
         const restaurants = await Restaurant.find();
-        if(restaurants.length === 0){
+        if(!restaurants){
             return res.status(404).json({
                 message: "No restaurants found",
             });
@@ -21,28 +21,27 @@ export const getRestaurants = async (req, res) => {
             error: err.message
         });
     }
-   
+
 }
 
 export const getRestaurantById = async (req, res) => {
-    try{
-        const restaurant = await Restaurant.findById(req.params.id);
-        if(!restaurant){
-            return res.status(404).json({
-                message: "Restaurant not found",
-            });
-        }
-        res.status(200).json({
-            message: "Restaurant fetched successfully",
-            data: restaurant
-        });
+  try {
+    const restaurant = await Restaurant.findById(req.params.id);
+    if (!restaurant) {
+      return res.status(404).json({
+        message: "Restaurant not found",
+      });
     }
-    catch(err){
-        res.status(500).json({
-            message: "An error occurred while fetching restaurant",
-            error: err.message
-        });
-    }
+    res.status(200).json({
+      message: "Restaurant fetched successfully",
+      data: restaurant,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "An error occurred while fetching restaurant",
+      error: err.message,
+    });
+  }
 };
 
 export const createRestaurant = async (req, res) => {
@@ -51,11 +50,6 @@ export const createRestaurant = async (req, res) => {
         if(!name || !location || !images || !contact || !operatingHours){
             return res.status(400).json({
                 message: "Please provide all required fields",
-            });
-        }
-        if(!Array.isArray(images) || images.length === 0){
-            return res.status(400).json({
-                message: "Images must be an array with at least one image URL",
             });
         }
         const validImageURLs = images.every((imageUrl) => {
@@ -67,7 +61,7 @@ export const createRestaurant = async (req, res) => {
             });
           }
         const newRestaurant = await Restaurant.create({ name,location,images,contact,operatingHours});
-       
+
         if(!newRestaurant){
             return res.status(400).json({
                 message: "An error occurred while creating restaurant",
@@ -88,44 +82,48 @@ export const createRestaurant = async (req, res) => {
 };
 
 export const updateRestaurant = async (req, res) => {
-    try{
-        const updatedRestaurant = await Restaurant.findByIdAndUpdate(req.params.id, req.body, {new: true});
-        if(!updatedRestaurant){
-            return res.status(404).json({
-                message: "Restaurant not found",
-            });
-        }
-        res.status(200).json({
-            message: "Restaurant updated successfully", data: updatedRestaurant });
+  try {
+    const updatedRestaurant = await Restaurant.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true },
+    );
+    if (!updatedRestaurant) {
+      return res.status(404).json({
+        message: "Restaurant not found",
+      });
     }
-
-    catch(err){
-        res.status(500).json({
-            message: "An error occurred while updating restaurant",
-            error: err.message
-        });
-    }
-}
+    res.status(200).json({
+      message: "Restaurant updated successfully",
+      data: updatedRestaurant,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "An error occurred while updating restaurant",
+      error: err.message,
+    });
+  }
+};
 
 export const deleteRestaurant = async (req, res) => {
-    try{
-        const deletedRestaurant = await Restaurant.findByIdAndDelete(req.params.id);
-        if(!deletedRestaurant){
-            return res.status(404).json({
-                message: "Restaurant not found",
-            });
-        }
-        res.status(200).json({
-            message: "Restaurant deleted successfully", data: deletedRestaurant });
+  try {
+    const deletedRestaurant = await Restaurant.findByIdAndDelete(req.params.id);
+    if (!deletedRestaurant) {
+      return res.status(404).json({
+        message: "Restaurant not found",
+      });
     }
-
-    catch(err){
-        res.status(500).json({
-            message: "An error occurred while deleting restaurant",
-            error: err.message
-        });
-    }
-}
+    res.status(200).json({
+      message: "Restaurant deleted successfully",
+      data: deletedRestaurant,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "An error occurred while deleting restaurant",
+      error: err.message,
+    });
+  }
+};
 
 
 export const addReview = async (req, res) => {
@@ -147,7 +145,7 @@ export const addReview = async (req, res) => {
               });
         }
 
-       // Ensure restaurant exists 
+       // Ensure restaurant exists
         const restaurant = await Restaurant.findById(req.params.id);
         if (!restaurant) {
           return res.status(404).json({

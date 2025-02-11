@@ -10,39 +10,27 @@ function SingleRestaurant() {
   const [errorMessage, setErrorMessage] = useState('');
   const [menuCategory, setMenuCategory] = useState('Select');
 
-  useEffect(() => {
-    const fetchRestaurant = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`http://localhost:3006/api/restaurants/${id}`);
-        setRestaurant(response.data.data);
-
-        const menuResponse = await axios.get(`http://localhost:3006/food/menu/restaurant/${id}`);
-        setMenus(menuResponse.data.data);
-      } catch (error) {
-        const errorMessage = error.response?.data?.message || "An error occurred while fetching the restaurant details";
-        setErrorMessage(errorMessage);
-        console.error(error);
-      }
-      setLoading(false);
-    };
-    fetchRestaurant();
-  }, [id]);
-
-  if (loading) return <div>Loading...</div>;
-  if (!restaurant) return <div>Loading...</div>;
-
-  const handleClick = async () => {
+useEffect(() => {
+  const fetchRestaurant = async () => {
     try {
-      console.log("Add to cart clicked");
+      const response = await axios.get(`http://localhost:3006/api/restaurants/${id}`);
+      setRestaurant(response.data.data);
     } catch (error) {
+      setErrorMessage(error.response?.data?.data.message || "An error occurred while fetching the restaurant details");
       console.error(error);
     }
-  };
+      setLoading(false); // Set loading to false after fetching
 
-  // Filter menu based on selected category
-  const filteredMenus =
-    menuCategory === "Select" ? menus : menus.filter((menu) => menu.category === menuCategory);
+  };
+  fetchRestaurant();
+}, [id]);
+if (loading) {
+  return <div>Loading...</div>; // Show a loading message while fetching data
+}
+
+if (!restaurant) {
+  return <div>Loading...</div>;
+}
 
   return (
     <>

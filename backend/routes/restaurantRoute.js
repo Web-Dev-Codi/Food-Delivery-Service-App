@@ -13,6 +13,4 @@ restaurantRouter.post('/:id/reviews',verifyToken, addReview);
 restaurantRouter.patch("/update/:id", updateRestaurant);
 restaurantRouter.delete("/delete/:id", deleteRestaurant);
 
-
-
 export default restaurantRouter;
