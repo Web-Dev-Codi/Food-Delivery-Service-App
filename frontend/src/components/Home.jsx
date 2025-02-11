@@ -5,7 +5,7 @@ import { FaSearch, FaUser, FaBiking, FaWalking } from "react-icons/fa";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import BottomNav from "./BottomNav";
+import BottomNav from "./views/BottomNav";
 
 const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
