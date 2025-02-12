@@ -126,7 +126,7 @@ function ListRestaurant() {
                   {/* Add Review Button */}
                   <div className="text-center mt-4">
                     <Link
-                      to={`/restaurants/${restaurant._id}/review`}
+                      to={`/restaurants/${restaurant._id}/reviews`}
                       className="text-red-500 font-bold hover:underline"
                     >
                       Add a review
