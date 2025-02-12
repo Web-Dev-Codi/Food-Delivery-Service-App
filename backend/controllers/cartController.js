@@ -1,20 +1,131 @@
 import Cart from "../models/cartSchema.js";
 import MenuItem from "../models/menuItemSchema.js";
 
+// Merge guest cart with user cart
+export const mergeGuestCart = async (req, res) => {
+  try {
+    const { guestCartId, guestCartItems } = req.body;
+    const userId = req.user._id;
+
+    console.log('Received guest cart items:', guestCartItems); // Debug log
+
+    // Validate guest cart items
+    if (!guestCartItems || !Array.isArray(guestCartItems)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid guest cart items'
+      });
+    }
+
+    // Find or create user's cart
+    let userCart = await Cart.findOne({ user: userId, isGuestCart: false });
+    if (!userCart) {
+      userCart = new Cart({
+        user: userId,
+        isGuestCart: false,
+        cartId: `cart_${Math.random().toString(36).substring(2, 15)}`,
+        items: [],
+      });
+    }
+
+    console.log('Found/Created user cart:', userCart); // Debug log
+
+    // Merge items from guest cart
+    for (const guestItem of guestCartItems) {
+      if (!guestItem.menuItem) {
+        console.log('Skipping invalid guest item:', guestItem);
+        continue;
+      }
+
+      const menuItemId = guestItem.menuItem;
+      const existingItemIndex = userCart.items.findIndex(
+        (item) => item.menuItem.toString() === menuItemId.toString()
+      );
+
+      if (existingItemIndex !== -1) {
+        // Update existing item quantity
+        userCart.items[existingItemIndex].quantity += Number(guestItem.quantity || 1);
+      } else {
+        // Add new item
+        userCart.items.push({
+          menuItem: menuItemId,
+          name: guestItem.name || 'Unknown Item',
+          quantity: Number(guestItem.quantity || 1),
+          price: Number(guestItem.price || 0),
+          imageUrl: guestItem.imageUrl || '',
+          description: guestItem.description || ''
+        });
+      }
+    }
+
+    console.log('Updated cart before save:', userCart); // Debug log
+
+    // Mark the items array as modified
+    userCart.markModified('items');
+    
+    // Save the updated cart
+    await userCart.save();
+
+    // Populate the cart items with menu item details
+    const populatedCart = await Cart.findById(userCart._id)
+      .populate('items.menuItem')
+      .lean(); // Convert to plain JavaScript object
+
+    console.log('Saved cart:', populatedCart); // Debug log
+
+    // Delete the guest cart if it exists in the database
+    if (guestCartId) {
+      await Cart.findOneAndDelete({
+        cartId: guestCartId,
+        isGuestCart: true,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Cart merged successfully',
+      cart: {
+        ...populatedCart,
+        items: populatedCart.items.map(item => ({
+          menuItem: item.menuItem,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          imageUrl: item.imageUrl,
+          description: item.description
+        }))
+      }
+    });
+  } catch (error) {
+    console.error('Error merging cart:', error); // Debug log
+    res.status(500).json({
+      success: false,
+      message: 'Error merging cart',
+      error: error.message,
+    });
+  }
+};
+
 // Get user's cart
 export const getCart = async (req, res) => {
   try {
-    const userId = req.user._id; // Assuming user is attached by auth middleware
-    let cart = await Cart.findOne({ user: userId })
-      .populate('items.menuItem');
-    
+    const userId = req.user.isGuest ? req.user._id : req.user.userId;
+    let cart = await Cart.findOne({ user: userId }).populate("items.menuItem");
+
     if (!cart) {
-      cart = await Cart.create({ user: userId, items: [] });
+      cart = await Cart.create({
+        user: userId,
+        items: [],
+        isGuestCart: req.user.isGuest,
+      });
     }
-    
+
     res.status(200).json(cart);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching cart", error: error.message });
+    res.status(500).json({
+      message: "Error fetching cart",
+      error: error.message,
+    });
   }
 };
 
@@ -22,7 +133,14 @@ export const getCart = async (req, res) => {
 export const addToCart = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { menuItemId, quantity = 1 } = req.body;
+    const {
+      menuItemId,
+      quantity = 1,
+      name,
+      price,
+      imageUrl,
+      description,
+    } = req.body;
 
     // Validate menu item
     const menuItem = await MenuItem.findById(menuItemId);
@@ -37,27 +155,46 @@ export const addToCart = async (req, res) => {
 
     // Check if item already exists in cart
     const existingItemIndex = cart.items.findIndex(
-      item => item.menuItem.toString() === menuItemId
+      (item) => item.menuItem.toString() === menuItemId,
     );
 
     if (existingItemIndex > -1) {
       // Update existing item quantity
-      cart.items[existingItemIndex].quantity += quantity;
+      cart.items[existingItemIndex].quantity += Number(quantity);
     } else {
-      // Add new item
+      // Add new item with all details
       cart.items.push({
         menuItem: menuItemId,
-        quantity,
-        price: menuItem.price
+        name: name || menuItem.foodItem.name,
+        quantity: Number(quantity),
+        price: price || menuItem.foodItem.price,
+        imageUrl: imageUrl || menuItem.foodItem.imageUrl,
+        description: description || menuItem.foodItem.description,
       });
     }
 
     await cart.save();
-    await cart.populate('items.menuItem');
-    
-    res.status(200).json(cart);
+    await cart.populate("items.menuItem");
+
+    res.status(200).json({
+      success: true,
+      cart: cart,
+      items: cart.items.map((item) => ({
+        menuItem: item.menuItem._id || item.menuItem,
+        name: item.menuItem.foodItem.name,
+        quantity: item.quantity,
+        price: item.menuItem.foodItem.price,
+        imageUrl: item.menuItem.foodItem.imageUrl,
+        description: item.menuItem.foodItem.description,
+      })),
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error adding item to cart", error: error.message });
+    console.error("Error adding to cart:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error adding item to cart",
+      error: error.message,
+    });
   }
 };
 
@@ -67,21 +204,38 @@ export const updateQuantity = async (req, res) => {
     const userId = req.user._id;
     const { menuItemId, quantity } = req.body;
 
+    if (!menuItemId) {
+      return res.status(400).json({
+        success: false,
+        message: "Menu item ID is required",
+      });
+    }
+
     if (quantity < 0) {
-      return res.status(400).json({ message: "Quantity cannot be negative" });
+      return res.status(400).json({
+        success: false,
+        message: "Quantity cannot be negative",
+      });
     }
 
     const cart = await Cart.findOne({ user: userId });
     if (!cart) {
-      return res.status(404).json({ message: "Cart not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Cart not found",
+      });
     }
 
+    // Find the item in the cart
     const itemIndex = cart.items.findIndex(
-      item => item.menuItem.toString() === menuItemId
+      (item) => item.menuItem.toString() === menuItemId.toString()
     );
 
     if (itemIndex === -1) {
-      return res.status(404).json({ message: "Item not found in cart" });
+      return res.status(404).json({
+        success: false,
+        message: "Item not found in cart",
+      });
     }
 
     if (quantity === 0) {
@@ -89,15 +243,45 @@ export const updateQuantity = async (req, res) => {
       cart.items.splice(itemIndex, 1);
     } else {
       // Update quantity
-      cart.items[itemIndex].quantity = quantity;
+      cart.items[itemIndex].quantity = Number(quantity);
     }
 
-    await cart.save();
-    await cart.populate('items.menuItem');
+    // Mark the items array as modified
+    cart.markModified('items');
     
-    res.status(200).json(cart);
+    // Save the updated cart
+    await cart.save();
+
+    // Populate the cart items with menu item details
+    const populatedCart = await Cart.findById(cart._id)
+      .populate('items.menuItem')
+      .lean();
+
+    // Transform the response to match the expected format
+    const transformedItems = populatedCart.items.map(item => ({
+      menuItem: item.menuItem._id,
+      name: item.name,
+      quantity: item.quantity,
+      price: item.price,
+      imageUrl: item.imageUrl,
+      description: item.description
+    }));
+
+    res.status(200).json({
+      success: true,
+      message: 'Cart updated successfully',
+      cart: {
+        ...populatedCart,
+        items: transformedItems
+      }
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error updating quantity", error: error.message });
+    console.error("Error updating quantity:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error updating quantity",
+      error: error.message,
+    });
   }
 };
 
@@ -110,18 +294,21 @@ export const removeFromCart = async (req, res) => {
     const cart = await Cart.findOne({ user: userId });
     if (!cart) {
       return res.status(404).json({ message: "Cart not found" });
+    } else {
+      cart.items = cart.items.filter(
+        (item) => item.menuItem.toString() !== menuItemId,
+      );
     }
 
-    cart.items = cart.items.filter(
-      item => item.menuItem.toString() !== menuItemId
-    );
-
     await cart.save();
-    await cart.populate('items.menuItem');
-    
+    await cart.populate("items.menuItem");
+
     res.status(200).json(cart);
   } catch (error) {
-    res.status(500).json({ message: "Error removing item from cart", error: error.message });
+    res.status(500).json({
+      message: "Error removing item from cart",
+      error: error.message,
+    });
   }
 };
 
@@ -137,9 +324,31 @@ export const clearCart = async (req, res) => {
 
     cart.items = [];
     await cart.save();
-    
+    await cart.populate("items.menuItem");
+
     res.status(200).json(cart);
   } catch (error) {
-    res.status(500).json({ message: "Error clearing cart", error: error.message });
+    res.status(500).json({
+      message: "Error clearing cart",
+      error: error.message,
+    });
+  }
+};
+
+// Sync cart
+export const syncCart = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const cart = await Cart.findOne({ user: userId });
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+    await cart.populate("items.menuItem");
+    res.status(200).json(cart);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error syncing cart",
+      error: error.message,
+    });
   }
 };

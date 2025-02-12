@@ -1,10 +1,53 @@
-import { verifyToken } from './auth.js';
+import { verifyToken } from "./auth.js";
+import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 
 // Export verifyToken as protect for compatibility
 export const protect = verifyToken;
 
 // Re-export verifyToken for backward compatibility
 export { verifyToken };
+
+// Verify either guest ID or auth token
+export const verifyGuestOrAuth = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const guestId = req.headers["x-guest-id"];
+
+  // If there's a guest ID, use that
+  if (guestId) {
+    req.user = {
+      _id: guestId,
+      isGuest: true,
+    };
+    return next();
+  }
+
+  // Otherwise, try auth token
+  if (!authHeader) {
+    return res.status(401).json({
+      message:
+        "No authentication provided. Please provide a guest ID or auth token.",
+    });
+  }
+
+  const token = authHeader.split(" ")[1];
+  if (!token) {
+    return res.status(401).json({
+      message: "Malformed token. Ensure you are using 'Bearer <token>'.",
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = { ...decoded, isGuest: false };
+    next();
+  } catch (err) {
+    return res.status(401).json({
+      message: "Invalid or expired token.",
+      error: err.message,
+    });
+  }
+};
 
 // Check if user has admin role
 export const isAdmin = (req, res, next) => {
@@ -49,26 +92,10 @@ export const verifyOwnership = (req, res, next) => {
   }
 
   const resourceUserId = req.params.userId || req.body.userId;
-  if (req.user.id !== resourceUserId && req.user.role !== "admin") {
+
+  if (req.user._id !== resourceUserId && req.user.role !== "admin") {
     return res.status(403).json({
-      message: "Access denied. You don't have permission to access this resource.",
-    });
-  }
-
-  next();
-};
-
-// Check if user has moderator role
-export const isModerator = (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({
-      message: "Authentication required",
-    });
-  }
-
-  if (req.user.role !== "moderator") {
-    return res.status(403).json({
-      message: "Access denied. Moderator privileges required.",
+      message: "Access denied. You can only access your own resources.",
     });
   }
 
@@ -94,14 +121,15 @@ export const isCustomer = (req, res, next) => {
 
 // Cart-specific middleware
 export const verifyCartOwnership = (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({
-      message: "Authentication required to access cart",
-    });
+  // Skip ownership check for guest carts
+  if (req.user.isGuest) {
+    return next();
   }
 
-  const cartUserId = req.params.userId || req.body.userId || req.user.id;
-  if (req.user.id !== cartUserId) {
+  // For authenticated users, verify cart ownership
+  const cartUserId = req.params.userId || req.body.userId || req.user._id;
+
+  if (req.user._id !== cartUserId && req.user.role !== "admin") {
     return res.status(403).json({
       message: "Access denied. You can only access your own cart.",
     });
@@ -111,34 +139,35 @@ export const verifyCartOwnership = (req, res, next) => {
 };
 
 // Verify cart item exists
-export const verifyCartItem = async (req, res, next) => {
-  try {
-    const menuItemId = req.params.menuItemId || req.body.menuItemId;
-    if (!menuItemId) {
-      return res.status(400).json({
-        message: "Menu item ID is required",
-      });
-    }
+export const verifyCartItem = (req, res, next) => {
+  const menuItemId = req.body.menuItemId || req.params.menuItemId;
 
-    // You can add additional checks here if needed
-    // For example, checking if the menu item exists in your database
-
-    next();
-  } catch (error) {
-    return res.status(500).json({
-      message: "Error verifying cart item",
-      error: error.message,
+  if (!menuItemId) {
+    return res.status(400).json({
+      message: "Menu item ID is required",
     });
   }
+
+  // For guest carts, we don't need to verify the ObjectId format
+  if (!req.user.isGuest && !mongoose.Types.ObjectId.isValid(menuItemId)) {
+    return res.status(400).json({
+      message: "Invalid menu item ID format",
+    });
+  }
+
+  next();
 };
 
 // Verify cart quantity
 export const verifyCartQuantity = (req, res, next) => {
   const quantity = req.body.quantity;
-  
-  if (typeof quantity !== 'number' || quantity < 0) {
+
+  if (
+    typeof quantity !== "undefined" &&
+    (quantity < 1 || !Number.isInteger(quantity))
+  ) {
     return res.status(400).json({
-      message: "Invalid quantity. Must be a non-negative number.",
+      message: "Quantity must be a positive integer",
     });
   }
 

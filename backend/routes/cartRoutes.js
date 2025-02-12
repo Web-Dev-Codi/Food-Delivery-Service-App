@@ -5,6 +5,8 @@ import {
 	updateQuantity,
 	removeFromCart,
 	clearCart,
+	mergeGuestCart,
+	syncCart,
 } from "../controllers/cartController.js";
 import {
 	protect,
@@ -22,6 +24,12 @@ cartRouter.use(verifyCartOwnership);
 // Get user's cart
 cartRouter.get("/cart", getCart);
 
+// Merge guest cart with user cart
+cartRouter.post("/cart/merge", mergeGuestCart);
+
+// Sync cart with backend
+cartRouter.post("/cart/sync", syncCart);
+
 // Add item to cart
 cartRouter.post("/add", verifyCartItem, verifyCartQuantity, addToCart);
 
@@ -34,7 +42,7 @@ cartRouter.put(
 );
 
 // Remove item from cart
-cartRouter.delete("/remove/:menuItemId", verifyCartItem, removeFromCart);
+cartRouter.delete("/remove", verifyCartItem, removeFromCart);
 
 // Clear entire cart
 cartRouter.delete("/clear", clearCart);

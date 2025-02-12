@@ -47,44 +47,44 @@ function SignupForm() {
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">Name</label>
-          <input type="text" required className="w-full px-4 py-2 border rounded-lg" 
+          <input type="text" required className="w-full px-4 py-2 border rounded-lg"
             value={name} onChange={(e) => setName(e.target.value)} />
         </div>
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">Email</label>
-          <input type="email" required className="w-full px-4 py-2 border rounded-lg" 
+          <input type="email" required className="w-full px-4 py-2 border rounded-lg"
             value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">Contact</label>
-          <input type="text" required className="w-full px-4 py-2 border rounded-lg" 
+          <input type="text" required className="w-full px-4 py-2 border rounded-lg"
             value={contact} onChange={(e) => setContact(e.target.value)} />
         </div>
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">Street</label>
-          <input type="text" required className="w-full px-4 py-2 border rounded-lg" 
+          <input type="text" required className="w-full px-4 py-2 border rounded-lg"
             value={street} onChange={(e) => setStreet(e.target.value)} />
         </div>
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">City</label>
-          <input type="text" required className="w-full px-4 py-2 border rounded-lg" 
+          <input type="text" required className="w-full px-4 py-2 border rounded-lg"
             value={city} onChange={(e) => setCity(e.target.value)} />
         </div>
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">Zip Code</label>
-          <input type="text" required className="w-full px-4 py-2 border rounded-lg" 
+          <input type="text" required className="w-full px-4 py-2 border rounded-lg"
             value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
         </div>
 
         <div className="mb-6 relative">
           <label className="block text-sm font-medium text-gray-600">Password</label>
-          <input type={showPassword ? "text" : "password"} required 
-            className="w-full px-4 py-2 border rounded-lg pr-10" 
+          <input type={showPassword ? "text" : "password"} required
+            className="w-full px-4 py-2 border rounded-lg pr-10"
             value={password} onChange={(e) => setPassword(e.target.value)} />
           <span className="absolute right-3 top-9 cursor-pointer text-gray-500"
             onClick={() => setShowPassword(!showPassword)}>
@@ -93,8 +93,8 @@ function SignupForm() {
         </div>
 
         <div className="mb-4 flex items-center">
-          <input type="checkbox" id="rememberMe" 
-            className="mr-2" checked={rememberMe} 
+          <input type="checkbox" id="rememberMe"
+            className="mr-2" checked={rememberMe}
             onChange={(e) => setRememberMe(e.target.checked)} />
           <label htmlFor="rememberMe" className="text-sm text-gray-600">Remember Me</label>
         </div>

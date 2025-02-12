@@ -11,7 +11,7 @@ const ReviewSchema = new Schema({
     type: Number,
     required: true,
     min: 1,
-    max: 5,
+    max: 5
   },
   comment: {
     type: String,
@@ -45,29 +45,27 @@ const RestaurantSchema = new Schema(
       default: 0,
       min: 0,
       max: 5,
-    },
+    }
   },
-  { timestamps: true }, // Automatically manages createdAt and updatedAt
+  { timestamps: true } // Automatically manages createdAt and updatedAt
 );
 
 RestaurantSchema.pre("save", function (next) {
-	const format = "MMMM Do YYYY, h:mm:ss a";
-	this.createdAt = moment(this.createdAt).format(format);
-	this.updatedAt = moment(this.updatedAt).format(format);
-	next();
+  const format = "MMMM Do YYYY, h:mm:ss a";
+  this.createdAt = moment(this.createdAt).format(format);
+  this.updatedAt = moment(this.updatedAt).format(format);
+  next();
 });
 
-RestaurantSchema.methods.calculateAverageRating = function () {
-  if (this.reviews.length === 0) {
-    this.averageRating = 0;
-  } else {
-    const totalRating = this.reviews.reduce(
-      (sum, review) => sum + review.rating,
-      0,
-    );
-    this.averageRating = (totalRating / this.reviews.length).toFixed(1);
-  }
-};
+    RestaurantSchema.methods.calculateAverageRating = function () {
+      if (this.reviews.length === 0) {
+        this.averageRating = 0;
+      } else {
+        const totalRating = this.reviews.reduce((sum, review) => sum + review.rating, 0);
+        this.averageRating = Number((totalRating / this.reviews.length).toFixed(1)); // ✅ Convert to Number
+      }
+    };
+
 
 const Restaurant = model("Restaurant", RestaurantSchema);
 export default Restaurant;

@@ -1,4 +1,5 @@
 import Restaurant from "../models/restaurantSchema.js";
+import User from "../models/userSchema.js";
 
 export const getRestaurants = async (req, res) => {
     try{
@@ -20,28 +21,27 @@ export const getRestaurants = async (req, res) => {
             error: err.message
         });
     }
-   
+
 }
 
 export const getRestaurantById = async (req, res) => {
-    try{
-        const restaurant = await Restaurant.findById(req.params.id);
-        if(!restaurant){
-            return res.status(404).json({
-                message: "Restaurant not found",
-            });
-        }
-        res.status(200).json({
-            message: "Restaurant fetched successfully",
-            data: restaurant
-        });
+  try {
+    const restaurant = await Restaurant.findById(req.params.id);
+    if (!restaurant) {
+      return res.status(404).json({
+        message: "Restaurant not found",
+      });
     }
-    catch(err){
-        res.status(500).json({
-            message: "An error occurred while fetching restaurant",
-            error: err.message
-        });
-    }
+    res.status(200).json({
+      message: "Restaurant fetched successfully",
+      data: restaurant,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "An error occurred while fetching restaurant",
+      error: err.message,
+    });
+  }
 };
 
 export const createRestaurant = async (req, res) => {
@@ -61,7 +61,7 @@ export const createRestaurant = async (req, res) => {
             });
           }
         const newRestaurant = await Restaurant.create({ name,location,images,contact,operatingHours});
-       
+
         if(!newRestaurant){
             return res.status(400).json({
                 message: "An error occurred while creating restaurant",
@@ -82,65 +82,106 @@ export const createRestaurant = async (req, res) => {
 };
 
 export const updateRestaurant = async (req, res) => {
-    try{
-        const updatedRestaurant = await Restaurant.findByIdAndUpdate(req.params.id, req.body, {new: true});
-        if(!updatedRestaurant){
-            return res.status(404).json({
-                message: "Restaurant not found",
-            });
-        }
-        res.status(200).json({
-            message: "Restaurant updated successfully", data: updatedRestaurant });
+  try {
+    const updatedRestaurant = await Restaurant.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true },
+    );
+    if (!updatedRestaurant) {
+      return res.status(404).json({
+        message: "Restaurant not found",
+      });
     }
-
-    catch(err){
-        res.status(500).json({
-            message: "An error occurred while updating restaurant",
-            error: err.message
-        });
-    }
-}
+    res.status(200).json({
+      message: "Restaurant updated successfully",
+      data: updatedRestaurant,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "An error occurred while updating restaurant",
+      error: err.message,
+    });
+  }
+};
 
 export const deleteRestaurant = async (req, res) => {
-    try{
-        const deletedRestaurant = await Restaurant.findByIdAndDelete(req.params.id);
-        if(!deletedRestaurant){
-            return res.status(404).json({
-                message: "Restaurant not found",
-            });
-        }
-        res.status(200).json({
-            message: "Restaurant deleted successfully", data: deletedRestaurant });
+  try {
+    const deletedRestaurant = await Restaurant.findByIdAndDelete(req.params.id);
+    if (!deletedRestaurant) {
+      return res.status(404).json({
+        message: "Restaurant not found",
+      });
     }
+    res.status(200).json({
+      message: "Restaurant deleted successfully",
+      data: deletedRestaurant,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "An error occurred while deleting restaurant",
+      error: err.message,
+    });
+  }
+};
 
-    catch(err){
-        res.status(500).json({
-            message: "An error occurred while deleting restaurant",
-            error: err.message
-        });
-    }
-}
 
-export const postReview = async (req, res) => {
+export const addReview = async (req, res) => {
     try{
         const { rating, comment } = req.body;
-        const userId = req.user.userId; // Extract the user ID from the request object
-        if (!rating || !comment) {
-          return res.status(400).json({
-            message: "Please provide a rating and comment.",
+           //  Ensure user exists
+        const validUser = await User.findById(req.user._id);
+        if (!validUser) {
+          return res.status(401).json({
+            message: "User needs to sign up or log in to add a review.",
           });
+
         }
+
+    // Prevent admins from reviewing
+        if(validUser.role === "admin"){
+            return res.status(403).json({
+                message: "Admins are not allowed to add reviews.",
+              });
+        }
+
+       // Ensure restaurant exists
         const restaurant = await Restaurant.findById(req.params.id);
         if (!restaurant) {
           return res.status(404).json({
             message: "Restaurant not found.",
           });
         }
-        restaurant.reviews.push({ rating, comment, user: userId });
 
-        // Recalculate the average rating
-    restaurant.calculateAverageRating();
+        // Ensure rating and comment are provided
+        if(!rating || rating < 1 || rating >= 5){
+            return res.status(400).json({
+                message: "Rating must be between 1 and 6.",
+              });
+        }
+        if(!comment || comment.trim().length === 0 || comment.trim().length > 500){
+            return res.status(400).json({
+                message: "Comment must be less than 500 characters.",
+              });
+        }
 
+        // Ensure user has not already reviewed
+        const alreadyReviewed = restaurant.reviews.find(
+            (review) => review.user.toString() === req.user._id.toString()
+          );
+          if (alreadyReviewed) {
+            return res.status(400).json({
+              message: "You have already reviewed this restaurant.",
+            });
+          }
+          const newReview = {
+            user: req.user._id,
+            userName: validUser.name, // Store user's name in the review
+            rating,
+            comment,
+          };
+        restaurant.reviews.push(newReview);
+        restaurant.calculateAverageRating();
         await restaurant.save();
         res.status(201).json({
           message: "Review added successfully.",
@@ -155,4 +196,5 @@ export const postReview = async (req, res) => {
         });
     }
 };
+
 
