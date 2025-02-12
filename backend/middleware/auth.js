@@ -1,8 +1,22 @@
 import jwt from "jsonwebtoken";
+// import User from "../models/userSchema.js";
 
 
 export const verifyToken = (req, res, next) => {
-    const authHeader = req.headers.authorization;
+  const authHeader = req.headers.authorization;
+
+  // // For cart operations, allow guest access with a temporary user ID
+  // if (req.path.startsWith("/api/cart")) {
+  //   const guestId = req.headers["x-guest-id"];
+  //   if (guestId) {
+  //     req.user = {
+  //       _id: guestId,
+  //       userId: guestId, // Add userId for consistency
+  //       isGuest: true,
+  //     };
+  //     return next();
+  //   }
+  // }
 
     if (!authHeader) {
         return res.status(401).json({
@@ -16,13 +30,13 @@ export const verifyToken = (req, res, next) => {
           message: "Malformed token. Ensure you are using 'Bearer <token>'.",
         });
       }
-    
+
       try {
         // Verify the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded; // Attach user data to the request object
         next(); // Proceed to the next middleware
-      } 
+      }
       catch (err) {
         // Handle specific JWT errors
         if (err.name === "TokenExpiredError") {

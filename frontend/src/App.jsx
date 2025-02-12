@@ -1,39 +1,19 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Layouts from "./components/Layouts";
-import Home from "./components/Home";
-import ListRestaurant from "./components/ListRestaurant";
-import AddRestaurant from "./components/AddRestaurant";
-import AddMenu from "./components/AddMenu";
-import AddReview from "./components/AddReview";
-import SingleRestaurant from "./components/SingleRestaurant";
-import LoginForm from "./components/LoginForm";
-import Dashboard from "./components/Dashboard";
+import "./App.css";
+import React from "react";
+import { Outlet } from "react-router-dom";
+import Header from "./components/views/Header";
+import Footer from "./components/views/Footer";
 
 function App() {
-  return (
-    <Router>
-      <Routes>
-        {/* Layouts wraps all pages to ensure Header and Footer are visible */}
-        <Route path="/" element={<Layouts />}>
-          <Route index element={<Home />} />
-          <Route path="add-restaurant" element={<AddRestaurant />} />
-          <Route path="restaurants" element={<ListRestaurant />} />
-          <Route path="restaurants/:id" element={<SingleRestaurant />} />
-          <Route path="restaurants/:id/review" element={<AddReview />} />
-          <Route path="menu" element={<AddMenu />} />
-        </Route>
-
-        {/* Dashboard route with nested routes */}
-        <Route path="/dashboard" element={<Dashboard />}>
-          <Route path="add-restaurant" element={<AddRestaurant />} />
-          <Route path="add-menu" element={<AddMenu />} />
-        </Route>
-
-        {/* Add the login route outside of Layouts to appear separately */}
-        <Route path="/login" element={<LoginForm />} />
-      </Routes>
-    </Router>
-  );
+	return (
+		<React.Fragment>
+			<Header />
+			<main className="bg-gradient-to-b from-[#0B1225] via-[#382677] to-[#050913] flex flex-col backdrop-blur-xl">
+				<Outlet />
+			</main>
+			<Footer />
+		</React.Fragment>
+	);
 }
 
 export default App;

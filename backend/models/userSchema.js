@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 import moment from "moment";
-
+import crypto from "crypto";
 
 const UserSchema = new Schema(
   {
@@ -11,30 +11,43 @@ const UserSchema = new Schema(
       required: true,
       unique: true,
       match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
         "Please enter a valid email address",
       ],
     },
     password: { type: String, required: true },
-    role: { type: String, enum: ["admin", "customer"], default: "customer" },
+    role: {
+      type: String,
+      enum: ["admin", "customer"],
+      default: "customer",
+    },
     contact: { type: String, default: "" },
-    address: 
-      {
-        street: { type: String },
-        city: { type: String },
-        state: { type: String },
-        zipCode: { type: String },
-      }
-    
-    //orderHistory: [{ type: Schema.Types.ObjectId, ref: "Order" }], // Ref to Order collection
+    address: {
+      street: { type: String },
+      city: { type: String },
+      state: { type: String },
+      zipCode: { type: String },
+    },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
+    cartId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+    guestCartId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
   },
-  { timestamps: true }
-);
+  { timestamps: true },
 
+);
 
 // Hash password before saving
 UserSchema.pre("save", async function (next) {
-  const format = "MMMM Do YYYY, h:mm:ss a"; 
+  const format = "MMMM Do YYYY, h:mm:ss a";
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 10);
   }
@@ -43,12 +56,18 @@ UserSchema.pre("save", async function (next) {
   next();
 });
 
-
 // Method to compare password
 UserSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+ // Method to generate a reset password token
+UserSchema.methods.generateResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  this.resetPasswordToken = resetToken;
+  this.resetPasswordExpires = Date.now() + 3600000; // Token expires in 1 hour
+  return resetToken;
+}; 
 
 const User = model("User", UserSchema);
 export default User;

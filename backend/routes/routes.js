@@ -5,15 +5,6 @@ router.get("/", (req, res) => {
   res.send({ message: "API is live" });
 });
 
-// Menu routes
-router.get("/menu", (req, res) => {
-  res.send({ message: "Menu endpoint is live" });
-});
-
-router.get("/menu/categories", (req, res) => {
-  res.send({ message: "Menu categories endpoint is live" });
-});
-
 // Order routes
 router.get("/orders", (req, res) => {
   res.send({ message: "Orders endpoint is live" });
@@ -26,26 +17,6 @@ router.post("/orders", (req, res) => {
 router.get("/orders/:id", (req, res) => {
   res.send({
     message: `Order details endpoint is live for order ${req.params.id}`,
-  });
-});
-
-// Cart & Checkout routes
-router.get("/cart", (req, res) => {
-  res.send({ message: "Cart endpoint is live" });
-});
-
-router.post("/checkout", (req, res) => {
-  res.send({ message: "Checkout endpoint is live" });
-});
-
-// Restaurant routes
-router.get("/restaurants", (req, res) => {
-  res.send({ message: "Restaurants listing endpoint is live" });
-});
-
-router.get("/restaurants/:id", (req, res) => {
-  res.send({
-    message: `Restaurant details endpoint is live for restaurant ${req.params.id}`,
   });
 });
 
