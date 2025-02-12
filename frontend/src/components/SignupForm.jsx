@@ -19,7 +19,7 @@ function SignupForm() {
 
 
 		axios
-			.post("http://localhost:8000/data/create", {
+			.post("http://localhost:3006/data/create", {
 				name,
 				email,
 				contact,
