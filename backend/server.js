@@ -2,12 +2,12 @@ import express from "express";
 import connectDB from "./utils/db.js";
 import router from "./routes/routes.js";
 import dotenv from "dotenv";
+dotenv.config();
 import restaurantRouter from "./routes/restaurantRoute.js";
 import cors from "cors";
 import userRouter from "./routes/userRouter.js";
 import cartRouter from "./routes/cartRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
-dotenv.config();
 
 const app = express();
 
@@ -28,9 +28,10 @@ app.use("/data", userRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/auth", authRoutes);
 
+
 // Not sure why we have both 2 /data endpoints
 // app.use("/data", router);
 app.use("/api", restaurantRouter);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3008;
 app.listen(port, () => console.log(`Server running on port ${port}`));

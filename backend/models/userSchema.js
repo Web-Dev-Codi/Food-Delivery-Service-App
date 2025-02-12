@@ -38,9 +38,13 @@ const UserSchema = new Schema(
 // Hash password before saving
 UserSchema.pre("save", async function (next) {
   const format = "MMMM Do YYYY, h:mm:ss a";
-  if (this.isModified("password")) {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
+  if (!this.isModified("password")) {
+    console.log(this.password);
+      next();
+    }
+    console.log("hello");
+  this.password = await bcrypt.hash(this.password, 10);
+  console.log(this.password);
   this.createdAt = moment(this.createdAt).format(format);
   this.updatedAt = moment(this.updatedAt).format(format);
   next();
@@ -48,7 +52,12 @@ UserSchema.pre("save", async function (next) {
 
 // Method to compare password
 UserSchema.methods.comparePassword = async function (enteredPassword) {
+  console.log(enteredPassword);
+  console.log(this.password);
+  console.log(await bcrypt.compare(enteredPassword, this.password));
   return await bcrypt.compare(enteredPassword, this.password);
+
+  
 };
 
  // Method to generate a reset password token

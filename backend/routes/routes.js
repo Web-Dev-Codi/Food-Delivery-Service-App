@@ -48,5 +48,13 @@ router.get("/profile", (req, res) => {
 router.get("/profile/addresses", (req, res) => {
 	res.send({ message: "Delivery addresses endpoint is live" });
 });
+// Password reset route
+router.get("/reset-password/:token", (req, res) => {
+	const { token } = req.params;
+	// Logic to validate the token and render a password reset page or send a response.
+	res.redirect(`http://localhost:5173/reset-password/${token}`);
+  });
+  
+
 
 export default router;
