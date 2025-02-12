@@ -21,7 +21,7 @@ function SignupForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3006/data/create", {
+      const res = await axios.post("http://localhost:8000/data/create", {
         name, email, contact, address: { street, city, zipCode }, password,
       });
       localStorage.setItem("token", res.data.token);
