@@ -1,8 +1,8 @@
 import {
-	createBrowserRouter,
-	createRoutesFromElements,
-	Route,
-	RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
 } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import "./index.css";

@@ -3,7 +3,7 @@ import { requestPasswordReset, resetPassword} from "../controllers/authControlle
 
 const router = express.Router();
 
-router.post("/request-password-reset", requestPasswordReset);
+router.post("/forgot-password", requestPasswordReset);
 router.post("/reset-password/:token", resetPassword); // New route to handle password reset
 
 
