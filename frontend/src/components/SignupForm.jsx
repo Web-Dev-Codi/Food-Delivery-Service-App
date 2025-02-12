@@ -17,9 +17,8 @@ function SignupForm() {
 		e.preventDefault();
 		console.log({ name, email, contact, street, city, zipCode, password });
 
-
 		axios
-			.post("http://localhost:3006/data/create", {
+			.post("http://localhost:8000/data/create", {
 				name,
 				email,
 				contact,

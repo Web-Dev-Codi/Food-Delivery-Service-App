@@ -11,9 +11,8 @@ function LoginForm() {
 		e.preventDefault();
 		console.log({ email, password });
 
-
 		axios
-			.post("http://localhost:3006/data/login", { email, password })
+			.post("http://localhost:8000/data/login", { email, password })
 			.then((res) => {
 				localStorage.setItem("token", res.data.token);
 				setSuccessMessage(res.data.message);
@@ -28,9 +27,9 @@ function LoginForm() {
 	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gray-100">
+		<div className="fixed flex items-center justify-center bg-n-800 z-50">
 			<form
-				className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
+				className="bg-transparent p-8 rounded-lg shadow-lg w-full max-w-md z-50 "
 				onSubmit={handleSubmit}>
 				<h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
 					Login

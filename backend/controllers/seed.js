@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import FoodItem from "../models/menuSchema.js";
+// import FoodItem from "../models/menuSchema.js";
 import menuItems from "../data/seeder.js";
 
 
@@ -14,7 +14,7 @@ export const seedData = async (req, res) => {
         // Modify the menuItems to convert 'restaurant' field to ObjectId
         const modifiedMenuItems = menuItems.map(item => ({
             ...item,
-            restaurant:new  mongoose.Types.ObjectId(item.restaurant)
+            restaurant: new mongoose.Types.ObjectId(item.restaurant)
         }));
 
         // Insert the modified menu items
@@ -30,4 +30,3 @@ export const seedData = async (req, res) => {
     }
 };
 
-  
