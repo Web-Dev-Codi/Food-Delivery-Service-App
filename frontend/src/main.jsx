@@ -1,8 +1,8 @@
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
+	createBrowserRouter,
+	createRoutesFromElements,
+	Route,
+	RouterProvider,
 } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -24,6 +24,8 @@ import SignupForm from "./components/SignupForm";
 import Cart from "./components/Cart";
 import TestCart from "./components/TestCart";
 import Dashboard from "./components/Dashboard";
+import ForgotPassword from "./components/ForgotPassword.jsx";
+import ResetPasswordPage from "./components/ResetPasswordPage.jsx";
 
 const stripePromise = loadStripe(
 	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
@@ -98,6 +100,14 @@ const router = createBrowserRouter(
 				<Route
 					path="/restaurants/:id/reviews"
 					element={<AddReview />}
+				/>
+				<Route
+					path="/forgot-password"
+					element={<ForgotPassword />}
+				/>
+				<Route
+					path="/reset-password/:token"
+					element={<ResetPasswordPage />}
 				/>
 			</Route>
 		</Route>
