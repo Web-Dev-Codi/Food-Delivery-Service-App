@@ -1,7 +1,7 @@
 
 import FoodItem from "../models/menuSchema.js";
 import mongoose from "mongoose";
-import  menuItems from "../data/seeder.js";
+
 
 
 export const getMenus = async (req, res) => {

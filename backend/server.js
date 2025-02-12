@@ -2,17 +2,19 @@ import express from "express";
 import connectDB from "./utils/db.js";
 import router from "./routes/routes.js";
 import dotenv from "dotenv";
-dotenv.config();
+
 import restaurantRouter from "./routes/restaurantRoute.js";
 import { seedData } from "./controllers/seed.js";
 import { handleStripeWebhook } from "./controllers/payment.js";
 import paymentRoutes from "./routes/paymentRoute.js";
 import menuRouter from "./routes/menuRouter.js";
-import { seedData } from "./controllers/Menu.js";
+
 import userRouter from "./routes/userRouter.js";
 import cartRouter from "./routes/cartRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import cors from "cors";
 
+dotenv.config();
 connectDB();
 
 const app = express();
