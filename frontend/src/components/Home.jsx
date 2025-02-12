@@ -101,7 +101,7 @@ const Home = () => {
             Categories
           </h5>
           <Link
-            to="/categories"
+            to="/restaurants"
             className="text-sm text-gray-400 hover:text-gray-300"
           >
             View all
