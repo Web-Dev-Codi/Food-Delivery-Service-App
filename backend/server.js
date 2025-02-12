@@ -10,7 +10,7 @@ import { handleStripeWebhook } from "./controllers/payment.js";
 import paymentRoutes from "./routes/paymentRoute.js";
 import menuRouter from "./routes/menuRouter.js";
 
-import { seedData } from "./controllers/Menu.js";
+// import { seedData } from "./controllers/Menu.js";
 import userRouter from "./routes/userRouter.js";
 import cartRouter from "./routes/cartRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -32,7 +32,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/payment', paymentRoutes);  //paymentRouter
-
 app.use("/", router); //userRouter
 app.use("/data", userRouter);  //userRouter
 app.use("/api/cart", cartRouter);
