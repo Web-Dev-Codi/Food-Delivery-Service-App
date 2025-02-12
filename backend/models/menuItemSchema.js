@@ -17,11 +17,6 @@ const MenuItemSchema = new Schema(
       ref: "Restaurant",
       required: true,
     },
-    menuId: {
-      type: Schema.Types.ObjectId,
-      ref: "Menu",
-      required: true,
-    },
   },
   {
     timestamps: true,
