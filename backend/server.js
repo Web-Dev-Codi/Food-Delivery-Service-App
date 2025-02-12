@@ -3,16 +3,18 @@ import connectDB from "./utils/db.js";
 import cors from "cors";
 import router from "./routes/routes.js";
 import dotenv from "dotenv";
-
+dotenv.config();
 import restaurantRouter from "./routes/restaurantRoute.js";
 import { seedData } from "./controllers/seed.js";
 import { handleStripeWebhook } from "./controllers/payment.js";
 import paymentRoutes from "./routes/paymentRoute.js";
 import menuRouter from "./routes/menuRouter.js";
+
+import { seedData } from "./controllers/Menu.js";
 import userRouter from "./routes/userRouter.js";
-// import userRouter from "./routes/userRouter.js";
-// import cartRouter from "./routes/cartRoutes.js";
-dotenv.config();
+import cartRouter from "./routes/cartRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+
 connectDB();
 
 const app = express();
@@ -31,9 +33,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/payment', paymentRoutes);  //paymentRouter
 
-
 app.use("/", router); //userRouter
 app.use("/data", userRouter);  //userRouter
+app.use("/api/cart", cartRouter);
+app.use("/api/auth", authRoutes);
+
 app.use("/api", restaurantRouter);
 app.use("/food", menuRouter);
 
