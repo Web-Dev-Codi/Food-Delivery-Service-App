@@ -2,6 +2,7 @@ import FoodItem from "../models/fooditemSchema.js";
 import { ObjectId } from "mongodb";
 import menuItems from "../data/seeder.js";
 
+
 export const getMenus = async (req, res) => {
 	try {
 		const foodItems = await FoodItem.find();
