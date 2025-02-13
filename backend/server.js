@@ -26,7 +26,8 @@ app.use(
     origin: "http://localhost:5173", // Replace with your front-end URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-  })
+    allowedHeaders: "Content-Type, Authorization",
+  }),
 );
 
 // ✅ Webhook route - MUST use `express.raw()` BEFORE `express.json()`

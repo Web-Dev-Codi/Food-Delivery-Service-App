@@ -8,6 +8,7 @@ const foodItemSchema = new Schema(
 		category: {
 			type: String,
 			enum: ["Main Course", "Dessert", "Starters", "Beverages"],
+			required: true,
 		},
 		imageUrl: { type: String },
 		availability: { type: String, enum: ["Available", "Not Available"] },
@@ -22,5 +23,4 @@ const foodItemSchema = new Schema(
 	}
 );
 
-const FoodItem = model("FoodItem", foodItemSchema);
-export default FoodItem;
+export default model("FoodItem", foodItemSchema);

@@ -23,7 +23,7 @@ function Cart() {
 			</div>
 		);
 
-	if (!cart || cart.length === 0) {
+	if (!cart || !cart.items || cart.items.length === 0) {
 		return (
 			<div className="text-center p-4">
 				<h2 className="text-xl font-bold mb-4">Your Cart</h2>
@@ -44,20 +44,19 @@ function Cart() {
 			</div>
 
 			<div className="space-y-4 mb-6">
-				{Array.isArray(cart) &&
-					cart.map((item, index) => (
-						<CartItems
-							key={index}
-							item={item}
-						/>
-					))}
+				{cart.items.map((item, index) => (
+					<CartItems
+						key={index}
+						item={item}
+					/>
+				))}
 			</div>
 
 			<div className="border-t pt-4">
 				<div className="flex justify-between items-center mb-4">
 					<span className="text-xl font-semibold">Total:</span>
 					<span className="text-2xl font-bold">
-						${total.toFixed(2)}
+						${cart.total.toFixed(2)}
 					</span>
 				</div>
 				<button
