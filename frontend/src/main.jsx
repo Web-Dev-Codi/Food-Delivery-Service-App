@@ -22,12 +22,10 @@ import AddMenu from "./components/AddMenu";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import Cart from "./components/Cart";
-// import TestCart from "./components/TestCart";
 import AddCoupons from "./components/AddCoupons.jsx";
 import Dashboard from "./components/Dashboard";
 import ForgotPassword from "./components/ForgotPassword.jsx";
 import ResetPasswordPage from "./components/ResetPasswordPage.jsx";
-
 
 const stripePromise = loadStripe(
 	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
@@ -79,14 +77,13 @@ const router = createBrowserRouter(
 					path="/cart"
 					element={<Cart />}
 				/>
-        <Route path="/coupons" element={<AddCoupons/>} />
+				<Route
+					path="/coupons"
+					element={<AddCoupons />}
+				/>
 				<Route
 					path="/checkout"
 					element={<Checkout />}
-				/>
-				<Route
-					path="/test-cart"
-					element={<TestCart />}
 				/>
 				<Route
 					path="/restaurants/add"
