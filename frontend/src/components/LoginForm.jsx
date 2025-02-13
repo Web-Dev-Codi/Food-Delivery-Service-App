@@ -23,23 +23,17 @@ function LoginForm() {
 		}
 	}, []);
 
-		axios
-			.post("http://localhost:5173/data/login", { email, password })
-			.then((res) => {
-				localStorage.setItem("token", res.data.token);
-				setSuccessMessage(res.data.message);
-				setErrorMessage("");
-				console.log(res.data);
-			})
-			.catch((err) => {
-				setErrorMessage(err.response.data.message);
-				setSuccessMessage("");
-				console.error(err);
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		try {
+			const res = await axios.post("http://localhost:3006/data/login", {
+				email,
+				password,
 			});
 			localStorage.setItem("token", res.data.token);
 			setSuccessMessage(res.data.message);
 			setErrorMessage("");
-  
+
 			if (rememberMe) {
 				localStorage.setItem("email", email);
 				localStorage.setItem("password", password);
@@ -47,6 +41,7 @@ function LoginForm() {
 				localStorage.removeItem("email");
 				localStorage.removeItem("password");
 			}
+
 			setTimeout(() => navigate("/"), 2000);
 		} catch (err) {
 			setErrorMessage(err.response?.data?.message || "Login failed");
