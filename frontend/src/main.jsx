@@ -1,8 +1,8 @@
 import {
-	createBrowserRouter,
-	createRoutesFromElements,
-	Route,
-	RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
 } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -28,94 +28,46 @@ import ForgotPassword from "./components/ForgotPassword.jsx";
 import ResetPasswordPage from "./components/ResetPasswordPage.jsx";
 
 const stripePromise = loadStripe(
-	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
+  "pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
 );
 
 const router = createBrowserRouter(
-	createRoutesFromElements(
-		<Route>
-			<Route
-				path="/"
-				element={<App />}>
-				<Route
-					index
-					element={<Home />}
-				/>
-				<Route
-					path="/menu"
-					element={<Menu />}
-				/>
-				<Route
-					path="/signup"
-					element={<SignupForm />}
-				/>
-				<Route
-					path="/login"
-					element={<LoginForm />}
-				/>
-				<Route
-					path="/payment"
-					element={
-						<Elements stripe={stripePromise}>
-							<PaymentForm />
-						</Elements>
-					}
-				/>
-				<Route
-					path="/dashboard"
-					element={<Dashboard />}>
-					<Route
-						path="restaurants/add"
-						element={<AddRestaurant />}
-					/>
-					<Route
-						path="add-menu"
-						element={<AddMenu />}
-					/>
-				</Route>
-				<Route
-					path="/cart"
-					element={<Cart />}
-				/>
-				<Route
-					path="/coupons"
-					element={<AddCoupons />}
-				/>
-				<Route
-					path="/checkout"
-					element={<Checkout />}
-				/>
-				<Route
-					path="/restaurants/add"
-					element={<AddRestaurant />}
-				/>
-				<Route
-					path="/restaurants"
-					element={<ListRestaurant />}
-				/>
-				<Route
-					path="/restaurants/:id"
-					element={<SingleRestaurant />}
-				/>
-				<Route
-					path="/restaurants/:id/reviews"
-					element={<AddReview />}
-				/>
-				<Route
-					path="/forgot-password"
-					element={<ForgotPassword />}
-				/>
-				<Route
-					path="/reset-password/:token"
-					element={<ResetPasswordPage />}
-				/>
-			</Route>
-		</Route>
-	)
+  createRoutesFromElements(
+    <Route>
+      <Route path="/" element={<App />}>
+        <Route index element={<Home />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/signup" element={<SignupForm />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route
+          path="/payment"
+          element={
+            <Elements stripe={stripePromise}>
+              <PaymentForm />
+            </Elements>
+          }
+        />
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route path="restaurants/add" element={<AddRestaurant />} />
+          <Route path="add-menu" element={<AddMenu />} />
+          <Route path="coupons" element={<AddCoupons />} />
+        </Route>
+        <Route path="/cart" element={<Cart />} />
+
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/restaurants/add" element={<AddRestaurant />} />
+        <Route path="/restaurants" element={<ListRestaurant />} />
+        <Route path="/restaurants/:id" element={<SingleRestaurant />} />
+        <Route path="/restaurants/:id/reviews" element={<AddReview />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+      </Route>
+    </Route>
+  )
 );
 
 createRoot(document.getElementById("root")).render(
-	<CartProvider>
-		<RouterProvider router={router} />
-	</CartProvider>
+  <CartProvider>
+    <RouterProvider router={router} />
+  </CartProvider>
 );

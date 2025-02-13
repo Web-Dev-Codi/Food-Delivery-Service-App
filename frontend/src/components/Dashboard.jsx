@@ -20,6 +20,11 @@ const Dashboard = () => {
               🍽 Add Menu
             </Link>
           </li>
+          <li>
+            <Link to="coupons" className="block p-2 hover:bg-gray-700 rounded">
+              💸 Add Coupons
+            </Link>
+          </li>
         </ul>
       </nav>
 
