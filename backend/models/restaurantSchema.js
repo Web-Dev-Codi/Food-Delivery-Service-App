@@ -11,7 +11,7 @@ const ReviewSchema = new Schema({
     type: Number,
     required: true,
     min: 1,
-    max: 5,
+    max: 5
   },
   comment: {
     type: String,
@@ -57,17 +57,15 @@ RestaurantSchema.pre("save", function (next) {
   next();
 });
 
-RestaurantSchema.methods.calculateAverageRating = function () {
-  if (this.reviews.length === 0) {
-    this.averageRating = 0;
-  } else {
-    const totalRating = this.reviews.reduce(
-      (sum, review) => sum + review.rating,
-      0,
-    );
-    this.averageRating = (totalRating / this.reviews.length).toFixed(1);
-  }
-};
+    RestaurantSchema.methods.calculateAverageRating = function () {
+      if (this.reviews.length === 0) {
+        this.averageRating = 0;
+      } else {
+        const totalRating = this.reviews.reduce((sum, review) => sum + review.rating, 0);
+        this.averageRating = Number((totalRating / this.reviews.length).toFixed(1)); // ✅ Convert to Number
+      }
+    };
+
 
 const Restaurant = model("Restaurant", RestaurantSchema);
 export default Restaurant;
