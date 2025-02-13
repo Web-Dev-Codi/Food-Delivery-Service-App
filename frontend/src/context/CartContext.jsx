@@ -3,6 +3,11 @@ import { createContext, useContext, useReducer, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 
+
+// I know I need to modulate this file, I will get to that soon.
+// I have not had time to rework the code since I have been busy with other things.
+// Code is untested and may not work as expected.
+
 const CartContext = createContext();
 
 // Define action types
