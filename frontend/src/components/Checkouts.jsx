@@ -192,7 +192,7 @@ function Checkout() {
 						<button
 							type="submit"
 							className="w-full bg-green-500 text-white py-3 rounded-md hover:bg-green-600 transition-colors">
-							Place Order (${total.toFixed(2)})
+							Place Order (${cart.total.toFixed(2)})
 						</button>
 					</form>
 				</div>
@@ -203,25 +203,30 @@ function Checkout() {
 						Order Summary
 					</h3>
 					<div className="space-y-4">
-						{cart.map((item) => (
+						{cart.items.map((item, index) => (
 							<div
-								key={item._id}
+								key={index}
 								className="flex justify-between items-center border-b pb-2">
 								<div>
-									<p className="font-medium">{item.name}</p>
+									<p className="font-medium">
+										{item.menuItem.name}
+									</p>
 									<p className="text-sm text-gray-600">
 										Quantity: {item.quantity}
 									</p>
 								</div>
 								<p className="font-medium">
-									${(item.price * item.quantity).toFixed(2)}
+									$
+									{(
+										item.menuItem.price * item.quantity
+									).toFixed(2)}
 								</p>
 							</div>
 						))}
 						<div className="border-t pt-4">
 							<div className="flex justify-between items-center font-bold">
 								<span>Total:</span>
-								<span>${total.toFixed(2)}</span>
+								<span>${cart.total.toFixed(2)}</span>
 							</div>
 						</div>
 					</div>

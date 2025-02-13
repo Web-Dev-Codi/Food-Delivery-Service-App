@@ -28,18 +28,28 @@ const UserSchema = new Schema(
       state: { type: String },
       zipCode: { type: String },
     },
+    cartItems: [
+      {
+        foodItem: {
+          type: Schema.Types.ObjectId,
+          ref: "FoodItem",
+          required: true,
+        },
+        quantity: { type: Number, default: 1 },
+      },
+    ],
     resetPasswordToken: String,
     resetPasswordExpires: Date,
-    cartId: {
-      type: String,
-      unique: true,
-      sparse: true,
-    },
-    guestCartId: {
-      type: String,
-      unique: true,
-      sparse: true,
-    },
+    // cartId: {
+    //   type: String,
+    //   unique: true,
+    //   sparse: true,
+    // },
+    // guestCartId: {
+    //   type: String,
+    //   unique: true,
+    //   sparse: true,
+    // },
   },
   { timestamps: true },
 
@@ -67,7 +77,7 @@ UserSchema.methods.comparePassword = async function (enteredPassword) {
   console.log(await bcrypt.compare(enteredPassword, this.password));
   return await bcrypt.compare(enteredPassword, this.password);
 
-  
+
 };
 
  // Method to generate a reset password token
@@ -76,7 +86,7 @@ UserSchema.methods.generateResetToken = function () {
   this.resetPasswordToken = resetToken;
   this.resetPasswordExpires = Date.now() + 3600000; // Token expires in 1 hour
   return resetToken;
-}; 
+};
 
 const User = model("User", UserSchema);
 export default User;

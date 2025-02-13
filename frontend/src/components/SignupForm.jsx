@@ -37,11 +37,30 @@ function SignupForm() {
     }
   };
 
+		axios
+			.post("http://localhost:5173/data/create", {
+				name,
+				email,
+				contact,
+				address: { street, city, zipCode },
+				password,
+			})
+			.then((res) => {
+				localStorage.setItem("token", res.data.token);
+				setSuccessMessage(res.data.message);
+				setErrorMessage("");
+				console.log(res.data);
+			})
+			.catch((err) => {
+				setErrorMessage(err.response.data.message);
+				setSuccessMessage("");
+				console.error(err);
+			});
+	};
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md" onSubmit={handleSubmit}>
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Sign Up</h2>
-
         {successMessage && <div className="mb-4 text-green-600">{successMessage}</div>}
         {errorMessage && <div className="mb-4 text-red-600">{errorMessage}</div>}
 
