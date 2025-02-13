@@ -1,15 +1,10 @@
 
-import Coupon from "../models/couponModel.js";
+import Coupon from "../models/couponSchema.js";
 
 export const createCoupon = async (req, res) => {
     try{
-        const { code, description, discount, validFrom, validUntil, maxUsage, applicableToRestaurants } = req.body;
-        if(!code || !description || !discount || !validFrom || !validUntil || !maxUsage || !applicableToRestaurants){
-            return res.status(400).json({
-                message: "All fields are required",
-            });
-        }
-        const newCoupon = await Coupon.create({ code, description, discount, validFrom, validUntil, maxUsage, applicableToRestaurants });
+       
+        const newCoupon = await Coupon.create(req.body);
         if(!newCoupon){
             return res.status(400).json({
                 message: "Coupon creation failed",
