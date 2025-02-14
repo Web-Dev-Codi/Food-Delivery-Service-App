@@ -4,7 +4,7 @@ import { Schema , model } from 'mongoose';
 
     const CouponSchema = new Schema(
         {
-          code: { type: String, required: true, unique: true },
+          code: { type: String, required: true},
           description: { type: String, required: true },
          
           discount: { type: Number, required: true,
@@ -21,7 +21,7 @@ import { Schema , model } from 'mongoose';
           maxUsage: { type: Number, default: 1, max: 1 }, // Maximum number of times the coupon can be used
           usageCount: { type: Number, default: 0, max: 1 }, // Tracks the times used
           applicableToRestaurants: [{ type: Schema.Types.ObjectId, ref: "Restaurant" }], // Linked to Restaurants
-          isActive: { type: Boolean, default: true }, // Easy filter for active coupons
+          isActive: { type: Boolean }, // Determines if the coupon is active
         },
         { timestamps: true } // Automatically manages createdAt and updatedAt
         )
@@ -40,6 +40,15 @@ import { Schema , model } from 'mongoose';
           next();
         });
 
+        CouponSchema.pre('save', function(next) {
+          if(this.validUntil < new Date()) {
+            this.isActive = false;
+          }
+          else {
+            this.isActive = true;
+          }
+          next();
+        });
 
       const Coupon = model("Coupon", CouponSchema);
       export default Coupon;

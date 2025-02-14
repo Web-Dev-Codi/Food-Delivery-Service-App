@@ -6,10 +6,59 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import BottomNav from "./views/BottomNav";
+import { useNavigate } from "react-router-dom";
+
 
 const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [coupons, setCoupons] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+ 
+  const  navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCoupons = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/offers");
+        setCoupons(response.data.data);
+      } catch (error) {
+        setErrorMessage(
+          error.response?.data?.message ||
+            "An error occurred while fetching coupons"
+        );
+      }
+    };
+    fetchCoupons();
+  }, []);
+
+  const handleSearch = async () => {
+    if (searchQuery.trim() !== "") {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/restaurants/name/${searchQuery}`
+        );
+  
+        const restaurant = response.data.data;
+        
+        if (restaurant && restaurant._id) {
+          // Navigate to the restaurant's page using its ID
+          navigate(`/restaurants/${restaurant._id}`);
+        } else {
+          alert("Restaurant not found.");
+        }
+      } catch (error) {
+        console.error("Error fetching restaurant:", error);
+        alert("An error occurred while searching for the restaurant.");
+      }
+    }
+  };
+
+
+
+
+
+
 
   useEffect(() => {
     const fetchRestaurants = async () => {
@@ -35,7 +84,8 @@ const Home = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 10000,
+    autoplaySpeed: 3000,
+    arrows: true,
     responsive: [
       {
         breakpoint: 480, // Mobile screens
@@ -70,6 +120,12 @@ const Home = () => {
 
   const foodCategories = ["Indian", "Thai", "Mexican", "Classic"];
 
+  const uniqueCoupons = coupons.filter((coupon, index, self) =>
+    index === self.findIndex((c) => c._id === coupon._id)
+);
+
+ 
+
   return (
     <>
       <header className="flex justify-between items-center px-4 py-3 bg-transparent shadow-md text-white">
@@ -86,12 +142,17 @@ const Home = () => {
 
       {/* Search Bar */}
       <div className="flex items-center bg-gradient-to-r from-[#4436BD] via-[#392679] to-[#050913] p-2 mx-3 sm:mx-4 my-3 rounded-full shadow-md">
-        <FaSearch className="ml-3 text-gray-500" />
+      
         <input
           type="text"
           placeholder="Search restaurants..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           className="flex-1 px-3 py-2 outline-none bg-transparent text-white placeholder-gray-400 text-sm sm:text-base"
+         
+
         />
+        <FaSearch className="mr-3 text-gray-500" onClick={handleSearch} />
       </div>
 
       {/* Categories Section */}
@@ -133,31 +194,44 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Slider Section */}
-      <div className="mx-3 sm:mx-4 my-3 bg-neutral-100/20 backdrop-blur ">
-        <Slider {...sliderSettings}>
-          {["/img1.jpg", "/img2.jpg", "/img3.jpg", "/img4.jpg"].map(
-            (src, idx) => (
-              <div key={idx} className="h-[30vh] sm:h-40 md:h-56 w-full">
-                <div className="w-full h-full bg-neutral-100/20 backdrop-blur">
-                  <span className="text-red-700 text-lg sm:text-2xl font-bold p-4">
-                    §§% OFF
-                  </span>
-                  <br />
-                  <span className="text-neutral-800 text-sm sm:text-lg font-semibold p-4">
-                    On your first order with us!
-                  </span>
-                  <img
-                    src={src}
-                    alt="Offer Img."
-                    className="h-full w-full object-cover border ring-offset-blue-50 rounded-lg shadow-lg"
-                  />
-                </div>
-              </div>
-            )
-          )}
-        </Slider>
+    {/* Slider Section */}
+<div className="w-full max-w-screen-lg mx-auto">
+{uniqueCoupons.length > 0 ? (
+  <Slider {...sliderSettings}>
+    {coupons.map((coupon) => (
+      <div
+        key={coupon._id}
+        className="w-full p-4 bg-neutral-100/20 backdrop-blur rounded-lg shadow-lg"
+      >
+        <div className="text-red-700 text-lg sm:text-2xl font-bold">
+          {coupon.discount}% OFF
+        </div>
+        <div className="text-neutral-800 text-sm sm:text-lg font-semibold mt-2">
+          {coupon.description}
+        </div>
+        <div className="text-xs text-black-600 mt-2">
+          <span>Valid From: {new Date(coupon.validFrom).toLocaleDateString()}</span>
+          <br />
+          <span>Valid Until: {new Date(coupon.validUntil).toLocaleDateString()}</span>
+          <br />
+          <span>Code: <strong>{coupon.code}</strong></span>
+          <br />
+          <span>
+            Applicable To:{" "}
+            {coupon.applicableToRestaurants?.length > 0
+              ? coupon.applicableToRestaurants.map((res) => res.name).join(", ")
+              : "All Restaurants"}
+          </span>
+        </div>
       </div>
+    ))}
+  </Slider>
+) : (
+  <p className="text-center text-gray-600">No coupons available at the moment.</p>
+)}
+</div> 
+
+
 
       {/* Featured Food */}
       <h3 className="text-lg sm:text-2xl font-bold text-white text-center">
