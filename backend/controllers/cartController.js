@@ -4,7 +4,7 @@ import User from "../models/userSchema.js";
 // Get Users cart
 export const getCart = async (req, res) => {
 	try {
-		const userId = req.user._id; // Get user ID from authenticated request
+		const userId = req.user.userId; // Get user ID from authenticated request
 
 		// Find the user and populate their cart items with food item details
 		const user = await User.findById(userId).populate({
@@ -28,7 +28,7 @@ export const getCart = async (req, res) => {
 		res.status(200).json({
 			success: true,
 			cartItems: user.cartItems,
-			cartTotal: cartTotal,
+			cartTotal,
 			itemCount: user.cartItems.length,
 		});
 	} catch (error) {
@@ -41,30 +41,21 @@ export const getCart = async (req, res) => {
 	}
 };
 
-// Add food item to cart
+// Add item to cart
 export const addToCart = async (req, res) => {
 	try {
-		const { foodItemId, quantity } = req.body;
-		const userId = req.user._id; // Assuming user is attached to req by auth middleware
+		const { foodItemId , quantity = 1 } = req.body;
+		const userId = req.user.userId;
 
-		// Validate quantity
-		if (!quantity || quantity < 1) {
+		// Input validation
+		if (!foodItemId) {
 			return res.status(400).json({
 				success: false,
-				message: "Quantity must be at least 1",
+				message: "foodItemId is required",
 			});
 		}
 
-		// Check if food item exists
-		const foodItem = await FoodItem.findById(foodItemId);
-		if (!foodItem) {
-			return res.status(404).json({
-				success: false,
-				message: "Food item not found",
-			});
-		}
-
-		// Find user and their cart
+		// Find user
 		const user = await User.findById(userId);
 		if (!user) {
 			return res.status(404).json({
@@ -73,35 +64,52 @@ export const addToCart = async (req, res) => {
 			});
 		}
 
-		// Check if item already exists in cart
-		const existingCartItem = user.cartItems.find(
-			(item) => item.foodItem.toString() === foodItemId
-		);
-
-		if (existingCartItem) {
-			// Update quantity if item exists
-			existingCartItem.quantity = quantity;
-		} else {
-			// Add new item to cart
-			user.cartItems.push({
-				foodItem: foodItemId,
-				quantity,
+		// Find food item
+		const foodItem = await FoodItem.findOne({ _id: foodItemId });
+		if (!foodItem) {
+			return res.status(404).json({
+				success: false,
+				message: "Food item not found",
 			});
 		}
 
-		// Save the updated user document
+		// Check if item already exists in cart
+		const existingCartItemIndex = user.cartItems.findIndex(
+			(item) => item.foodItem.toString() === foodItemId.toString()
+		);
+
+		if (existingCartItemIndex === -1) {
+			// Add new item to cart
+			user.cartItems.push({
+				foodItem: foodItemId, // Store the ObjectId reference
+				quantity: quantity,
+			});
+		} else {
+			// Update existing item quantity
+			user.cartItems[existingCartItemIndex].quantity = quantity;
+		}
+
+		// Save the updated cart
 		await user.save();
 
-		// Fetch the updated cart with populated food items
+		// Fetch updated user with populated cart items
 		const updatedUser = await User.findById(userId).populate({
 			path: "cartItems.foodItem",
-			select: "name price imageUrl",
+			model: "FoodItem",
+			select: "name price description imageUrl availability category",
 		});
+
+		// Calculate cart total
+		const cartTotal = updatedUser.cartItems.reduce((total, item) => {
+			return total + item.foodItem.price * item.quantity;
+		}, 0);
 
 		res.status(200).json({
 			success: true,
 			message: "Item added to cart successfully",
-			cart: updatedUser.cartItems,
+			cartItems: updatedUser.cartItems,
+			cartTotal,
+			itemCount: updatedUser.cartItems.length,
 		});
 	} catch (error) {
 		console.error("Error adding item to cart:", error);
@@ -112,12 +120,11 @@ export const addToCart = async (req, res) => {
 		});
 	}
 };
-
 // Update item quantity
 export const updateQuantity = async (req, res) => {
 	try {
 		const { foodItemId, quantity } = req.body;
-		const userId = req.user._id;
+		const userId = req.user.userId;
 
 		// Validate quantity
 		if (!quantity || quantity < 0) {
@@ -196,7 +203,7 @@ export const updateQuantity = async (req, res) => {
 export const removeFromCart = async (req, res) => {
 	try {
 		const { foodItemId } = req.params;
-		const userId = req.user._id;
+		const userId = req.user.userId;
 
 		// Find user and their cart
 		const user = await User.findById(userId);
@@ -256,7 +263,7 @@ export const removeFromCart = async (req, res) => {
 // Clear cart
 export const clearCart = async (req, res) => {
 	try {
-		const userId = req.user._id;
+		const userId = req.user.userId;
 
 		// Find user
 		const user = await User.findById(userId);

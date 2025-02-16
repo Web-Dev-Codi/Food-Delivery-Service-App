@@ -6,17 +6,17 @@ export const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   // // For cart operations, allow guest access with a temporary user ID
-  // if (req.path.startsWith("/api/cart")) {
-  //   const guestId = req.headers["x-guest-id"];
-  //   if (guestId) {
-  //     req.user = {
-  //       _id: guestId,
-  //       userId: guestId, // Add userId for consistency
-  //       isGuest: true,
-  //     };
-  //     return next();
-  //   }
-  // }
+  if (req.path.startsWith("/api/cart")) {
+    const guestId = req.headers["x-guest-id"];
+    if (guestId) {
+      req.user = {
+        _id: guestId,
+        userId: guestId, // Add userId for consistency
+        isGuest: true,
+      };
+      return next();
+    }
+  }
 
     if (!authHeader) {
         return res.status(401).json({
