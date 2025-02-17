@@ -3,36 +3,17 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { FaUser, FaBiking, FaWalking } from "react-icons/fa";
 import Hero from "./Hero";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import BottomNav from "./views/BottomNav";
+import { CouponSlider } from "./CouponSlider";
 // import { useNavigate } from "react-router-dom";
 
 const Home = () => {
 	const [restaurants, setRestaurants] = useState([]);
 	const [errorMessage, setErrorMessage] = useState("");
-	const [coupons, setCoupons] = useState([]);
+
 	// const [searchQuery, setSearchQuery] = useState("");
 
 	// const  navigate = useNavigate();
-
-	useEffect(() => {
-		const fetchCoupons = async () => {
-			try {
-				const response = await axios.get(
-					"http://localhost:8000/offers"
-				);
-				setCoupons(response.data.data);
-			} catch (error) {
-				setErrorMessage(
-					error.response?.data?.message ||
-						"An error occurred while fetching coupons"
-				);
-			}
-		};
-		fetchCoupons();
-	}, []);
 
 	// const handleSearch = async () => {
 	//   if (searchQuery.trim() !== "") {
@@ -73,53 +54,7 @@ const Home = () => {
 		fetchRestaurants();
 	}, []);
 
-	const sliderSettings = {
-		dots: true,
-		infinite: true,
-		speed: 500,
-		slidesToShow: 1,
-		slidesToScroll: 1,
-		autoplay: true,
-		autoplaySpeed: 3000,
-		arrows: true,
-		responsive: [
-			{
-				breakpoint: 480, // Mobile screens
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1,
-				},
-			},
-			{
-				breakpoint: 768, // Small screens
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2,
-				},
-			},
-			{
-				breakpoint: 1024, // Medium screens
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 2,
-				},
-			},
-			{
-				breakpoint: 1440, // Large screens
-				settings: {
-					slidesToShow: 4,
-					slidesToScroll: 4,
-				},
-			},
-		],
-	};
-
 	const foodCategories = ["Indian", "Thai", "Mexican", "Classic"];
-
-	const uniqueCoupons = coupons.filter(
-		(coupon, index, self) =>
-			index === self.findIndex((c) => c._id === coupon._id)
-	);
 
 	return (
 		<>
@@ -137,7 +72,7 @@ const Home = () => {
 				<FaUser className="text-lg sm:text-xl" />
 			</header>
 			<Hero />
-
+			<CouponSlider />
 			{/* Categories Section */}
 			<div className="flex flex-col space-y-4 my-3 px-3 sm:px-4">
 				<div className="flex justify-between items-center">
@@ -173,59 +108,6 @@ const Home = () => {
 						</div>
 					)}
 				</div>
-			</div>
-
-			{/* Slider Section */}
-			<div className="w-full max-w-screen-lg mx-auto">
-				{uniqueCoupons.length > 0 ? (
-					<Slider {...sliderSettings}>
-						{coupons.map((coupon) => (
-							<div
-								key={coupon._id}
-								className="w-full p-4 bg-neutral-100/20 backdrop-blur rounded-lg shadow-lg">
-								<div className="text-red-700 text-lg sm:text-2xl font-bold">
-									{coupon.discount}% OFF
-								</div>
-								<div className="text-neutral-800 text-sm sm:text-lg font-semibold mt-2">
-									{coupon.description}
-								</div>
-								<div className="text-xs text-black-600 mt-2">
-									<span>
-										Valid From:{" "}
-										{new Date(
-											coupon.validFrom
-										).toLocaleDateString()}
-									</span>
-									<br />
-									<span>
-										Valid Until:{" "}
-										{new Date(
-											coupon.validUntil
-										).toLocaleDateString()}
-									</span>
-									<br />
-									<span>
-										Code: <strong>{coupon.code}</strong>
-									</span>
-									<br />
-									<span>
-										Applicable To:{" "}
-										{coupon.applicableToRestaurants
-											?.length > 0
-											? coupon.applicableToRestaurants
-													.map((res) => res.name)
-													.join(", ")
-											: "All Restaurants"}
-									</span>
-								</div>
-							</div>
-						))}
-					</Slider>
-				) : (
-					<p className="text-center text-gray-600">
-						No coupons available at the moment.
-					</p>
-				)}
 			</div>
 
 			{/* Featured Food */}
