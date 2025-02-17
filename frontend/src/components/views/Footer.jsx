@@ -1,7 +1,36 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+  const [responseMessage, setResponseMessage] = useState("");
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("https://formspree.io/f/xvgzvrbb", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+        setResponseMessage("Thanks for subscribing!");
+      } else {
+        setResponseMessage("Something went wrong. Please try again.");
+      }
+    } catch {
+      setResponseMessage("Something went wrong. Please try again.");
+    }
+  };
+
   return (
     <footer className="flex flex-col bg-gradient-to-r from-[#4436BD] via-[#392679] to-[#050913] text-gray-200 text-center py-6">
       <div className="container mx-auto px-6">
@@ -38,6 +67,7 @@ const Footer = () => {
             Contact
           </Link>
         </nav>
+
         {/* 📢 Newsletter Signup */}
         <div className="mt-6">
           <p className="text-sm">Subscribe to our newsletter for updates!</p>
@@ -45,13 +75,33 @@ const Footer = () => {
             <input
               type="email"
               placeholder="Enter your email"
-              className="px-4 py-2 rounded-l-lg text-black focus:ring-2 focus:ring-orange-500 outline-none"
+              className="px-4 py-2 rounded-l-lg text-white focus:ring-2 focus:ring-orange-500 outline-none"
+              value={email}
+              onChange={handleEmailChange}
             />
-            <button className="bg-gray-900 hover:bg-gray-700 px-4 py-2 rounded-r-lg transition-all">
+            <button
+              onClick={handleSubmit}
+              className="bg-gray-900 hover:bg-gray-700 px-4 py-2 rounded-r-lg transition-all"
+            >
               Subscribe
             </button>
           </div>
         </div>
+        {/*  
+        {responseMessage && <p className="mt-3 text-sm text-Green">{responseMessage}</p>}
+         */}
+
+        {/* Display success or error message */}
+        {responseMessage && (
+          <p
+            className={`mt-3 text-sm font-bold flex items-center justify-center ${
+              responseMessage.ok ? "text-red-500" : "text-green-500"
+            }`}
+          >
+            <span className="text-lg">{responseMessage ? "🎉" : "❌"}</span>
+            <span className="ml-2">{responseMessage}</span>
+          </p>
+        )}
 
         {/* 🔗 Social Media Icons */}
         <div className="flex justify-center space-x-6 mt-4">
