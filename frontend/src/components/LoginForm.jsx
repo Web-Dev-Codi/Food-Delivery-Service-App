@@ -26,7 +26,7 @@ function LoginForm() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await axios.post("http://localhost:3006/data/login", {
+			const res = await axios.post("http://localhost:8000/data/login", {
 				email,
 				password,
 			});
