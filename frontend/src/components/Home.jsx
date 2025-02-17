@@ -159,7 +159,7 @@ const Home = () => {
       <div className="flex flex-col space-y-4 my-3 px-3 sm:px-4">
         <div className="flex justify-between items-center">
           <h5 className="text-lg sm:text-2xl font-bold text-white">
-            Categories
+            Top Rated Restaurants
           </h5>
           <Link
             to="/restaurants"

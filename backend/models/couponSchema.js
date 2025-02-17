@@ -1,7 +1,21 @@
+import { Schema, model } from "mongoose";
 
-import { Schema , model } from 'mongoose';
+const CouponSchema = new Schema(
+	{
+		code: { type: String, required: true, unique: true },
+		description: { type: String, required: true },
 
-
+		discount: {
+			type: Number,
+			required: true,
+			validate: {
+				validator: function (v) {
+					return v > 0;
+				},
+				message: "Discount must be greater than 0",
+			},
+		},
+    
     const CouponSchema = new Schema(
         {
           code: { type: String, required: true},
@@ -32,13 +46,6 @@ import { Schema , model } from 'mongoose';
           return this.isActive && now >= this.validFrom && now <= this.validUntil;
         });
 
-        // Ensure usageCount doesn't exceed maxUsage
-        CouponSchema.pre('save', function(next) {
-          if (this.usageCount > this.maxUsage) {
-            return next(new Error('Usage count exceeds the maximum allowed usage.'));
-          }
-          next();
-        });
 
         CouponSchema.pre('save', function(next) {
           if(this.validUntil < new Date()) {
@@ -50,5 +57,16 @@ import { Schema , model } from 'mongoose';
           next();
         });
 
-      const Coupon = model("Coupon", CouponSchema);
-      export default Coupon;
+// Ensure usageCount doesn't exceed maxUsage
+CouponSchema.pre("save", function (next) {
+	if (this.usageCount > this.maxUsage) {
+		return next(
+			new Error("Usage count exceeds the maximum allowed usage.")
+		);
+	}
+	next();
+});
+
+
+const Coupon = model("Coupon", CouponSchema);
+export default Coupon;
