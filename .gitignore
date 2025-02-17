@@ -131,3 +131,6 @@ dist
 
 Indian-food-menu
 mexican food
+
+.vscode/*
+.vscode/
