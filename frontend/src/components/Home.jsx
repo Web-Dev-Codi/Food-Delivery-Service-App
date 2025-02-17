@@ -1,16 +1,11 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import { FaUser, FaBiking, FaWalking } from "react-icons/fa";
 import Hero from "./Hero";
-import BottomNav from "./views/BottomNav";
+import LandingPageHeader from "./LandingPageHeader";
+// import BottomNav from "./views/BottomNav";
 import { CouponSlider } from "./CouponSlider";
+import LandingPageRestaurants from "./LandingPageRestaurants";
 // import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-	const [restaurants, setRestaurants] = useState([]);
-	const [errorMessage, setErrorMessage] = useState("");
-
 	// const [searchQuery, setSearchQuery] = useState("");
 
 	// const  navigate = useNavigate();
@@ -37,93 +32,13 @@ const Home = () => {
 	//   }
 	// };
 
-	useEffect(() => {
-		const fetchRestaurants = async () => {
-			try {
-				const response = await axios.get(
-					"http://localhost:8000/api/restaurants"
-				);
-				setRestaurants(response.data.data.slice(0, 4)); // Fetch only the first 4 restaurants
-			} catch (error) {
-				setErrorMessage(
-					error.response?.data?.message ||
-						"An error occurred while fetching restaurants"
-				);
-			}
-		};
-		fetchRestaurants();
-	}, []);
-
-	const foodCategories = ["Indian", "Thai", "Mexican", "Classic"];
-
 	return (
 		<>
-			<header className="flex justify-between items-center px-4 py-3 bg-transparent shadow-md text-white">
-				<div className="flex items-center space-x-3">
-					<FaWalking className="text-lg sm:text-xl" />
-					<FaBiking className="text-lg sm:text-xl" />
-				</div>
-				<h4 className="text-sm sm:text-base md:text-lg font-semibold text-center">
-					Delivery
-					<p className="text-xs sm:text-sm">
-						123 4th Street NY 20533
-					</p>
-				</h4>
-				<FaUser className="text-lg sm:text-xl" />
-			</header>
+			<LandingPageHeader />
 			<Hero />
 			<CouponSlider />
-			{/* Categories Section */}
-			<div className="flex flex-col space-y-4 my-3 px-3 sm:px-4">
-				<div className="flex justify-between items-center">
-					<h5 className="text-lg sm:text-2xl font-bold text-white">
-						Top Rated Restaurants
-					</h5>
-					<Link
-						to="/restaurants"
-						className="text-sm text-gray-400 hover:text-gray-300">
-						View all
-					</Link>
-				</div>
-				<div className="flex justify-around space-x-3 sm:space-x-4 overflow-x-auto">
-					{restaurants.length > 0 ? (
-						restaurants.map(({ images, _id }, index) => (
-							<Link
-								to={`/restaurants/${_id}`}
-								key={index}
-								className="flex flex-col items-center">
-								<img
-									src={images[0]}
-									alt={foodCategories[index]}
-									className="h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 lg:h-28 lg:w-28 xl:h-32 xl:w-32 object-cover rounded-xl shadow-lg mb-1"
-								/>
-								<p className="text-neutral-300 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-semibold text-center">
-									{foodCategories[index]}
-								</p>
-							</Link>
-						))
-					) : (
-						<div className="text-center text-red-600 text-sm sm:text-xl font-semibold">
-							{errorMessage || "No restaurants available"}
-						</div>
-					)}
-				</div>
-			</div>
-
-			{/* Featured Food */}
-			<h3 className="text-lg sm:text-2xl font-bold text-white text-center">
-				Fastest food near you!
-			</h3>
-			<div className="flex-1 flex justify-center items-center my-3">
-				<img
-					src="/featured-food.jpg"
-					alt="Featured Food"
-					className="h-[35vw] w-[35vw] sm:h-40 sm:w-40 md:h-48 md:w-48 rounded-full shadow-lg"
-				/>
-			</div>
-
-			{/* Bottom Navigation */}
-			<BottomNav />
+			<LandingPageRestaurants />
+			{/* <BottomNav /> */}
 		</>
 	);
 };
