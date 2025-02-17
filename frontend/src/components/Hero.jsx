@@ -6,7 +6,7 @@ export default function HeroSection() {
         <h1 className="text-4xl font-bold text-[#ffbb28]">
           Bringing flavours to your doorstep!
         </h1>
-        <p className="mt-10 text-[#f0db69]">
+        <p className="mt-10 text-[#f0db67]">
           At Four Flavors Express, we bring the world of flavors straight to
           your doorstep fresh, fast, and full of taste. Whether you’re craving
           comfort food, exotic cuisine, or a quick bite, we deliver with speed
