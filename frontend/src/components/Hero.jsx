@@ -1,52 +1,125 @@
-import Hero2 from "../assets/images/food2.avif";
 import { Link } from "react-router-dom";
+import pizzaImg from "../assets/images/pizza.jpg";
+import burgerImg from "../assets/images/burger.png";
+import Avatar from "../assets/images/avatar.png";
+import Hero2 from "../assets/images/food2.avif";
 
 export default function HeroSection() {
 	return (
-		<div className="flex flex-col items-center justify-center w-full">
-			<section className="bg-transparent text-white">
-				<div className="container flex flex-col justify-center py-6 gap-10 mx-auto sm:py-12 lg:py-24 lg:flex-row lg:justify-center">
-					<div className="flex flex-col justify-center p-6 text-center rounded-sm lg:max-w-md xl:max-w-lg lg:text-left">
-						<h1 className="text-5xl font-bold leading-none sm:text-6xl">
-							Healthy food <br />
-							<span className="dark:text-[#D84418] mr-4">
-								right
-							</span>
-							to your door fast!
+		<section className="relative flex flex-col justify-start items-start p-5 w-full  text-white">
+			<div className="container mx-auto px-4 sm:px-6 lg:px-8">
+				<div className="flex flex-col lg:flex-row items-center justify-between gap-8 py-8 lg:py-16">
+					{/* Left Content */}
+					<div className="w-full lg:w-1/2 space-y-6">
+						<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+							Healthy food delivered
+							<br />
+							<span className="text-[#D84418]">
+								right to your door
+							</span>{" "}
+							<br />
+							fast
 						</h1>
-						<p className="mt-6 mb-8 text-lg sm:mb-12">
-							lorem ipsum dolor sit amet, consectetur adipiscing
-							elit. Dictum aliquam porta in condimentum ac
-							integer.
-							<br className="hidden md:inline lg:hidden" />
-							turpis pulvinar, est scelerisque ligula sem
+
+						<p className="text-sm sm:text-base md:text-lg text-gray-300 max-w-xl">
+							Lorem ipsum dolor sit amet, consectetur adipisicing
+							elit. Architecto earum, nemo recusandae dignissimos
+							saepe mollitia modi.
 						</p>
-						<div className="flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
+
+						<div className="flex flex-col sm:flex-row gap-4">
 							<Link
-								to="/menu"
-								rel="noopener noreferrer"
-								href="#"
-								className="px-8 py-3 text-lg font-semibold rounded dark:bg-violet-600 dark:text-gray-50">
+								to="/order"
+								className="flex items-center justify-center px-6 py-5 bg-[#D84418] rounded-full text-white font-semibold hover:bg-[#c13915] transition-colors">
 								Order Now
 							</Link>
 							<Link
-								to="/login"
-								rel="noopener noreferrer"
-								href="#"
-								className="px-8 py-3 text-lg bg-[#D84418] font-semibold border rounded border-[#D84418]">
-								Login
+								to="/menu"
+								className="px-6 py-3 bg-transparent border-2 border-[#D84418] rounded-full text-white font-semibold flex items-center justify-center gap-2 hover:bg-[#D84418]/10 transition-colors">
+								{/* <span className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+									<div className="w-3 h-3 border-t-[6px] border-t-[#D84418] border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent" />
+								</span> */}
+								View Menu
 							</Link>
 						</div>
 					</div>
-					<div className="flex items-center justify-center w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]flex">
-						<img
-							src={Hero2}
-							alt=""
-							className="w-full h-full object-contain"
-						/>
+
+					{/* Right Content */}
+					<div className="w-full lg:w-1/2 relative">
+						<div className="relative">
+							{/* Main Image */}
+							<div className="w-full h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px] relative">
+								<img
+									src={Hero2}
+									alt="Hero"
+									className="w-full h-full object-cover rounded-full bg-[#D84418]/20"
+								/>
+							</div>
+
+							{/* Floating Elements */}
+							<div className="absolute top-10 -left-4 bg-white p-3 rounded-xl shadow-lg">
+								<img
+									src={pizzaImg}
+									alt="Pizza"
+									className="w-16 h-16 object-contain"
+								/>
+								<div className="mt-2">
+									<p className="text-black font-semibold">
+										Pizza
+									</p>
+									<div className="flex text-yellow-400 text-sm">
+										★★★★★
+									</div>
+								</div>
+							</div>
+
+							<div className="absolute bottom-10 -right-4 bg-white p-3 rounded-xl shadow-lg">
+								<img
+									src={burgerImg}
+									alt="Burger"
+									className="w-16 h-16 object-contain"
+								/>
+								<div className="mt-2">
+									<p className="text-black font-semibold">
+										Hamburger
+									</p>
+									<div className="flex text-yellow-400 text-sm">
+										★★★★★
+									</div>
+								</div>
+							</div>
+
+							{/* Contact Card */}
+							<div className="absolute bottom-20 left-10 bg-white text-black p-3 rounded-xl shadow-lg flex items-center gap-3">
+								<div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+									<img
+										src={Avatar}
+										alt="Profile"
+										className="w-8 h-8 rounded-full"
+									/>
+								</div>
+								<div>
+									<p className="font-semibold text-sm">
+										Ojoy Kumar
+									</p>
+									<p className="text-xs text-gray-500">
+										Food Driver
+									</p>
+								</div>
+								<div className="w-8 h-8 bg-[#D84418] rounded-full flex items-center justify-center ml-2">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										className="h-4 w-4 text-white"
+										viewBox="0 0 20 20"
+										fill="currentColor">
+										<path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+									</svg>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-			</section>
-		</div>
+			</div>
+		</section>
 	);
 }

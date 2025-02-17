@@ -66,64 +66,90 @@ export const CouponSlider = () => {
 		// ],
 	};
 
+	const customerProfiles = [
+		"https://randomuser.me/api/portraits/men/1.jpg",
+		"https://randomuser.me/api/portraits/women/2.jpg",
+		"https://randomuser.me/api/portraits/men/3.jpg",
+		"https://randomuser.me/api/portraits/women/4.jpg",
+		"https://randomuser.me/api/portraits/men/5.jpg",
+	];
+
+	const foodImages = [
+		"https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+	];
+
 	const uniqueCoupons = coupons.filter(
 		(coupon, index, self) =>
 			index === self.findIndex((c) => c._id === coupon._id)
 	);
 
 	return (
-		<div className="flex flex-col items-center justify-center w-full">
-			<div className="w-2/3 mx-auto">
-				{uniqueCoupons.length > 0 ? (
-					<Slider {...sliderSettings}>
-						{coupons.map((coupon) => (
-							<div
-								key={coupon._id}
-								className=" p-4 bg-neutral-100/20 backdrop-blur rounded-lg shadow-lg h-[300px]">
-								<div className="text-red-700 text-lg sm:text-2xl font-bold">
-									{coupon.discount}% OFF
-								</div>
-								<div className="text-neutral-800 text-sm sm:text-lg font-semibold mt-2">
+		<div className="w-full max-w-6xl mx-auto px-4 py-8">
+			<Slider {...sliderSettings}>
+				{uniqueCoupons.map((coupon) => (
+					<div
+						key={coupon._id}
+						className="px-2">
+						<div className="bg-[#FF4500] rounded-xl p-4 sm:p-6 flex flex-col lg:flex-row justify-between items-center relative overflow-hidden gap-6 lg:gap-0">
+							{/* Left content */}
+							<div className="flex-1 text-white text-center lg:text-left">
+								<h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4">
 									{coupon.description}
-								</div>
-								<div className="text-xs text-black-600 mt-2">
-									<span>
-										Valid From:{" "}
-										{new Date(
-											coupon.validFrom
-										).toLocaleDateString()}
-									</span>
 									<br />
-									<span>
-										Valid Until:{" "}
-										{new Date(
-											coupon.validUntil
-										).toLocaleDateString()}
-									</span>
-									<br />
-									<span>
+									<span className="text-lg sm:text-xl md:text-2xl">
 										Code: <strong>{coupon.code}</strong>
 									</span>
-									<br />
-									<span>
-										Applicable To:{" "}
-										{coupon.applicableToRestaurants
-											?.length > 0
-											? coupon.applicableToRestaurants
-													.map((res) => res.name)
-													.join(", ")
-											: "All Restaurants"}
-									</span>
+								</h2>
+
+								{/* Customer Reviews */}
+								<div className="mt-4 flex flex-col items-center lg:items-start">
+									<div className="flex items-center mb-2">
+										<div className="flex -space-x-2">
+											{customerProfiles.map(
+												(profile, index) => (
+													<img
+														key={index}
+														src={profile}
+														alt={`Customer ${
+															index + 1
+														}`}
+														className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-white"
+													/>
+												)
+											)}
+										</div>
+									</div>
+									<div className="flex items-center">
+										<span className="text-yellow-400">
+											★
+										</span>
+										<span className="ml-1 text-white">
+											4.8
+										</span>
+										<span className="ml-2 text-white/80">
+											(2.3k Reviews)
+										</span>
+									</div>
 								</div>
 							</div>
-						))}
-					</Slider>
-				) : (
-					<p className="text-center text-gray-600">
-						No coupons available at the moment.
-					</p>
-				)}
-			</div>
+
+							{/* Right content */}
+							<div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+								<div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white order-2 sm:order-1">
+									{coupon.discount}% OFF
+								</div>
+								<div className="order-1 sm:order-2">
+									<img
+										src={foodImages[0]}
+										alt="Featured dish"
+										className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full object-cover"
+									/>
+								</div>
+							</div>
+						</div>
+					</div>
+				))}
+			</Slider>
 		</div>
 	);
 };
