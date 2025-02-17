@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
-import { useCart } from "../context/CartContext";
+import { useParams,useNavigate } from "react-router-dom";
+
 
 function SingleRestaurant() {
-	const { addToCart } = useCart();
+
 	const { id } = useParams();
 	const [restaurant, setRestaurant] = useState(null);
 	const [menus, setMenus] = useState([]);
@@ -12,6 +12,7 @@ function SingleRestaurant() {
 	const [errorMessage, setErrorMessage] = useState("");
 	const [menuCategory, setMenuCategory] = useState("Select");
 
+	const navigate = useNavigate();
 	// Fetch restaurant and menu data in a single useEffect
 	useEffect(() => {
 		const fetchData = async () => {
@@ -59,9 +60,11 @@ function SingleRestaurant() {
 			? menus
 			: menus.filter((menu) => menu.category === menuCategory);
 
-	// const handleClick = () => {
-	// 	console.log("Add to cart clicked");
-	// };
+	 const handleClick = (menuId) => {
+		navigate(`/menu/${menuId}`);
+
+console.log("show Details");
+};
 
 	return (
 		<>
@@ -76,6 +79,7 @@ function SingleRestaurant() {
 			</select>
 
 			<div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mx-auto">
+			
 				<h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
 					{restaurant.name}
 				</h2>
@@ -99,20 +103,14 @@ function SingleRestaurant() {
 								<p className="text-gray-700 mb-2">
 									${menu.price}
 								</p>
-								<p className="text-gray-700 mb-2">
-									{menu.description}
-								</p>
-								<p className="text-gray-700 mb-2">
-									{menu.category}
-								</p>
-								<p className="text-gray-700 mb-2">
-									{menu.availability}
-								</p>
+							
+							
+							
 								<button
 									type="button"
-									onClick={addToCart}
+									onClick={() => handleClick(menu._id)}
 									className="w-full bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400">
-									Add To Cart
+									Show Details
 								</button>
 							</div>
 						))

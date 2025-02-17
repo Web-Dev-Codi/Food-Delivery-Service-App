@@ -26,6 +26,7 @@ import AddCoupons from "./components/AddCoupons.jsx";
 import Dashboard from "./components/Dashboard";
 import ForgotPassword from "./components/ForgotPassword.jsx";
 import ResetPasswordPage from "./components/ResetPasswordPage.jsx";
+import SingleMenu from "./components/SingleMenu.jsx";
 
 const stripePromise = loadStripe(
   "pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
@@ -73,6 +74,11 @@ const router = createBrowserRouter(
 						element={<AddMenu />}
 					/>
 				</Route>
+				<Route
+					path="/menu/:id"
+					element={<SingleMenu />}
+				/>	
+
 				<Route
 					path="/cart"
 					element={<Cart />}
