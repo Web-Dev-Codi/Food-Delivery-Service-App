@@ -33,7 +33,6 @@ const UserSchema = new Schema(
 				foodItem: {
 					type: Schema.Types.ObjectId,
 					ref: "FoodItem",
-					required: true,
 				},
 				quantity: {
 					type: Number,

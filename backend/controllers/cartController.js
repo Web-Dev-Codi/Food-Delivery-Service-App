@@ -44,7 +44,7 @@ export const getCart = async (req, res) => {
 // Add item to cart
 export const addToCart = async (req, res) => {
 	try {
-		const { foodItemId , quantity = 1 } = req.body;
+		const { foodItemId, quantity} = req.body;
 		const userId = req.user.userId;
 
 		// Input validation
@@ -65,7 +65,7 @@ export const addToCart = async (req, res) => {
 		}
 
 		// Find food item
-		const foodItem = await FoodItem.findOne({ _id: foodItemId });
+		const foodItem = await FoodItem.findById(foodItemId);
 		if (!foodItem) {
 			return res.status(404).json({
 				success: false,
@@ -120,6 +120,7 @@ export const addToCart = async (req, res) => {
 		});
 	}
 };
+
 // Update item quantity
 export const updateQuantity = async (req, res) => {
 	try {

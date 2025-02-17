@@ -9,8 +9,8 @@ import {
 import {
 	protect,
 	verifyCartOwnership,
-	verifyCartItem,
-	verifyCartQuantity,
+	// verifyCartItem,
+	// verifyCartQuantity,
 } from "../middleware/authMiddleware.js";
 
 const cartRouter = Router();
@@ -23,18 +23,16 @@ cartRouter.use(verifyCartOwnership);
 cartRouter.get("/", getCart);
 
 // Add item to cart
-cartRouter.post("/add", verifyCartItem, verifyCartQuantity, addToCart);
+cartRouter.post("/add", addToCart);
 
 // Update item quantity
 cartRouter.put(
 	"/update-quantity",
-	verifyCartItem,
-	verifyCartQuantity,
 	updateQuantity
 );
 
 // Remove item from cart
-cartRouter.delete("/remove/:foodItemId", verifyCartItem, removeFromCart);
+cartRouter.delete("/remove/:foodItemId",  removeFromCart);
 
 // Clear entire cart
 cartRouter.delete("/clear", clearCart);
