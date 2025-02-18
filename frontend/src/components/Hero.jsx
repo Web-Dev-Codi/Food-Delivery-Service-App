@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import pizzaImg from "../assets/images/pizza.jpg";
-import burgerImg from "../assets/images/burger.png";
 import Avatar from "../assets/images/avatar.png";
 import Hero2 from "../assets/images/food2.avif";
 

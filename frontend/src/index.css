@@ -6,9 +6,12 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark; /* Default to dark mode */
-  --bg-color: #111; /* Dark background */
-  --text-color: #f1f1f1; /* Light text */
+  color-scheme: dark;
+  /* Default to dark mode */
+  --bg-color: #111;
+  /* Dark background */
+  --text-color: #f1f1f1;
+  /* Light text */
 }
 
 * {
@@ -26,8 +29,10 @@
 
 /* Light Mode */
 .light {
-  --bg-color: #f1f1f1; /* Light background */
-  --text-color: #111; /* Dark text */
+  --bg-color: #f1f1f1;
+  /* Light background */
+  --text-color: #111;
+  /* Dark text */
 }
 
 /* to spin the logo at Home.jsx */
@@ -40,6 +45,11 @@
     transform: rotate(360deg);
   }
 }
+
+/* html {
+  background: rgb(9, 9, 121);
+  background: linear-gradient(90deg, rgba(9, 9, 121, 1) 20%, rgba(255, 69, 0, 0.5606617647058824) 36%, rgba(255, 69, 0, 0.14049369747899154) 65%, rgba(9, 9, 121, 1) 80%);
+} */
 
 @media (prefers-reduced-motion: no-preference) {
   img.solar-spin {
