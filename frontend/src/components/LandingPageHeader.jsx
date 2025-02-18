@@ -3,7 +3,7 @@ import { FaUser, FaBiking, FaWalking } from "react-icons/fa";
 function LandingPageHeader() {
 	return (
 		<div className="">
-			<section className="flex justify-between items-center max-w-[2100px] bg-transparent shadow-md text-white mx-auto py-4 px-6">
+			<section className="flex justify-between items-center bg-transparent text-white mx-auto">
 				<div className="flex items-center space-x-3">
 					<FaWalking className="text-lg sm:text-xl" />
 					<FaBiking className="text-lg sm:text-xl" />

@@ -6,18 +6,17 @@ import Hero2 from "../assets/images/food2.avif";
 
 export default function HeroSection() {
 	return (
-		<section className="relative flex flex-col justify-center items-center p-2 w-full text-white h-auto md:h-[900px] overflow-hidden">
-			<div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1920px] h-auto md:h-[800px]">
+		<section className="relative flex flex-col items-center p-2 py-10 w-full text-white h-auto md:h-[900px]">
+			<div className="container mx-auto h-auto md:h-[700px] px-2">
 				<div className="flex flex-col lg:flex-row items-center justify-between gap-8 py-4 md:py-8 lg:py-16">
 					{/* Left Content */}
 					<div className="w-full lg:w-1/2 space-y-4 md:space-y-6">
-						<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+						<h1 className="text-5xl text-center flex flex-col md:text-left sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
 							Healthy food delivered
 							<br />
 							<span className="text-[#D84418]">
 								right to your door
-							</span>{" "}
-							<br />
+							</span>
 							fast
 						</h1>
 
@@ -35,7 +34,7 @@ export default function HeroSection() {
 							</Link>
 							<Link
 								to="/menu"
-								className="px-6 py-3 bg-transparent border-2 border-[#D84418] rounded-full text-white font-semibold flex items-center justify-center gap-2 hover:bg-[#D84418]/10 transition-colors">
+								className="px-6 py-5 bg-transparent border-2 border-[#D84418] rounded-full text-white font-semibold flex items-center justify-center gap-2 hover:bg-[#D84418]/10 transition-colors">
 								{/* <span className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
 									<div className="w-3 h-3 border-t-[6px] border-t-[#D84418] border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent" />
 								</span> */}
@@ -45,10 +44,10 @@ export default function HeroSection() {
 					</div>
 
 					{/* Right Content */}
-					<div className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] relative">
+					<div className="w-full h-[400px] sm:h-[500px] lg:h-[800px] relative">
 						<div className="relative">
 							{/* Main Image */}
-							<div className="w-full h-[400px] sm:h-[500px] md:h-[500px] lg:h-[700px] relative">
+							<div className="w-full h-[400px] sm:h-[500px] lg:h-[800px] relative">
 								<img
 									src={Hero2}
 									alt="Hero"
@@ -59,13 +58,13 @@ export default function HeroSection() {
 							{/* Floating Elements */}
 							<div className="absolute top-10 -left-4 bg-white p-3 rounded-xl shadow-lg">
 								<img
-									src={pizzaImg}
+									src="https://res.cloudinary.com/difmxsysx/image/upload/v1738520512/Indian-food-menu/omlet-starter_ftngrz.jpg"
 									alt="Pizza"
-									className="w-16 h-16 object-contain"
+									className="w-24 h-24 object-contain"
 								/>
 								<div className="mt-2">
 									<p className="text-black font-semibold">
-										Pizza
+										Omelette
 									</p>
 									<div className="flex text-yellow-400 text-sm">
 										★★★★★
@@ -75,13 +74,13 @@ export default function HeroSection() {
 
 							<div className="absolute bottom-10 -right-4 bg-white p-3 rounded-xl shadow-lg">
 								<img
-									src={burgerImg}
-									alt="Burger"
-									className="w-16 h-16 object-contain"
+									src="https://res.cloudinary.com/difmxsysx/image/upload/v1738584141/Buffalo_Wings_islhkv.jpg"
+									alt="Buffalo Wings"
+									className="w-28 h-24 object-contain"
 								/>
 								<div className="mt-2">
 									<p className="text-black font-semibold">
-										Hamburger
+										Buffalo Wings
 									</p>
 									<div className="flex text-yellow-400 text-sm">
 										★★★★★

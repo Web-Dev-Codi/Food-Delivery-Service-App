@@ -33,7 +33,7 @@ const Home = () => {
 	// };
 
 	return (
-		<div className="w-full">
+		<div className="">
 			<LandingPageHeader />
 			<Hero />
 			<CouponSlider />
