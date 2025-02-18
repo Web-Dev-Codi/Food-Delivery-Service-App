@@ -53,13 +53,13 @@ export default function NotFound() {
         whileHover={{ scale: 1.1, color: "#FF6347" }}  // Hover effect with color change
         transition={{ type: "spring", stiffness: 300 }}
       >
-        Oops! Your Delivery Got Lost! 🛵
+        Oops! Page Not Found, Flavours Await! 🍤🥢 🛵
       </motion.h2>
 
       <p className="text-white-600 text-lg text-center mb-6 max-w-md">
         Looks like this page is off the delivery map! But don’t worry, we can still bring you some delicious food.
       </p>
-      <p className="text-gray-800 font-semibold mb-4">
+      <p className="text-White-800 font-semibold mb-14">
         Hungry for <span className="text-green-500">Mexican 🌮, Indian 🍛, Chinese 🥡, or Thai 🍜?</span>
       </p>
       
@@ -72,7 +72,7 @@ export default function NotFound() {
       >
         <Link
           to="/"
-          className="px-6 py-3 bg-red-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition"
+          className="mt-16 px-8 py-3 bg-red-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition"
         >
           🍽 Go to Home
         </Link>
