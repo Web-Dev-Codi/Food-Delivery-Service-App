@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { logosMap } from "../assets/index.js";
+import { logosMap, defaultLogo } from "../assets/index.js";
 
 function SingleRestaurant() {
   const { id } = useParams();
