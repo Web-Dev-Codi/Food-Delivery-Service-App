@@ -34,7 +34,7 @@ export const CouponSlider = () => {
 		slidesToScroll: 1,
 		autoplay: false,
 		autoplaySpeed: 3000,
-		arrows: true,
+		arrows: false,
 		// responsive: [
 		// 	{
 		// 		breakpoint: 480, // Mobile screens
@@ -85,12 +85,12 @@ export const CouponSlider = () => {
 	);
 
 	return (
-		<div className="w-full max-w-6xl mx-auto px-4 py-8">
+		<div className="w-full py-8 sm:py-8 md:py-12">
 			<Slider {...sliderSettings}>
 				{uniqueCoupons.map((coupon) => (
 					<div
 						key={coupon._id}
-						className="px-2">
+						className="">
 						<div className="bg-[#FF4500] rounded-xl p-4 sm:p-6 flex flex-col lg:flex-row justify-between items-center relative overflow-hidden gap-6 lg:gap-0">
 							{/* Left content */}
 							<div className="flex-1 text-white text-center lg:text-left">

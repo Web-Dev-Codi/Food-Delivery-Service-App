@@ -6,11 +6,11 @@ import Hero2 from "../assets/images/food2.avif";
 
 export default function HeroSection() {
 	return (
-		<section className="relative flex flex-col justify-start items-start p-5 w-full  text-white">
-			<div className="container mx-auto px-4 sm:px-6 lg:px-8">
-				<div className="flex flex-col lg:flex-row items-center justify-between gap-8 py-8 lg:py-16">
+		<section className="relative flex flex-col justify-center items-center p-2 w-full text-white h-auto md:h-[900px] overflow-hidden">
+			<div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1920px] h-auto md:h-[800px]">
+				<div className="flex flex-col lg:flex-row items-center justify-between gap-8 py-4 md:py-8 lg:py-16">
 					{/* Left Content */}
-					<div className="w-full lg:w-1/2 space-y-6">
+					<div className="w-full lg:w-1/2 space-y-4 md:space-y-6">
 						<h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
 							Healthy food delivered
 							<br />
@@ -45,10 +45,10 @@ export default function HeroSection() {
 					</div>
 
 					{/* Right Content */}
-					<div className="w-full lg:w-1/2 relative">
+					<div className="w-full h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] relative">
 						<div className="relative">
 							{/* Main Image */}
-							<div className="w-full h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px] relative">
+							<div className="w-full h-[400px] sm:h-[500px] md:h-[500px] lg:h-[700px] relative">
 								<img
 									src={Hero2}
 									alt="Hero"

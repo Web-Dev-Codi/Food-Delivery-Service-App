@@ -7,9 +7,9 @@ import Footer from "./components/views/Footer";
 function App() {
 	return (
 		<React.Fragment>
-			<div className="min-h-screen flex flex-col justify-center">
+			<div className="flex flex-col h-full bg-gradient-to-b from-[#0B1225] via-[#382677] to-[#050913] backdrop-blur-xl">
 				<Header />
-				<main className="flex-grow bg-gradient-to-b from-[#0B1225] via-[#382677] to-[#050913] flex flex-col w-full backdrop-blur-xl">
+				<main className="container mx-auto px-3 pb-12 flex-grow">
 					<Outlet />
 				</main>
 				<Footer />

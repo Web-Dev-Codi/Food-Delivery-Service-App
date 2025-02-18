@@ -5,9 +5,9 @@ const Header = () => {
 	const [menuOpen, setMenuOpen] = useState(false); // Toggle for mobile menu
 
 	return (
-		<div className="bg-gradient-to-r from-[#4436BD] via-[#392679] to-[#050913] justify-between items-center reletive">
+		<div className="container mx-auto justify-between items-center reletive">
 			<nav className="bg-transparent justify-between items-center mx-auto max-w-[2100px]">
-				<div className=" text-neutral-300 py-4 px-6 flex justify-between items-center ">
+				<div className=" text-neutral-300 py-4 px-2 flex justify-between items-center ">
 					{/* 🍽️ Logo */}
 					<Link
 						to="/"
