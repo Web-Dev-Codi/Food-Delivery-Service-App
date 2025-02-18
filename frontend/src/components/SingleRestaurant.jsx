@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import Logo from "../assets/images/gradient.png";
+import Logo from "../assets/images/logo.png";
 
 function SingleRestaurant() {
   const { id } = useParams();
@@ -90,6 +90,7 @@ function SingleRestaurant() {
               <h2 className="text-2xl font-bold text-neutral-200">
                 {restaurant.name}
               </h2>
+
               <p className="text-gray-200">{restaurant.location}</p>
               <p className="text-gray-200">{restaurant.contact}</p>
             </div>
