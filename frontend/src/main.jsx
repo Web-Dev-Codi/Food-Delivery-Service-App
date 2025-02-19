@@ -26,6 +26,7 @@ import AddCoupons from "./components/AddCoupons.jsx";
 import Dashboard from "./components/Dashboard";
 import ForgotPassword from "./components/ForgotPassword.jsx";
 import ResetPasswordPage from "./components/ResetPasswordPage.jsx";
+import PageNotFound from "./components/PageNotFound.jsx";
 import SingleMenu from "./components/SingleMenu.jsx";
 
 const stripePromise = loadStripe(
@@ -115,7 +116,7 @@ const router = createBrowserRouter(
 					path="/reset-password/:token"
 					element={<ResetPasswordPage />}
 				/>
-				
+				<Route path="*" element={<PageNotFound />} />
 			</Route>
 		</Route>
 	)
