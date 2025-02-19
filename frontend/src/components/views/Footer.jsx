@@ -22,15 +22,23 @@ const Footer = () => {
       });
 
       if (response.ok) {
-        setResponseMessage("Thanks for subscribing!");
+        setResponseMessage({
+          ok: true,
+          message: "Thanks for subscribing! 🎉", // Success message with emoji
+        });
       } else {
-        setResponseMessage("Something went wrong. Please try again.");
+        setResponseMessage({
+          ok: false,
+          message: "Something went wrong. Please try again. ❌", // Error message with emoji
+        });
       }
     } catch {
-      setResponseMessage("Something went wrong. Please try again.");
+      setResponseMessage({
+        ok: false,
+        message: "Something went wrong. Please try again. ❌", // Error message with emoji
+      });
     }
   };
-
   return (
     <footer className="flex flex-col bg-gradient-to-r from-[#4436BD] via-[#392679] to-[#050913] text-gray-200 text-center py-6">
       <div className="container mx-auto px-6">
@@ -95,11 +103,11 @@ const Footer = () => {
         {responseMessage && (
           <p
             className={`mt-3 text-sm font-bold flex items-center justify-center ${
-              responseMessage.ok ? "text-red-500" : "text-green-500"
+              responseMessage.ok ? "text-green-500" : "text-red-500"
             }`}
           >
-            <span className="text-lg">{responseMessage ? "🎉" : "❌"}</span>
-            <span className="ml-2">{responseMessage}</span>
+            <span className="text-lg">{responseMessage.ok ? "🎉" : "❌"}</span>
+            <span className="ml-2">{responseMessage.message}</span>
           </p>
         )}
 
