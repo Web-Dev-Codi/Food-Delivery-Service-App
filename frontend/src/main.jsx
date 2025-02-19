@@ -1,8 +1,8 @@
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
+	createBrowserRouter,
+	createRoutesFromElements,
+	Route,
+	RouterProvider,
 } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -28,9 +28,10 @@ import ForgotPassword from "./components/ForgotPassword.jsx";
 import ResetPasswordPage from "./components/ResetPasswordPage.jsx";
 import PageNotFound from "./components/PageNotFound.jsx";
 import SingleMenu from "./components/SingleMenu.jsx";
+import UserProfile from "./components/UserProfile.jsx";
 
 const stripePromise = loadStripe(
-  "pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
+	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
 );
 
 const router = createBrowserRouter(
@@ -78,7 +79,7 @@ const router = createBrowserRouter(
 				<Route
 					path="/menu/:id"
 					element={<SingleMenu />}
-				/>	
+				/>
 
 				<Route
 					path="/cart"
@@ -116,14 +117,21 @@ const router = createBrowserRouter(
 					path="/reset-password/:token"
 					element={<ResetPasswordPage />}
 				/>
-				<Route path="*" element={<PageNotFound />} />
+				<Route
+					path="/user-profile"
+					element={<UserProfile />}
+				/>
+				<Route
+					path="*"
+					element={<PageNotFound />}
+				/>
 			</Route>
 		</Route>
 	)
 );
 
 createRoot(document.getElementById("root")).render(
-  <CartProvider>
-    <RouterProvider router={router} />
-  </CartProvider>
+	<CartProvider>
+		<RouterProvider router={router} />
+	</CartProvider>
 );

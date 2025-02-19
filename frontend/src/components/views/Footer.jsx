@@ -22,22 +22,31 @@ const Footer = () => {
 			});
 
 			if (response.ok) {
-				setResponseMessage("Thanks for subscribing!");
+				setResponseMessage({
+					ok: true,
+					message: "Thanks for subscribing! 🎉", // Success message with emoji
+				});
 			} else {
-				setResponseMessage("Something went wrong. Please try again.");
+				setResponseMessage({
+					ok: false,
+					message: "Something went wrong. Please try again. ❌", // Error message with emoji
+				});
 			}
 		} catch {
-			setResponseMessage("Something went wrong. Please try again.");
+			setResponseMessage({
+				ok: false,
+				message: "Something went wrong. Please try again. ❌", // Error message with emoji
+			});
 		}
 	};
 
 	return (
-		<footer className="flex flex-col border-t-[#D84418] border-t-4 text-gray-200 text-center py-6">
+		<footer className="flex flex-col border-2 border-t-[#D84418] text-gray-200 text-center py-6">
 			<div className="container mx-auto px-6">
 				{/* 🚀 Quick Links */}
 				<nav className="flex flex-wrap justify-center gap-3 md:gap-6 text-xs sm:text-sm md:text-base font-medium">
 					<Link
-						to="/"
+						to="/dashboard"
 						className="hover:text-white transition-all hover:scale-105">
 						Home
 					</Link>
@@ -62,7 +71,6 @@ const Footer = () => {
 						Contact
 					</Link>
 				</nav>
-
 				{/* 📢 Newsletter Signup */}
 				<div className="mt-6">
 					<p className="text-sm">
@@ -83,22 +91,18 @@ const Footer = () => {
 						</button>
 					</div>
 				</div>
-				{/*
-        {responseMessage && <p className="mt-3 text-sm text-Green">{responseMessage}</p>}
-         */}
-
 				{/* Display success or error message */}
 				{responseMessage && (
 					<p
 						className={`mt-3 text-sm font-bold flex items-center justify-center ${
 							responseMessage.ok
-								? "text-red-500"
-								: "text-green-500"
+								? "text-green-500"
+								: "text-red-500"
 						}`}>
 						<span className="text-lg">
-							{responseMessage ? "🎉" : "❌"}
+							{responseMessage.ok ? "🎉" : "❌"}
 						</span>
-						<span className="ml-2">{responseMessage}</span>
+						<span className="ml-2">{responseMessage.message}</span>
 					</p>
 				)}
 
