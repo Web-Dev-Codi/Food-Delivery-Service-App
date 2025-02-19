@@ -34,92 +34,6 @@ const stripePromise = loadStripe(
 );
 
 const router = createBrowserRouter(
-	createRoutesFromElements(
-		<Route>
-			<Route
-				path="/"
-				element={<App />}>
-				<Route
-					index
-					element={<Home />}
-				/>
-				<Route
-					path="/menu"
-					element={<Menu />}
-				/>
-				<Route
-					path="/signup"
-					element={<SignupForm />}
-				/>
-				<Route
-					path="/login"
-					element={<LoginForm />}
-				/>
-				<Route
-					path="/payment"
-					element={
-						<Elements stripe={stripePromise}>
-							<PaymentForm />
-						</Elements>
-					}
-				/>
-				<Route
-					path="/dashboard"
-					element={<Dashboard />}>
-					<Route
-						path="restaurants/add"
-						element={<AddRestaurant />}
-					/>
-					<Route
-						path="add-menu"
-						element={<AddMenu />}
-					/>
-				</Route>
-				<Route
-					path="/menu/:id"
-					element={<SingleMenu />}
-				/>	
-
-				<Route
-					path="/cart"
-					element={<Cart />}
-				/>
-				<Route
-					path="/coupons"
-					element={<AddCoupons />}
-				/>
-				<Route
-					path="/checkout"
-					element={<Checkout />}
-				/>
-				<Route
-					path="/restaurants/add"
-					element={<AddRestaurant />}
-				/>
-				<Route
-					path="/restaurants"
-					element={<ListRestaurant />}
-				/>
-				<Route
-					path="/restaurants/:id"
-					element={<SingleRestaurant />}
-				/>
-				<Route
-					path="/restaurants/:id/reviews"
-					element={<AddReview />}
-				/>
-				<Route
-					path="/forgot-password"
-					element={<ForgotPassword />}
-				/>
-				<Route
-					path="/reset-password/:token"
-					element={<ResetPasswordPage />}
-				/>
-				<Route path="*" element={<PageNotFound />} />
-			</Route>
-		</Route>
-	)
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<App />}>
@@ -138,12 +52,11 @@ const router = createBrowserRouter(
         <Route path="/dashboard" element={<Dashboard />}>
           <Route path="restaurants/add" element={<AddRestaurant />} />
           <Route path="add-menu" element={<AddMenu />} />
-          <Route path="coupons" element={<AddCoupons />} />
         </Route>
         <Route path="/menu/:id" element={<SingleMenu />} />
 
         <Route path="/cart" element={<Cart />} />
-
+        <Route path="/coupons" element={<AddCoupons />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/restaurants/add" element={<AddRestaurant />} />
         <Route path="/restaurants" element={<ListRestaurant />} />
@@ -151,6 +64,7 @@ const router = createBrowserRouter(
         <Route path="/restaurants/:id/reviews" element={<AddReview />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+        <Route path="*" element={<PageNotFound />} />
       </Route>
     </Route>
   )
