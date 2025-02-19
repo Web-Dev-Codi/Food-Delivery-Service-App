@@ -6,12 +6,12 @@ import scooterImage from '../assets/images/scooterImage.png';  // Your downloade
 export default function NotFound() {
   return (
     <div className="relative flex flex-col items-center justify-center h-screen bg-gray-100 p-6 overflow-hidden"
-    style={{ 
-      backgroundImage: `url(${backgroundImage})`, 
-      backgroundSize: 'cover', 
-      backgroundPosition: 'center',
-      backgroundColor: 'rgba(255, 255, 255, 0.8)' // More transparent
-    }}
+      style={{ 
+        backgroundImage: `url(${backgroundImage})`, 
+        backgroundSize: 'cover', 
+        backgroundPosition: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)' // More transparent
+      }}
     >
     
       {/* Wave Animation for Scooter */}
@@ -53,14 +53,16 @@ export default function NotFound() {
         whileHover={{ scale: 1.1, color: "#FF6347" }}  // Hover effect with color change
         transition={{ type: "spring", stiffness: 300 }}
       >
-        Oops! Page Not Found, Flavours Await! 🍤🥢 🛵
+        Oops! This Page is Off the Menu! 🍤🥢 🛵
       </motion.h2>
 
       <p className="text-white-600 text-lg text-center mb-6 max-w-md">
-        Looks like this page is off the delivery map! But don’t worry, we can still bring you some delicious food.
+        Looks like you’ve taken a wrong turn we can't find the page you're looking for. But don’t worry, delicious food is still just a tap away! 
       </p>
-      <p className="text-White-800 font-semibold mb-14">
-        Hungry for <span className="text-green-500">Mexican 🌮, Indian 🍛, Chinese 🥡, or Thai 🍜?</span>
+      <p className="text-white-800 font-semibold mb-8">
+      Stay hungry for <span className="text-green-500">Mexican 🌮, Indian 🍛, Chinese 🥡, or Thai 🍜?</span><p className="text-white-600 text-lg text-center mb-6">
+         we’re always cooking up something amazing! 🔪🍽🔥
+      </p>
       </p>
       
 
@@ -74,7 +76,7 @@ export default function NotFound() {
           to="/"
           className="mt-16 px-8 py-3 bg-red-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition"
         >
-          🍽 Go to Home
+          🍽 Return to Home 
         </Link>
       </motion.div>
     </div>
