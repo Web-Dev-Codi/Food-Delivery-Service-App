@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { FaCamera } from "react-icons/fa";
+
+// I will eventually break this component into multiple components with smaller functions and states.
 
 export default function UserProfile() {
 	const [profileImage, setProfileImage] = useState(null);
@@ -20,7 +21,6 @@ export default function UserProfile() {
 		<div className="min-h-screen flex items-center justify-center">
 			<div className=" bg-black/40 backdrop-blur-lg border border-[#D84418]/40 rounded-xl shadow-lg p-6 sm:px-6 lg:px-8">
 				<div className="max-w-3xl mx-auto">
-					{/* Profile Header with Gradient Background */}
 					<div className="relative rounded-xl bg-gradient-to-r from-blue-400 to-purple-500 p-8 text-center text-white">
 						<div className="flex flex-col items-center justify-center">
 							<div className="relative mb-4">
@@ -45,8 +45,6 @@ export default function UserProfile() {
 							</h2>
 						</div>
 					</div>
-
-					{/* Profile Form */}
 					<div className="mt-20 bg-white rounded-xl shadow p-8 text-slate-950">
 						{/* User Profile Section */}
 						<div className="flex flex-col md:grid md:grid-cols-2 md:gap-x-8">
@@ -221,8 +219,6 @@ export default function UserProfile() {
 								</div>
 							</div>
 						</div>
-
-						{/* Billing Information Section */}
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-8 pt-8 border-t">
 							<div className="col-span-1">
 								<div className="flex items-center gap-2 mb-2">
@@ -319,8 +315,6 @@ export default function UserProfile() {
 								</div>
 							</div>
 						</div>
-
-						{/* Notification Preferences */}
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-8 pt-8 border-t">
 							<div className="col-span-1">
 								<div className="flex items-center gap-2 mb-2">
