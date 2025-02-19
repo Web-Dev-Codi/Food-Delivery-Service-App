@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaShoppingCart, FaUser } from "react-icons/fa";
+import { FaShoppingCart, FaUser, FaRegWindowClose } from "react-icons/fa";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 const Header = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -80,7 +81,7 @@ const Header = () => {
 								</Link>
 							</>
 						) : (
-							/* Auth Buttons - Only shown when logged out */
+							// Auth Buttons - Only shown when logged out
 							<div className="flex items-center space-x-2">
 								<Link
 									to="/login"
@@ -97,8 +98,12 @@ const Header = () => {
 					</div>
 					<button
 						onClick={() => setMenuOpen(!menuOpen)}
-						className="md:hidden text-white hover:text-orange-500 transition-colors">
-						{menuOpen ? "✖" : "☰"}
+						className="md:hidden text-white hover:text-orange-500 transition-colors h-5 w-5">
+						{menuOpen ? (
+							<FaRegWindowClose style={{ fontSize: "26px" }} />
+						) : (
+							<GiHamburgerMenu style={{ fontSize: "26px" }} />
+						)}
 					</button>
 				</div>
 				{menuOpen && (
