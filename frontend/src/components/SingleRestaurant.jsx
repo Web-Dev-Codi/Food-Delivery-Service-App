@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import defaultLogo from "../assets/images/defaultLogo.png";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { logosMap } from "../assets/index.js";
+import { logosMap } from "../assets";
 
 function SingleRestaurant() {
   const { id } = useParams();
@@ -81,7 +82,7 @@ function SingleRestaurant() {
             {/* Restaurant Logo */}
             <img
               className="w-16 h-16 object-cover rounded-full overflow-hidden"
-              src={logosMap[restaurant.name] || defaultLogo} // Default to spiceOfIndia if no match
+              src={logosMap[restaurant.name] || defaultLogo} // Update this line
               alt={restaurant.name}
             />
 

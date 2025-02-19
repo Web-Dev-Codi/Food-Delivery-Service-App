@@ -63,14 +63,14 @@ const AddCoupons = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen w-full">
+    <div className="flex items-center justify-center w-full mt-[-1rem] ">
       <div className="bg-neutral-800/30 backdrop-blur-md p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center text-white">
           Add Coupons
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-200">
+            <label className="p-1 block font-bold text-neutral-100">
               Coupon Code:
             </label>
             <input
@@ -83,7 +83,7 @@ const AddCoupons = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-200">
+            <label className="p-1 block font-bold text-neutral-100">
               Description:
             </label>
             <input
@@ -96,7 +96,7 @@ const AddCoupons = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-200">
+            <label className="p-1 block font-bold text-neutral-100">
               Discount:
             </label>
             <input
@@ -109,7 +109,7 @@ const AddCoupons = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-200">
+            <label className="p-1 block font-bold text-neutral-100">
               Valid From:
             </label>
             <input
@@ -122,7 +122,7 @@ const AddCoupons = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-200">
+            <label className="p-1 block font-bold text-neutral-100">
               Valid To:
             </label>
             <input
@@ -135,7 +135,7 @@ const AddCoupons = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-200">
+            <label className="p-1 block font-bold text-neutral-100">
               Applicable Restaurant:
             </label>
             <select
@@ -155,7 +155,7 @@ const AddCoupons = () => {
 
           <button
             type="submit"
-            className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="w-full py-2  bg-orange-700 font-bold text-white rounded-lg hover:bg-orange-600"
           >
             Add Coupon
           </button>
