@@ -37,7 +37,7 @@ function LandingPageRestaurants() {
 
 	return (
 		<div className="flex flex-col justify-center mx-auto items-center space-y-4 bg-slate-800 rounded-xl p-4 max-w-[1920px]">
-			<div className="flex justify-between items-center w-full">
+			<div className="flex justify-between items-center w-full ">
 				<h5 className="text-lg sm:text-2xl font-bold text-white">
 					Restaurants
 				</h5>
