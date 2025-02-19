@@ -32,7 +32,7 @@ const Footer = () => {
 	};
 
 	return (
-		<footer className="flex flex-col  text-gray-200 text-center py-6">
+		<footer className="flex flex-col border-t-[#D84418] border-t-4 text-gray-200 text-center py-6">
 			<div className="container mx-auto px-6">
 				{/* 🚀 Quick Links */}
 				<nav className="flex flex-wrap justify-center gap-3 md:gap-6 text-xs sm:text-sm md:text-base font-medium">
