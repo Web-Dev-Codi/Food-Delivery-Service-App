@@ -10,18 +10,19 @@ export default function HeroSection() {
 					{/* Left Content */}
 					<div className="w-full lg:w-1/2 space-y-4 md:space-y-6">
 						<h1 className="text-5xl text-center flex flex-col md:text-left sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-							Healthy food delivered
+							Locally Inspired
 							<br />
 							<span className="text-[#D84418]">
-								right to your door
+								Crave It. Click It. Get It
 							</span>
-							fast
+							Delivered Fast
 						</h1>
 
 						<p className="text-sm sm:text-base md:text-lg text-gray-300 max-w-xl">
-							Lorem ipsum dolor sit amet, consectetur adipisicing
-							elit. Architecto earum, nemo recusandae dignissimos
-							saepe mollitia modi.
+							Four Flavours Express brings the bold, authentic
+							flavors straight to your door. No waits, no
+							hassle—just fresh, flavorful food delivered fast.
+							Order now and taste the world!
 						</p>
 
 						<div className="flex flex-col sm:flex-row gap-4">
