@@ -21,61 +21,56 @@ const Footer = () => {
 				body: JSON.stringify({ email }),
 			});
 
-      if (response.ok) {
-        setResponseMessage({
-          ok: true,
-          message: "Thanks for subscribing! 🎉", // Success message with emoji
-        });
-      } else {
-        setResponseMessage({
-          ok: false,
-          message: "Something went wrong. Please try again. ❌", // Error message with emoji
-        });
-      }
-    } catch {
-      setResponseMessage({
-        ok: false,
-        message: "Something went wrong. Please try again. ❌", // Error message with emoji
-      });
-    }
-  };
-  
-  return (
-    <footer className="flex flex-col bg-gradient-to-r from-[#4436BD] via-[#392679] to-[#050913] text-gray-200 text-center py-6">
-      <div className="container mx-auto px-6">
-        {/* 🚀 Quick Links */}
-        <nav className="flex flex-wrap justify-center gap-3 md:gap-6 text-xs sm:text-sm md:text-base font-medium">
-          <Link
-            to="/dashboard"
-            className="hover:text-white transition-all hover:scale-105"
-          >
-            Home
-          </Link>
-          <Link
-            to="/menu"
-            className="hover:text-white transition-all hover:scale-105"
-          >
-            Menu
-          </Link>
-          <Link
-            to="/orders"
-            className="hover:text-white transition-all hover:scale-105"
-          >
-            Orders
-          </Link>
-          <Link
-            to="/about"
-            className="hover:text-white transition-all hover:scale-105"
-          >
-            About Us
-          </Link>
-          <Link
-            to="/contact"
-            className="hover:text-white transition-all hover:scale-105"
-          >
-            Contact
-          </Link>
-        </nav>
+			if (response.ok) {
+				setResponseMessage({
+					ok: true,
+					message: "Thanks for subscribing! 🎉", // Success message with emoji
+				});
+			} else {
+				setResponseMessage({
+					ok: false,
+					message: "Something went wrong. Please try again. ❌", // Error message with emoji
+				});
+			}
+		} catch {
+			setResponseMessage({
+				ok: false,
+				message: "Something went wrong. Please try again. ❌", // Error message with emoji
+			});
+		}
+	};
+
+	return (
+		<footer className="flex flex-col border-2 border-t-[#D84418] text-gray-200 text-center py-6">
+			<div className="container mx-auto px-6">
+				{/* 🚀 Quick Links */}
+				<nav className="flex flex-wrap justify-center gap-3 md:gap-6 text-xs sm:text-sm md:text-base font-medium">
+					<Link
+						to="/dashboard"
+						className="hover:text-white transition-all hover:scale-105">
+						Home
+					</Link>
+					<Link
+						to="/menu"
+						className="hover:text-white transition-all hover:scale-105">
+						Menu
+					</Link>
+					<Link
+						to="/orders"
+						className="hover:text-white transition-all hover:scale-105">
+						Orders
+					</Link>
+					<Link
+						to="/about"
+						className="hover:text-white transition-all hover:scale-105">
+						About Us
+					</Link>
+					<Link
+						to="/contact"
+						className="hover:text-white transition-all hover:scale-105">
+						Contact
+					</Link>
+				</nav>
 				{/* 📢 Newsletter Signup */}
 				<div className="mt-6">
 					<p className="text-sm">
@@ -96,17 +91,20 @@ const Footer = () => {
 						</button>
 					</div>
 				</div>
-        {/* Display success or error message */}
-        {responseMessage && (
-          <p
-            className={`mt-3 text-sm font-bold flex items-center justify-center ${
-              responseMessage.ok ? "text-green-500" : "text-red-500"
-            }`}
-          >
-            <span className="text-lg">{responseMessage.ok ? "🎉" : "❌"}</span>
-            <span className="ml-2">{responseMessage.message}</span>
-          </p>
-        )}
+				{/* Display success or error message */}
+				{responseMessage && (
+					<p
+						className={`mt-3 text-sm font-bold flex items-center justify-center ${
+							responseMessage.ok
+								? "text-green-500"
+								: "text-red-500"
+						}`}>
+						<span className="text-lg">
+							{responseMessage.ok ? "🎉" : "❌"}
+						</span>
+						<span className="ml-2">{responseMessage.message}</span>
+					</p>
+				)}
 
 				{/* 🔗 Social Media Icons */}
 				<div className="flex justify-center space-x-6 mt-4">
