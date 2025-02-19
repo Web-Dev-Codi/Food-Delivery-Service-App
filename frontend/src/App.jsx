@@ -7,11 +7,13 @@ import Footer from "./components/views/Footer";
 function App() {
 	return (
 		<React.Fragment>
-			<Header />
-			<main className="bg-gradient-to-b from-[#0B1225] via-[#382677] to-[#050913] flex flex-col backdrop-blur-xl">
-				<Outlet />
-			</main>
-			<Footer />
+			<div className="flex flex-col h-full relative bg-gradient-to-bl from-orange-800 from-20% via-black via-60% to-black">
+				<Header className="-z-50" />
+				<main className="container mx-auto px-3 pb-12 flex-grow">
+					<Outlet />
+				</main>
+				<Footer />
+			</div>
 		</React.Fragment>
 	);
 }

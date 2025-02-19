@@ -17,7 +17,7 @@ const AddCoupons = () => {
   // Fetch restaurants on component load
   useEffect(() => {
     axios
-      .get("http://localhost:3006/api/restaurants")
+      .get("http://localhost:8000/api/restaurants")
       .then((res) => {
         setRestaurants(res.data.data);
       })

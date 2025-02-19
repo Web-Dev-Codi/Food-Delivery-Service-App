@@ -2,7 +2,6 @@ import FoodItem from "../models/FoodItem.js";
 import { ObjectId } from "mongodb";
 import menuItems from "../data/seeder.js";
 
-
 export const getMenus = async (req, res) => {
 	try {
 		const foodItems = await FoodItem.find();
@@ -79,6 +78,11 @@ export const getMenusByCategory = async (req, res) => {
 export const getMenuById = async (req, res) => {
 	try {
 		const id = req.params.id;
+		console.log(id);
+		if(!id) {
+			
+			return res.status(400).json({ message: "ID is required" });
+		}
 		const menu = await FoodItem.findById(id);
 		if (!menu) {
 			return res.status(404).json({ message: "No food item found" });
