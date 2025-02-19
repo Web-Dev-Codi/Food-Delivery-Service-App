@@ -20,7 +20,6 @@ const Header = () => {
 				className="fixed top-20 right-4 bg-gray-800 text-white px-4 py-2 rounded-md text-sm">
 				Toggle Auth: {isLoggedIn ? "Logged In" : "Logged Out"}
 			</button>
-
 			<nav className="container mx-auto px-4 py-3">
 				<div className="flex items-center justify-between">
 					<Link
@@ -30,8 +29,6 @@ const Header = () => {
 							🍽️ Food.
 						</span>
 					</Link>
-
-					{/* Desktop Menu */}
 					<div className="hidden md:flex items-center space-x-8">
 						<Link
 							to="/"
@@ -49,9 +46,9 @@ const Header = () => {
 							Contact
 						</Link>
 						<Link
-							to="/about"
+							to="/orders"
 							className="font-bold text-white hover:text-orange-500 transition-colors">
-							About Us
+							Orders
 						</Link>
 						<Link
 							to="/faqs"
@@ -59,8 +56,6 @@ const Header = () => {
 							FAQs
 						</Link>
 					</div>
-
-					{/* Right Side Items */}
 					<div className="hidden md:flex items-center space-x-4">
 						{isLoggedIn ? (
 							<>
@@ -100,16 +95,12 @@ const Header = () => {
 							</div>
 						)}
 					</div>
-
-					{/* Mobile Menu Button */}
 					<button
 						onClick={() => setMenuOpen(!menuOpen)}
 						className="md:hidden text-white hover:text-orange-500 transition-colors">
 						{menuOpen ? "✖" : "☰"}
 					</button>
 				</div>
-
-				{/* Mobile Menu */}
 				{menuOpen && (
 					<div className="md:hidden absolute top-full left-0 w-full bg-black bg-opacity-90 backdrop-blur-sm">
 						<div className="flex flex-col space-y-4 p-4">
@@ -138,8 +129,6 @@ const Header = () => {
 								className="text-white font-bold hover:text-orange-500 transition-colors">
 								FAQs
 							</Link>
-
-							{/* Mobile Auth Section */}
 							{isLoggedIn ? (
 								<div className="flex items-center space-x-4">
 									<Link
