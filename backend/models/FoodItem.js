@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const foodItemSchema = new Schema(
+const foodItemSchema = new mongoose.Schema(
 	{
 		name: { type: String },
 		price: { type: Number, min: 1 },
@@ -8,14 +8,12 @@ const foodItemSchema = new Schema(
 		category: {
 			type: String,
 			enum: ["Main Course", "Dessert", "Starters", "Beverages"],
-			required: true,
 		},
 		imageUrl: { type: String },
 		availability: { type: String, enum: ["Available", "Not Available"] },
 		restaurant: {
 			type: Schema.Types.ObjectId,
 			ref: "Restaurant",
-			required: true,
 		},
 	},
 	{
@@ -23,4 +21,5 @@ const foodItemSchema = new Schema(
 	}
 );
 
-export default model("FoodItem", foodItemSchema);
+const FoodItem = mongoose.model("FoodItem", foodItemSchema);
+export default FoodItem;

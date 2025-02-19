@@ -44,6 +44,32 @@ export const getRestaurantById = async (req, res) => {
   }
 };
 
+export const getRestaurantByName = async (req, res) => {
+  try{
+    const { name } = req.params;
+    if(!name){
+        return res.status(400).json({
+            message: "Please provide a restaurant name",
+        });
+      }
+      const restaurant = await Restaurant.findOne({ name: new RegExp(name, 'i') });
+
+    if(!restaurant){
+        return res.status(404).json({
+            message: "Restaurant not found",
+        });
+    }
+    res.status(200).json({
+        message: "Restaurant fetched successfully",
+        data: restaurant
+    });
+
+ }
+ catch(err){
+      res.status(500).json({ message: "An error occurred while fetching restaurant", error: err.message });
+  }
+};
+
 export const createRestaurant = async (req, res) => {
     try{
         const  {name,location,images,contact,operatingHours} = req.body;
