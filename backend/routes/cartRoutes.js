@@ -6,7 +6,12 @@ import {
 	removeFromCart,
 	clearCart,
 } from "../controllers/cartController.js";
-import { protect, verifyCartOwnership } from "../middleware/authMiddleware.js";
+import {
+	protect,
+	verifyCartOwnership,
+	// verifyCartItem,
+	// verifyCartQuantity,
+} from "../middleware/authMiddleware.js";
 
 const cartRouter = Router();
 
@@ -21,10 +26,13 @@ cartRouter.get("/", getCart);
 cartRouter.post("/add", addToCart);
 
 // Update item quantity
-cartRouter.put("/update-quantity", updateQuantity);
+cartRouter.put(
+	"/update-quantity",
+	updateQuantity
+);
 
 // Remove item from cart
-cartRouter.delete("/remove/:foodItemId", removeFromCart);
+cartRouter.delete("/remove/:foodItemId",  removeFromCart);
 
 // Clear entire cart
 cartRouter.delete("/clear", clearCart);

@@ -1,9 +1,10 @@
 
 import Coupon from "../models/couponSchema.js";
+import mongoose from "mongoose";
 
 export const createCoupon = async (req, res) => {
     try{
-       
+     
         const newCoupon = await Coupon.create(req.body);
         if(!newCoupon){
             return res.status(400).json({
@@ -19,10 +20,28 @@ export const createCoupon = async (req, res) => {
     }
 };
 
+export const getAllCoupons = async (req, res) => {
+    try{
+
+        
+        const coupons = await Coupon.find({isActive:true}).populate("applicableToRestaurants");
+        if(!coupons || coupons.length === 0){
+            return res.status(404).json({
+                message: "No coupons found",
+            });
+        }
+        res.status(200).json({ message: "Coupons found", data: coupons });
+    }
+    catch(error){
+        console.error("Error getting coupons:", error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
 export const getCouponByValidity = async (req, res) => {
     try{
         const currentDate = new Date();
-        const validCoupons  = await Coupon.find({ validFrom: { $lte: currentDate }, validUntil: { $gte: currentDate } });
+        const validCoupons  = await Coupon.find({ validFrom: { $lte: currentDate }, validUntil: { $gte: currentDate } }).populate("applicableToRestaurants");
         if(!validCoupons){
             return res.status(404).json({
                 message: "No coupons found",
@@ -39,6 +58,7 @@ export const getCouponByValidity = async (req, res) => {
 export const getCouponById = async (req, res) => {
     try{
         const { id } = req.params;
+     
         const coupon = await Coupon.findById(id);
         if(!coupon){
             return res.status(404).json({

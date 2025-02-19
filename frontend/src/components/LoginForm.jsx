@@ -26,13 +26,19 @@ function LoginForm() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await axios.post("http://localhost:3006/data/login", {
+			const res = await axios.post("http://localhost:8000/data/login", {
 				email,
 				password,
 			});
 			localStorage.setItem("token", res.data.token);
 			setSuccessMessage(res.data.message);
 			setErrorMessage("");
+			if (res.data.data.role === "admin") {
+				setTimeout(() => navigate("/dashboard"), 2000);
+			} else {
+				setTimeout(() => navigate("/"), 2000);
+			}
+
 
 			if (rememberMe) {
 				localStorage.setItem("email", email);
@@ -42,7 +48,10 @@ function LoginForm() {
 				localStorage.removeItem("password");
 			}
 
-			setTimeout(() => navigate("/"), 2000);
+			
+
+			
+
 		} catch (err) {
 			setErrorMessage(err.response?.data?.message || "Login failed");
 			setSuccessMessage("");

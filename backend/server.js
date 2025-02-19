@@ -37,11 +37,11 @@ app.post(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/api/auth", authRoutes);
 app.use("/payment", paymentRoutes); //paymentRouter
 app.use("/", router); //userRouter
 app.use("/data", userRouter); //userRouter
 app.use("/api/cart", cartRouter);
-app.use("/api/auth", authRoutes);
 
 app.use("/api", restaurantRouter);
 app.use("/food", menuRouter);
