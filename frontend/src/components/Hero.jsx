@@ -69,7 +69,7 @@ export default function HeroSection() {
 									</div>
 								</div>
 							</div>
-							<div className="absolute bottom-[70%] right-[35%] bg-white p-2 rounded-xl shadow-lg sm:w-[200px] lg:w-auto transform scale-50 sm:scale-75 lg:scale-100 origin-bottom-right">
+							<div className="absolute bottom-[76%] right-[35%] bg-white p-2 rounded-xl shadow-lg sm:w-[200px] lg:w-auto transform scale-50 sm:scale-75 lg:scale-100 origin-bottom-right">
 								<img
 									src="https://res.cloudinary.com/difmxsysx/image/upload/v1738584141/Buffalo_Wings_islhkv.jpg"
 									alt="Buffalo Wings"
