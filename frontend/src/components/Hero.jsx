@@ -42,11 +42,10 @@ export default function HeroSection() {
 						</div>
 					</div>
 					{/* Right Content */}
-					{/* Right Content */}
-					<div className="w-full h-[500px] sm:h-[600px] lg:h-[800px] relative overflow-hidden">
+					<div className="w-full flex items-center justify-center h-full sm:h-[600px] lg:h-[800px] relative">
 						<div className="relative h-full w-full flex items-center justify-center">
 							{/* Main Image */}
-							<div className="w-[140%] sm:w-[150%] lg:w-[180%] h-full relative flex items-center justify-center">
+							<div className="w-[140%] sm:w-[150%] lg:w-[180%] scale-125 relative flex items-center justify-center">
 								<Lottie
 									animationData={animationData}
 									loop={true}
@@ -55,7 +54,7 @@ export default function HeroSection() {
 								/>
 							</div>
 							{/* Floating Elements */}
-							<div className="absolute top-[20%] left-[5%] bg-white p-2 rounded-xl shadow-lg sm:w-[200px] lg:w-auto transform scale-75 sm:scale-90 lg:scale-100 origin-top-left">
+							<div className="absolute top-[10%] left-[10%] bg-white p-2 rounded-xl shadow-lg sm:w-[200px] lg:w-auto transform scale-50 sm:scale-75 lg:scale-100 origin-top-left">
 								<img
 									src="https://res.cloudinary.com/difmxsysx/image/upload/v1738520512/Indian-food-menu/omlet-starter_ftngrz.jpg"
 									alt="Pizza"
@@ -70,7 +69,7 @@ export default function HeroSection() {
 									</div>
 								</div>
 							</div>
-							<div className="absolute bottom-[20%] right-[5%] bg-white p-2 rounded-xl shadow-lg sm:w-[200px] lg:w-auto transform scale-75 sm:scale-90 lg:scale-100 origin-bottom-right">
+							<div className="absolute bottom-[70%] right-[35%] bg-white p-2 rounded-xl shadow-lg sm:w-[200px] lg:w-auto transform scale-50 sm:scale-75 lg:scale-100 origin-bottom-right">
 								<img
 									src="https://res.cloudinary.com/difmxsysx/image/upload/v1738584141/Buffalo_Wings_islhkv.jpg"
 									alt="Buffalo Wings"
@@ -86,7 +85,7 @@ export default function HeroSection() {
 								</div>
 							</div>
 							{/* Contact Card */}
-							<div className="absolute bottom-[35%] left-[15%] bg-white text-black p-2 rounded-xl shadow-lg flex items-center gap-2 sm:gap-3 transform scale-75 sm:scale-90 lg:scale-100 origin-bottom-left">
+							<div className="absolute bottom-[35%] left-[15%] bg-white text-black p-2 rounded-xl shadow-lg flex items-center gap-2 sm:gap-3 transform scale-50 sm:scale-75 lg:scale-100 origin-bottom-left">
 								<div className="w-8 sm:w-10 h-8 sm:h-10 bg-orange-100 rounded-full flex items-center justify-center">
 									<img
 										src={Avatar}
