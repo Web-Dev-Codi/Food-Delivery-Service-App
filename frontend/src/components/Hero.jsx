@@ -52,7 +52,7 @@ export default function HeroSection() {
 								/>
 							</div>
 							{/* Floating Elements */}
-							<div className="absolute top-10 -left-4 bg-white p-2 sm:p-3 rounded-xl shadow-lg  sm:w-[200px] lg:w-auto transform scale-75 sm:scale-90 lg:scale-100 origin-top-left">
+							<div className="absolute top-10 -left-4 bg-white p-2  rounded-xl shadow-lg  sm:w-[200px] lg:w-auto transform scale-75 sm:scale-90 lg:scale-100 origin-top-left">
 								<img
 									src="https://res.cloudinary.com/difmxsysx/image/upload/v1738520512/Indian-food-menu/omlet-starter_ftngrz.jpg"
 									alt="Pizza"
@@ -67,7 +67,7 @@ export default function HeroSection() {
 									</div>
 								</div>
 							</div>
-							<div className="absolute bottom-10 -right-4 bg-white p-2 sm:p-3 rounded-xl shadow-lg sm:w-[200px] lg:w-auto transform scale-75 sm:scale-90 lg:scale-100 origin-bottom-right">
+							<div className="absolute bottom-10 -right-4 bg-white p-2  rounded-xl shadow-lg sm:w-[200px] lg:w-auto transform scale-75 sm:scale-90 lg:scale-100 origin-bottom-right">
 								<img
 									src="https://res.cloudinary.com/difmxsysx/image/upload/v1738584141/Buffalo_Wings_islhkv.jpg"
 									alt="Buffalo Wings"
@@ -83,7 +83,7 @@ export default function HeroSection() {
 								</div>
 							</div>
 							{/* Contact Card */}
-							<div className="absolute bottom-20 left-10 bg-white text-black p-2 sm:p-3 rounded-xl shadow-lg flex items-center gap-2 sm:gap-3 transform scale-75 sm:scale-90 lg:scale-100 origin-bottom-left">
+							<div className="absolute bottom-20 left-10 bg-white text-black p-2  rounded-xl shadow-lg flex items-center gap-2 sm:gap-3 transform scale-75 sm:scale-90 lg:scale-100 origin-bottom-left">
 								<div className="w-8 sm:w-10 h-8 sm:h-10 bg-orange-100 rounded-full flex items-center justify-center">
 									<img
 										src={Avatar}
