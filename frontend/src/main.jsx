@@ -80,7 +80,6 @@ const router = createBrowserRouter(
 					path="/menu/:id"
 					element={<SingleMenu />}
 				/>
-
 				<Route
 					path="/cart"
 					element={<Cart />}

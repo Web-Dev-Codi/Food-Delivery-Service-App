@@ -27,7 +27,7 @@ export default function HeroSection() {
 						</p>
 						<div className="flex flex-col sm:flex-row gap-4">
 							<Link
-								to="/order"
+								to="/restaurants"
 								className="flex items-center justify-center px-6 py-5 bg-[#D84418] rounded-full text-white font-semibold hover:bg-[#c13915] transition-colors">
 								Order Now
 							</Link>

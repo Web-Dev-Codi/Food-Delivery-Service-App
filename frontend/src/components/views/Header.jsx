@@ -107,8 +107,8 @@ const Header = () => {
 					</button>
 				</div>
 				{menuOpen && (
-					<div className="md:hidden absolute top-full left-0 w-full bg-black bg-opacity-90 backdrop-blur-sm">
-						<div className="flex flex-col space-y-4 p-4">
+					<div className="md:hidden absolute top-full left-0 w-full bg-black bg-opacity-90 backdrop-blur-sm z-50">
+						<div className="flex flex-col space-y-4 p-4 z-50">
 							<Link
 								to="/"
 								className="text-white font-bold hover:text-orange-500 transition-colors">
