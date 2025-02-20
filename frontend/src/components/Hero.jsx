@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
+import Lottie from "lottie-react";
 import Avatar from "../assets/images/avatar.png";
-import Hero2 from "../assets/images/food2.avif";
+import animationData from "../assets/animations/scooterAnimation.json"; // Import the animation JSON
 
 export default function HeroSection() {
 	return (
 		<section className="relative flex flex-col items-center p-2 py-10 w-full text-white h-auto md:h-[900px]">
-			<div className="container mx-auto h-auto md:h-[700px] px-2">
+			<div className="container mx-auto h-auto md:h-[500px] px-2">
 				<div className="flex flex-col lg:flex-row items-center justify-between gap-8 py-4 md:py-8 lg:py-16">
 					{/* Left Content */}
 					<div className="w-full lg:w-1/2 space-y-4 md:space-y-6">
@@ -41,18 +42,20 @@ export default function HeroSection() {
 						</div>
 					</div>
 					{/* Right Content */}
-					<div className="w-full h-[400px] sm:h-[500px] lg:h-[800px] relative">
-						<div className="relative">
+					{/* Right Content */}
+					<div className="w-full h-[500px] sm:h-[600px] lg:h-[800px] relative overflow-hidden">
+						<div className="relative h-full w-full flex items-center justify-center">
 							{/* Main Image */}
-							<div className="w-full h-[400px] sm:h-[500px] lg:h-[800px] relative">
-								<img
-									src={Hero2}
-									alt="Hero"
-									className="w-full h-full object-cover rounded-full bg-[#D84418]/20"
+							<div className="w-[140%] sm:w-[150%] lg:w-[180%] h-full relative flex items-center justify-center">
+								<Lottie
+									animationData={animationData}
+									loop={true}
+									autoPlay={true}
+									className="w-full h-full"
 								/>
 							</div>
 							{/* Floating Elements */}
-							<div className="absolute top-10 -left-4 bg-white p-2  rounded-xl shadow-lg  sm:w-[200px] lg:w-auto transform scale-75 sm:scale-90 lg:scale-100 origin-top-left">
+							<div className="absolute top-[20%] left-[5%] bg-white p-2 rounded-xl shadow-lg sm:w-[200px] lg:w-auto transform scale-75 sm:scale-90 lg:scale-100 origin-top-left">
 								<img
 									src="https://res.cloudinary.com/difmxsysx/image/upload/v1738520512/Indian-food-menu/omlet-starter_ftngrz.jpg"
 									alt="Pizza"
@@ -67,7 +70,7 @@ export default function HeroSection() {
 									</div>
 								</div>
 							</div>
-							<div className="absolute bottom-10 -right-4 bg-white p-2  rounded-xl shadow-lg sm:w-[200px] lg:w-auto transform scale-75 sm:scale-90 lg:scale-100 origin-bottom-right">
+							<div className="absolute bottom-[20%] right-[5%] bg-white p-2 rounded-xl shadow-lg sm:w-[200px] lg:w-auto transform scale-75 sm:scale-90 lg:scale-100 origin-bottom-right">
 								<img
 									src="https://res.cloudinary.com/difmxsysx/image/upload/v1738584141/Buffalo_Wings_islhkv.jpg"
 									alt="Buffalo Wings"
@@ -83,7 +86,7 @@ export default function HeroSection() {
 								</div>
 							</div>
 							{/* Contact Card */}
-							<div className="absolute bottom-20 left-10 bg-white text-black p-2  rounded-xl shadow-lg flex items-center gap-2 sm:gap-3 transform scale-75 sm:scale-90 lg:scale-100 origin-bottom-left">
+							<div className="absolute bottom-[35%] left-[15%] bg-white text-black p-2 rounded-xl shadow-lg flex items-center gap-2 sm:gap-3 transform scale-75 sm:scale-90 lg:scale-100 origin-bottom-left">
 								<div className="w-8 sm:w-10 h-8 sm:h-10 bg-orange-100 rounded-full flex items-center justify-center">
 									<img
 										src={Avatar}
