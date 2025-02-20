@@ -26,11 +26,9 @@ const DeliveryInfo = () => {
 					<div className="flex-1 flex md:flex-none flex-col gap-2 text-sm items-center justify-start md:justify-start space-x-3 md:flex-row">
 						<FaUtensils className="text-[#FF4D00] text-2xl flex-shrink-0" />
 						<div className="flex-1">
-							<p className="text-white text-sm">
-								Only the freshest
-							</p>
+							<p className="text-white text-sm">Fresh</p>
 							<p className="text-white font-semibold">
-								Foods delivered
+								Foods fast
 							</p>
 						</div>
 					</div>
