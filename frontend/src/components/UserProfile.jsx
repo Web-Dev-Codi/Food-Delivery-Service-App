@@ -116,34 +116,34 @@ export default function UserProfile() {
 								<div>
 									<label className="block text-sm mb-2">
 										Username
+										<input
+											type="text"
+											placeholder="john.doe"
+											className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
+										/>
 									</label>
-									<input
-										type="text"
-										placeholder="john.doe"
-										className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
-									/>
 								</div>
 
 								<div>
 									<label className="block text-sm mb-2">
 										Name
+										<input
+											type="text"
+											placeholder="John Doe"
+											className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
+										/>
 									</label>
-									<input
-										type="text"
-										placeholder="John Doe"
-										className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
-									/>
 								</div>
 
 								<div>
 									<label className="block text-sm mb-2">
 										Email
+										<input
+											type="email"
+											placeholder="john.doe@example.com"
+											className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
+										/>
 									</label>
-									<input
-										type="email"
-										placeholder="john.doe@example.com"
-										className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
-									/>
 								</div>
 
 								<div className="pt-4">
@@ -185,31 +185,31 @@ export default function UserProfile() {
 								<div>
 									<label className="block text-sm mb-2">
 										Current Password
+										<input
+											type="password"
+											className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
+										/>
 									</label>
-									<input
-										type="password"
-										className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
-									/>
 								</div>
 
 								<div>
 									<label className="block text-sm mb-2">
 										New Password
+										<input
+											type="password"
+											className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
+										/>
 									</label>
-									<input
-										type="password"
-										className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
-									/>
 								</div>
 
 								<div>
 									<label className="block text-sm mb-2">
 										Confirm Password
+										<input
+											type="password"
+											className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
+										/>
 									</label>
-									<input
-										type="password"
-										className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
-									/>
 								</div>
 
 								<div className="pt-4">
@@ -251,61 +251,61 @@ export default function UserProfile() {
 									<div>
 										<label className="block text-sm mb-2">
 											Firstname
+											<input
+												type="text"
+												className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
+											/>
 										</label>
-										<input
-											type="text"
-											className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
-										/>
 									</div>
 									<div>
 										<label className="block text-sm mb-2">
 											Lastname
+											<input
+												type="text"
+												className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
+											/>
 										</label>
-										<input
-											type="text"
-											className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
-										/>
 									</div>
 								</div>
 
 								<div>
 									<label className="block text-sm mb-2">
 										Street Name
+										<input
+											type="text"
+											className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
+										/>
 									</label>
-									<input
-										type="text"
-										className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
-									/>
 								</div>
 
 								<div>
 									<label className="block text-sm mb-2">
 										Street Number
+										<input
+											type="text"
+											className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
+										/>
 									</label>
-									<input
-										type="text"
-										className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
-									/>
 								</div>
 
 								<div className="grid grid-cols-2 gap-4">
 									<div>
 										<label className="block text-sm mb-2">
 											City
+											<input
+												type="text"
+												className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
+											/>
 										</label>
-										<input
-											type="text"
-											className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
-										/>
 									</div>
 									<div>
 										<label className="block text-sm mb-2">
 											Postal
+											<input
+												type="text"
+												className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
+											/>
 										</label>
-										<input
-											type="text"
-											className="w-full px-4 py-2 rounded-md border bg-white border-gray-300 focus:ring-1 focus:ring-blue-600 focus:border-blue-600 outline-none text-sm"
-										/>
 									</div>
 								</div>
 								<div className="pt-2">
@@ -340,7 +340,6 @@ export default function UserProfile() {
 									notifications you receive from us.
 								</p>
 							</div>
-
 							<div className="col-span-1 space-y-6">
 								<div className="space-y-3">
 									<h3 className="text-base">
