@@ -12,7 +12,7 @@ export default function HeroSection() {
 						<h1 className="text-5xl text-center flex flex-col md:text-left sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
 							Locally Inspired
 							<br />
-							<span className="text-[#D84418]">
+							<span className="text-[#FF5733] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] tracking-wide">
 								Crave It. Click It. Get It
 							</span>
 							Delivered Fast
@@ -24,7 +24,6 @@ export default function HeroSection() {
 							hassle—just fresh, flavorful food delivered fast.
 							Order now and taste the world!
 						</p>
-
 						<div className="flex flex-col sm:flex-row gap-4">
 							<Link
 								to="/order"
@@ -41,7 +40,6 @@ export default function HeroSection() {
 							</Link>
 						</div>
 					</div>
-
 					{/* Right Content */}
 					<div className="w-full h-[400px] sm:h-[500px] lg:h-[800px] relative">
 						<div className="relative">
@@ -53,51 +51,48 @@ export default function HeroSection() {
 									className="w-full h-full object-cover rounded-full bg-[#D84418]/20"
 								/>
 							</div>
-
 							{/* Floating Elements */}
-							<div className="absolute top-10 -left-4 bg-white p-3 rounded-xl shadow-lg">
+							<div className="absolute top-10 -left-4 bg-white p-2 sm:p-3 rounded-xl shadow-lg  sm:w-[200px] lg:w-auto transform scale-75 sm:scale-90 lg:scale-100 origin-top-left">
 								<img
 									src="https://res.cloudinary.com/difmxsysx/image/upload/v1738520512/Indian-food-menu/omlet-starter_ftngrz.jpg"
 									alt="Pizza"
-									className="w-24 h-24 object-contain"
+									className="w-20 sm:w-24 h-20 sm:h-24 object-contain"
 								/>
-								<div className="mt-2">
-									<p className="text-black font-semibold">
+								<div className="">
+									<p className="text-black font-semibold text-sm sm:text-base">
 										Omelette
 									</p>
-									<div className="flex text-yellow-400 text-sm">
+									<div className="flex text-yellow-400 text-xs sm:text-sm">
 										★★★★★
 									</div>
 								</div>
 							</div>
-
-							<div className="absolute bottom-10 -right-4 bg-white p-3 rounded-xl shadow-lg">
+							<div className="absolute bottom-10 -right-4 bg-white p-2 sm:p-3 rounded-xl shadow-lg sm:w-[200px] lg:w-auto transform scale-75 sm:scale-90 lg:scale-100 origin-bottom-right">
 								<img
 									src="https://res.cloudinary.com/difmxsysx/image/upload/v1738584141/Buffalo_Wings_islhkv.jpg"
 									alt="Buffalo Wings"
-									className="w-28 h-24 object-contain"
+									className="w-24 sm:w-28 h-20 sm:h-24 object-contain"
 								/>
 								<div className="mt-2">
-									<p className="text-black font-semibold">
+									<p className="text-black font-semibold text-sm sm:text-base">
 										Buffalo Wings
 									</p>
-									<div className="flex text-yellow-400 text-sm">
+									<div className="flex text-yellow-400 text-xs sm:text-sm">
 										★★★★★
 									</div>
 								</div>
 							</div>
-
 							{/* Contact Card */}
-							<div className="absolute bottom-20 left-10 bg-white text-black p-3 rounded-xl shadow-lg flex items-center gap-3">
-								<div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+							<div className="absolute bottom-20 left-10 bg-white text-black p-2 sm:p-3 rounded-xl shadow-lg flex items-center gap-2 sm:gap-3 transform scale-75 sm:scale-90 lg:scale-100 origin-bottom-left">
+								<div className="w-8 sm:w-10 h-8 sm:h-10 bg-orange-100 rounded-full flex items-center justify-center">
 									<img
 										src={Avatar}
 										alt="Profile"
-										className="w-8 h-8 rounded-full"
+										className="w-6 sm:w-8 h-6 sm:h-8 rounded-full"
 									/>
 								</div>
 								<div>
-									<p className="font-semibold text-sm">
+									<p className="font-semibold text-xs sm:text-sm">
 										Ojoy Kumar
 									</p>
 									<p className="text-xs text-gray-500">
