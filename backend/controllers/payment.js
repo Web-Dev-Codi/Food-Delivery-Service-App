@@ -1,8 +1,8 @@
 import Stripe from "stripe";
-import User from "../models/userSchema.js";
 import Payment from "../models/paymentSchema.js";
 import dotenv from "dotenv";
 import { sendPaymentSuccessEmail } from "./emailService.js";
+import Cart from "../models/cartSchema.js";
 
 dotenv.config();
 
@@ -10,172 +10,158 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 //create Pyment Intent
 export const createPaymentIntent = async (req, res) => {
-	let { amount } = req.body;
-	const { userId } = req.params;
-	console.log("Received userId in backend:", userId); // Debugging step
+    const userId = req.userId;
+    console.log("Received userId in backend:", userId); 
 
-	if (!userId) {
-		return res
-			.status(400)
-			.json({ message: "User ID is missing in request!" });
-	}
+    if (!userId) {
+        return res.status(400).json({ message: "User ID is missing in request!" });
+    }
 
-	console.log(
-		"Received amount before conversion:",
-		amount,
-		"Type:",
-		typeof amount
-	);
+    try {
+        // Step 1: Fetch the user's cart
+        const cart = await Cart.findOne({ userId }).populate("items.foodItemId", "price");
 
-	// Convert to a number if it's a string
-	amount = Number(amount);
+        if (!cart || cart.items.length === 0) {
+            return res.status(404).json({ message: "Cart is empty or not found" });
+        }
 
-	console.log(
-		"Received amount after conversion:",
-		amount,
-		"Type:",
-		typeof amount
-	);
+        console.log("🛒 Cart found for user:", cart);
 
-	if (!amount || isNaN(amount)) {
-		return res.status(400).json({
-			message: "Invalid amount",
-		});
-	}
-	try {
-		// Step 1: Check if the user exists in the database
-		const user = await User.findById(userId);
-		if (!user) {
-			return res.status(404).json({
-				message: "User not found",
-			});
-		}
+        // Step 2: Use totalAmount from the Cart 
+        const totalAmount = cart.finalAmount || cart.totalAmount;
+        const amountInCents = Math.round(totalAmount * 100);
 
-		const amountInCents = Math.round(Number(amount) * 100);
+        // Step 3: Create a Payment Intent in Stripe
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: amountInCents,
+            currency: "eur",
+            metadata: { integration_check: "accept_a_payment" },
+        });
 
-		// Step 2: Create a Payment Intent if the user exists
-		const paymentIntent = await stripe.paymentIntents.create({
-			amount: amountInCents,
-			currency: "eur",
-			metadata: { integration_check: "accept_a_payment" },
-		});
+        // Step 4: Save the payment details in the database
+        const payment = await Payment.create({
+            userId,
+            cartId: cart._id, // Save cart reference
+            stripePaymentIntentId: paymentIntent.id,
+            amount: totalAmount, // Store exact amount at payment time
+            status: "Pending",
+        });
 
-		// Step 3: Save the payment details in the database
-		try {
-			const payment = await Payment.create({
-				userId: userId,
-				stripePaymentIntentId: paymentIntent.id,
-				amount: paymentIntent.amount / 100,
-				status: "Pending",
-			});
+        console.log("✅ Payment record created successfully:", payment);
 
-			console.log("✅ Payment record created successfully:", payment);
+        // Step 5: Respond with the clientSecret from the payment intent
+        res.status(200).send({
+            clientSecret: paymentIntent.client_secret,
+            paymentIntentId: paymentIntent.id,
+            data: payment,
+        });
 
-			// Respond with the clientSecret from the payment intent
-			res.status(200).send({
-				clientSecret: paymentIntent.client_secret,
-				paymentIntentId: paymentIntent.id,
-				data: payment,
-			});
-		} catch (error) {
-			console.error("❌ Error saving payment to DB:", error);
-			res.status(500).json({
-				message: "Error saving payment to DB",
-				error: error.message,
-			});
-		}
-	} catch (error) {
-		console.error("An error occurred while creating payment intent", error);
-		res.status(500).json({
-			message: "An error occurred while creating payment intent",
-			error: error.message,
-		});
-	}
+    } catch (error) {
+        console.error("❌ Error creating payment intent:", error);
+        res.status(500).json({
+            message: "An error occurred while creating payment intent",
+            error: error.message,
+        });
+    }
 };
+
 
 // Handle Stripe Webhooks (for payment success/failure)
 export const handleStripeWebhook = async (req, res) => {
-	console.log("⚡ Incoming Webhook Request"); // EARLY LOG TO CHECK REQUESTS
-	console.log("⚡ Webhook Called - Raw Body:", req.body); // 🔹 Log raw body for debugging
+    console.log("⚡ Incoming Webhook Request");
 
-	const sig = req.headers["stripe-signature"];
-	console.log("🔹 Webhook Signature:", sig); // Log the signature for debugging
-	const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    const sig = req.headers["stripe-signature"];
+    if (!sig) {
+        console.error("❌ Missing Stripe signature in webhook request!");
+        return res.status(400).send("Missing Stripe Signature");
+    }
 
-	let event;
-	try {
-		// Make sure you're passing raw body and the correct headers for signature verification
-		event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-		console.log("✅ Webhook Verified:", event.type);
-		console.log("🔹 Webhook Full Event:", JSON.stringify(event, null, 2)); // Log full event
-	} catch (err) {
-		console.error("❌ Webhook verification failed:", err.message);
-		return res.status(400).send(`Webhook Error: ${err.message}`);
-	}
+    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    let event;
 
-	try {
-		switch (event.type) {
-			case "payment_intent.succeeded":
-				const paymentIntent = event.data.object; // Contains a Stripe PaymentIntent object
-				console.log(
-					"✅ PaymentIntent was successful! ID:",
-					paymentIntent.id
-				);
+    try {
+        event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+        console.log("✅ Webhook Verified:", event.type);
+    } catch (err) {
+        console.error("❌ Webhook verification failed:", err.message);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
 
-				// 🔹 Log PaymentIntent ID before updating MongoDB
-				console.log(
-					"🔹 Looking for Payment Record with Intent ID:",
-					paymentIntent.id
-				);
+    try {
+        switch (event.type) {
+            case "payment_intent.succeeded":
+                const paymentIntent = event.data.object;
+                console.log("✅ PaymentIntent was successful! ID:", paymentIntent.id);
 
-				const updatedPayment = await Payment.findOneAndUpdate(
-					{ stripePaymentIntentId: paymentIntent.id },
-					{ status: "Succeeded" },
-					{ new: true }
-				).populate("userId");
+                const updatedPayment = await Payment.findOneAndUpdate(
+                    { stripePaymentIntentId: paymentIntent.id },
+                    { status: "Succeeded" },
+                    { new: true }
+                ).populate([
+                    { 
+                      path: "cartId", 
+                      populate: { path: "items.foodItemId", select: "name price" } 
+                    }, 
+                    { path: "userId", select: "_id name email" }  
+                ]);
+                if (!updatedPayment) {
+                    console.error("❌ Payment record NOT FOUND in DB!");
+                    return res.status(404).json({ message: "Payment record not found" });
+                }
+                
+                // Debugging logs
+                console.log("✅ Populated Payment:", updatedPayment);
+                console.log("🛒 Cart ID:", updatedPayment.cartId);
+                console.log("👤 User ID:", updatedPayment.userId);
+                if (!updatedPayment) {
+                    console.error("❌ Payment record NOT FOUND in DB!");
+                    return res.status(404).json({ message: "Payment record not found" });
+                }
 
-				if (!updatedPayment) {
-					console.error("❌ Payment record NOT FOUND in DB!");
-					return res
-						.status(404)
-						.json({ message: "Payment record not found" });
-				}
+                console.log("✅ Payment updated in DB:", updatedPayment);
 
-				console.log("✅ Payment updated in DB:", updatedPayment);
+                if (updatedPayment.cartId && updatedPayment.cartId.length > 0) {
+                    for (const cartId of updatedPayment.cartId) {
+                        const updatedCart = await Cart.findByIdAndUpdate(
+                            cartId,
+                            { status: "Processed" },
+                            { new: true }
+                        );
+                
+                        if (updatedCart) {
+                            console.log("✅ Cart status updated to Processed:", updatedCart);
+                        } else {
+                            console.error("❌ Cart not found for updating status.");
+                        }
+                    }
+                } else {
+                    console.warn("⚠️ No carts found to update.");
+                }
+                if (updatedPayment.userId) {
+                    await sendPaymentSuccessEmail(updatedPayment.userId, updatedPayment);
+                    console.log(`📧 Payment success email sent to: ${updatedPayment.userId.email}`);
+                }
+                break;
 
-				if (!updatedPayment.userId) {
-					console.error("❌ User not found for email notification.");
-				} else {
-					await sendPaymentSuccessEmail(
-						updatedPayment.userId,
-						updatedPayment
-					);
-					console.log(
-						`📧 Payment success email sent to: ${updatedPayment.userId.email}`
-					);
-				}
+            case "payment_intent.payment_failed":
+                const failedPaymentIntent = event.data.object;
+                console.log("❌ PaymentIntent failed:", failedPaymentIntent.id);
 
-				break;
+                await Payment.findOneAndUpdate(
+                    { stripePaymentIntentId: failedPaymentIntent.id },
+                    { status: "Failed" },
+                    { new: true }
+                );
+                break;
 
-			case "payment_intent.payment_failed":
-				const failedPaymentIntent = event.data.object;
-				console.log("❌ PaymentIntent failed:", failedPaymentIntent.id);
+            default:
+                console.log(`ℹ️ Unhandled event type: ${event.type}`);
+        }
 
-				await Payment.findOneAndUpdate(
-					{ stripePaymentIntentId: failedPaymentIntent.id },
-					{ status: "Failed" },
-					{ new: true }
-				);
-				break;
-
-			default:
-				console.log(`ℹ️ Unhandled event type: ${event.type}`);
-		}
-
-		// Respond with a 200 status to acknowledge receipt of the event
-		res.status(200).send("Event received");
-	} catch (err) {
-		console.error("❌ Error handling webhook event:", err.message);
-		res.status(400).send(`Webhook Error: ${err.message}`);
-	}
+        res.status(200).send("Event received");
+    } catch (err) {
+        console.error("❌ Error handling webhook event:", err.message);
+        res.status(400).send(`Webhook Error: ${err.message}`);
+    }
 };
+

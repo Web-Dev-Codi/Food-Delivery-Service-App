@@ -26,7 +26,7 @@ function PaymentForm() {
 	if (!userId) {
 		return <p>Error: User ID is missing!</p>;
 	}
-	const totalAmount = 100;
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setLoading(true);
@@ -38,17 +38,29 @@ function PaymentForm() {
 		try {
 			// 1. Create a PaymentIntent by calling  backend
 			const response = await fetch(
-				`http://localhost:8000/payment/create-payment-intent/${userId}`,
+				"http://localhost:8000/payment/create-payment-intent",
 				{
 					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ amount: totalAmount }),
+					headers: { "Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("token")}`
+					 },
+					body: JSON.stringify({userId }),
 				}
 			);
+			if (!response.ok) throw new Error("Failed to create payment intent.");
 			const { clientSecret, error } = await response.json();
 			if (error) {
 				throw new Error(error);
 			}
+			 // 🔹 Step 2: Confirm Card Payment
+			 if (paymentMethod === "card") {
+				const cardElement = elements.getElement(CardElement);
+				if (!cardElement) {
+				  setMessage("Please enter your card details.");
+				  setLoading(false);
+				  return;
+				}
+			
 			const result = await stripe.confirmCardPayment(clientSecret, {
 				payment_method: { card: elements.getElement(CardElement) },
 			});
@@ -62,6 +74,9 @@ function PaymentForm() {
 			} else {
 				setMessage("Payment processing...");
 			}
+		}else {
+			setMessage("✅ Order placed! Pay with cash on delivery.");
+		  }
 		} catch (error) {
 			setMessage(error.message);
 		} finally {
@@ -74,9 +89,7 @@ function PaymentForm() {
 			<h2 className="text-xl font-semibold mb-4">
 				Complete Your Payment
 			</h2>
-			<p className="mb-4 text-gray-600">
-				Total: <span className="font-bold">${totalAmount}</span>
-			</p>
+			
 
 			<div className="mb-4">
 				<label
