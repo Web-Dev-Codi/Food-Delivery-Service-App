@@ -1,11 +1,18 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaShoppingCart, FaUser, FaRegWindowClose } from "react-icons/fa";
-import { GiHamburgerMenu } from "react-icons/gi";
+import {
+	FaShoppingCart,
+	FaUser,
+	FaRegWindowClose,
+	FaCog,
+} from "react-icons/fa";
+import { GiHamburgerMenu, GiFoodTruck } from "react-icons/gi";
+import { BiLogOut } from "react-icons/bi";
 
 const Header = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false); // Mock auth state
+	const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 	const cartItemsCount = 3; // Mock cart count
 
 	// Toggle function for testing auth state
@@ -16,11 +23,11 @@ const Header = () => {
 	return (
 		<header className="relative w-full top-0 z-50 bg-transparent backdrop-blur-sm">
 			{/* Test Toggle Login Logout Button - Remove in production */}
-			{/* <button
+			<button
 				onClick={toggleAuth}
 				className="fixed top-20 right-4 bg-gray-800 text-white px-4 py-2 rounded-md text-sm">
 				Toggle Auth: {isLoggedIn ? "Logged In" : "Logged Out"}
-			</button> */}
+			</button>
 			<nav className="container mx-auto px-4 py-3">
 				<div className="flex items-center justify-between">
 					<Link
@@ -72,13 +79,48 @@ const Header = () => {
 									)}
 								</Link>
 								{/* User Avatar - Only shown when logged in */}
-								<Link
-									to="/profile"
-									className="flex items-center space-x-2">
-									<div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
-										<FaUser className="text-white" />
-									</div>
-								</Link>
+								<div className="relative">
+									<button
+										onClick={() =>
+											setProfileDropdownOpen(
+												!profileDropdownOpen
+											)
+										}
+										className="flex items-center space-x-2 focus:outline-none">
+										<div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
+											<FaUser className="text-white" />
+										</div>
+									</button>
+
+									{/* Dropdown Menu */}
+									{profileDropdownOpen && (
+										<div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+											<Link
+												to="user-profile"
+												className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+												<FaUser className="mr-3 text-orange-500" />
+												My Profile
+											</Link>
+											<Link
+												to="/orders"
+												className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+												<GiFoodTruck className="mr-3 text-orange-500" />
+												Orders
+											</Link>
+											<button
+												onClick={() => {
+													setIsLoggedIn(false);
+													setProfileDropdownOpen(
+														false
+													);
+												}}
+												className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+												<BiLogOut className="mr-3 text-orange-500" />
+												Logout
+											</button>
+										</div>
+									)}
+								</div>
 							</>
 						) : (
 							// Auth Buttons - Only shown when logged out

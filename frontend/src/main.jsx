@@ -29,6 +29,7 @@ import ResetPasswordPage from "./components/ResetPasswordPage.jsx";
 import PageNotFound from "./components/PageNotFound.jsx";
 import SingleMenu from "./components/SingleMenu.jsx";
 import UserProfile from "./components/UserProfile.jsx";
+import FAQ from "./components/views/FAQ.jsx";
 
 const stripePromise = loadStripe(
 	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
@@ -111,6 +112,10 @@ const router = createBrowserRouter(
 				<Route
 					path="/forgot-password"
 					element={<ForgotPassword />}
+				/>
+				<Route
+					path="/faqs"
+					element={<FAQ />}
 				/>
 				<Route
 					path="/reset-password/:token"
