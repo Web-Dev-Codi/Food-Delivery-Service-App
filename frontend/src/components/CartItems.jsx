@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+/* import PropTypes from "prop-types";
 import { useCart } from "../context/CartContext";
 
 function CartItems({ item }) {
@@ -30,7 +30,7 @@ function CartItems({ item }) {
 
 			<div className="flex items-center space-x-4">
 				<div className="flex items-center border rounded-md">
-					{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+					{/* biome-ignore lint/a11y/useButtonType: <explanation> 
 					<button
 						onClick={() =>
 							updateQuantity(
@@ -43,7 +43,7 @@ function CartItems({ item }) {
 						-
 					</button>
 					<span className="px-3 py-1">{item.quantity}</span>
-					{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+					{/* biome-ignore lint/a11y/useButtonType: <explanation> 
 					<button
 						onClick={() =>
 							updateQuantity(menuItem._id, item.quantity + 1)
@@ -52,7 +52,7 @@ function CartItems({ item }) {
 						+
 					</button>
 				</div>
-				{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+				{/* biome-ignore lint/a11y/useButtonType: <explanation> 
 				<button
 					onClick={() => removeFromCart(menuItem._id)}
 					className="text-red-500 hover:text-red-700">
@@ -77,3 +77,4 @@ CartItems.propTypes = {
 };
 
 export default CartItems;
+ */
