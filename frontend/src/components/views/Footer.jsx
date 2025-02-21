@@ -46,7 +46,7 @@ const Footer = () => {
 				{/* 🚀 Quick Links */}
 				<nav className="flex flex-wrap justify-center gap-3 md:gap-6 text-xs sm:text-sm md:text-base font-medium">
 					<Link
-						to="/dashboard"
+						to="/"
 						className="hover:text-white transition-all hover:scale-105">
 						Home
 					</Link>

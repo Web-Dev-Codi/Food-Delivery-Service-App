@@ -90,9 +90,11 @@ function LandingPageRestaurants() {
 											</span>
 										</div>
 										<div className="flex justify-between items-center">
-											<button className="w-full bg-orange-500 text-white px-4 py-2 rounded-full text-sm hover:bg-orange-600 transition-colors">
+											<Link
+												to={`/restaurants/${restaurant._id}`}
+												className="w-full bg-orange-500 text-white px-4 py-2 rounded-full text-sm hover:bg-orange-600 transition-colors">
 												Order Now
-											</button>
+											</Link>
 										</div>
 									</div>
 								</div>
