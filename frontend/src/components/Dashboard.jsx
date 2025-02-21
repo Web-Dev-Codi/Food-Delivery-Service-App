@@ -130,7 +130,7 @@ const Dashboard = () => {
       <div className="flex-1 flex items-center justify-center p-6 bg-slate-600/40 ">
         <div className="flex-col items-center justify-center space-y-4 rounded-lg p-4 bg-neutral-800/90">
           <h1 className="text-4xl text-yellow-200">
-            Hi Admins, Welcome to dashboard
+            Hi Admins, Welcome to the dashboard
           </h1>
           <p className="text-xl">Please select you task from the left menu</p>
           <p className="text-red-500">
