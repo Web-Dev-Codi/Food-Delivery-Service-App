@@ -8,7 +8,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { CartProvider } from "./context/CartContext";
-import Checkout from "./components/Checkouts.jsx";
+
 import Menu from "./components/Menu.jsx";
 import ListRestaurant from "./components/ListRestaurant";
 import AddRestaurant from "./components/AddRestaurant";
@@ -21,7 +21,7 @@ import Home from "./components/Home";
 import AddMenu from "./components/AddMenu";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
-import Cart from "./components/Cart";
+import Cart from "./components/Cart.jsx";
 import AddCoupons from "./components/AddCoupons.jsx";
 import Dashboard from "./components/Dashboard";
 import ForgotPassword from "./components/ForgotPassword.jsx";
@@ -54,6 +54,10 @@ const router = createBrowserRouter(
 					path="/login"
 					element={<LoginForm />}
 				/>
+				<Route 
+					path="/cart"
+					element={<Cart />}
+				/>
 				<Route
 					path="/payment"
 					element={
@@ -79,18 +83,12 @@ const router = createBrowserRouter(
 					element={<SingleMenu />}
 				/>	
 
-				<Route
-					path="/cart"
-					element={<Cart />}
-				/>
+			
 				<Route
 					path="/coupons"
 					element={<AddCoupons />}
 				/>
-				<Route
-					path="/checkout"
-					element={<Checkout />}
-				/>
+
 				<Route
 					path="/restaurants/add"
 					element={<AddRestaurant />}

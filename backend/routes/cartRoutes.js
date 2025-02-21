@@ -1,40 +1,24 @@
 import { Router } from "express";
 import {
-	getCart,
-	addToCart,
-	updateQuantity,
-	removeFromCart,
-	clearCart,
+  addToCart,
+  updateCartItem,
+  getCart,
+  getAllCarts,
+  removeItemFromCart,
 } from "../controllers/cartController.js";
-import {
-	protect,
-	verifyCartOwnership,
-	// verifyCartItem,
-	// verifyCartQuantity,
-} from "../middleware/authMiddleware.js";
+import { verifyToken } from "../middleware/auth.js";
+
 
 const cartRouter = Router();
 
 // All routes are protected - require authentication
-cartRouter.use(protect);
-cartRouter.use(verifyCartOwnership);
+/* cartRouter.use(protect);
+cartRouter.use(verifyCartOwnership); */
+cartRouter.get("/", getAllCarts); // Get cart by user
+cartRouter.post("/add", verifyToken, addToCart); // Add or update item
+cartRouter.put("/update", verifyToken, updateCartItem); // Update quantity or remove
+cartRouter.get("/get", verifyToken, getCart); // Get cart by user
 
-// Get user's cart
-cartRouter.get("/", getCart);
-
-// Add item to cart
-cartRouter.post("/add", addToCart);
-
-// Update item quantity
-cartRouter.put(
-	"/update-quantity",
-	updateQuantity
-);
-
-// Remove item from cart
-cartRouter.delete("/remove/:foodItemId",  removeFromCart);
-
-// Clear entire cart
-cartRouter.delete("/clear", clearCart);
+cartRouter.delete("/deleteitem", verifyToken, removeItemFromCart); // Clear cart
 
 export default cartRouter;

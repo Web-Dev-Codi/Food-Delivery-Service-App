@@ -1,6 +1,6 @@
-import { Schema,model } from "mongoose";
+import { Schema, model } from "mongoose";
 
-const paymentSchema = new  Schema(
+const paymentSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
@@ -8,12 +8,6 @@ const paymentSchema = new  Schema(
       required: true,
     },
 
-
-   /*  orderId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Order",
-      default: null, // Can be linked later
-    }, */
     stripePaymentIntentId: {
       type: String,
       required: true,
@@ -23,15 +17,20 @@ const paymentSchema = new  Schema(
       type: Number,
       required: true,
     },
+    cartId: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Cart",
+      },
+    ],
     status: {
       type: String,
       enum: ["Pending", "Succeeded", "Failed"],
       default: "Pending",
     },
-   
   },
   { timestamps: true }
 );
 
 const Payment = model("Payment", paymentSchema);
-export default Payment
+export default Payment;
