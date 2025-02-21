@@ -1,72 +1,214 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import {
+	FaShoppingCart,
+	FaUser,
+	FaRegWindowClose,
+	FaCog,
+} from "react-icons/fa";
+import { GiHamburgerMenu, GiFoodTruck } from "react-icons/gi";
+import { BiLogOut } from "react-icons/bi";
 
 const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false); // Toggle for mobile menu
+	const [menuOpen, setMenuOpen] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(false); // Mock auth state
+	const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+	const cartItemsCount = 3; // Mock cart count
 
-  return (
-    <header className="bg-gradient-to-b from-[#4436BD] via-[#33246C] to-[#050913] text-neutral-300 py-4 px-6 flex justify-between items-center rounded-lg shadow-lg relative">
-      {/* 🍽️ Logo */}
-      <Link to="/" className="text-xl font-bold text-yellow-400">
-        🍽️ Food Delivery
-      </Link>
+	// Toggle function for testing auth state
+	const toggleAuth = () => {
+		setIsLoggedIn(!isLoggedIn);
+	};
 
-      {/* The Toggle btn */}
-      <button
-        onClick={() => setMenuOpen(!menuOpen)}
-        className="md:hidden text-2xl z-50"
-      >
-        {menuOpen ? "✖" : "☰"}
-      </button>
+	return (
+		<header className="relative w-full top-0 z-50 bg-transparent backdrop-blur-sm">
+			{/* Test Toggle Login Logout Button - Remove in production */}
+			<button
+				onClick={toggleAuth}
+				className="fixed top-20 right-4 bg-gray-800 text-white px-4 py-2 rounded-md text-sm">
+				Toggle Auth: {isLoggedIn ? "Logged In" : "Logged Out"}
+			</button>
+			<nav className="container mx-auto px-4 py-3">
+				<div className="flex items-center justify-between">
+					<Link
+						to="/"
+						className="flex items-center">
+						<span className="text-2xl font-extrabold text-orange-500">
+							🍽️ FFE.
+						</span>
+					</Link>
+					<div className="hidden md:flex items-center space-x-8">
+						<Link
+							to="/"
+							className="font-bold text-white hover:text-orange-500 transition-colors">
+							Home
+						</Link>
+						<Link
+							to="/menu"
+							className="font-bold text-white hover:text-orange-500 transition-colors">
+							Menu
+						</Link>
+						<Link
+							to="/contact"
+							className="font-bold text-white hover:text-orange-500 transition-colors">
+							Contact
+						</Link>
+						<Link
+							to="/orders"
+							className="font-bold text-white hover:text-orange-500 transition-colors">
+							Orders
+						</Link>
+						<Link
+							to="/faqs"
+							className="font-bold text-white hover:text-orange-500 transition-colors">
+							FAQs
+						</Link>
+					</div>
+					<div className="hidden md:flex items-center space-x-4">
+						{isLoggedIn ? (
+							<>
+								{/* Shopping Cart - Only shown when logged in */}
+								<Link
+									to="/cart"
+									className="relative p-2">
+									<FaShoppingCart className="text-white text-xl hover:text-orange-500 transition-colors" />
+									{cartItemsCount > 0 && (
+										<span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+											{cartItemsCount}
+										</span>
+									)}
+								</Link>
+								{/* User Avatar - Only shown when logged in */}
+								<div className="relative">
+									<button
+										onClick={() =>
+											setProfileDropdownOpen(
+												!profileDropdownOpen
+											)
+										}
+										className="flex items-center space-x-2 focus:outline-none">
+										<div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
+											<FaUser className="text-white" />
+										</div>
+									</button>
 
-      {/* Navigation Links set to hidden  */}
-      <nav
-        className={`absolute top-16 left-0 w-full bg-gradient-to-b from-[#050913] via-[#392679] to-[#050913] md:bg-transparent md:static md:w-auto md:flex md:space-x-6 
-          ${
-            menuOpen ? "flex flex-col items-center py-4 z-40" : "hidden"
-          } transition-all`}
-      >
-        <Link
-          to="/restaurants"
-          className="block md:inline-block px-4 py-2 hover:text-red-600"
-          onClick={() => setMenuOpen(false)}
-        >
-          Restaurants
-        </Link>
-        <Link
-          to="/cart"
-          className="block md:inline-block px-4 py-2 hover:text-yellow-300"
-          onClick={() => setMenuOpen(false)}
-        >
-          Cart
-        </Link>
-        <Link
-          to="/"
-          className="block md:inline-block px-4 py-2 hover:text-green-500"
-          onClick={() => setMenuOpen(false)}
-        >
-          Where to?
-        </Link>
-
-        {/* Click me to LoginForm.jsx */}
-        <Link
-          to="/login"
-          className="block md:hidden bg-blue-600 text-white hover:bg-white hover:text-neutral-800 text-center w-full py-2 mt-2 rounded-lg"
-          onClick={() => setMenuOpen(false)}
-        >
-          Login
-        </Link>
-      </nav>
-
-      {/* Desktop Login Button */}
-      <Link
-        to="/login"
-        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all hidden md:block"
-      >
-        Login
-      </Link>
-    </header>
-  );
+									{/* Dropdown Menu */}
+									{profileDropdownOpen && (
+										<div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+											<Link
+												to="user-profile"
+												className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+												<FaUser className="mr-3 text-orange-500" />
+												My Profile
+											</Link>
+											<Link
+												to="/orders"
+												className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+												<GiFoodTruck className="mr-3 text-orange-500" />
+												Orders
+											</Link>
+											<button
+												onClick={() => {
+													setIsLoggedIn(false);
+													setProfileDropdownOpen(
+														false
+													);
+												}}
+												className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+												<BiLogOut className="mr-3 text-orange-500" />
+												Logout
+											</button>
+										</div>
+									)}
+								</div>
+							</>
+						) : (
+							// Auth Buttons - Only shown when logged out
+							<div className="flex items-center space-x-2">
+								<Link
+									to="/login"
+									className="px-4 py-2 text-white font-bold hover:text-orange-500 transition-colors">
+									Sign In
+								</Link>
+								<Link
+									to="/signup"
+									className="px-4 py-2 bg-orange-500 text-white font-bold rounded-full hover:bg-white hover:text-orange-500 transition-colors">
+									Sign Up
+								</Link>
+							</div>
+						)}
+					</div>
+					<button
+						onClick={() => setMenuOpen(!menuOpen)}
+						className="md:hidden text-white hover:text-orange-500 transition-colors h-5 w-5">
+						{menuOpen ? (
+							<FaRegWindowClose style={{ fontSize: "26px" }} />
+						) : (
+							<GiHamburgerMenu style={{ fontSize: "26px" }} />
+						)}
+					</button>
+				</div>
+				{menuOpen && (
+					<div className="md:hidden absolute top-full left-0 w-full bg-black bg-opacity-90 backdrop-blur-sm z-50">
+						<div className="flex flex-col space-y-4 p-4 z-50">
+							<Link
+								to="/"
+								className="text-white font-bold hover:text-orange-500 transition-colors">
+								Home
+							</Link>
+							<Link
+								to="/menu"
+								className="text-white font-bold hover:text-orange-500 transition-colors">
+								Menu
+							</Link>
+							<Link
+								to="/contact"
+								className="text-white font-bold hover:text-orange-500 transition-colors">
+								Contact
+							</Link>
+							<Link
+								to="/about"
+								className="text-white font-bold hover:text-orange-500 transition-colors">
+								About Us
+							</Link>
+							<Link
+								to="/faqs"
+								className="text-white font-bold hover:text-orange-500 transition-colors">
+								FAQs
+							</Link>
+							{isLoggedIn ? (
+								<div className="flex items-center space-x-4">
+									<Link
+										to="/cart"
+										className="text-white font-bold hover:text-orange-500 transition-colors">
+										Cart ({cartItemsCount})
+									</Link>
+									<Link
+										to="/profile"
+										className="text-white font-bold hover:text-orange-500 transition-colors">
+										Profile
+									</Link>
+								</div>
+							) : (
+								<div className="flex flex-col space-y-2">
+									<Link
+										to="/login"
+										className="text-white font-bold hover:text-orange-500 transition-colors">
+										Sign In
+									</Link>
+									<Link
+										to="/signup"
+										className="px-4 py-2 bg-orange-500 text-white font-bold rounded-full hover:bg-white hover:text-orange-500 transition-colors text-center">
+										Sign Up
+									</Link>
+								</div>
+							)}
+						</div>
+					</div>
+				)}
+			</nav>
+		</header>
+	);
 };
 
 export default Header;
