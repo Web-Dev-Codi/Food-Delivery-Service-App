@@ -25,7 +25,7 @@ function Cart() {
 
 	if (!cart || !cart.items || cart.items.length === 0) {
 		return (
-			<div className="text-center p-4">
+			<div className="flex flex-col justify-center items-center text-center p-4 h-screen">
 				<h2 className="text-xl font-bold mb-4">Your Cart</h2>
 				<p>Your cart is empty</p>
 			</div>
@@ -33,7 +33,7 @@ function Cart() {
 	}
 
 	return (
-		<div className="max-w-4xl mx-auto p-4">
+		<div className="max-w-4xl mx-auto p-4  h-screen">
 			<div className="flex justify-between items-center mb-6">
 				<h2 className="text-2xl font-bold">Your Cart</h2>
 				<button
