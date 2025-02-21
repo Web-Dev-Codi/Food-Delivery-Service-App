@@ -12,13 +12,39 @@ export const transporter = nodemailer.createTransport({
 	},
 });
 
-export const sendPaymentSuccessEmail = (user, payment) => {
-	const mailOptions = {
-		from: process.env.GMAIL_USER, // sender address
-		to: user.email, // recipient email from the user's details
-		subject: "Payment Successful", // Subject of the email
-		text: `Dear ${user.name},\n\nYour payment of €${payment.amount} has been successfully processed!\n\nTransaction ID: ${payment.stripePaymentIntentId}\n\nThank you for your purchase!`, // Email body
-	};
+export const sendPaymentSuccessEmail = async (user, payment) => {
+    if (!user?.email) {
+        console.error("❌ User email is missing. Cannot send email.");
+        return;
+    }
 
-	return transporter.sendMail(mailOptions);
+    const cart = payment.cartId;
+    const cartItems = (cart?.items ?? []).map(
+        (item) => `${item.foodItemId.name} - ${item.quantity} x €${item.foodItemId.price}`
+    ).join("\n");
+
+    const mailOptions = {
+        from: process.env.GMAIL_USER,
+        to: user.email,
+        subject: "Payment Successful",
+        text: `
+Dear ${user.name || "Customer"},
+
+Your payment of €${payment.amount} has been successfully processed!
+
+Transaction ID: ${payment.stripePaymentIntentId}
+
+🛒 Order Details:
+${cartItems}
+
+Thank you for your purchase!
+        `,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log(`📧 Payment success email sent to: ${user.email}`);
+    } catch (error) {
+        console.error("❌ Failed to send email:", error);
+    }
 };

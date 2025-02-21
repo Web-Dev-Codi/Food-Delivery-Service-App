@@ -49,7 +49,7 @@ const Header = () => {
 							Menu
 						</Link>
 						<Link
-							to="/contact"
+							to="/contact-us"
 							className="font-bold text-white hover:text-orange-500 transition-colors">
 							Contact
 						</Link>

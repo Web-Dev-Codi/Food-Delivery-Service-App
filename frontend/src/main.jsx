@@ -8,7 +8,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { CartProvider } from "./context/CartContext";
-import Checkout from "./components/Checkouts.jsx";
+
 import Menu from "./components/Menu.jsx";
 import ListRestaurant from "./components/ListRestaurant";
 import AddRestaurant from "./components/AddRestaurant";
@@ -21,7 +21,7 @@ import Home from "./components/Home";
 import AddMenu from "./components/AddMenu";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
-import Cart from "./components/Cart";
+import Cart from "./components/Cart.jsx";
 import AddCoupons from "./components/AddCoupons.jsx";
 import Dashboard from "./components/Dashboard";
 import ForgotPassword from "./components/ForgotPassword.jsx";
@@ -30,6 +30,7 @@ import PageNotFound from "./components/PageNotFound.jsx";
 import SingleMenu from "./components/SingleMenu.jsx";
 import UserProfile from "./components/UserProfile.jsx";
 import FAQ from "./components/views/FAQ.jsx";
+import ContactUs from "./components/views/ContactUs.jsx";
 
 const stripePromise = loadStripe(
 	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
@@ -89,10 +90,7 @@ const router = createBrowserRouter(
 					path="/coupons"
 					element={<AddCoupons />}
 				/>
-				<Route
-					path="/checkout"
-					element={<Checkout />}
-				/>
+
 				<Route
 					path="/restaurants/add"
 					element={<AddRestaurant />}
@@ -116,6 +114,10 @@ const router = createBrowserRouter(
 				<Route
 					path="/faqs"
 					element={<FAQ />}
+				/>
+				<Route
+					path="/contact-us"
+					element={<ContactUs />}
 				/>
 				<Route
 					path="/reset-password/:token"

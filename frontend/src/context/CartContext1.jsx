@@ -156,12 +156,8 @@ import axios from "axios";
 
 // Initial state
 const initialState = {
-  cart: {
-	items: [],
+  cart: [],
   totalAmount: 0,
-  discount: 0,
-  finalAmount: 0,
-  },
   error: null,
 };
 
@@ -169,8 +165,8 @@ const initialState = {
 const cartReducer = (state, action) => {
   switch (action.type) {
     case "ADD_TO_CART":
-      return { ...state, cart: action.payload };
-
+        return { ...state, cart: { ...state.cart, items: action.payload } };
+      
     case "REMOVE_FROM_CART":
       return {
         ...state,
@@ -191,8 +187,8 @@ const cartReducer = (state, action) => {
     case "FETCH_CART_SUCCESS":
       return {
         ...state,
-        cart: action.payload || { items: [], totalAmount: 0, discount: 0, finalAmount: 0 },
-        
+        cart: action.payload,
+        totalAmount: action.payload.totalAmount,
       };
 
     case "FETCH_CART_ERROR":
@@ -220,8 +216,11 @@ export const CartProvider = ({ children }) => {
   const fetchCart = async () => {
     try {
       const response = await axios.get("http://localhost:8000/cart/get", { headers: getAuthHeaders() });
-	  const cartData = response.data.data || { items: [], totalAmount: 0, discount: 0, finalAmount: 0 };
-      dispatch({ type: "FETCH_CART_SUCCESS", payload: cartData });
+      dispatch({ type: "FETCH_CART_SUCCESS", payload: { 
+        items: response.data.data.items || [],
+        totalAmount: response.data.data.finalAmount || 0 
+      } });
+      
     } catch (error) {
       dispatch({ type: "FETCH_CART_ERROR", payload: error.message });
     }
@@ -275,7 +274,7 @@ export const CartProvider = ({ children }) => {
   const applyCoupon = async (couponCode, setDiscountMessage) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/offers/apply",
+        "http://localhost:8000/offers/applycoupon",
         { code: couponCode },
         { headers: getAuthHeaders() }
       );

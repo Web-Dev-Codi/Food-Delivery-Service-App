@@ -18,8 +18,8 @@ const CouponSchema = new Schema(
 
 		validFrom: { type: Date, required: true }, // Required to define start date
 		validUntil: { type: Date, required: true }, // Required to define expiry
-		maxUsage: { type: Number, default: 1, max: 1 }, // Maximum number of times the coupon can be used
-		usageCount: { type: Number, default: 0, max: 1 }, // Tracks the times used
+		
+		usedBy: [{ type: Schema.Types.ObjectId, ref: "User" }], // ✅ Track per-user usage
 		applicableToRestaurants: [
 			{ type: Schema.Types.ObjectId, ref: "Restaurant" },
 		], // Linked to Restaurants
@@ -43,15 +43,7 @@ CouponSchema.pre("save", function (next) {
 	next();
 });
 
-// // Ensure usageCount doesn't exceed maxUsage
-// CouponSchema.pre("save", function (next) {
-// 	if (this.usageCount > this.maxUsage) {
-// 		return next(
-// 			new Error("Usage count exceeds the maximum allowed usage.")
-// 		);
-// 	}
-// 	next();
-// });
+
 
 const Coupon = model("Coupon", CouponSchema);
 export default Coupon;
