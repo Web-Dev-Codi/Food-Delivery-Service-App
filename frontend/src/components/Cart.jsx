@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "../context/CartContext"; 
 import { useNavigate } from "react-router-dom";
+import CartItems from "./CartItems";
 
 const Cart = () => {
   const { state, fetchCart, updateCartItem, removeCartItem, applyCoupon } = useContext(CartContext);
@@ -82,7 +83,8 @@ const Cart = () => {
                     onChange={(e) => handleQuantityChange(item.foodItemId._id, e.target.value)}
                     className="w-16 p-2 border border-gray-300 rounded-md text-center"
                   />
-                </div>       <button 
+                </div>       
+                <button 
                   className={`mt-2 text-red-500 ${state.cart?.status?.toLowerCase() === "processed" ? "cursor-not-allowed opacity-50" : ""}`}
                   onClick={() => handleRemoveClick(item.foodItemId._id)}
                   disabled={state.cart?.status?.toLowerCase() === "processed"}

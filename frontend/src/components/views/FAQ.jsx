@@ -69,8 +69,8 @@ const FAQ = () => {
 						key={category}
 						className={`px-4 py-2 rounded-full ${
 							activeCategory === category
-								? "bg-[#F97316] text-black font-semibold"
-								: "bg-gray-200 text-gray-700"
+								? "bg-[#F97316] text-black font-semibold  border-white border"
+								: "bg-gray-100 bg-opacity-25 text-white"
 						}`}
 						onClick={() => setActiveCategory(category)}>
 						{category}
@@ -159,24 +159,26 @@ const FAQ = () => {
 			</div>
 
 			{/* Support Options */}
-			<div className="flex flex-col justify-between items-center mt-12 bg-transparent p-6 rounded-lg">
-				<h2 className="text-xl font-semibold mb-4">Need More Help?</h2>
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-					<a
+			<div className="flex flex-col justify-center  mt-12 bg-transparent p-6 rounded-lg">
+				<h2 className="text-xl font-semibold text-center mb-4">
+					Need More Help?
+				</h2>
+				<div className="flex flex-row justify-between md:grid md:grid-cols-3 gap-4">
+					<Link
 						href="#live-chat"
-						className="flex items-center gap-2 text-primary hover:underline">
+						className="flex flex-col items-center gap-2 text-primary hover:underline">
 						<FaComments /> Start Live Chat
-					</a>
-					<a
+					</Link>
+					<Link
 						href="mailto:support@fooddelivery.com"
-						className="flex items-center gap-2 text-primary hover:underline">
+						className="flex flex-col items-center gap-2 text-primary hover:underline">
 						<FaEnvelope /> Email Support
-					</a>
-					<a
+					</Link>
+					<Link
 						href="tel:1-800-FOOD-DEL"
-						className="flex items-center gap-2 text-primary hover:underline">
+						className="flex flex-col items-center gap-2 text-primary hover:underline">
 						<FaPhone /> Call Us
-					</a>
+					</Link>
 				</div>
 			</div>
 
