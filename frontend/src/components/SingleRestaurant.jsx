@@ -81,7 +81,7 @@ function SingleRestaurant() {
 						{/* Restaurant Logo */}
 						<img
 							className="w-16 h-16 object-cover rounded-full overflow-hidden"
-							src={logosMap[restaurant.name] || defaultLogo} // Default to spiceOfIndia if no match
+							src={logosMap[restaurant.name]} // Default to spiceOfIndia if no match
 							alt={restaurant.name}
 						/>
 
