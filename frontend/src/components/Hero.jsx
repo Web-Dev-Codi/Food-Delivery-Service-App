@@ -1,18 +1,19 @@
 import { Link } from "react-router-dom";
+import Lottie from "lottie-react";
 import Avatar from "../assets/images/avatar.png";
-import Hero2 from "../assets/images/food2.avif";
+import animationData from "../assets/animations/scooterAnimation.json"; // Import the animation JSON
 
 export default function HeroSection() {
 	return (
 		<section className="relative flex flex-col items-center p-2 py-10 w-full text-white h-auto md:h-[900px]">
-			<div className="container mx-auto h-auto md:h-[700px] px-2">
+			<div className="container mx-auto h-auto md:h-[500px] px-2">
 				<div className="flex flex-col lg:flex-row items-center justify-between gap-8 py-4 md:py-8 lg:py-16">
 					{/* Left Content */}
 					<div className="w-full lg:w-1/2 space-y-4 md:space-y-6">
 						<h1 className="text-5xl text-center flex flex-col md:text-left sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
 							Locally Inspired
 							<br />
-							<span className="text-[#D84418]">
+							<span className="text-[#FF5733] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] tracking-wide">
 								Crave It. Click It. Get It
 							</span>
 							Delivered Fast
@@ -24,10 +25,9 @@ export default function HeroSection() {
 							hassle—just fresh, flavorful food delivered fast.
 							Order now and taste the world!
 						</p>
-
 						<div className="flex flex-col sm:flex-row gap-4">
 							<Link
-								to="/order"
+								to="/restaurants"
 								className="flex items-center justify-center px-6 py-5 bg-[#D84418] rounded-full text-white font-semibold hover:bg-[#c13915] transition-colors">
 								Order Now
 							</Link>
@@ -41,63 +41,60 @@ export default function HeroSection() {
 							</Link>
 						</div>
 					</div>
-
 					{/* Right Content */}
-					<div className="w-full h-[400px] sm:h-[500px] lg:h-[800px] relative">
-						<div className="relative">
+					<div className="w-full flex items-center justify-center h-full sm:h-[600px] lg:h-[800px] relative">
+						<div className="relative h-full w-full flex items-center justify-center">
 							{/* Main Image */}
-							<div className="w-full h-[400px] sm:h-[500px] lg:h-[800px] relative">
-								<img
-									src={Hero2}
-									alt="Hero"
-									className="w-full h-full object-cover rounded-full bg-[#D84418]/20"
+							<div className="w-[140%] sm:w-[150%] lg:w-[180%] scale-125 relative flex items-center justify-center">
+								<Lottie
+									animationData={animationData}
+									loop={true}
+									autoPlay={true}
+									className="w-full h-full"
 								/>
 							</div>
-
 							{/* Floating Elements */}
-							<div className="absolute top-10 -left-4 bg-white p-3 rounded-xl shadow-lg">
+							<div className="absolute top-[10%] left-[10%] bg-white p-2 rounded-xl shadow-lg sm:w-[200px] lg:w-auto transform scale-50 sm:scale-75 lg:scale-100 origin-top-left">
 								<img
 									src="https://res.cloudinary.com/difmxsysx/image/upload/v1738520512/Indian-food-menu/omlet-starter_ftngrz.jpg"
 									alt="Pizza"
-									className="w-24 h-24 object-contain"
+									className="w-20 sm:w-24 h-20 sm:h-24 object-contain"
 								/>
-								<div className="mt-2">
-									<p className="text-black font-semibold">
+								<div className="">
+									<p className="text-black font-semibold text-sm sm:text-base">
 										Omelette
 									</p>
-									<div className="flex text-yellow-400 text-sm">
+									<div className="flex text-yellow-400 text-xs sm:text-sm">
 										★★★★★
 									</div>
 								</div>
 							</div>
-
-							<div className="absolute bottom-10 -right-4 bg-white p-3 rounded-xl shadow-lg">
+							<div className="absolute bottom-[76%] right-[35%] bg-white p-2 rounded-xl shadow-lg sm:w-[200px] lg:w-auto transform scale-50 sm:scale-75 lg:scale-100 origin-bottom-right">
 								<img
 									src="https://res.cloudinary.com/difmxsysx/image/upload/v1738584141/Buffalo_Wings_islhkv.jpg"
 									alt="Buffalo Wings"
-									className="w-28 h-24 object-contain"
+									className="w-24 sm:w-28 h-20 sm:h-24 object-contain"
 								/>
 								<div className="mt-2">
-									<p className="text-black font-semibold">
+									<p className="text-black font-semibold text-sm sm:text-base">
 										Buffalo Wings
 									</p>
-									<div className="flex text-yellow-400 text-sm">
+									<div className="flex text-yellow-400 text-xs sm:text-sm">
 										★★★★★
 									</div>
 								</div>
 							</div>
-
 							{/* Contact Card */}
-							<div className="absolute bottom-20 left-10 bg-white text-black p-3 rounded-xl shadow-lg flex items-center gap-3">
-								<div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+							<div className="absolute bottom-[35%] left-[15%] bg-white text-black p-2 rounded-xl shadow-lg flex items-center gap-2 sm:gap-3 transform scale-50 sm:scale-75 lg:scale-100 origin-bottom-left">
+								<div className="w-8 sm:w-10 h-8 sm:h-10 bg-orange-100 rounded-full flex items-center justify-center">
 									<img
 										src={Avatar}
 										alt="Profile"
-										className="w-8 h-8 rounded-full"
+										className="w-6 sm:w-8 h-6 sm:h-8 rounded-full"
 									/>
 								</div>
 								<div>
-									<p className="font-semibold text-sm">
+									<p className="font-semibold text-xs sm:text-sm">
 										Ojoy Kumar
 									</p>
 									<p className="text-xs text-gray-500">

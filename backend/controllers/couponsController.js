@@ -1,6 +1,6 @@
 
 import Coupon from "../models/couponSchema.js";
-import mongoose from "mongoose";
+import Cart from "../models/cartSchema.js";
 
 export const createCoupon = async (req, res) => {
     try{
@@ -109,64 +109,115 @@ export const deleteCoupon = async (req, res) => {
 
 export const applyCoupon = async (req, res) => {
     try {
-        const { code, restaurantId } = req.body;
-        const currentDate = new Date();
+        const { code } = req.body;
+        const userId = req.userId;
 
-        // Check if the coupon exists and is within the valid date range
-        const validCoupon = await Coupon.findOne({ 
-            code, 
-            validFrom: { $lte: currentDate }, 
-            validUntil: { $gte: currentDate } 
+        if (!userId) {
+            return res.status(401).json({ message: "Unauthorized: User ID missing from token" });
+        }
+
+        // Fetch user's cart and populate food items
+        const cart = await Cart.findOne({ userId }).populate({
+            path: "items.foodItemId",
+            select: "restaurant name price",
+            populate: { path: "restaurant", select: "_id" } // ✅ Ensures `restaurantId` is populated
+        });
+        if (!cart || cart.items.length === 0) {
+            return res.status(404).json({ message: "Cart is empty or not found." });
+        }
+        console.log("Cart Items:", cart.items.map(item => item.foodItemId));
+
+        // Extract all unique restaurant IDs from cart items
+        const restaurantIdsInCart = [...new Set(
+            cart.items
+                .map(item => item.foodItemId.restaurant?._id?.toString()) // 
+                .filter(id => id) 
+        )];
+        
+
+        // Handle coupon removal
+        if (!code) {
+            if (!cart.appliedCoupon) {
+                return res.status(400).json({ message: "No coupon applied to remove." });
+            }
+            cart.discount = 0;
+            cart.finalAmount = cart.totalAmount;
+            cart.appliedCoupon = null;
+            await cart.save();
+
+            return res.status(200).json({ 
+                message: "Coupon removed successfully", 
+                finalAmount: cart.finalAmount,
+                cart
+            });
+        }
+
+        // Find a valid coupon
+        const validCoupon = await Coupon.findOne({
+            code,
+            validFrom: { $lte: new Date() },
+            validUntil: { $gte: new Date() },
+            isActive: true
         });
 
         if (!validCoupon) {
-            return res.status(404).json({
-                message: "Coupon not found or expired",
-            });
+            return res.status(404).json({ message: "Coupon not found or expired." });
         }
 
-        // Check if the coupon is active
-        if (!validCoupon.isActive) {
-            return res.status(400).json({
-                message: "Coupon is not active",
-            });
+        //to check if the coupon is already used by the user
+         if(validCoupon.usedBy.includes(userId)){
+            return res.status(400).json({ message: "Sorry! Coupon already used by the you." });
         }
 
-        // Check if the coupon is applicable to the restaurant
-        if (
-            validCoupon.applicableToRestaurants.length > 0 && 
-            !validCoupon.applicableToRestaurants.some(id => id.equals(restaurantId))
-        ) {
-            return res.status(400).json({
-                message: "Coupon not applicable to this restaurant",
-            });
+
+   // ✅ Find common restaurant(s) between cart and coupon
+        const applicableRestaurants = validCoupon.applicableToRestaurants.map(id => id.toString());
+        const matchedRestaurants = restaurantIdsInCart.map(id => id.toString()).filter(id => applicableRestaurants.includes(id));
+        console.log("Applicable Restaurants:", applicableRestaurants);
+console.log("Cart Restaurants:", restaurantIdsInCart);
+console.log("Matched Restaurants:", matchedRestaurants);
+
+
+        if (matchedRestaurants.length === 0) {
+            return res.status(400).json({ message: "Coupon is not applicable to any restaurant in your cart." });
         }
 
-        // Check if the usage limit is exceeded
-        if (validCoupon.usageCount >= validCoupon.maxUsage) {
-            return res.status(400).json({
-                message: "Coupon usage limit exceeded",
-            });
-        }
+        // ✅ Apply discount **only** to matched restaurant items
+        let discount = 0;
+        let eligibleTotal = 0;
 
-        // Increment the usage count and save the coupon
-        validCoupon.usageCount += 1;
-        await validCoupon.save();
-
-        res.status(200).json({ 
-            message: "Coupon applied successfully", 
-            data: validCoupon
+        cart.items.forEach(item => {
+            if (matchedRestaurants.includes(item.foodItemId.restaurant?._id?.toString())) {
+                const itemTotal = item.foodItemId.price * item.quantity;
+                eligibleTotal += itemTotal;
+            }
         });
-    } catch (error) {
+
+        if (eligibleTotal > 0) {
+            discount = parseFloat((eligibleTotal * (validCoupon.discount / 100)).toFixed(2));
+        }
+
+        let finalAmount = Math.max(cart.totalAmount - discount, 0);
+
+        // Update cart
+        cart.discount = discount;
+        cart.finalAmount = finalAmount;
+        cart.appliedCoupon = validCoupon._id;
+        await cart.save();
+
+         // ✅ Add user to `usedBy` array to track usage
+         validCoupon.usedBy.push(userId);
+         await validCoupon.save();
+ 
+         res.status(200).json({ 
+             message: "Coupon applied successfully!", 
+             discount,
+             finalAmount,
+             cart
+         });
+ 
+     }  catch (error) {
         console.error("Error applying coupon:", error);
-        res.status(500).json({ 
-            message: "An unexpected error occurred. Please try again later." 
-        });
+        res.status(500).json({ message: "An unexpected error occurred. Please try again later." });
     }
 };
-
-
-
-    
-
-

@@ -1,10 +1,18 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaShoppingCart, FaUser } from "react-icons/fa";
+import {
+	FaShoppingCart,
+	FaUser,
+	FaRegWindowClose,
+	FaCog,
+} from "react-icons/fa";
+import { GiHamburgerMenu, GiFoodTruck } from "react-icons/gi";
+import { BiLogOut } from "react-icons/bi";
 
 const Header = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false); // Mock auth state
+	const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 	const cartItemsCount = 3; // Mock cart count
 
 	// Toggle function for testing auth state
@@ -26,7 +34,7 @@ const Header = () => {
 						to="/"
 						className="flex items-center">
 						<span className="text-2xl font-extrabold text-orange-500">
-							🍽️ Food.
+							🍽️ FFE.
 						</span>
 					</Link>
 					<div className="hidden md:flex items-center space-x-8">
@@ -41,7 +49,7 @@ const Header = () => {
 							Menu
 						</Link>
 						<Link
-							to="/contact"
+							to="/contact-us"
 							className="font-bold text-white hover:text-orange-500 transition-colors">
 							Contact
 						</Link>
@@ -71,16 +79,51 @@ const Header = () => {
 									)}
 								</Link>
 								{/* User Avatar - Only shown when logged in */}
-								<Link
-									to="/profile"
-									className="flex items-center space-x-2">
-									<div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
-										<FaUser className="text-white" />
-									</div>
-								</Link>
+								<div className="relative">
+									<button
+										onClick={() =>
+											setProfileDropdownOpen(
+												!profileDropdownOpen
+											)
+										}
+										className="flex items-center space-x-2 focus:outline-none">
+										<div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
+											<FaUser className="text-white" />
+										</div>
+									</button>
+
+									{/* Dropdown Menu */}
+									{profileDropdownOpen && (
+										<div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+											<Link
+												to="user-profile"
+												className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+												<FaUser className="mr-3 text-orange-500" />
+												My Profile
+											</Link>
+											<Link
+												to="/orders"
+												className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+												<GiFoodTruck className="mr-3 text-orange-500" />
+												Orders
+											</Link>
+											<button
+												onClick={() => {
+													setIsLoggedIn(false);
+													setProfileDropdownOpen(
+														false
+													);
+												}}
+												className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+												<BiLogOut className="mr-3 text-orange-500" />
+												Logout
+											</button>
+										</div>
+									)}
+								</div>
 							</>
 						) : (
-							/* Auth Buttons - Only shown when logged out */
+							// Auth Buttons - Only shown when logged out
 							<div className="flex items-center space-x-2">
 								<Link
 									to="/login"
@@ -97,13 +140,17 @@ const Header = () => {
 					</div>
 					<button
 						onClick={() => setMenuOpen(!menuOpen)}
-						className="md:hidden text-white hover:text-orange-500 transition-colors">
-						{menuOpen ? "✖" : "☰"}
+						className="md:hidden text-white hover:text-orange-500 transition-colors h-5 w-5">
+						{menuOpen ? (
+							<FaRegWindowClose style={{ fontSize: "26px" }} />
+						) : (
+							<GiHamburgerMenu style={{ fontSize: "26px" }} />
+						)}
 					</button>
 				</div>
 				{menuOpen && (
-					<div className="md:hidden absolute top-full left-0 w-full bg-black bg-opacity-90 backdrop-blur-sm">
-						<div className="flex flex-col space-y-4 p-4">
+					<div className="md:hidden absolute top-full left-0 w-full bg-black bg-opacity-90 backdrop-blur-sm z-50">
+						<div className="flex flex-col space-y-4 p-4 z-50">
 							<Link
 								to="/"
 								className="text-white font-bold hover:text-orange-500 transition-colors">

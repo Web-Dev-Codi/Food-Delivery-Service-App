@@ -41,7 +41,7 @@ app.use("/api/auth", authRoutes);
 app.use("/payment", paymentRoutes); //paymentRouter
 app.use("/", router); //userRouter
 app.use("/data", userRouter); //userRouter
-app.use("/api/cart", cartRouter);
+app.use("/cart", cartRouter);
 
 app.use("/api", restaurantRouter);
 app.use("/food", menuRouter);
