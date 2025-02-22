@@ -1,9 +1,9 @@
-/* import { useState } from "react";
-import { useCart } from "../context/CartContext";
+import { useState, useContext } from "react";
+import { CartContext } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 
 function Checkout() {
-	const { cart, total, clearCart } = useCart();
+	const {state } = useContext(CartContext);
 	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		firstName: "",
@@ -36,12 +36,12 @@ function Checkout() {
 			// Simulating order submission
 			console.log("Order submitted:", {
 				orderDetails: formData,
-				items: cart,
-				total,
+				items: state.cart,
+				total: state.cart?.finalAmount,
 			});
 
 			// Clear cart and redirect to success page
-			clearCart();
+			// clearCart();
 			alert("Order placed successfully!");
 			navigate("/");
 		} catch (error) {
@@ -50,7 +50,7 @@ function Checkout() {
 		}
 	};
 
-	if (!cart || cart.length === 0) {
+	if (!state.cart || state.cart.length === 0) {
 		return (
 			<div className="max-w-4xl mx-auto p-4 text-center">
 				<h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
@@ -68,7 +68,6 @@ function Checkout() {
 			<h2 className="text-2xl font-bold mb-6">Checkout</h2>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-				{/* Delivery Details Form 
 				<div className="bg-white p-6 rounded-lg shadow-md">
 					<h3 className="text-xl font-semibold mb-4">
 						Delivery Details
@@ -192,24 +191,23 @@ function Checkout() {
 						<button
 							type="submit"
 							className="w-full bg-green-500 text-white py-3 rounded-md hover:bg-green-600 transition-colors">
-							Place Order (${cart.total.toFixed(2)})
+							Place Order (${state.cart?.finalAmount.toFixed(2)})
 						</button>
 					</form>
 				</div>
 
-				{/* Order Summary 
 				<div className="bg-white p-6 rounded-lg shadow-md h-fit">
 					<h3 className="text-xl font-semibold mb-4">
 						Order Summary
 					</h3>
 					<div className="space-y-4">
-						{cart.items.map((item, index) => (
+						{state.cart?.items?.map((item, index) => (
 							<div
 								key={index}
 								className="flex justify-between items-center border-b pb-2">
 								<div>
 									<p className="font-medium">
-										{item.menuItem.name}
+										{item.foodItemId?.name}
 									</p>
 									<p className="text-sm text-gray-600">
 										Quantity: {item.quantity}
@@ -218,7 +216,7 @@ function Checkout() {
 								<p className="font-medium">
 									$
 									{(
-										item.menuItem.price * item.quantity
+										item.foodItemId?.price * item.quantity
 									).toFixed(2)}
 								</p>
 							</div>
@@ -226,7 +224,7 @@ function Checkout() {
 						<div className="border-t pt-4">
 							<div className="flex justify-between items-center font-bold">
 								<span>Total:</span>
-								<span>${cart.total.toFixed(2)}</span>
+								<span>${state.cart?.finalAmount.toFixed(2)}</span>
 							</div>
 						</div>
 					</div>
@@ -237,4 +235,3 @@ function Checkout() {
 }
 
 export default Checkout;
- */
