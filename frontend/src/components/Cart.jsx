@@ -73,8 +73,8 @@ function Cart() {
 	}
 
 	return (
-		<div className="min-h-screen flex items-center justify-center">
-			<div className="bg-black/40 backdrop-blur-lg rounded-xl shadow-lg p-6 sm:px-6 lg:px-8 max-w-4xl mx-auto h-fit">
+		<div className="min-h-screen flex items-center justify-center w-full">
+			<div className="bg-black/40 backdrop-blur-lg rounded-xl shadow-lg p-6 sm:px-6 lg:px-8 max-w-4xl mx-auto h-fit w-full">
 				<div className="flex justify-between items-center mb-6">
 					<h2 className="text-2xl font-bold">Your Cart</h2>
 					<button

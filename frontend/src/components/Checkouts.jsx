@@ -71,8 +71,8 @@ function Checkout() {
 	}
 
 	return (
-		<div className="flex justify-center items-center m-16  h-full ">
-			<div className="w-1/2 p-4">
+		<div className="bg-black/40 backdrop-blur-lg rounded-xl shadow-lg p-6 sm:px-6 lg:px-8 max-w-4xl mx-auto h-fit w-full">
+			<div className="p-4">
 				<h2 className="text-2xl text-center font-bold mb-6">
 					Checkout
 				</h2>
