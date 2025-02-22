@@ -51,7 +51,7 @@ const Cart = () => {
 			await applyCoupon(couponCode);
 			setDiscountMessage("🎉 Coupon applied successfully!");
 		} catch (error) {
-			setDiscountMessage("❌ Invalid or expired coupon.");
+			setDiscountMessage(`❌ ${error.response?.data?.message || "Invalid or expired coupon."}`);
 		}
 	};
 
