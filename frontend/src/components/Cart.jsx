@@ -10,8 +10,13 @@ const Cart = () => {
 	const [discountMessage, setDiscountMessage] = useState("");
 
 	useEffect(() => {
-		fetchCart(); // Fetch cart on mount
-	}, []);
+		const token = localStorage.getItem("token");
+		if (token) {
+			fetchCart(); // Fetch cart only if token exists
+		} else {
+			navigate("/login"); // Redirect to login if no token
+		}
+	}, []); // Only fetch on mount
 
 	useEffect(() => {
 		if (state.cart?.status?.toLowerCase() === "processed") {
