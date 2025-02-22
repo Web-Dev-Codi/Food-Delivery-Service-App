@@ -2,7 +2,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaShoppingCart, FaUser, FaRegWindowClose } from "react-icons/fa";
-import { GiHamburgerMenu} from "react-icons/gi";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { BiLogOut } from "react-icons/bi";
 import { CartContext } from "../../context/CartContext";
 
@@ -17,15 +17,21 @@ const Header = () => {
 	// Check authentication status whenever location changes
 	useEffect(() => {
 		const token = localStorage.getItem("token");
-		const wasLoggedIn = isLoggedIn;
 		const isNowLoggedIn = !!token;
 		setIsLoggedIn(isNowLoggedIn);
 
-		// If user just logged in, fetch the cart
-		if (!wasLoggedIn && isNowLoggedIn) {
+		if (!isLoggedIn && isNowLoggedIn) {
 			fetchCart();
 		}
 	}, [location.pathname]); // Re-run when route changes
+
+	// Update cart when cart state changes
+	useEffect(() => {
+		const token = localStorage.getItem("token");
+		if (token && isLoggedIn) {
+			fetchCart();
+		}
+	}, []);
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -184,7 +190,8 @@ const Header = () => {
 									<Link
 										to="/cart"
 										className="text-white font-bold hover:text-orange-500 transition-colors">
-										Cart ({cartState.cart?.items?.length || 0})
+										Cart (
+										{cartState?.cart?.items?.length || 0})
 									</Link>
 									<Link
 										to="/profile"

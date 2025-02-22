@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, useReducer, useEffect } from "react";
 import axios from "axios";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 // Initial state
 const initialState = {
@@ -23,9 +23,12 @@ const cartReducer = (state, action) => {
 		case "REMOVE_FROM_CART":
 			return {
 				...state,
-				cart: state.cart.filter(
-					(item) => item.foodItemId !== action.payload.foodItemId
-				),
+				cart: {
+					...state.cart,
+					items: state.cart.items.filter(
+						(item) => item.foodItemId !== action.payload.foodItemId
+					),
+				},
 			};
 
 		case "UPDATE_QUANTITY":
@@ -190,7 +193,7 @@ export const CartProvider = ({ children }) => {
 };
 
 CartProvider.propTypes = {
-	children: PropTypes.node.isRequired
+	children: PropTypes.node.isRequired,
 };
 
 export { CartContext };

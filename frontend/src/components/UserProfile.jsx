@@ -1,9 +1,48 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState} from "react";
+// import { useParams } from "react-router-dom";
+// import axios from "axios";
 
 // I will eventually break this component into multiple components with smaller functions and states.
 
 export default function UserProfile() {
+	// const { id } = useParams();
 	const [profileImage, setProfileImage] = useState(null);
+	// const [userData, setUserData] = useState({
+	// 	firstName: "",
+	// 	lastName: "",
+	// 	street: "",
+	// 	streetNumber: "",
+	// 	city: "",
+	// 	country: "",
+	// });
+
+	// useEffect(() => {
+	// 	const fetchUserData = async () => {
+	// 		try {
+	// 			const token = localStorage.getItem("token");
+	// 			if (!token) {
+	// 				return;
+	// 			}
+
+	// 			// Get the user's details including address
+	// 			const response = await axios.get(
+	// 				`http://localhost:8000/data/users/${id}`,
+	// 				{
+	// 					headers: {
+	// 						Authorization: `Bearer ${token}`,
+	// 					},
+	// 				}
+	// 			);
+
+	// 			setUserData(response.data.data);
+	// 		} catch (error) {
+	// 			console.error("Error fetching user data:", error);
+	// 		}
+	// 	};
+
+	// 	fetchUserData();
+	// }, []);
 
 	const handleImageChange = (e) => {
 		const file = e.target.files[0];
@@ -314,6 +353,44 @@ export default function UserProfile() {
 									</button>
 								</div>
 							</div>
+
+							{/* User Details Section */}
+							{/* <div className="mt-8 p-6 bg-gray-50 rounded-lg">
+								<h3 className="text-xl font-semibold mb-4">
+									Current Delivery Details
+								</h3>
+								<div className="space-y-4">
+									<div className="grid grid-cols-2 gap-4">
+										<div>
+											<p className="text-gray-600">
+												First Name
+											</p>
+											<p className="font-medium">
+												{userData.name || "Not set"}
+											</p>
+										</div>
+									</div>
+									<div>
+										<p className="text-gray-600">
+											Street Address
+										</p>
+										<p className="font-medium">
+											{userData.address.street}{" "}
+										</p>
+									</div>
+									<div className="grid grid-cols-2 gap-4">
+										<div>
+											<p className="text-gray-600">
+												City
+											</p>
+											<p className="font-medium">
+												{userData.address.city ||
+													"Not set"}
+											</p>
+										</div>
+									</div>
+								</div>
+							</div> */}
 						</div>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 mt-8 pt-8 border-t">
 							<div className="col-span-1">
