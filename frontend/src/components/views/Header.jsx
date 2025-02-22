@@ -1,33 +1,47 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-	FaShoppingCart,
-	FaUser,
-	FaRegWindowClose,
-	FaCog,
-} from "react-icons/fa";
-import { GiHamburgerMenu, GiFoodTruck } from "react-icons/gi";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useEffect, useContext } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { FaShoppingCart, FaUser, FaRegWindowClose } from "react-icons/fa";
+import { GiHamburgerMenu} from "react-icons/gi";
 import { BiLogOut } from "react-icons/bi";
+import { CartContext } from "../../context/CartContext";
 
 const Header = () => {
+	const navigate = useNavigate();
+	const location = useLocation();
+	const { state: cartState, fetchCart } = useContext(CartContext);
 	const [menuOpen, setMenuOpen] = useState(false);
-	const [isLoggedIn, setIsLoggedIn] = useState(false); // Mock auth state
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-	const cartItemsCount = 3; // Mock cart count
 
-	// Toggle function for testing auth state
-	const toggleAuth = () => {
-		setIsLoggedIn(!isLoggedIn);
+	// Check authentication status whenever location changes
+	useEffect(() => {
+		const token = localStorage.getItem("token");
+		const wasLoggedIn = isLoggedIn;
+		const isNowLoggedIn = !!token;
+		setIsLoggedIn(isNowLoggedIn);
+
+		// If user just logged in, fetch the cart
+		if (!wasLoggedIn && isNowLoggedIn) {
+			fetchCart();
+		}
+	}, [location.pathname]); // Re-run when route changes
+
+	const handleLogout = () => {
+		localStorage.removeItem("token");
+		setIsLoggedIn(false);
+		setProfileDropdownOpen(false);
+		navigate("/login");
 	};
 
 	return (
 		<header className="relative w-full top-0 z-50 bg-transparent backdrop-blur-sm">
 			{/* Test Toggle Login Logout Button - Remove in production */}
-			<button
+			{/* <button
 				onClick={toggleAuth}
 				className="fixed top-20 right-4 bg-gray-800 text-white px-4 py-2 rounded-md text-sm">
 				Toggle Auth: {isLoggedIn ? "Logged In" : "Logged Out"}
-			</button>
+			</button> */}
 			<nav className="container mx-auto px-4 py-3">
 				<div className="flex items-center justify-between">
 					<Link
@@ -72,9 +86,9 @@ const Header = () => {
 									to="/cart"
 									className="relative p-2">
 									<FaShoppingCart className="text-white text-xl hover:text-orange-500 transition-colors" />
-									{cartItemsCount > 0 && (
+									{cartState.cart?.items?.length > 0 && (
 										<span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-											{cartItemsCount}
+											{cartState.cart.items.length}
 										</span>
 									)}
 								</Link>
@@ -96,24 +110,13 @@ const Header = () => {
 									{profileDropdownOpen && (
 										<div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
 											<Link
-												to="user-profile"
+												to="/user-profile"
 												className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
 												<FaUser className="mr-3 text-orange-500" />
 												My Profile
 											</Link>
-											<Link
-												to="/orders"
-												className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
-												<GiFoodTruck className="mr-3 text-orange-500" />
-												Orders
-											</Link>
 											<button
-												onClick={() => {
-													setIsLoggedIn(false);
-													setProfileDropdownOpen(
-														false
-													);
-												}}
+												onClick={handleLogout}
 												className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
 												<BiLogOut className="mr-3 text-orange-500" />
 												Logout
@@ -162,7 +165,7 @@ const Header = () => {
 								Menu
 							</Link>
 							<Link
-								to="/contact"
+								to="/contact-us"
 								className="text-white font-bold hover:text-orange-500 transition-colors">
 								Contact
 							</Link>
@@ -181,7 +184,7 @@ const Header = () => {
 									<Link
 										to="/cart"
 										className="text-white font-bold hover:text-orange-500 transition-colors">
-										Cart ({cartItemsCount})
+										Cart ({cartState.cart?.items?.length || 0})
 									</Link>
 									<Link
 										to="/profile"
@@ -193,12 +196,12 @@ const Header = () => {
 								<div className="flex flex-col space-y-2">
 									<Link
 										to="/login"
-										className="text-white font-bold hover:text-orange-500 transition-colors">
-										Sign In
+										className="font-bold text-white hover:text-orange-500 transition-colors">
+										Login
 									</Link>
 									<Link
 										to="/signup"
-										className="px-4 py-2 bg-orange-500 text-white font-bold rounded-full hover:bg-white hover:text-orange-500 transition-colors text-center">
+										className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors">
 										Sign Up
 									</Link>
 								</div>
