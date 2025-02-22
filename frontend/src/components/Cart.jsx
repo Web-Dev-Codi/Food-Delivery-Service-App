@@ -17,7 +17,7 @@ function Cart() {
 		if (token) {
 			fetchCart(); // Fetch cart only if token exists
 		} else {
-			navigate("/login"); // Redirect to login if no token	
+			navigate("/login"); // Redirect to login if no token
 		}
 	}, []); // Only fetch on mount
 
@@ -73,45 +73,50 @@ function Cart() {
 	}
 
 	return (
-		<div className="max-w-4xl mx-auto p-4">
-			<div className="flex justify-between items-center mb-6">
-				<h2 className="text-2xl font-bold">Your Cart</h2>
-				<button
-					onClick={() => {}} // Clear cart logic here
-					className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors">
-					Clear Cart
-				</button>
-			</div>
-
-			<ul className="space-y-4">
-				{state.cart?.items?.map((item) => (
-					<CartItems
-						key={item.foodItemId._id}
-						item={item}
-						onQuantityChange={handleQuantityChange}
-						onRemoveClick={handleRemoveClick}
-						isProcessed={
-							state.cart?.status?.toLowerCase() === "processed"
-						}
-					/>
-				))}
-			</ul>
-
-			{state.cart?.items?.length > 0 && (
-				<div className="border-t pt-4">
-					<div className="flex justify-between items-center mb-4">
-						<span className="text-xl font-semibold">Total:</span>
-						<span className="text-2xl font-bold">
-							${state.cart?.finalAmount?.toFixed(2)}
-						</span>
-					</div>
+		<div className="min-h-screen flex items-center justify-center">
+			<div className="bg-black/40 backdrop-blur-lg rounded-xl shadow-lg p-6 sm:px-6 lg:px-8 max-w-4xl mx-auto h-fit">
+				<div className="flex justify-between items-center mb-6">
+					<h2 className="text-2xl font-bold">Your Cart</h2>
 					<button
-						onClick={() => navigate("/payment")}
-						className="w-full bg-green-500 text-white py-3 rounded-md hover:bg-green-600 transition-colors">
-						Proceed to Checkout
+						onClick={() => {}} // Clear cart logic here
+						className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors">
+						Clear Cart
 					</button>
 				</div>
-			)}
+
+				<ul className="space-y-4">
+					{state.cart?.items?.map((item) => (
+						<CartItems
+							key={item.foodItemId._id}
+							item={item}
+							onQuantityChange={handleQuantityChange}
+							onRemoveClick={handleRemoveClick}
+							isProcessed={
+								state.cart?.status?.toLowerCase() ===
+								"processed"
+							}
+						/>
+					))}
+				</ul>
+
+				{state.cart?.items?.length > 0 && (
+					<div className="border-t pt-4">
+						<div className="flex justify-between items-center mb-4">
+							<span className="text-xl font-semibold">
+								Total:
+							</span>
+							<span className="text-2xl font-bold">
+								${state.cart?.finalAmount?.toFixed(2)}
+							</span>
+						</div>
+						<button
+							onClick={() => navigate("/checkout")}
+							className="w-full bg-green-500 text-white py-3 rounded-md hover:bg-green-600 transition-colors">
+							Proceed to Checkout
+						</button>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 }

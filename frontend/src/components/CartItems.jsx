@@ -71,7 +71,7 @@ CartItems.propTypes = {
 		_id: PropTypes.string,
 		foodItemId: PropTypes.shape({
 			_id: PropTypes.string.isRequired,
-			name: PropTypes.string.isRequired,
+			name: PropTypes.string,
 			description: PropTypes.string,
 			price: PropTypes.number.isRequired,
 			imageUrl: PropTypes.string,

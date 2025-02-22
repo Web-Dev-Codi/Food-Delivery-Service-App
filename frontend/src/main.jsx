@@ -8,7 +8,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { CartProvider } from "./context/CartContext";
-
+import Checkout from "./components/Checkouts.jsx";
 import Menu from "./components/Menu.jsx";
 import ListRestaurant from "./components/ListRestaurant";
 import AddRestaurant from "./components/AddRestaurant";
@@ -106,6 +106,10 @@ const router = createBrowserRouter(
 				<Route
 					path="/restaurants/:id/reviews"
 					element={<AddReview />}
+				/>
+				<Route
+					path="/checkout"
+					element={<Checkout />}
 				/>
 				<Route
 					path="/forgot-password"
