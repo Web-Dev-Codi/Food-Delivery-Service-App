@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 function CartItems({ item, onQuantityChange, onRemoveClick, isProcessed }) {
 	return (
-		<div className="flex items-center justify-between p-4 border-b border-gray-200">
+		<li className="flex items-center justify-between p-4 border-b border-gray-200">
 			<div className="flex items-center space-x-4">
 				{item.foodItemId?.imageUrl && (
 					<img
@@ -16,18 +16,14 @@ function CartItems({ item, onQuantityChange, onRemoveClick, isProcessed }) {
 						{item.foodItemId?.name ||
 							`Menu Item ${item.foodItemId?.name}`}
 					</h3>
-					{item.foodItemId?.description && (
-						<p className="text-gray-600">
-							{item.foodItemId?.description}
-						</p>
-					)}
+
 					<p className="text-green-600 font-medium">
 						${Number(item.foodItemId?.price).toFixed(2)}
 					</p>
 				</div>
 			</div>
 
-			<div className="flex items-center space-x-4">
+			<div className="flex flex-col md:flex-row items-center space-x-4">
 				<div className="flex items-center border rounded-md">
 					{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 					<button
@@ -62,7 +58,7 @@ function CartItems({ item, onQuantityChange, onRemoveClick, isProcessed }) {
 					Remove
 				</button>
 			</div>
-		</div>
+		</li>
 	);
 }
 
