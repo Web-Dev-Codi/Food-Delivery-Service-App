@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +52,12 @@ const Cart = () => {
 			await applyCoupon(couponCode);
 			setDiscountMessage("🎉 Coupon applied successfully!");
 		} catch (error) {
-			setDiscountMessage(`❌ ${error.response?.data?.message || "Invalid or expired coupon."}`);
+			setDiscountMessage(
+				`❌ ${
+					error.response?.data?.message ||
+					"Invalid or expired coupon."
+				}`
+			);
 		}
 	};
 

@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, useReducer, useEffect } from "react";
 import axios from "axios";
+import PropTypes from 'prop-types';
 
 // Initial state
 const initialState = {
@@ -185,6 +187,10 @@ export const CartProvider = ({ children }) => {
 			{children}
 		</CartContext.Provider>
 	);
+};
+
+CartProvider.propTypes = {
+	children: PropTypes.node.isRequired
 };
 
 export { CartContext };

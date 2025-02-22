@@ -1,34 +1,31 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaShoppingCart, FaUser, FaRegWindowClose } from "react-icons/fa";
-import { GiHamburgerMenu, GiFoodTruck } from "react-icons/gi";
+import { GiHamburgerMenu} from "react-icons/gi";
 import { BiLogOut } from "react-icons/bi";
 import { CartContext } from "../../context/CartContext";
 
 const Header = () => {
 	const navigate = useNavigate();
-	const {
-		state: cartState,
-		fetchCart,
-		cartItemsCount,
-	} = useContext(CartContext);
+	const location = useLocation();
+	const { state: cartState, fetchCart } = useContext(CartContext);
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
+	// Check authentication status whenever location changes
 	useEffect(() => {
-		// Check authentication status on component mount
 		const token = localStorage.getItem("token");
-		setIsLoggedIn(!!token);
-	}, []); // Only check token on mount
+		const wasLoggedIn = isLoggedIn;
+		const isNowLoggedIn = !!token;
+		setIsLoggedIn(isNowLoggedIn);
 
-	// Separate effect for cart fetching
-	useEffect(() => {
-		if (isLoggedIn) {
-			fetchCart(); // Fetch cart only when user is logged in
+		// If user just logged in, fetch the cart
+		if (!wasLoggedIn && isNowLoggedIn) {
+			fetchCart();
 		}
-	}, [isLoggedIn]); // Only re-run when login status changes
+	}, [location.pathname]); // Re-run when route changes
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -187,7 +184,7 @@ const Header = () => {
 									<Link
 										to="/cart"
 										className="text-white font-bold hover:text-orange-500 transition-colors">
-										Cart ({cartItemsCount})
+										Cart ({cartState.cart?.items?.length || 0})
 									</Link>
 									<Link
 										to="/profile"
