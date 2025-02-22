@@ -1,10 +1,12 @@
-import React from "react";
 import { useState, useEffect } from "react";
+import { useContext } from "react";
 
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { jwtDecode } from "jwt-decode"; // Import jwtDecode
+import { CartContext } from "../context/CartContext";
 
 function PaymentForm() {
+	const { state } = useContext(CartContext);
 	const stripe = useStripe();
 	const elements = useElements();
 	const [paymentMethod, setPaymentMethod] = useState("card");
@@ -41,42 +43,46 @@ function PaymentForm() {
 				"http://localhost:8000/payment/create-payment-intent",
 				{
 					method: "POST",
-					headers: { "Content-Type": "application/json",
-						Authorization: `Bearer ${localStorage.getItem("token")}`
-					 },
-					body: JSON.stringify({userId }),
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem(
+							"token"
+						)}`,
+					},
+					body: JSON.stringify({ userId }),
 				}
 			);
-			if (!response.ok) throw new Error("Failed to create payment intent.");
+			if (!response.ok)
+				throw new Error("Failed to create payment intent.");
 			const { clientSecret, error } = await response.json();
 			if (error) {
 				throw new Error(error);
 			}
-			 // 🔹 Step 2: Confirm Card Payment
-			 if (paymentMethod === "card") {
+			// 🔹 Step 2: Confirm Card Payment
+			if (paymentMethod === "card") {
 				const cardElement = elements.getElement(CardElement);
 				if (!cardElement) {
-				  setMessage("Please enter your card details.");
-				  setLoading(false);
-				  return;
+					setMessage("Please enter your card details.");
+					setLoading(false);
+					return;
 				}
-			
-			const result = await stripe.confirmCardPayment(clientSecret, {
-				payment_method: { card: elements.getElement(CardElement) },
-			});
 
-			if (result.error) {
-				throw new Error(result.error.message);
-			}
+				const result = await stripe.confirmCardPayment(clientSecret, {
+					payment_method: { card: elements.getElement(CardElement) },
+				});
 
-			if (result.paymentIntent.status === "succeeded") {
-				setMessage("Payment successful!");
+				if (result.error) {
+					throw new Error(result.error.message);
+				}
+
+				if (result.paymentIntent.status === "succeeded") {
+					setMessage("Payment successful!");
+				} else {
+					setMessage("Payment processing...");
+				}
 			} else {
-				setMessage("Payment processing...");
+				setMessage("✅ Order placed! Pay with cash on delivery.");
 			}
-		}else {
-			setMessage("✅ Order placed! Pay with cash on delivery.");
-		  }
 		} catch (error) {
 			setMessage(error.message);
 		} finally {
@@ -85,11 +91,10 @@ function PaymentForm() {
 	};
 
 	return (
-		<div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-xl">
+		<div className=" mx-auto p-6 bg-white shadow-lg rounded-xl">
 			<h2 className="text-xl font-semibold mb-4">
 				Complete Your Payment
 			</h2>
-			
 
 			<div className="mb-4">
 				<label
@@ -117,7 +122,9 @@ function PaymentForm() {
 					className="w-full bg-blue-600 text-white py-2 rounded"
 					onClick={handleSubmit}
 					disabled={loading || !stripe}>
-					{loading ? "Processing..." : "Pay Now"}
+					{loading
+						? "Processing..."
+						: `Pay Now ${state.cart?.finalAmount.toFixed(2)}`}
 				</button>
 
 				{message && <p className="mt-4 text-red-500">{message}</p>}
