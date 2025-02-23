@@ -82,7 +82,7 @@ const AddMenuForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-full mt-[-1rem]">
+    <div className="flex items-center justify-center w-full">
       <div className="bg-neutral-800/30 backdrop-blur-md p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center text-white">
           Add Menu
