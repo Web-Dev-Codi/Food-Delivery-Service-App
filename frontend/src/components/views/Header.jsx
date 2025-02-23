@@ -89,7 +89,7 @@ const Header = () => {
 							<>
 								{/* Shopping Cart - Only shown when logged in */}
 								<Link
-									to="/cart"
+									to="/checkout"
 									className="relative p-2">
 									<FaShoppingCart className="text-white text-xl hover:text-orange-500 transition-colors" />
 									{cartState.cart?.items?.length > 0 && (
@@ -188,7 +188,7 @@ const Header = () => {
 							{isLoggedIn ? (
 								<div className="flex items-center space-x-4">
 									<Link
-										to="/cart"
+										to="/checkout"
 										className="text-white font-bold hover:text-orange-500 transition-colors">
 										Cart (
 										{cartState?.cart?.items?.length || 0})

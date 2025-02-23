@@ -1,50 +1,93 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import {
-	// ShoppingCart,
-	Plus,
-	Minus,
-	Trash2,
-	Edit,
+	// Plus,
+	// Minus,
+	// Trash2,
+	// Edit,
 	Clock,
 	MapPin,
 	CreditCard,
 	Check,
-	// ChevronRight,
 	ArrowLeft,
 } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
+import { CartContext } from "../../context/CartContext";
+import { useNavigate } from "react-router-dom";
+import CartItems from "../CartItems";
 
 const CartCheckoutFlow = () => {
+	const { state, fetchCart, updateCartItem, removeCartItem, applyCoupon } =
+		useContext(CartContext);
+	const navigate = useNavigate();
+	const [couponCode, setCouponCode] = useState("");
+	const [discountMessage, setDiscountMessage] = useState("");
 	const [step, setStep] = useState(1);
 	const [tip, setTip] = useState(15);
 
-	const cartItems = [
-		{
-			id: 1,
-			name: "Margherita Pizza",
-			price: 14.99,
-			quantity: 1,
-			customization: "Extra cheese, No basil",
-			image: "/api/placeholder/100/100",
-		},
-		{
-			id: 2,
-			name: "Caesar Salad",
-			price: 8.99,
-			quantity: 1,
-			customization: "Dressing on the side",
-			image: "/api/placeholder/100/100",
-		},
-	];
+	// const subtotal = cartItems.reduce(
+	// 	(acc, item) => acc + item.price * item.quantity,
+	// 	0
+	// );
 
-	const subtotal = cartItems.reduce(
-		(sum, item) => sum + item.price * item.quantity,
-		0
-	);
-	const deliveryFee = 2.99;
-	const tax = subtotal * 0.08;
-	const serviceFee = 1.99;
+	useEffect(() => {
+		const token = localStorage.getItem("token");
+		if (token) {
+			fetchCart(); // Fetch cart only if token exists
+		} else {
+			navigate("/login"); // Redirect to login if no token
+		}
+	}, []); // Only fetch on mount
+
+	useEffect(() => {
+		if (state.cart?.status?.toLowerCase() === "processed") {
+			console.log("Cart is processed, redirecting to home page");
+			navigate("/");
+		}
+	}, [state.cart?.status, navigate]);
+
+	if (state.error) {
+		return <div className="text-red-500">Error: {state.error}</div>;
+	}
+
+	const handleQuantityChange = (foodItemId, quantity) => {
+		const quantityInt = parseInt(quantity, 10);
+		if (quantityInt > 0) {
+			updateCartItem(foodItemId, quantityInt);
+		}
+	};
+
+	const handleRemoveClick = (foodItemId) => {
+		console.log("Removing item:", foodItemId);
+		removeCartItem(foodItemId);
+	};
+
+	const handleApplyCoupon = async () => {
+		if (!couponCode.trim()) {
+			setDiscountMessage("⚠️ Please enter a valid coupon code.");
+			return;
+		}
+
+		try {
+			await applyCoupon(couponCode);
+			setDiscountMessage("🎉 Coupon applied successfully!");
+		} catch (error) {
+			setDiscountMessage(
+				`❌ ${
+					error.response?.data?.message ||
+					"Invalid or expired coupon."
+				}`
+			);
+		}
+	};
+
+	const subtotal = state.cart?.finalAmount || 0;
+	const deliveryFee = state.cart?.deliveryFee || 2.99;
+	const tax = state.cart?.tax || 0;
+	const serviceFee = state.cart?.serviceFee || 1.99;
 	const tipAmount = (subtotal * tip) / 100;
-	const total = subtotal + deliveryFee + tax + serviceFee + tipAmount;
+	const totalFee = deliveryFee + tax + serviceFee + tipAmount;
+	const total = totalFee + subtotal || 0;
 
 	const renderMobileStepIndicator = () => (
 		<div className="flex md:hidden items-center justify-center mb-6">
@@ -53,7 +96,7 @@ const CartCheckoutFlow = () => {
 					<div
 						key={num}
 						className={`w-2 h-2 rounded-full ${
-							step === num ? "bg-blue-600" : "bg-gray-300"
+							step === num ? "bg-[#F97316]" : "bg-gray-300"
 						}`}
 					/>
 				))}
@@ -72,7 +115,7 @@ const CartCheckoutFlow = () => {
 							step > index + 1
 								? "bg-green-500 text-white"
 								: step === index + 1
-								? "bg-blue-600 text-white"
+								? "bg-[#F97316] text-white"
 								: "bg-gray-200 text-gray-600"
 						}`}>
 						{step > index + 1 ? (
@@ -84,7 +127,7 @@ const CartCheckoutFlow = () => {
 					<span
 						className={`ml-2 ${
 							step === index + 1
-								? "text-blue-600 font-medium"
+								? "text-[#F97316] font-medium"
 								: "text-gray-600"
 						}`}>
 						{text}
@@ -127,55 +170,30 @@ const CartCheckoutFlow = () => {
 
 	const renderCartView = () => (
 		<div className="space-y-6">
-			<div className="bg-black/40 backdrop-blur-lg border border-[#D84418]/40 rounded-xl shadow-lg p-6 sm:px-6 lg:px-8">
+			<div className="bg-black/40 backdrop-blur-lg  rounded-lg shadow-sm p-4 md:p-6">
 				<div className="hidden md:flex items-center justify-between mb-4">
 					<h2 className="text-xl font-semibold">Your Cart</h2>
-					<button className="text-red-600 text-sm">Clear Cart</button>
+					<button
+						onClick={() => {}} // Clear cart logic here
+						className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors">
+						Clear Cart
+					</button>
 				</div>
 
-				{cartItems.map((item) => (
-					<div
-						key={item.id}
-						className="flex items-start py-4 border-t">
-						<img
-							src={item.image}
-							alt={item.name}
-							className="w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg"
+				<ul className="space-y-4">
+					{state.cart?.items?.map((item) => (
+						<CartItems
+							key={item.foodItemId._id}
+							item={item}
+							onQuantityChange={handleQuantityChange}
+							onRemoveClick={handleRemoveClick}
+							isProcessed={
+								state.cart?.status?.toLowerCase() ===
+								"processed"
+							}
 						/>
-						<div className="flex-1 ml-4">
-							<div className="flex justify-between">
-								<h3 className="font-medium">{item.name}</h3>
-								<p className="font-medium">
-									${item.price.toFixed(2)}
-								</p>
-							</div>
-							<p className="text-sm text-gray-600 mt-1">
-								{item.customization}
-							</p>
-							<div className="flex items-center justify-between mt-2">
-								<div className="flex items-center border rounded-lg">
-									<button className="p-1 md:p-2">
-										<Minus className="w-4 h-4" />
-									</button>
-									<span className="px-3">
-										{item.quantity}
-									</span>
-									<button className="p-1 md:p-2">
-										<Plus className="w-4 h-4" />
-									</button>
-								</div>
-								<div className="flex space-x-2">
-									<button className="text-blue-600">
-										<Edit className="w-4 h-4" />
-									</button>
-									<button className="text-red-600">
-										<Trash2 className="w-4 h-4" />
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				))}
+					))}
+				</ul>
 
 				<div className="mt-6 space-y-2 text-sm md:text-base">
 					<div className="flex justify-between">
@@ -195,7 +213,7 @@ const CartCheckoutFlow = () => {
 
 			<button
 				onClick={() => setStep(2)}
-				className="w-full bg-blue-600 text-white py-3 md:py-4 rounded-lg font-medium">
+				className="w-full bg-[#F97316] text-white py-3 md:py-4 rounded-lg font-medium">
 				Proceed to Delivery
 			</button>
 		</div>
@@ -203,7 +221,7 @@ const CartCheckoutFlow = () => {
 
 	const renderDeliveryView = () => (
 		<div className="space-y-6">
-			<div className="bg-black/40 backdrop-blur-lg border border-[#D84418]/40 rounded-xl shadow-lg p-6 sm:px-6 lg:px-8">
+			<div className="bg-black/40 backdrop-blur-lg rounded-lg shadow-sm p-4 md:p-6">
 				<h2 className="text-xl font-semibold mb-4">Delivery Details</h2>
 
 				<div className="space-y-4">
@@ -211,7 +229,7 @@ const CartCheckoutFlow = () => {
 						<label className="block text-sm font-medium mb-2">
 							Delivery Address
 						</label>
-						<select className="w-full p-3 border rounded-lg bg-white">
+						<select className="w-full p-3 border rounded-lg">
 							<option>Home - 123 Main St, Apt 4B</option>
 							<option>Work - 456 Office Ave</option>
 							<option>Add New Address</option>
@@ -222,7 +240,7 @@ const CartCheckoutFlow = () => {
 						<label className="block text-sm font-medium mb-2">
 							Delivery Time
 						</label>
-						<select className="w-full p-3 border rounded-lg bg-white">
+						<select className="w-full p-3 border rounded-lg ">
 							<option>As soon as possible (35-45 min)</option>
 							<option>Schedule for later</option>
 						</select>
@@ -260,7 +278,7 @@ const CartCheckoutFlow = () => {
 				</button>
 				<button
 					onClick={() => setStep(3)}
-					className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-medium">
+					className="flex-1 bg-[#F97316] text-white py-3 rounded-lg font-medium">
 					Continue to Payment
 				</button>
 			</div>
@@ -269,11 +287,11 @@ const CartCheckoutFlow = () => {
 
 	const renderPaymentView = () => (
 		<div className="space-y-6">
-			<div className="bg-black/40 backdrop-blur-lg border border-[#D84418]/40 rounded-xl shadow-lg p-6 sm:px-6 lg:px-8">
+			<div className="bg-black/40 backdrop-blur-lg rounded-lg shadow-sm p-4 md:p-6">
 				<h2 className="text-xl font-semibold mb-4">Payment Method</h2>
 
 				<div className="space-y-4">
-					<div className="flex items-center p-3 border rounded-lg">
+					<div className="flex items-center p-3 border rounded-lg ">
 						<input
 							type="radio"
 							name="payment"
@@ -292,10 +310,10 @@ const CartCheckoutFlow = () => {
 								Expires 12/24
 							</span>
 						</label>
-						<CreditCard className="w-6 h-6 text-gray-400" />
+						<CreditCard className="w-6 h-6 text-[#F97316]" />
 					</div>
 
-					<button className="w-full text-left text-blue-600 font-medium">
+					<button className="w-full text-left text-[#F97316] font-medium">
 						+ Add New Card
 					</button>
 
@@ -308,7 +326,7 @@ const CartCheckoutFlow = () => {
 									onClick={() => setTip(percentage)}
 									className={`py-2 rounded ${
 										tip === percentage
-											? "bg-blue-600 text-white"
+											? "bg-[#F97316] text-white"
 											: "bg-gray-100 text-gray-700"
 									}`}>
 									{percentage}%
@@ -326,9 +344,26 @@ const CartCheckoutFlow = () => {
 								type="text"
 								placeholder="Enter code"
 								className="flex-1 p-3 border rounded-lg"
+								value={couponCode}
+								onChange={(e) => setCouponCode(e.target.value)}
 							/>
-							<button className="px-4 py-2 bg-gray-100 rounded-lg">
+							{/* <button className="px-4 py-2 bg-gray-100 rounded-lg">
 								Apply
+							</button> */}
+							<button
+								onClick={handleApplyCoupon}
+								disabled={
+									state.cart?.appliedCoupon ||
+									state.user?.usedCoupons?.includes(
+										couponCode
+									)
+								}
+								className={`px-4 py-2 rounded-md ${
+									state.cart?.appliedCoupon
+										? "bg-gray-400 cursor-not-allowed"
+										: "bg-[#F97316] hover:bg-[#eb7622] hover:cursor-pointer hover:text-black"
+								}`}>
+								Apply Coupon
 							</button>
 						</div>
 					</div>
@@ -343,7 +378,7 @@ const CartCheckoutFlow = () => {
 				</button>
 				<button
 					onClick={() => setStep(4)}
-					className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-medium">
+					className="flex-1 bg-[#F97316] text-white py-3 rounded-lg font-medium">
 					Review Order
 				</button>
 			</div>
@@ -352,7 +387,7 @@ const CartCheckoutFlow = () => {
 
 	const renderReviewView = () => (
 		<div className="space-y-6">
-			<div className="bg-black/40 backdrop-blur-lg border border-[#D84418]/40 rounded-xl shadow-lg p-6 sm:px-6 lg:px-8">
+			<div className="bg-black/40 backdrop-blur-lg rounded-lg shadow-sm p-4 md:p-6">
 				<h2 className="text-xl font-semibold mb-4">Review Order</h2>
 
 				<div className="space-y-4">
@@ -428,12 +463,14 @@ const CartCheckoutFlow = () => {
 	);
 
 	return (
-		<div className="min-h-screen  bg-transparent">
-			<div className="max-w-6xl mx-auto px-4 md:px-6 py-4 md:py-8">
+		<div className="">
+			{/* Container with max width for larger screens */}
+			<div className="max-w-6xl min-h-screen mx-auto px-4 md:px-6 py-4 md:py-8">
 				{renderMobileHeader()}
 				{renderMobileStepIndicator()}
 				{renderDesktopStepIndicator()}
 
+				{/* Main Content */}
 				<div className="max-w-4xl mx-auto">
 					{step === 1 && renderCartView()}
 					{step === 2 && renderDeliveryView()}
@@ -441,7 +478,8 @@ const CartCheckoutFlow = () => {
 					{step === 4 && renderReviewView()}
 				</div>
 
-				<div className="fixed bottom-0 left-0 right-0 bg-white border-t md:hidden">
+				{/* Mobile Bottom Navigation */}
+        <div className="fixed bottom-0 left-0 right-0 bg-transparent border-t md:hidden">
 					<div className="flex justify-between items-center p-4">
 						<div>
 							<p className="text-sm text-gray-600">Total</p>
@@ -451,7 +489,7 @@ const CartCheckoutFlow = () => {
 							onClick={() =>
 								step < 4 ? setStep(step + 1) : null
 							}
-							className="bg-blue-600 text-white px-6 py-2 rounded-lg">
+							className="bg-[#F97316] text-white px-6 py-2 rounded-lg">
 							{step === 4 ? "Place Order" : "Continue"}
 						</button>
 					</div>

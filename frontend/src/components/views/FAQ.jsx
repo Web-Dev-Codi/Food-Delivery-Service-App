@@ -167,7 +167,8 @@ const FAQ = () => {
 					<Link
 						href="#live-chat"
 						className="flex flex-col items-center gap-2 text-primary hover:underline">
-						<FaComments className="text-[#F97316]" /> Start Live Chat
+						<FaComments className="text-[#F97316]" /> Start Live
+						Chat
 					</Link>
 					<Link
 						href="mailto:support@fooddelivery.com"

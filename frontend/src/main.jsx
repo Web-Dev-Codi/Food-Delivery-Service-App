@@ -21,7 +21,7 @@ import Home from "./components/Home";
 import AddMenu from "./components/AddMenu";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
-import Cart from "./components/Cart.jsx";
+// import Cart from "./components/Cart.jsx";
 import AddCoupons from "./components/AddCoupons.jsx";
 import Dashboard from "./components/Dashboard";
 import ForgotPassword from "./components/ForgotPassword.jsx";
@@ -84,10 +84,10 @@ const router = createBrowserRouter(
 					path="/menu/:id"
 					element={<SingleMenu />}
 				/>
-				<Route
+				{/* <Route
 					path="/cart"
 					element={<Cart />}
-				/>
+				/> */}
 				<Route
 					path="/coupons"
 					element={<AddCoupons />}
