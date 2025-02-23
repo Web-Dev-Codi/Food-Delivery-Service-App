@@ -204,16 +204,16 @@ const CartCheckoutFlow = () => {
 						<span>Delivery Fee</span>
 						<span>${deliveryFee.toFixed(2)}</span>
 					</div>
-					<div className="flex justify-between pt-2 border-t">
+					{/* <div className="flex justify-between pt-2 border-t">
 						<span className="font-medium">Total</span>
 						<span className="font-medium">${total.toFixed(2)}</span>
-					</div>
+					</div> */}
 				</div>
 			</div>
 
 			<button
 				onClick={() => setStep(2)}
-				className="w-full bg-[#F97316] text-white py-3 md:py-4 rounded-lg font-medium">
+				className="hidden md:block w-full bg-[#F97316] text-white py-3 md:py-4 rounded-lg font-medium">
 				Proceed to Delivery
 			</button>
 		</div>
@@ -270,10 +270,10 @@ const CartCheckoutFlow = () => {
 				</div>
 			</div>
 
-			<div className="flex space-x-4">
+			<div className="hidden md:flex space-x-4">
 				<button
 					onClick={() => setStep(1)}
-					className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-lg font-medium">
+					className="flex-1 bg-transparent border border-[#F97316] text-[#F97316] py-3 rounded-lg font-medium">
 					Back
 				</button>
 				<button
@@ -370,10 +370,10 @@ const CartCheckoutFlow = () => {
 				</div>
 			</div>
 
-			<div className="flex space-x-4">
+			<div className="hidden md:flex space-x-4">
 				<button
 					onClick={() => setStep(2)}
-					className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-lg font-medium">
+					className="flex-1 bg-transparent border border-[#F97316] text-[#F97316] py-3 rounded-lg font-medium">
 					Back
 				</button>
 				<button
@@ -404,7 +404,7 @@ const CartCheckoutFlow = () => {
 								</p>
 							</div>
 						</div>
-						<button className="text-blue-600 text-sm">Edit</button>
+						<button className="text-[#F97316] text-sm">Edit</button>
 					</div>
 
 					<div className="flex items-start justify-between pb-4 border-b">
@@ -417,7 +417,7 @@ const CartCheckoutFlow = () => {
 								</p>
 							</div>
 						</div>
-						<button className="text-blue-600 text-sm">Edit</button>
+						<button className="text-[#F97316] text-sm">Edit</button>
 					</div>
 
 					<div className="space-y-2 text-sm">
@@ -449,13 +449,13 @@ const CartCheckoutFlow = () => {
 				</div>
 			</div>
 
-			<div className="flex space-x-4">
+			<div className="hidden md:flex space-x-4">
 				<button
 					onClick={() => setStep(3)}
-					className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-lg font-medium">
+					className="flex-1 bg-transparent border border-[#F97316] text-[#F97316] py-3 rounded-lg font-medium">
 					Back
 				</button>
-				<button className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-medium">
+				<button className="flex-1 bg-[#F97316] text-white py-3 rounded-lg font-medium">
 					Place Order
 				</button>
 			</div>
@@ -463,14 +463,11 @@ const CartCheckoutFlow = () => {
 	);
 
 	return (
-		<div className="">
-			{/* Container with max width for larger screens */}
-			<div className="max-w-6xl min-h-screen mx-auto px-4 md:px-6 py-4 md:py-8">
+		<div className="min-h-screen pb-20 md:pb-0">
+			<div className="max-w-6xl mx-auto px-4 md:px-6 py-4 md:py-8">
 				{renderMobileHeader()}
-				{renderMobileStepIndicator()}
 				{renderDesktopStepIndicator()}
 
-				{/* Main Content */}
 				<div className="max-w-4xl mx-auto">
 					{step === 1 && renderCartView()}
 					{step === 2 && renderDeliveryView()}
@@ -479,17 +476,19 @@ const CartCheckoutFlow = () => {
 				</div>
 
 				{/* Mobile Bottom Navigation */}
-        <div className="fixed bottom-0 left-0 right-0 bg-transparent border-t md:hidden">
-					<div className="flex justify-between items-center p-4">
+				<div className="fixed bottom-0 left-0 right-0 md:hidden bg-black/40 backdrop-blur-lg border-t border-[#D84418]/40">
+					<div className="flex justify-between items-center p-4 max-w-4xl mx-auto">
 						<div>
-							<p className="text-sm text-gray-600">Total</p>
-							<p className="font-semibold">${total.toFixed(2)}</p>
+							<p className="text-sm text-gray-300">Total</p>
+							<p className="font-semibold text-white">
+								${total.toFixed(2)}
+							</p>
 						</div>
 						<button
 							onClick={() =>
 								step < 4 ? setStep(step + 1) : null
 							}
-							className="bg-[#F97316] text-white px-6 py-2 rounded-lg">
+							className="bg-[#F97316] text-white px-6 py-2 rounded-lg hover:bg-[#eb7622] transition-colors">
 							{step === 4 ? "Place Order" : "Continue"}
 						</button>
 					</div>
