@@ -127,7 +127,7 @@ const CartCheckoutFlow = () => {
 
 	const renderCartView = () => (
 		<div className="space-y-6">
-			<div className="bg-white rounded-lg shadow-sm p-4 md:p-6">
+			<div className="bg-black/40 backdrop-blur-lg border border-[#D84418]/40 rounded-xl shadow-lg p-6 sm:px-6 lg:px-8">
 				<div className="hidden md:flex items-center justify-between mb-4">
 					<h2 className="text-xl font-semibold">Your Cart</h2>
 					<button className="text-red-600 text-sm">Clear Cart</button>
@@ -203,7 +203,7 @@ const CartCheckoutFlow = () => {
 
 	const renderDeliveryView = () => (
 		<div className="space-y-6">
-			<div className="bg-white rounded-lg shadow-sm p-4 md:p-6">
+			<div className="bg-black/40 backdrop-blur-lg border border-[#D84418]/40 rounded-xl shadow-lg p-6 sm:px-6 lg:px-8">
 				<h2 className="text-xl font-semibold mb-4">Delivery Details</h2>
 
 				<div className="space-y-4">
@@ -269,7 +269,7 @@ const CartCheckoutFlow = () => {
 
 	const renderPaymentView = () => (
 		<div className="space-y-6">
-			<div className="bg-white rounded-lg shadow-sm p-4 md:p-6">
+			<div className="bg-black/40 backdrop-blur-lg border border-[#D84418]/40 rounded-xl shadow-lg p-6 sm:px-6 lg:px-8">
 				<h2 className="text-xl font-semibold mb-4">Payment Method</h2>
 
 				<div className="space-y-4">
@@ -352,7 +352,7 @@ const CartCheckoutFlow = () => {
 
 	const renderReviewView = () => (
 		<div className="space-y-6">
-			<div className="bg-white rounded-lg shadow-sm p-4 md:p-6">
+			<div className="bg-black/40 backdrop-blur-lg border border-[#D84418]/40 rounded-xl shadow-lg p-6 sm:px-6 lg:px-8">
 				<h2 className="text-xl font-semibold mb-4">Review Order</h2>
 
 				<div className="space-y-4">
@@ -428,7 +428,7 @@ const CartCheckoutFlow = () => {
 	);
 
 	return (
-		<div className="min-h-screen bg-gray-50">
+		<div className="min-h-screen  bg-transparent">
 			<div className="max-w-6xl mx-auto px-4 md:px-6 py-4 md:py-8">
 				{renderMobileHeader()}
 				{renderMobileStepIndicator()}

@@ -8,7 +8,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { CartProvider } from "./context/CartContext";
-import Checkout from "./components/Checkouts.jsx";
+// import Checkout from "./components/Checkouts.jsx";
 import Menu from "./components/Menu.jsx";
 import ListRestaurant from "./components/ListRestaurant";
 import AddRestaurant from "./components/AddRestaurant";
@@ -31,7 +31,8 @@ import SingleMenu from "./components/SingleMenu.jsx";
 import UserProfile from "./components/UserProfile.jsx";
 import FAQ from "./components/views/FAQ.jsx";
 import ContactUs from "./components/views/ContactUs.jsx";
-import NewCheckout from "./components/NewCheckout.jsx";
+// import NewCheckout from "./components/NewCheckout.jsx";
+import CartCheckoutFlow from "./components/cartFlow/CartCheckoutFlowComponent.jsx";
 
 const stripePromise = loadStripe(
 	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
@@ -110,8 +111,12 @@ const router = createBrowserRouter(
 				/>
 				<Route
 					path="/checkout"
-					element={<NewCheckout />}
+					element={<CartCheckoutFlow />}
 				/>
+				{/* <Route
+					path="/checkout"
+					element={<NewCheckout />}
+				/> */}
 				<Route
 					path="/forgot-password"
 					element={<ForgotPassword />}
