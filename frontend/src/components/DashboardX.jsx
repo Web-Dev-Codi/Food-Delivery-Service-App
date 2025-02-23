@@ -14,6 +14,7 @@ import {
 const DashboardX = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isOutletOpen, setIsOutletOpen] = useState(false);
   return (
     <div className="flex mt-16 flex-col md:flex-row min-h-screen">
       {/* Mobile Menu Btn */}
@@ -42,7 +43,11 @@ const DashboardX = () => {
         <ul className="md:flex-col p-1 md:space-y-4 space-x-3 md:space-x-0 bg-red-600 min-h-screen">
           {/* Add Restaurant */}
           <li className="flex items-center gap-1 transition-all duration-1000 ease-in-out hover:bg-black ">
-            <Link to="restaurants/add" className="flex justify-around">
+            <Link
+              to="restaurants/add"
+              className="flex justify-around"
+              onClick={() => setIsOutletOpen(true)}
+            >
               <FaUtensils className="text-white text-4xl" />
               <span
                 className={`text-neutral-300 ml-4 text-lg font-medium transition-all duration-1000 transform whitespace-nowrap
@@ -56,7 +61,11 @@ const DashboardX = () => {
 
           {/* Add Menu */}
           <li className="flex items-center gap-1 transition-all duration-1000 ease-in-out hover:bg-black ">
-            <Link to="add-menu" className="flex justify-around">
+            <Link
+              to="add-menu"
+              className="flex justify-around"
+              onClick={() => setIsOutletOpen(true)}
+            >
               <FaConciergeBell className="text-white text-4xl" />
               <span
                 className={`text-neutral-300 ml-4 text-lg font-medium transition-all duration-1000 transform whitespace-nowrap
@@ -70,7 +79,11 @@ const DashboardX = () => {
 
           {/* Add Coupons */}
           <li className="flex items-center gap-1 transition-all duration-1000 ease-in-out hover:bg-black ">
-            <Link to="coupons" className="flex justify-around">
+            <Link
+              to="coupons"
+              className="flex justify-around"
+              onClick={() => setIsOutletOpen(true)}
+            >
               <FaTags className="text-white text-4xl" />
               <span
                 className={`text-neutral-300 ml-4 text-lg font-medium transition-all duration-1000 transform whitespace-nowrap
@@ -83,7 +96,11 @@ const DashboardX = () => {
           </li>
           {/* Adding mocks li/Links */}
           <li className="flex items-center gap-1 transition-all duration-1000 ease-in-out hover:bg-black ">
-            <Link to="restaurants/add" className="flex justify-around">
+            <Link
+              to="restaurants/add"
+              className="flex justify-around"
+              onClick={() => setIsOutletOpen(true)}
+            >
               <FaBalanceScale className="text-white text-4xl" />
               <span
                 className={`text-neutral-300 ml-4 text-lg font-medium transition-all duration-1000 transform whitespace-nowrap
@@ -97,7 +114,11 @@ const DashboardX = () => {
 
           {/* Add Menu */}
           <li className="flex items-center gap-1 transition-all duration-1000 ease-in-out hover:bg-black ">
-            <Link to="add-menu" className="flex justify-around">
+            <Link
+              to="add-menu"
+              className="flex justify-around"
+              onClick={() => setIsOutletOpen(true)}
+            >
               <FaAddressBook className="text-white text-4xl" />
               <span
                 className={`text-neutral-300 ml-4 text-lg font-medium transition-all duration-1000 transform whitespace-nowrap
@@ -111,7 +132,11 @@ const DashboardX = () => {
 
           {/* Add Cards */}
           <li className="flex items-center gap-1 transition-all duration-1000 ease-in-out hover:bg-black ">
-            <Link to="coupons" className="flex justify-around">
+            <Link
+              to="coupons"
+              className="flex justify-around"
+              onClick={() => setIsOutletOpen(true)}
+            >
               <FaAddressCard className="text-white text-4xl" />
               <span
                 className={`text-neutral-300 ml-4 text-lg font-medium transition-all duration-1000 transform whitespace-nowrap
@@ -126,7 +151,7 @@ const DashboardX = () => {
       </nav>
 
       {/* CenterContainer-Admin-Area */}
-      <div className="flex-1 flex flex-col lg:flex-row justify-center items-start p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-0 bg-red-600">
+      <div className="flex-1 flex flex-col lg:flex-row justify-center items-start md:justify-start p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-0 bg-red-600">
         {/* Left side: Admin Section */}
         <div className="min-h-screen flex-1 flex flex-col items-center justify-start space-y-6 border-dashed border-2 border-neutral-500 rounded-lg p-4 sm:p-4 bg-slate-600/40 w-full lg:max-w-[60%] xl:max-w-[65%]">
           <h1 className="text-xl sm:text-2xl font-bold text-center text-white">
@@ -140,7 +165,7 @@ const DashboardX = () => {
 
           {/* Responsive Grid Layout for incoming functionalities */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 w-full max-w-xl mx-auto">
-            <div className="p-4 bg-orange-500 text-white font-bold rounded-md shadow-md w-full">
+            <div className="p-4 bg-orange-500 text-white font-bold rounded-md shadow-md w-full h-64">
               1: Orange
             </div>
             <div className="p-4 bg-green-500 text-white font-bold rounded-md shadow-md w-full">
@@ -158,11 +183,31 @@ const DashboardX = () => {
             <div className="p-4 bg-yellow-700 text-white font-bold rounded-md shadow-md w-full">
               6: Brown
             </div>
+            <div className="p-4 bg-black text-white font-bold rounded-md shadow-md w-full">
+              7: Black
+            </div>
+            <div className="p-4 bg-slate-500 text-white font-bold rounded-md shadow-md w-full">
+              8: Slate
+            </div>
+            <div className="p-4 bg-red-950 text-white font-bold rounded-md shadow-md w-full h-96">
+              9: Red
+            </div>
           </div>
         </div>
 
         {/* Right side: Outlet (Nested Routes) */}
-        <div className="min-h-screen w-full lg:max-w-[425px] xl:max-w-[550px] bg-green-600">
+        <div
+          className="min-h-screen w-full lg:max-w-[425px] xl:max-w-[550px] bg-green-600 fixed right-0 top-26 transition-transform duration-1000 ease-in-out"
+          style={{
+            transform: isOutletOpen ? "translateX(0)" : "translateX(100%)",
+          }}
+        >
+          <button
+            onClick={() => setIsOutletOpen(false)}
+            className="p-3 bg-black text-white fixed top-24 right-4 rounded-lg z-20"
+          >
+            <FaTimes className="text-2xl" />
+          </button>
           <Outlet />
         </div>
       </div>

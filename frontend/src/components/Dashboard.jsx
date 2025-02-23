@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
   FaUtensils,
@@ -9,26 +9,41 @@ import {
   FaBalanceScale,
   FaAddressBook,
   FaAddressCard,
+  FaArrowCircleRight,
 } from "react-icons/fa";
 
 const Dashboard = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate(); // Use navigate hook to navigate programmatically. In this case, to navigate outlet panel back to the dashboard
   const [isOutletOpen, setIsOutletOpen] = useState(false);
+  // wrapped navItems in an array of objects and map over in ul!
+  const navItems = [
+    { to: "restaurants/add", icon: FaUtensils, label: "Add Restaurant" },
+    { to: "add-menu", icon: FaConciergeBell, label: "Add Menu" },
+    { to: "coupons", icon: FaTags, label: "Add Coupons" },
+    { to: "restaurants/add", icon: FaBalanceScale, label: "Add Balance" },
+    { to: "add-menu", icon: FaAddressBook, label: "Add Booking" },
+    { to: "coupons", icon: FaAddressCard, label: "Add Cards" },
+  ];
   return (
-    <div className="flex mt-16 flex-col md:flex-row min-h-screen">
+    <div className="flex mt-12 flex-col md:flex-row min-h-screen">
       {/* Mobile Menu Btn */}
       <button
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="md:hidden p-3 bg-black text-white fixed top-24 left-4
-        rounded-lg z-20"
+        onClick={() => {
+          setIsMobileMenuOpen(!isMobileMenuOpen);
+          setIsOutletOpen(false); // Optional: Close right panel when opening mobile menu
+        }}
+        className="md:hidden p-3 bg-green-700 text-white fixed top-24 left-4 rounded-lg z-10"
+        aria-label="Toggle mobile menu"
       >
         {isMobileMenuOpen ? (
           <FaTimes className="text-2xl" />
         ) : (
-          <FaBars className="text-2xl" />
+          <FaArrowCircleRight className="text-2xl" />
         )}
       </button>
+
       {/* Slide-NavBar*/}
       <nav
         className={`fixed left-0 w-64 bg-white p-2 border-l border-neutral-500 transition-all duration-1000 ease-in-out
@@ -41,112 +56,32 @@ const Dashboard = () => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <ul className="md:flex-col p-1 md:space-y-4 space-x-3 md:space-x-0 bg-red-600 min-h-screen">
-          {/* Add Restaurant */}
-          <li className="flex items-center gap-1 transition-all duration-1000 ease-in-out hover:bg-black ">
-            <Link
-              to="restaurants/add"
-              className="flex justify-around"
-              onClick={() => setIsOutletOpen(true)}
+          {navItems.map(({ to, icon: Icon, label }) => (
+            <li
+              key={to}
+              className="flex items-center gap-1 transition-all duration-1000 ease-in-out hover:bg-black"
             >
-              <FaUtensils className="text-white text-4xl" />
-              <span
-                className={`text-neutral-300 ml-4 text-lg font-medium transition-all duration-1000 transform whitespace-nowrap
-        ${isHovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}
-      `}
+              <Link
+                to={to}
+                className="flex justify-around"
+                onClick={() => {
+                  setIsOutletOpen(true); // click on the link to slide in the right panel
+                  setIsMobileMenuOpen(false); // Close mobile menu at the same time
+                }}
               >
-                Add Restaurant
-              </span>
-            </Link>
-          </li>
-
-          {/* Add Menu */}
-          <li className="flex items-center gap-1 transition-all duration-1000 ease-in-out hover:bg-black ">
-            <Link
-              to="add-menu"
-              className="flex justify-around"
-              onClick={() => setIsOutletOpen(true)}
-            >
-              <FaConciergeBell className="text-white text-4xl" />
-              <span
-                className={`text-neutral-300 ml-4 text-lg font-medium transition-all duration-1000 transform whitespace-nowrap
-        ${isHovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}
-      `}
-              >
-                Add Menu
-              </span>
-            </Link>
-          </li>
-
-          {/* Add Coupons */}
-          <li className="flex items-center gap-1 transition-all duration-1000 ease-in-out hover:bg-black ">
-            <Link
-              to="coupons"
-              className="flex justify-around"
-              onClick={() => setIsOutletOpen(true)}
-            >
-              <FaTags className="text-white text-4xl" />
-              <span
-                className={`text-neutral-300 ml-4 text-lg font-medium transition-all duration-1000 transform whitespace-nowrap
-        ${isHovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}
-      `}
-              >
-                Add Coupons
-              </span>
-            </Link>
-          </li>
-          {/* Adding mocks li/Links */}
-          <li className="flex items-center gap-1 transition-all duration-1000 ease-in-out hover:bg-black ">
-            <Link
-              to="restaurants/add"
-              className="flex justify-around"
-              onClick={() => setIsOutletOpen(true)}
-            >
-              <FaBalanceScale className="text-white text-4xl" />
-              <span
-                className={`text-neutral-300 ml-4 text-lg font-medium transition-all duration-1000 transform whitespace-nowrap
-        ${isHovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}
-      `}
-              >
-                Add Balance
-              </span>
-            </Link>
-          </li>
-
-          {/* Add Menu */}
-          <li className="flex items-center gap-1 transition-all duration-1000 ease-in-out hover:bg-black ">
-            <Link
-              to="add-menu"
-              className="flex justify-around"
-              onClick={() => setIsOutletOpen(true)}
-            >
-              <FaAddressBook className="text-white text-4xl" />
-              <span
-                className={`text-neutral-300 ml-4 text-lg font-medium transition-all duration-1000 transform whitespace-nowrap
-        ${isHovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}
-      `}
-              >
-                Add Booking
-              </span>
-            </Link>
-          </li>
-
-          {/* Add Cards */}
-          <li className="flex items-center gap-1 transition-all duration-1000 ease-in-out hover:bg-black ">
-            <Link
-              to="coupons"
-              className="flex justify-around"
-              onClick={() => setIsOutletOpen(true)}
-            >
-              <FaAddressCard className="text-white text-4xl" />
-              <span
-                className={`text-neutral-300 ml-4 text-lg font-medium transition-all duration-1000 transform whitespace-nowrap
-        ${isHovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"}
-      `}
-              >
-                Add Cards
-              </span>
-            </Link>
-          </li>
+                <Icon className="text-white text-4xl" />
+                <span
+                  className={`text-neutral-300 ml-4 text-lg font-medium transition-all duration-1000 transform whitespace-nowrap
+          ${
+            isHovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+          }
+        `}
+                >
+                  {label}
+                </span>
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
 
@@ -163,7 +98,7 @@ const Dashboard = () => {
             Click on the menu icon to view the options. Enjoy your day!
           </p>
 
-          {/* Responsive Grid Layout for incoming functionalities */}
+          {/* Grids for incoming functionalities */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 w-full max-w-xl mx-auto">
             <div className="p-4 bg-orange-500 text-white font-bold rounded-md shadow-md w-full h-64">
               1: Orange
@@ -197,17 +132,23 @@ const Dashboard = () => {
 
         {/* Right side: Outlet (Nested Routes) */}
         <div
-          className="min-h-screen w-full lg:max-w-[425px] xl:max-w-[550px] bg-green-600 fixed right-0 top-26 transition-transform duration-1000 ease-in-out"
+          className="min-h-screen w-full lg:max-w-[425px] xl:max-w-[550px] fixed right-0 top-0 md:top-28 transition-transform duration-1000 ease-in-out z-50"
           style={{
-            transform: isOutletOpen ? "translateX(0)" : "translateX(100%)",
+            transform: isOutletOpen ? "translateX(0)" : "translateX(110%)",
           }}
         >
           <button
-            onClick={() => setIsOutletOpen(false)}
-            className="p-3 bg-black text-white fixed top-24 right-4 rounded-lg z-20"
+            onClick={() => {
+              setIsOutletOpen(false);
+              setIsMobileMenuOpen(false); // Close mobile menu when closing the outlet panel
+              navigate("/dashboard"); // navigate back to /dashboard when closing the outlet panel
+            }}
+            className="p-3 bg-black text-white hover:text-orange-600 fixed top-6 right-4 rounded-lg z-20"
+            aria-label="Close Outlet Panel"
           >
             <FaTimes className="text-2xl" />
           </button>
+
           <Outlet />
         </div>
       </div>
