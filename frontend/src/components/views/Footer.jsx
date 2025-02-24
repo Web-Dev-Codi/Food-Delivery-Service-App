@@ -56,9 +56,9 @@ const Footer = () => {
 						Menu
 					</Link>
 					<Link
-						to="/orders"
+						to="/restaurants"
 						className="hover:text-white transition-all hover:scale-105">
-						Orders
+						Restaurants
 					</Link>
 					<Link
 						to="/about"

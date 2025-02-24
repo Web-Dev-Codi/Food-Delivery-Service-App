@@ -18,6 +18,7 @@
 		"emailjs-com": "^3.2.0",
 		"framer-motion": "^12.4.3",
 		"jwt-decode": "^4.0.0",
+		"keen-slider": "^6.8.6",
 		"lottie-react": "^2.4.1",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",

@@ -167,17 +167,18 @@ const FAQ = () => {
 					<Link
 						href="#live-chat"
 						className="flex flex-col items-center gap-2 text-primary hover:underline">
-						<FaComments /> Start Live Chat
+						<FaComments className="text-[#F97316]" /> Start Live
+						Chat
 					</Link>
 					<Link
 						href="mailto:support@fooddelivery.com"
 						className="flex flex-col items-center gap-2 text-primary hover:underline">
-						<FaEnvelope /> Email Support
+						<FaEnvelope className="text-[#F97316]" /> Email Support
 					</Link>
 					<Link
 						href="tel:1-800-FOOD-DEL"
-						className="flex flex-col items-center gap-2 text-primary hover:underline">
-						<FaPhone /> Call Us
+						className="flex flex-col items-center gap-2 text-primary hover:underline ">
+						<FaPhone className="text-[#F97316]" /> Call Us
 					</Link>
 				</div>
 			</div>

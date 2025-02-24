@@ -1,80 +1,83 @@
-/* import PropTypes from "prop-types";
-import { useCart } from "../context/CartContext";
+import PropTypes from "prop-types";
 
-function CartItems({ item }) {
-	const { updateQuantity, removeFromCart } = useCart();
-	const menuItem = item.menuItem || item;
-
+function CartItems({ item, onQuantityChange, onRemoveClick, isProcessed }) {
 	return (
-		<div className="flex items-center justify-between p-4 border-b border-gray-200">
+		<li className="flex items-center justify-between p-4 border-b border-gray-200">
 			<div className="flex items-center space-x-4">
-				{menuItem.imageUrl && (
+				{item.foodItemId?.imageUrl && (
 					<img
-						src={menuItem.imageUrl}
-						alt={menuItem.name || "Menu Item"}
+						src={item.foodItemId?.imageUrl}
+						alt={item.foodItemId?.name || "Menu Item"}
 						className="w-20 h-20 object-cover rounded-md"
 					/>
 				)}
 				<div>
 					<h3 className="font-semibold text-lg">
-						{menuItem.name || `Menu Item ${menuItem.name}`}
+						{item.foodItemId?.name ||
+							`Menu Item ${item.foodItemId?.name}`}
 					</h3>
-					{menuItem.description && (
-						<p className="text-gray-600">{menuItem.description}</p>
-					)}
+
 					<p className="text-green-600 font-medium">
-						${Number(menuItem.price).toFixed(2)}
+						${Number(item.foodItemId?.price).toFixed(2)}
 					</p>
 				</div>
 			</div>
 
-			<div className="flex items-center space-x-4">
+			<div className="flex flex-col md:flex-row items-center space-x-4">
 				<div className="flex items-center border rounded-md">
-					{/* biome-ignore lint/a11y/useButtonType: <explanation> 
+					{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 					<button
 						onClick={() =>
-							updateQuantity(
-								menuItem._id,
+							onQuantityChange(
+								item.foodItemId?._id,
 								Math.max(1, item.quantity - 1)
 							)
 						}
 						className="px-3 py-1 text-gray-600 hover:bg-gray-100"
-						disabled={item.quantity <= 1}>
+						disabled={isProcessed}>
 						-
 					</button>
 					<span className="px-3 py-1">{item.quantity}</span>
-					{/* biome-ignore lint/a11y/useButtonType: <explanation> 
+					{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 					<button
 						onClick={() =>
-							updateQuantity(menuItem._id, item.quantity + 1)
+							onQuantityChange(
+								item.foodItemId?._id,
+								item.quantity + 1
+							)
 						}
-						className="px-3 py-1 text-gray-600 hover:bg-gray-100">
+						className="px-3 py-1 text-gray-600 hover:bg-gray-100"
+						disabled={isProcessed}>
 						+
 					</button>
 				</div>
-				{/* biome-ignore lint/a11y/useButtonType: <explanation> 
+				{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 				<button
-					onClick={() => removeFromCart(menuItem._id)}
+					onClick={() => onRemoveClick(item.foodItemId?._id)}
 					className="text-red-500 hover:text-red-700">
 					Remove
 				</button>
 			</div>
-		</div>
+		</li>
 	);
 }
 
 CartItems.propTypes = {
 	item: PropTypes.shape({
-		menuItem: PropTypes.shape({
-			_id: PropTypes.string,
+		_id: PropTypes.string,
+		foodItemId: PropTypes.shape({
+			_id: PropTypes.string.isRequired,
 			name: PropTypes.string,
 			description: PropTypes.string,
-			price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+			price: PropTypes.number.isRequired,
 			imageUrl: PropTypes.string,
-		}),
+		}).isRequired,
 		quantity: PropTypes.number.isRequired,
+		subtotal: PropTypes.number.isRequired,
 	}).isRequired,
+	onQuantityChange: PropTypes.func.isRequired,
+	onRemoveClick: PropTypes.func.isRequired,
+	isProcessed: PropTypes.bool,
 };
 
 export default CartItems;
- */
