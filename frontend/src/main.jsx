@@ -1,8 +1,8 @@
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
+	createBrowserRouter,
+	createRoutesFromElements,
+	Route,
+	RouterProvider,
 } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -34,7 +34,7 @@ import SingleOrder from "./components/SingleOrder.jsx";
 import CartCheckoutFlow from "./components/cartFlow/CartCheckoutFlowComponent.jsx";
 
 const stripePromise = loadStripe(
-  "pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
+	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
 );
 
 const router = createBrowserRouter(
@@ -78,6 +78,18 @@ const router = createBrowserRouter(
 						path="add-menu"
 						element={<AddMenu />}
 					/>
+					<Route
+						path="coupons"
+						element={<AddCoupons />}
+					/>
+					<Route
+						path="orders"
+						element={<Orders />}
+					/>
+					<Route
+						path="single-order/:id"
+						element={<SingleOrder />}
+					/>
 				</Route>
 				<Route
 					path="/menu/:id"
@@ -102,6 +114,10 @@ const router = createBrowserRouter(
 				<Route
 					path="/restaurants/:id/reviews"
 					element={<AddReview />}
+				/>
+				<Route
+					path="/checkout"
+					element={<CartCheckoutFlow />}
 				/>
 				<Route
 					path="/forgot-password"
@@ -133,7 +149,7 @@ const router = createBrowserRouter(
 );
 
 createRoot(document.getElementById("root")).render(
-  <CartProvider>
-    <RouterProvider router={router} />
-  </CartProvider>
+	<CartProvider>
+		<RouterProvider router={router} />
+	</CartProvider>
 );
