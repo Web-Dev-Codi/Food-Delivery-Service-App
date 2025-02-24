@@ -79,9 +79,13 @@ const router = createBrowserRouter(
 						element={<AddMenu />}
 					/>
 					<Route
-					path="orders"
-					element={<Orders />}
-				   />
+						path="coupons"
+						element={<AddCoupons />}
+					/>
+					<Route
+						path="orders"
+						element={<Orders />}
+					/>
 					<Route
 						path="single-order/:id"
 						element={<SingleOrder />}
@@ -95,7 +99,6 @@ const router = createBrowserRouter(
 					path="/coupons"
 					element={<AddCoupons />}
 				/>
-              
 				<Route
 					path="/restaurants/add"
 					element={<AddRestaurant />}
