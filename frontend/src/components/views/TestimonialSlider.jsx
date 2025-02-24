@@ -177,7 +177,7 @@ Arrow.propTypes = {
 	disabled: PropTypes.bool,
 };
 
-Arrow.defaultProps = {
-	left: false,
-	disabled: false,
-};
+// Arrow.defaultProps = {
+// 	left: false,
+// 	disabled: false,
+// };
