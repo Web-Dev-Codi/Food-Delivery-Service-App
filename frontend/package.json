@@ -17,6 +17,8 @@
 		"dotenv": "^16.4.7",
 		"emailjs-com": "^3.2.0",
 		"framer-motion": "^12.4.3",
+		"html2canvas": "^1.4.1",
+		"jspdf": "^3.0.0",
 		"jwt-decode": "^4.0.0",
 		"keen-slider": "^6.8.6",
 		"lottie-react": "^2.4.1",
@@ -25,6 +27,7 @@
 		"react-icons": "5.4.0",
 		"react-router-dom": "^7.1.4",
 		"react-slick": "^0.30.3",
+		"react-to-print": "^3.0.5",
 		"slick-carousel": "^1.8.1"
 	},
 	"devDependencies": {
