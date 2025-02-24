@@ -44,24 +44,24 @@ function Cart() {
 		removeCartItem(foodItemId);
 	};
 
-	// const handleApplyCoupon = async () => {
-	// 	if (!couponCode.trim()) {
-	// 		setDiscountMessage("⚠️ Please enter a valid coupon code.");
-	// 		return;
-	// 	}
+	const handleApplyCoupon = async () => {
+		if (!couponCode.trim()) {
+			setDiscountMessage("⚠️ Please enter a valid coupon code.");
+			return;
+		}
 
-	// 	try {
-	// 		await applyCoupon(couponCode);
-	// 		setDiscountMessage("🎉 Coupon applied successfully!");
-	// 	} catch (error) {
-	// 		setDiscountMessage(
-	// 			`❌ ${
-	// 				error.response?.data?.message ||
-	// 				"Invalid or expired coupon."
-	// 			}`
-	// 		);
-	// 	}
-	// };
+		try {
+			await applyCoupon(couponCode);
+			setDiscountMessage("🎉 Coupon applied successfully!");
+		} catch (error) {
+			setDiscountMessage(
+				`❌ ${
+					error.response?.data?.message ||
+					"Invalid or expired coupon."
+				}`
+			);
+		}
+	};
 
 	if (!state.cart || !state.cart.items || state.cart.items.length === 0) {
 		return (

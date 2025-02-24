@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
-import { useContext } from "react";
 
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { jwtDecode } from "jwt-decode"; // Import jwtDecode
-import { CartContext } from "../context/CartContext";
 
 function PaymentForm() {
-	const { state } = useContext(CartContext);
 	const stripe = useStripe();
 	const elements = useElements();
 	const [paymentMethod, setPaymentMethod] = useState("card");
@@ -91,7 +88,7 @@ function PaymentForm() {
 	};
 
 	return (
-		<div className=" mx-auto p-6 bg-white shadow-lg rounded-xl">
+		<div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-xl">
 			<h2 className="text-xl font-semibold mb-4">
 				Complete Your Payment
 			</h2>
@@ -122,9 +119,7 @@ function PaymentForm() {
 					className="w-full bg-blue-600 text-white py-2 rounded"
 					onClick={handleSubmit}
 					disabled={loading || !stripe}>
-					{loading
-						? "Processing..."
-						: `Pay Now ${state.cart?.finalAmount.toFixed(2)}`}
+					{loading ? "Processing..." : "Pay Now"}
 				</button>
 
 				{message && <p className="mt-4 text-red-500">{message}</p>}
