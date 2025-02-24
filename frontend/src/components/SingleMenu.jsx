@@ -10,28 +10,28 @@ function SingleMenu() {
   const [errorMessage, setErrorMessage] = useState("");
   const [notification, setNotification] = useState({
     message: "",
-    type: "", // success or error
+    type: "" // success or error
   });
   const [isLoading, setIsLoading] = useState(false);
 
   const { state, addToCart } = useContext(CartContext); // Removed dispatch since it's not used
 
-  // Fetch Menu Data
-  useEffect(() => {
-    const fetchMenu = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/food/menu/singlemenu/${id}`
-        );
-        setMenu(response.data.data);
-      } catch (error) {
-        setErrorMessage(
-          error.response?.data?.message ||
-            "An error occurred while fetching the menu details"
-        );
-      }
-      setLoading(false);
-    };
+	// Fetch Menu Data
+	useEffect(() => {
+		const fetchMenu = async () => {
+			try {
+				const response = await axios.get(
+					`http://localhost:8000/food/menu/singlemenu/${id}`
+				);
+				setMenu(response.data.data);
+			} catch (error) {
+				setErrorMessage(
+					error.response?.data?.message ||
+						"An error occurred while fetching the menu details"
+				);
+			}
+			setLoading(false);
+		};
 
     fetchMenu();
   }, [id]);
@@ -60,46 +60,47 @@ function SingleMenu() {
         items: [
           {
             foodItemId: menu._id,
-            quantity: 1,
-          },
-        ],
+            quantity: 1
+          }
+        ]
       };
       await addToCart(payload);
 
       // Success notification
       setNotification({
         message: "Added to cart successfully!",
-        type: "success",
+        type: "success"
       });
+
     } catch (err) {
       console.error("Failed to add to cart:", err);
 
       // Error notification
       setNotification({
         message: "Failed to add to cart. Please try again.",
-        type: "error",
+        type: "error"
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Conditional Rendering
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen text-lg font-semibold">
-        Loading...
-      </div>
-    );
-  }
+	// Conditional Rendering
+	if (loading) {
+		return (
+			<div className="flex justify-center items-center h-screen text-lg font-semibold">
+				Loading...
+			</div>
+		);
+	}
 
-  if (!menu) {
-    return (
-      <div className="flex justify-center items-center h-screen text-lg font-semibold">
-        Menu not found.
-      </div>
-    );
-  }
+	if (!menu) {
+		return (
+			<div className="flex justify-center items-center h-screen text-lg font-semibold">
+				Menu not found.
+			</div>
+		);
+	}
 
   return (
     <div>

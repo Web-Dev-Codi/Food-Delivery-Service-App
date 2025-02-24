@@ -1,8 +1,9 @@
 import Hero from "./Hero";
-// import BottomNav from "./views/BottomNav";
 import { CouponSlider } from "./CouponSlider";
 import LandingPageRestaurants from "./LandingPageRestaurants";
+import ImpactStatistics from "./views/ImpactStatistics";
 import DeliveryInfo from "./DeliveryInfo";
+import TestimonialSlider from "./views/TestimonialSlider";
 
 const Home = () => {
 	return (
@@ -11,7 +12,8 @@ const Home = () => {
 			<DeliveryInfo />
 			<CouponSlider />
 			<LandingPageRestaurants />
-			{/* <BottomNav /> */}
+			<ImpactStatistics />
+			<TestimonialSlider />
 		</div>
 	);
 };

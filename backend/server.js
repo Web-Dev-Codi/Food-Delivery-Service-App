@@ -13,6 +13,7 @@ import userRouter from "./routes/userRouter.js";
 import cartRouter from "./routes/cartRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import couponRouter from "./routes/couponRouter.js";
+import orderRouter from "./routes/orderRouter.js";
 
 connectDB();
 
@@ -42,7 +43,7 @@ app.use("/payment", paymentRoutes); //paymentRouter
 app.use("/", router); //userRouter
 app.use("/data", userRouter); //userRouter
 app.use("/cart", cartRouter);
-
+app.use("/order",orderRouter);
 app.use("/api", restaurantRouter);
 app.use("/food", menuRouter);
 app.use("/offers", couponRouter);
