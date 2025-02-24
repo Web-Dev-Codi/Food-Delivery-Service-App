@@ -8,7 +8,6 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { CartProvider } from "./context/CartContext";
-// import Checkout from "./components/Checkouts.jsx";
 import Menu from "./components/Menu.jsx";
 import ListRestaurant from "./components/ListRestaurant";
 import AddRestaurant from "./components/AddRestaurant";
@@ -21,7 +20,6 @@ import Home from "./components/Home";
 import AddMenu from "./components/AddMenu";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
-// import Cart from "./components/Cart.jsx";
 import AddCoupons from "./components/AddCoupons.jsx";
 import Dashboard from "./components/Dashboard";
 import ForgotPassword from "./components/ForgotPassword.jsx";
@@ -31,7 +29,8 @@ import SingleMenu from "./components/SingleMenu.jsx";
 import UserProfile from "./components/UserProfile.jsx";
 import FAQ from "./components/views/FAQ.jsx";
 import ContactUs from "./components/views/ContactUs.jsx";
-// import NewCheckout from "./components/NewCheckout.jsx";
+import Orders from "./components/Orders.jsx";
+import SingleOrder from "./components/SingleOrder.jsx";
 import CartCheckoutFlow from "./components/cartFlow/CartCheckoutFlowComponent.jsx";
 
 const stripePromise = loadStripe(
@@ -79,20 +78,27 @@ const router = createBrowserRouter(
 						path="add-menu"
 						element={<AddMenu />}
 					/>
+					<Route
+						path="coupons"
+						element={<AddCoupons />}
+					/>
+					<Route
+						path="orders"
+						element={<Orders />}
+					/>
+					<Route
+						path="single-order/:id"
+						element={<SingleOrder />}
+					/>
 				</Route>
 				<Route
 					path="/menu/:id"
 					element={<SingleMenu />}
 				/>
-				{/* <Route
-					path="/cart"
-					element={<Cart />}
-				/> */}
 				<Route
 					path="/coupons"
 					element={<AddCoupons />}
 				/>
-
 				<Route
 					path="/restaurants/add"
 					element={<AddRestaurant />}
@@ -113,10 +119,6 @@ const router = createBrowserRouter(
 					path="/checkout"
 					element={<CartCheckoutFlow />}
 				/>
-				{/* <Route
-					path="/checkout"
-					element={<NewCheckout />}
-				/> */}
 				<Route
 					path="/forgot-password"
 					element={<ForgotPassword />}

@@ -27,7 +27,7 @@ export const createUsers = async (req, res) => {
     });
 
     const token = jwt.sign(
-      { userId: user._id, email: user.email },
+      { userId: user._id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1h" },
     );
@@ -75,7 +75,7 @@ export const loginUser = async (req, res) => {
       });
     }
     const token = jwt.sign(
-      { userId: validateUser._id, email: validateUser.email },
+      { userId: validateUser._id,role: validateUser.role, email: validateUser.email },
       process.env.JWT_SECRET,
       { expiresIn: "1h" },
     );
