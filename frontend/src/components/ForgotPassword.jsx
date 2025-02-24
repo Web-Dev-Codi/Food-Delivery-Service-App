@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import logo from "../assets/images/logo.png"; // ✅ Import logo (if inside src/assets)
 
 function ForgotPassword() {
 	const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ function ForgotPassword() {
 			setMessage(response.data.message);
 			setErrorMessage("");
 		} catch (err) {
-			console.error("Forgot password error details:", err); // Log full error details
+			console.error("Forgot password error details:", err);
 			setErrorMessage(
 				err.response?.data?.message ||
 					"Something went wrong. Please try again."
@@ -26,36 +27,49 @@ function ForgotPassword() {
 	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gray-100">
+		<div className="min-h-screen flex items-center justify-center bg-[#D84418]">
 			<form
 				onSubmit={handleSubmit}
-				className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-				<h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
+				className="bg-[#9a3412] p-8 rounded-lg shadow-lg w-full max-w-md"
+			>
+				{/* Circular Logo Image */}
+				<div className="flex justify-center mb-4">
+					<img
+						src= {logo} // Update with your actual logo path
+						alt="Logo"
+						className="w-24 h-24 object-cover rounded-full border-4 border-yellow-400 shadow-lg"
+					/>
+				</div>
+
+				<h2 className="text-2xl font-bold text-center text-yellow-400 mb-6">
 					Forgot Password
 				</h2>
+
 				{message && (
-					<p className="text-green-600 text-center mb-4">{message}</p>
+					<p className="text-green-500 text-center mb-4">{message}</p>
 				)}
 				{errorMessage && (
-					<p className="text-red-600 text-center mb-4">
-						{errorMessage}
-					</p>
+					<p className="text-red-500 text-center mb-4">{errorMessage}</p>
 				)}
+
 				<div className="mb-4">
-					<label className="block text-sm font-medium text-gray-600">
+					<label className="block text-sm font-medium text-yellow-200">
 						Email
 					</label>
 					<input
 						type="email"
-						className="w-full p-2 border rounded"
+						className="w-full px-4 py-2 border border-orange-300 rounded-lg bg-[#c13915] 
+							text-white outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 						required
 					/>
 				</div>
+
 				<button
 					type="submit"
-					className="w-full bg-blue-600 text-white p-2 rounded">
+					className="w-full py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition-transform transform hover:scale-105"
+				>
 					Send Reset Link
 				</button>
 			</form>
