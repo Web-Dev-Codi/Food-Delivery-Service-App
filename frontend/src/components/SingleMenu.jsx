@@ -131,6 +131,7 @@ function SingleMenu() {
                   ? "text-green-300"
                   : "text-red-600"
               }
+              onClick={handleClick}
             >
               {menu.availability || "Unknown"}
             </span>
