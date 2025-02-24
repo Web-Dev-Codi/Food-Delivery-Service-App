@@ -43,7 +43,31 @@ export default function TestimonialSlider() {
 					</p>
 				</div>
 
-				<div className="navigation-wrapper relative">
+				<div className="navigation-wrapper relative px-16">
+					{loaded && instanceRef.current && (
+						<>
+							<Arrow
+								left
+								onClick={(e) =>
+									e.stopPropagation() ||
+									instanceRef.current?.prev()
+								}
+								disabled={currentSlide === 0}
+							/>
+							<Arrow
+								onClick={(e) =>
+									e.stopPropagation() ||
+									instanceRef.current?.next()
+								}
+								disabled={
+									currentSlide ===
+									instanceRef.current.track.details.slides
+										.length -
+										1
+								}
+							/>
+						</>
+					)}
 					<div
 						ref={sliderRef}
 						className="keen-slider">
@@ -90,53 +114,29 @@ export default function TestimonialSlider() {
 					</div>
 
 					{loaded && instanceRef.current && (
-						<>
-							<Arrow
-								left
-								onClick={(e) =>
-									e.stopPropagation() ||
-									instanceRef.current?.prev()
-								}
-								disabled={currentSlide === 0}
-							/>
-							<Arrow
-								onClick={(e) =>
-									e.stopPropagation() ||
-									instanceRef.current?.next()
-								}
-								disabled={
-									currentSlide ===
+						<div className="flex justify-center mt-8 gap-2">
+							{[
+								...Array(
 									instanceRef.current.track.details.slides
-										.length -
-										1
-								}
-							/>
-						</>
+										.length
+								),
+							].map((_, idx) => (
+								<button
+									key={idx}
+									onClick={() => {
+										instanceRef.current?.moveToIdx(idx);
+									}}
+									className={`w-2 h-2 rounded-full transition-all duration-300 ${
+										currentSlide === idx
+											? "bg-[#D84418] w-6"
+											: "bg-gray-600 hover:bg-gray-500"
+									}`}
+									aria-label={`Go to slide ${idx + 1}`}
+								/>
+							))}
+						</div>
 					)}
 				</div>
-
-				{loaded && instanceRef.current && (
-					<div className="flex justify-center mt-8 gap-2">
-						{[
-							...Array(
-								instanceRef.current.track.details.slides.length
-							),
-						].map((_, idx) => (
-							<button
-								key={idx}
-								onClick={() => {
-									instanceRef.current?.moveToIdx(idx);
-								}}
-								className={`w-2 h-2 rounded-full transition-all duration-300 ${
-									currentSlide === idx
-										? "bg-[#D84418] w-6"
-										: "bg-gray-600 hover:bg-gray-500"
-								}`}
-								aria-label={`Go to slide ${idx + 1}`}
-							/>
-						))}
-					</div>
-				)}
 			</div>
 		</div>
 	);
@@ -147,7 +147,7 @@ function Arrow({ left, onClick, disabled }) {
 		<button
 			onClick={onClick}
 			className={`absolute top-1/2 -translate-y-1/2 ${
-				left ? "left-0" : "right-0"
+				left ? "-left-0" : "-right-0"
 			} ${
 				disabled
 					? "opacity-30 cursor-not-allowed"
