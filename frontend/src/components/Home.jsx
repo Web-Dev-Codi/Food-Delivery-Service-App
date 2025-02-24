@@ -2,6 +2,7 @@ import Hero from "./Hero";
 // import BottomNav from "./views/BottomNav";
 import { CouponSlider } from "./CouponSlider";
 import LandingPageRestaurants from "./LandingPageRestaurants";
+import ImpactStatistics from "./views/ImpactStatistics";
 import DeliveryInfo from "./DeliveryInfo";
 
 const Home = () => {
@@ -11,6 +12,7 @@ const Home = () => {
 			<DeliveryInfo />
 			<CouponSlider />
 			<LandingPageRestaurants />
+			<ImpactStatistics />
 			{/* <BottomNav /> */}
 		</div>
 	);
