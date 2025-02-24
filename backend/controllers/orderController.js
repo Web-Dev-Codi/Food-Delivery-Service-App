@@ -132,14 +132,18 @@ export const deleteOrder = async (req, res) => {
 export const getOrderById = async (req, res) => {
     try {
         const { id } = req.params; // Order ID from request params
-        const order = await Order.findById(id).populate({
+        const order = await Order.findById(id) .populate({
             path: "cartId",
-            populate: { path: "items.foodItemId", select: "name price quantity" } 
+            populate: { 
+                path: "items.foodItemId",
+                model: "FoodItem",  // Explicitly specify the model
+                select: "name price description imageUrl category availability"  // ✅ Ensure imageUrl is included
+            }
         })
         .populate("userId", "name email address contact") // Populate User details
         .populate("paymentId", "amount status") // Populate Payment details
         .select("-__v"); // Exclude unnecessary fields
-
+        console.log("Populated Order Data:", JSON.stringify(order, null, 2)); // Log full populated order data
         if (!order) {
             return res.status(404).json({ message: "Order not found" });
         }

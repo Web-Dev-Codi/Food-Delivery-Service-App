@@ -51,16 +51,18 @@ OrderSchema.pre("save", async function (next) {
 });
 
 //populate cartId, paymentId, userId
-OrderSchema.pre(/^find/, function (next) {
-  this.populate([
-    { path: "userId", select: "name email address contact" }, // Populate User details
-    { path: "paymentId", select: "status amount" }, // Populate Payment details
-    { 
-      path: "cartId", 
-      populate: { path: "items.foodItemId", select: "name price quantity" } // Populate Cart and Food Items
-    }
-  ]);
-
+OrderSchema.pre(/^find/, function(next) {
+  this.populate({
+      path: "cartId",
+      populate: {
+          path: "items.foodItemId",
+          model: "FoodItem",
+          select: "name price description imageUrl category availability"
+      }
+  })
+  .populate("userId", "name email address contact")
+  .populate("paymentId", "amount status");
+  
   next();
 });
 
