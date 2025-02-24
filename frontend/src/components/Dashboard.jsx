@@ -27,6 +27,21 @@ const Dashboard = () => {
 							className="block p-2 hover:bg-gray-700 rounded">
 							💸 Add Coupons
 						</Link>
+
+					</li>
+					<li>
+						<Link
+							to="orders"
+							className="block p-2 hover:bg-gray-700 rounded">
+							🛒 Orders
+						</Link>
+					</li>
+					<li>
+					<Link 
+					to="single-order/:id"
+					className="block p-2 hover:bg-gray-700 rounded">
+					🛒 Single Order
+					</Link>
 					</li>
 				</ul>
 			</nav>

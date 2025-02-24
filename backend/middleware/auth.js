@@ -24,7 +24,8 @@ export const verifyToken = (req, res, next) => {
 		console.log("Decoded token:", decoded); // Ensure this logs the userId and email
 		req.user = decoded; // Attach user data to the request object
 		req.userId = decoded.userId;
-		console.log("User ID:", req.userId); // Ensure this logs the userId
+		req.role = decoded.role;
+		console.log("User ID:", req.userId,"Role :", req.role); // Ensure this logs the userId
 		next(); // Proceed to the next middleware
 	} catch (err) {
 		// Handle specific JWT errors
@@ -44,3 +45,12 @@ export const verifyToken = (req, res, next) => {
 		}
 	}
 };
+
+export const verifyAdmin = (req, res, next) => {
+	if (!req.user || req.user.role !== "admin") {
+		return res.status(403).json({
+			message: "Access denied. Admin privileges required.",
+		});
+	}
+	next();
+}
