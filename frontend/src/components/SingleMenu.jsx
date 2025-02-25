@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { UtensilsCrossed } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import { toast, Bounce } from "react-toastify";
@@ -77,6 +78,7 @@ function SingleMenu() {
 				draggable: false,
 				transition: Bounce,
 				theme: "dark",
+				icon: <UtensilsCrossed />,
 			});
 		} catch (err) {
 			console.error("Failed to add to cart:", err);
