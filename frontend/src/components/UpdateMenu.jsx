@@ -65,14 +65,20 @@ const UpdateMenuForm = () => {
       },
       (error, result) => {
         if (!error && result && result.event === "success") {
-          setFormData((prevData) => ({
-            ...prevData,
-            imageUrl: result.info.secure_url,
-          }));
+            console.log("Upload Success:", result.info.secure_url);
+            setFormData((prevData) => ({
+              ...prevData,
+              imageUrl: result.info.secure_url, // Update the image URL
+            }));
+          } else if (error) {
+            console.error("Upload Error:", error);
+            alert("Image upload failed. Please try again.");
+          }
         }
-      }
-    );
-  };
+      );
+    
+      widget.open();
+    };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -205,6 +211,7 @@ const UpdateMenuForm = () => {
                 onChange={handleChange}
                 min="0"
                 max="5"
+                step="0.1" // Allow decimal ratings
                 required
                 className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
               />

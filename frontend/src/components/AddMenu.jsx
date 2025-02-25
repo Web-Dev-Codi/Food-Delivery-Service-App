@@ -40,23 +40,32 @@ const AddMenuForm = () => {
   };
 
   const openCloudinaryWidget = () => {
-    window.cloudinary.openUploadWidget(
+    if (!window.cloudinary) {
+      alert("Cloudinary is not loaded properly.");
+      return;
+    }
+    const widget = window.cloudinary.createUploadWidget(
       {
         cloudName: "difmxsysx", // Your Cloudinary cloud name
-        uploadPreset: "menu_upload", // Your unsigned upload preset
+        uploadPreset: "menu_upload", // Your upload preset
         multiple: false,
-        sources: ["local", "url", "camera"], // Allow various sources
+        sources: ["local", "url", "camera"], // Allow local files, URL, camera
       },
       (error, result) => {
         if (!error && result && result.event === "success") {
-          // Set the uploaded image URL to the formData
+          console.log("Upload Success:", result.info.secure_url);
           setFormData((prevData) => ({
             ...prevData,
-            imageUrl: result.info.secure_url,
+            imageUrl: result.info.secure_url, // Update image in state
           }));
+        } else if (error) {
+          console.error("Upload Error:", error);
+          alert("Image upload failed. Please try again.");
         }
       }
     );
+  
+    widget.open();
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
