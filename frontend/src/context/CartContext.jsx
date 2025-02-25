@@ -152,7 +152,21 @@ export const CartProvider = ({ children }) => {
 				headers: getAuthHeaders(),
 			});
 
-			dispatch({ type: "REMOVE_FROM_CART", payload: { foodItemId } });
+			// Fetch the updated cart data after removal
+			const response = await axios.get("http://localhost:8000/cart/get", {
+				headers: getAuthHeaders(),
+			});
+
+			// Update state with the fresh cart data
+			dispatch({
+				type: "FETCH_CART_SUCCESS",
+				payload: response.data.data || {
+					items: [],
+					totalAmount: 0,
+					discount: 0,
+					finalAmount: 0,
+				},
+			});
 		} catch (error) {
 			dispatch({ type: "FETCH_CART_ERROR", payload: error.message });
 		}
