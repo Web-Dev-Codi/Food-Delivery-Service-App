@@ -92,8 +92,8 @@ function AddRestaurant() {
   };
 
   return (
-    <div className="flex items-center justify-center w-full">
-      <div className="bg-neutral-800/30 backdrop-blur-md p-8 rounded-lg shadow-lg w-full max-w-md">
+    <div className="flex items-center justify-center w-full min-h-screen bg-neutral-900 ">
+      <div className="bg-neutral-800/60 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center text-white">
           Add Restaurant
         </h1>
@@ -127,7 +127,7 @@ function AddRestaurant() {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:border-white"
             />
           </div>
 
@@ -145,7 +145,7 @@ function AddRestaurant() {
               name="location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:border-white"
             />
           </div>
 
@@ -203,7 +203,7 @@ function AddRestaurant() {
               name="contact"
               value={contact}
               onChange={(e) => setContact(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-white"
             />
           </div>
 

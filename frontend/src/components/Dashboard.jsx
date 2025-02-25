@@ -27,14 +27,14 @@ const Dashboard = () => {
     { to: "coupons", icon: FaAddressCard, label: "Add Cards" },
   ];
   return (
-    <div className="flex mt-12 flex-col md:flex-row min-h-screen">
+    <div className="min-h-screen flex mt-12 flex-col md:flex-row g-neutral-800/10 backdrop-blur">
       {/* Mobile Menu Btn */}
       <button
         onClick={() => {
           setIsMobileMenuOpen(!isMobileMenuOpen);
           setIsOutletOpen(false); // Optional: Close right panel when opening mobile menu
         }}
-        className="md:hidden p-3 bg-green-700 text-white fixed top-24 left-4 rounded-lg z-10"
+        className="md:hidden p-3 bg-green-700 text-white fixed top-24 left-4 rounded-lg z-20"
         aria-label="Toggle mobile menu"
       >
         {isMobileMenuOpen ? (
@@ -46,7 +46,7 @@ const Dashboard = () => {
 
       {/* Slide-NavBar*/}
       <nav
-        className={`fixed left-0 w-64 bg-white p-2 border-l border-neutral-500 transition-all duration-1000 ease-in-out
+        className={`fixed left-0 w-64 p-2 border-l border-neutral-500 transition-all duration-1000 ease-in-out bg-neutral-800/10 backdrop-blur z-10
         ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         } md:relative md:translate-x-0
@@ -55,15 +55,15 @@ const Dashboard = () => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <ul className="md:flex-col p-1 md:space-y-4 space-x-3 md:space-x-0 bg-red-600 min-h-screen">
+        <ul className="md:flex-col md:mt-4 p-1 md:space-y-4 space-x-3 md:space-x-0 min-h-screen">
           {navItems.map(({ to, icon: Icon, label }) => (
             <li
               key={to}
-              className="flex items-center gap-1 transition-all duration-1000 ease-in-out hover:bg-black"
+              className="flex items-center gap-2 transition-all duration-1000 ease-in-out bg-neutral-800/50 backdrop-blur hover:bg-[#D84418] rounded-lg py-2 mb-2 md:mb-0"
             >
               <Link
                 to={to}
-                className="flex justify-around"
+                className="flex justify-between rounded-lg"
                 onClick={() => {
                   setIsOutletOpen(true); // click on the link to slide in the right panel
                   setIsMobileMenuOpen(false); // Close mobile menu at the same time
@@ -86,9 +86,9 @@ const Dashboard = () => {
       </nav>
 
       {/* CenterContainer-Admin-Area */}
-      <div className="flex-1 flex flex-col lg:flex-row justify-center items-start md:justify-start p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-0 bg-red-600">
+      <div className="flex-1 flex flex-col lg:flex-row justify-center items-start md:justify-start p-4 sm:p-6 lg:p-8 space-y-6 lg:space-y-0 bg-neutral-800/30 backdrop-blur shadow-lg">
         {/* Left side: Admin Section */}
-        <div className="min-h-screen flex-1 flex flex-col items-center justify-start space-y-6 border-dashed border-2 border-neutral-500 rounded-lg p-4 sm:p-4 bg-slate-600/40 w-full lg:max-w-[60%] xl:max-w-[65%]">
+        <div className="min-h-screen flex-1 flex flex-col items-center justify-start space-y-6 border-dashed border-2 border-neutral-500 rounded-lg p-4 sm:p-4 bg-neutral-800/10 backdrop-blur w-full lg:max-w-[60%] xl:max-w-[65%]">
           <h1 className="text-xl sm:text-2xl font-bold text-center text-white">
             Hello Admin
           </h1>
@@ -124,7 +124,7 @@ const Dashboard = () => {
             <div className="p-4 bg-slate-500 text-white font-bold rounded-md shadow-md w-full">
               8: Slate
             </div>
-            <div className="p-4 bg-red-950 text-white font-bold rounded-md shadow-md w-full h-96">
+            <div className="p-4 bg-red-950 text-white font-bold rounded-md shadow-md w-full h-56">
               9: Red
             </div>
           </div>
@@ -132,7 +132,7 @@ const Dashboard = () => {
 
         {/* Right side: Outlet (Nested Routes) */}
         <div
-          className="min-h-screen w-full lg:max-w-[425px] xl:max-w-[550px] fixed right-0 top-0 md:top-28 transition-transform duration-1000 ease-in-out z-50"
+          className="min-h-screen w-full lg:max-w-[425px] xl:max-w-[550px] fixed right-0 top-0 md:top-8 md:right-[-1rem] transition-transform duration-1000 ease-in-out z-50"
           style={{
             transform: isOutletOpen ? "translateX(0)" : "translateX(110%)",
           }}
@@ -143,7 +143,7 @@ const Dashboard = () => {
               setIsMobileMenuOpen(false); // Close mobile menu when closing the outlet panel
               navigate("/dashboard"); // navigate back to /dashboard when closing the outlet panel
             }}
-            className="p-3 bg-black text-white hover:text-orange-600 fixed top-6 right-4 rounded-lg z-20"
+            className="p-3 g-neutral-800/10 backdrop-blur shadow-lg text-white hover:text-orange-600 fixed top-6 right-4 md:top-3 md:right-14 rounded-lg z-30"
             aria-label="Close Outlet Panel"
           >
             <FaTimes className="text-2xl" />
