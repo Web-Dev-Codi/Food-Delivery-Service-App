@@ -106,8 +106,8 @@ function SingleMenu() {
 	}
 
 	return (
-		<div>
-			<div className="bg-gradient-to-t from-neutral-900 via-[#050407] to-[#4d4c4d] p-2 py-4 sm:p-4 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto overflow-hidden">
+		<div className="flex justify-center items-center h-screen">
+			<div className="bg-gradient-to-t from-neutral-900 via-[#050407] to-[#4d4c4d] p-2  py-4 sm:p-4 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto overflow-hidden">
 				<div className=" bg-neutral-800/10 backdrop-blur-md p-8 rounded-lg shadow-lg w-full max-w-md mx-auto border border-neutral-600 ">
 					<h2 className="text-2xl font-bold text-center text-neutral-100 mb-4 ">
 						{menu.name}
