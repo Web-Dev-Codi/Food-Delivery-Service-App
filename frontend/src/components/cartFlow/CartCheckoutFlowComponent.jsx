@@ -1,16 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import {
-	// Plus,
-	// Minus,
-	// Trash2,
-	// Edit,
 	Clock,
 	MapPin,
 	CreditCard,
 	Check,
 	ArrowLeft,
+	ShoppingCart,
 } from "lucide-react";
+import { toast, Bounce } from "react-toastify";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
@@ -79,7 +77,17 @@ const CartCheckoutFlow = () => {
 	const handleClearCart = async () => {
 		try {
 			await clearCart();
-			console.log("Cart cleared successfully");
+			toast.warning("Cart cleared successfully", {
+				position: "bottom-right",
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: false,
+				pauseOnHover: true,
+				draggable: false,
+				transition: Bounce,
+				theme: "dark",
+				icon: <ShoppingCart />,
+			});
 		} catch (error) {
 			console.error("Error clearing cart:", error);
 		}
