@@ -3,6 +3,8 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Header from "./components/views/Header";
 import Footer from "./components/views/Footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 	return (
@@ -13,6 +15,7 @@ function App() {
 					<Outlet />
 				</main>
 				<Footer />
+				<ToastContainer theme="dark" />
 			</div>
 		</React.Fragment>
 	);
