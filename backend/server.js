@@ -21,19 +21,19 @@ const app = express();
 
 // ✅ Enable CORS for frontend requests
 app.use(
-	cors({
-		origin: "http://localhost:5173", // Replace with your front-end URL
-		methods: ["GET", "POST", "PUT", "DELETE"],
-		credentials: true,
-		allowedHeaders: "Content-Type, Authorization",
-	})
+  cors({
+    origin: "http://localhost:5173", // Replace with your front-end URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+    allowedHeaders: "Content-Type, Authorization",
+  }),
 );
 
 // ✅ Webhook route - MUST use `express.raw()` BEFORE `express.json()`
 app.post(
-	"/webhook",
-	express.raw({ type: "application/json" }),
-	handleStripeWebhook
+  "/webhook",
+  express.raw({ type: "application/json" }),
+  handleStripeWebhook,
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -43,7 +43,7 @@ app.use("/payment", paymentRoutes); //paymentRouter
 app.use("/", router); //userRouter
 app.use("/data", userRouter); //userRouter
 app.use("/cart", cartRouter);
-app.use("/order",orderRouter);
+app.use("/order", orderRouter);
 app.use("/api", restaurantRouter);
 app.use("/food", menuRouter);
 app.use("/offers", couponRouter);
