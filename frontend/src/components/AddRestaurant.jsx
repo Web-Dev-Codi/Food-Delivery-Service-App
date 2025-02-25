@@ -92,8 +92,8 @@ function AddRestaurant() {
   };
 
   return (
-    <div className="flex items-center justify-center w-full min-h-screen bg-neutral-900 ">
-      <div className="bg-neutral-800/60 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md">
+    <div className="flex items-center justify-center w-full min-h-screen">
+      <div className="bg-neutral-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center text-white">
           Add Restaurant
         </h1>
