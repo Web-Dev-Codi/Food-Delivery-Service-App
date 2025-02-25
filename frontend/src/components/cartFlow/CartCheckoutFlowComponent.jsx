@@ -39,12 +39,7 @@ const CartCheckoutFlow = () => {
     }
   }, []); // Only fetch on mount
 
-  useEffect(() => {
-    if (state.cart?.status?.toLowerCase() === "processed") {
-      console.log("Cart is processed, redirecting to home page");
-      navigate("/");
-    }
-  }, [state.cart?.status, navigate]);
+
 
   if (state.error) {
     return <div className="text-red-500">Error: {state.error}</div>;
