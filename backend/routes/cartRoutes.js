@@ -5,6 +5,7 @@ import {
   getCart,
   getAllCarts,
   removeItemFromCart,
+  getCartForInvoice,
 } from "../controllers/cartController.js";
 import { verifyToken } from "../middleware/auth.js";
 
@@ -18,7 +19,7 @@ cartRouter.get("/", getAllCarts); // Get cart by user
 cartRouter.post("/add", verifyToken, addToCart); // Add or update item
 cartRouter.put("/update", verifyToken, updateCartItem); // Update quantity or remove
 cartRouter.get("/get", verifyToken, getCart); // Get cart by user
-
+cartRouter.get("/getInvoice",verifyToken, getCartForInvoice);
 cartRouter.delete("/deleteitem", verifyToken, removeItemFromCart); // Clear cart
 
 export default cartRouter;

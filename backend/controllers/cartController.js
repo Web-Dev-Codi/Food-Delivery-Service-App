@@ -48,6 +48,37 @@ export const getCart = async (req, res) => {
   }
 };
 
+export const getCartForInvoice = async (req, res) => {
+  try {
+    console.log("User ID in getCart:", req.userId);  // Log req.userId to debug
+
+    const userId = req.userId;  // userId is already available after the verifyToken middleware
+    
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+    const cart = await Cart.findOne({ userId }).populate({
+      path: "items.foodItemId",
+      select: "name price description imageUrl category restaurant", // ✅ Fetch food item details
+      populate: { path: "restaurant", select: "name address contact logo" } // ✅ Fetch restaurant details
+    })
+    .select("items totalAmount finalAmount")
+  
+    
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+    res.status(200).json({ message: "Cart fetched successfully", data: cart });
+  } catch (error) {
+    console.error("Error fetching cart:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching cart",
+      error: error.message,
+    });
+  }
+};
+
 // Add item to cart
 export const addToCart = async (req, res) => {
 	try {
