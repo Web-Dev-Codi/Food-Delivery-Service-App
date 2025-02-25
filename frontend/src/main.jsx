@@ -61,8 +61,6 @@ const router = createBrowserRouter(
           <Route path="single-order/:id" element={<SingleOrder />} />
         </Route>
         <Route path="/menu/:id" element={<SingleMenu />} />
-        <Route path="/coupons" element={<AddCoupons />} />
-        <Route path="/restaurants/add" element={<AddRestaurant />} />
         <Route path="/restaurants" element={<ListRestaurant />} />
         <Route path="/restaurants/:id" element={<SingleRestaurant />} />
         <Route path="/restaurants/:id/reviews" element={<AddReview />} />
