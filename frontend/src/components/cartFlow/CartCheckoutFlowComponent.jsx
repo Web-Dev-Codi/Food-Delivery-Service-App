@@ -44,6 +44,25 @@ const CartCheckoutFlow = () => {
 		return <div className="text-red-500">Error: {state.error}</div>;
 	}
 
+	// Check if cart is empty
+	if (!state.cart?.items || state.cart.items.length === 0) {
+		return (
+			<div className="flex flex-col items-center justify-center p-8 h-screen m-8 bg-black/40 backdrop-blur-lg rounded-lg shadow-sm">
+				<div className="text-2xl font-semibold mb-4">
+					Your cart is empty
+				</div>
+				<p className="text-gray-400 mb-6">
+					Add some delicious items to your cart to get started!
+				</p>
+				<button
+					onClick={() => navigate("/restaurants")}
+					className="bg-[#F97316] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#EA580C] transition-colors">
+					Browse Restaurants
+				</button>
+			</div>
+		);
+	}
+
 	const handleQuantityChange = (foodItemId, quantity) => {
 		const quantityInt = parseInt(quantity, 10);
 		if (quantityInt > 0) {
@@ -470,7 +489,7 @@ const CartCheckoutFlow = () => {
 		<div className="min-h-screen pb-20 md:pb-0">
 			<div className="max-w-6xl mx-auto px-4 md:px-6 py-4 md:py-8">
 				{renderMobileHeader()}
-				 {renderMobileStepIndicator()}
+				{renderMobileStepIndicator()}
 				{renderDesktopStepIndicator()}
 
 				<div className="max-w-4xl mx-auto">
