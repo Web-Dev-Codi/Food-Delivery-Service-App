@@ -5,7 +5,6 @@ const cartSchema = new Schema(
     userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
-   
     },
     items: [
       {
@@ -29,7 +28,7 @@ const cartSchema = new Schema(
     ],
     totalAmount: {
       type: Number,
-      default: 0,            // Before discount
+      default: 0, // Before discount
     },
     discount: {
       type: Number,
@@ -52,24 +51,27 @@ const cartSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 cartSchema.pre("save", async function (next) {
-    // Populate food item details
-    await this.populate("items.foodItemId", "price");
-  
-    this.items.forEach((item) => {
-      item.subtotal = item.foodItemId.price * item.quantity;
-    });
-  
-    this.totalAmount = this.items.reduce((total, item) => total + item.subtotal, 0);
-  
-    // Apply discount and calculate final amount
-    this.finalAmount = this.totalAmount - this.discount;
-  
-    next();
+  // Populate food item details
+  await this.populate("items.foodItemId", "price");
+
+  this.items.forEach((item) => {
+    item.subtotal = item.foodItemId.price * item.quantity;
   });
+
+  this.totalAmount = this.items.reduce(
+    (total, item) => total + item.subtotal,
+    0,
+  );
+
+  // Apply discount and calculate final amount
+  this.finalAmount = this.totalAmount - this.discount;
+
+  next();
+});
 
 const Cart = model("Cart", cartSchema);
 export default Cart;

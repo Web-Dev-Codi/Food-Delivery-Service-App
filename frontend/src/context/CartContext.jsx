@@ -42,6 +42,17 @@ const cartReducer = (state, action) => {
 				totalAmount: action.payload.totalAmount,
 			};
 
+		case "CLEAR_CART":
+			return {
+				...state,
+				cart: action.payload || {
+					items: [],
+					totalAmount: 0,
+					discount: 0,
+					finalAmount: 0,
+				},
+			};
+
 		case "FETCH_CART_SUCCESS":
 			return {
 				...state,
@@ -197,6 +208,25 @@ export const CartProvider = ({ children }) => {
 		}
 	};
 
+	const clearCart = async () => {
+		try {
+			const response = await axios.delete(
+				"http://localhost:8000/cart/clear",
+				{
+					headers: getAuthHeaders(),
+				}
+			);
+
+			dispatch({
+				type: "CLEAR_CART",
+				payload: response.data.data,
+			});
+		} catch (error) {
+			dispatch({ type: "FETCH_CART_ERROR", payload: error.message });
+			throw error;
+		}
+	};
+
 	return (
 		<CartContext.Provider
 			value={{
@@ -206,6 +236,7 @@ export const CartProvider = ({ children }) => {
 				updateCartItem,
 				removeCartItem,
 				applyCoupon,
+				clearCart,
 			}}>
 			{children}
 		</CartContext.Provider>

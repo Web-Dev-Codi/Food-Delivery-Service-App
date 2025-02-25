@@ -17,8 +17,14 @@ import { useNavigate } from "react-router-dom";
 import CartItems from "../CartItems";
 
 const CartCheckoutFlow = () => {
-	const { state, fetchCart, updateCartItem, removeCartItem, applyCoupon } =
-		useContext(CartContext);
+	const {
+		state,
+		fetchCart,
+		updateCartItem,
+		removeCartItem,
+		applyCoupon,
+		clearCart,
+	} = useContext(CartContext);
 	const navigate = useNavigate();
 	const [couponCode, setCouponCode] = useState("");
 	const [discountMessage, setDiscountMessage] = useState("");
@@ -48,6 +54,16 @@ const CartCheckoutFlow = () => {
 	const handleRemoveClick = (foodItemId) => {
 		console.log("Removing item:", foodItemId);
 		removeCartItem(foodItemId);
+	};
+
+	// In your click handler:
+	const handleClearCart = async () => {
+		try {
+			await clearCart();
+			console.log("Cart cleared successfully");
+		} catch (error) {
+			console.error("Error clearing cart:", error);
+		}
 	};
 
 	const handleApplyCoupon = async () => {
@@ -162,7 +178,7 @@ const CartCheckoutFlow = () => {
 				<div className="hidden md:flex items-center justify-between mb-4">
 					<h2 className="text-xl font-semibold">Your Cart</h2>
 					<button
-						onClick={() => {}} // Clear cart logic here
+						onClick={handleClearCart}
 						className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors">
 						Clear Cart
 					</button>
@@ -454,6 +470,7 @@ const CartCheckoutFlow = () => {
 		<div className="min-h-screen pb-20 md:pb-0">
 			<div className="max-w-6xl mx-auto px-4 md:px-6 py-4 md:py-8">
 				{renderMobileHeader()}
+				 {renderMobileStepIndicator()}
 				{renderDesktopStepIndicator()}
 
 				<div className="max-w-4xl mx-auto">
