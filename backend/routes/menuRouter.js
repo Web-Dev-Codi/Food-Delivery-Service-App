@@ -7,16 +7,21 @@ import {
 	addMenu,
 	updateMenu,
 	deleteMenu,
+	getMenuByName,
+	updateMenuByName,
 } from "../controllers/Menu.js";
 
 const menuRouter = Router();
-
+menuRouter.get("/menu/getByName/:name", getMenuByName);
+menuRouter.get("/menu/singlemenu/:id", getMenuById);
 menuRouter.get("/menu/restaurant/:id", getMenusByRestaurant);
-menuRouter.get("/menu/singlemenu/:id", getMenuById); // 
+menuRouter.patch("/menu/updateByName/:name", updateMenuByName);
+
+
 menuRouter.get("/menu/:category", getMenusByCategory);
 menuRouter.get("/menu", getMenus);
 menuRouter.post("/menu", addMenu);
-menuRouter.put("/menu/:id", updateMenu);
+menuRouter.patch("/menu/:id", updateMenu);
 menuRouter.delete("/menu/:id", deleteMenu);
 
 export default menuRouter;
