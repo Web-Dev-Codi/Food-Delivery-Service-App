@@ -108,15 +108,21 @@ export const CartProvider = ({ children }) => {
 			const response = await axios.post(
 				"http://localhost:8000/cart/add",
 				payload,
-				{ headers: getAuthHeaders() }
+				{
+					headers: getAuthHeaders(),
+				}
 			);
+
+			// Immediately update the local state with the new cart data
 			dispatch({
-				type: "ADD_TO_CART",
-				payload: response.data.data.items,
+				type: "FETCH_CART_SUCCESS",
+				payload: response.data.data,
 			});
-		} catch (err) {
-			console.error("Error adding to cart:", err);
-			dispatch({ type: "FETCH_CART_ERROR", payload: err.message });
+
+			return response.data;
+		} catch (error) {
+			dispatch({ type: "FETCH_CART_ERROR", payload: error.message });
+			throw error;
 		}
 	};
 

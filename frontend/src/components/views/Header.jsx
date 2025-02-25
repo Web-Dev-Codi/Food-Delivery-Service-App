@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useContext, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaShoppingCart, FaUser, FaRegWindowClose } from "react-icons/fa";
@@ -9,55 +8,45 @@ import { CartContext } from "../../context/CartContext";
 const Header = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const { state, fetchCart } = useContext(CartContext);
+	const { state } = useContext(CartContext);
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null);
-
+	const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+	const dropdownRef = useRef(null);
 
 	// Check authentication status whenever location changes
 	useEffect(() => {
 		const token = localStorage.getItem("token");
 		const isNowLoggedIn = !!token;
 		setIsLoggedIn(isNowLoggedIn);
+	}, [location.pathname]);
 
-		if (!isLoggedIn && isNowLoggedIn) {
-			fetchCart();
-		}
-	}, [location.pathname]); // Re-run when route changes
-
-	// Update cart when cart state changes
+	// Handle clicks outside the dropdown
 	useEffect(() => {
-		const token = localStorage.getItem("token");
-		if (token && isLoggedIn) {
-			fetchCart();
+		const handleClickOutside = (event) => {
+			if (
+				dropdownRef.current &&
+				!dropdownRef.current.contains(event.target)
+			) {
+				setProfileDropdownOpen(false);
+				setMenuOpen(false);
+			}
+		};
+
+		// Add event listener when the dropdown is open
+		if (profileDropdownOpen) {
+			document.addEventListener("mousedown", handleClickOutside);
 		}
-  }, []);
+		// Add event listener when the dropdown is open
+		if (menuOpen) {
+			document.addEventListener("mousedown", handleClickOutside);
+		}
 
-   // Handle clicks outside the dropdown
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setProfileDropdownOpen(false);
-        setMenuOpen(false);
-      }
-    };
-
-    // Add event listener when the dropdown is open
-    if (profileDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-    // Add event listener when the dropdown is open
-    if (menuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    // Clean up the event listener
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [profileDropdownOpen, menuOpen]);
+		// Clean up the event listener
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [profileDropdownOpen, menuOpen]);
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -119,7 +108,9 @@ const Header = () => {
 									)}
 								</Link>
 								{/* User Avatar - Only shown when logged in */}
-								<div className="relative" ref={dropdownRef}>
+								<div
+									className="relative"
+									ref={dropdownRef}>
 									<button
 										onClick={() =>
 											setProfileDropdownOpen(
@@ -178,7 +169,9 @@ const Header = () => {
 					</button>
 				</div>
 				{menuOpen && (
-					<div className="md:hidden absolute top-full left-0 w-full bg-black bg-opacity-90 backdrop-blur-sm z-50" ref={dropdownRef}>
+					<div
+						className="md:hidden absolute top-full left-0 w-full bg-black bg-opacity-90 backdrop-blur-sm z-50"
+						ref={dropdownRef}>
 						<div className="flex flex-col space-y-4 p-4 z-50">
 							<Link
 								to="/"
