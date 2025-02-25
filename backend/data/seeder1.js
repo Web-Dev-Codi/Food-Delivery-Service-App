@@ -347,7 +347,7 @@ const menuItems = [
   {
     name: "Chicken fajitas",
     price: 12,
-    short_desc: "Grilled chicken with bell peppers and onions
+    short_desc: "Grilled chicken with bell peppers and onions on a hot skillet",
     description:
       "Sizzling strips of grilled chicken, bell peppers, and onions seasoned with a blend of spices like cumin, chili powder, and garlic, served on a hot skillet. These chicken fajitas are perfect for assembling your own tacos or burritos, allowing you to customize each bite with your favorite toppings. The tender, flavorful chicken pairs beautifully with the charred vegetables, creating a delicious and satisfying meal. Served with warm tortillas, salsa, guacamole, and sour cream, this dish is a crowd-pleaser that's perfect for gatherings or family dinners.",
     category: "Main Course",

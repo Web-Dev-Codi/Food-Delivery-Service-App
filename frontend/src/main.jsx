@@ -32,6 +32,7 @@ import ContactUs from "./components/views/ContactUs.jsx";
 import Orders from "./components/Orders.jsx";
 import SingleOrder from "./components/SingleOrder.jsx";
 import CartCheckoutFlow from "./components/cartFlow/CartCheckoutFlowComponent.jsx";
+import Invoice from "./components/Invoice.jsx";
 
 const stripePromise = loadStripe(
 	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
@@ -139,6 +140,11 @@ const router = createBrowserRouter(
 					path="/user-profile"
 					element={<UserProfile />}
 				/>
+				<Route
+				path="/invoice"
+					element={<Invoice />}
+				/>
+
 				<Route
 					path="*"
 					element={<PageNotFound />}
