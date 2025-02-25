@@ -1,9 +1,10 @@
-import React from 'react'
-import { useState,useEffect,useRef } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 function Invoice() {
-    const [cart, setCart] = useState([]);
+    const [cart, setCart] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const invoiceRef = useRef();
@@ -17,8 +18,8 @@ function Invoice() {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                console.log(response.data.data);
-                setCart(response.data.data);
+                console.log("Full API Response:", response.data); // Debug API response
+                setCart(response.data.data);  // Update state
                 setLoading(false);
             } catch (err) {
                 console.log(err);
@@ -27,8 +28,7 @@ function Invoice() {
             }
         };
         fetchCart();
-    }
-    , []);
+    }, []);
 
     const generatePDF = () => {
         const input = invoiceRef.current;
@@ -43,29 +43,19 @@ function Invoice() {
         });
     };
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
-    if (error) {
-        return <p>{error}</p>;
-    }
-    if (!cart) {
-        return <p>No items in the cart</p>;
-    }
-
-    const { items, totalAmount, finalAmount } = cart;
-    const restaurant = items.length > 0 ? items[0].foodItemId.restaurant : null;
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>{error}</p>;
+    if (!cart) return <p>No items in the cart</p>;
 
     return (
         <div className="flex flex-col items-center p-6">
             <div ref={invoiceRef} className="bg-white shadow-lg rounded-lg p-6 w-full max-w-2xl">
                 {/* Restaurant Details */}
-                {restaurant && (
+                {cart.items.length > 0 && cart.items[0].foodItemId.restaurant && (
                     <div className="text-center mb-6">
-                        <img src={restaurant.logo} alt="Restaurant Logo" className="w-20 h-20 mx-auto rounded-full mb-2" />
-                        <h1 className="text-2xl font-bold">{restaurant.name}</h1>
-                        <p className="text-gray-600">{restaurant.address}</p>
-                        <p className="text-gray-600">📞 {restaurant.contact}</p>
+                        <h1 className="text-2xl  text-black font-bold">{cart.items[0].foodItemId.restaurant.name}</h1>
+                        <p className="text-gray-600">{cart.items[0].foodItemId.restaurant.location}</p>
+                        <p className="text-gray-600">📞 {cart.items[0].foodItemId.restaurant.contact}</p>
                     </div>
                 )}
 
@@ -86,12 +76,12 @@ function Invoice() {
                             </tr>
                         </thead>
                         <tbody>
-                            {items.map((item, index) => (
-                                <tr key={index} className="text-center border border-gray-300">
-                                    <td className="border border-gray-300 px-4 py-2">{item.foodItemId.name}</td>
-                                    <td className="border border-gray-300 px-4 py-2">${item.foodItemId.price}</td>
-                                    <td className="border border-gray-300 px-4 py-2">{item.quantity}</td>
-                                    <td className="border border-gray-300 px-4 py-2">${item.subtotal}</td>
+                            {cart.items.map((item, index) => (
+                                <tr key={index} className="text-center border border-gray-300 ">
+                                    <td className="border border-gray-300 px-4 py-2 text-black">{item.foodItemId.name}</td>
+                                    <td className="border border-gray-300 px-4 py-2  text-black">${item.foodItemId.price}</td>
+                                    <td className="border border-gray-300 px-4 py-2  text-black">{item.quantity}</td>
+                                    <td className="border border-gray-300 px-4 py-2  text-black">${item.subtotal}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -103,11 +93,11 @@ function Invoice() {
                 {/* Total Amount */}
                 <div className="flex justify-between items-center text-lg font-semibold text-gray-800">
                     <p>Total Amount:</p>
-                    <p>${totalAmount}</p>
+                    <p>${cart.totalAmount}</p>
                 </div>
                 <div className="flex justify-between items-center text-lg font-semibold text-gray-800">
                     <p>Final Amount:</p>
-                    <p>${finalAmount}</p>
+                    <p>${cart.finalAmount}</p>
                 </div>
             </div>
 

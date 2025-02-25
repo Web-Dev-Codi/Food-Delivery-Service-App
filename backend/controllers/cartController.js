@@ -60,7 +60,7 @@ export const getCartForInvoice = async (req, res) => {
     const cart = await Cart.findOne({ userId }).populate({
       path: "items.foodItemId",
       select: "name price description imageUrl category restaurant", // ✅ Fetch food item details
-      populate: { path: "restaurant", select: "name address contact logo" } // ✅ Fetch restaurant details
+      populate: { path: "restaurant", select: "name location contact" } // ✅ Fetch restaurant details
     })
     .select("items totalAmount finalAmount")
   
