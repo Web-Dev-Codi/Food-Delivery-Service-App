@@ -8,7 +8,7 @@ const menuItems = [
       "A crispy, golden-brown fried pastry filled with a flavorful and spicy mashed potato mixture, seasoned with aromatic spices like cumin, coriander, and garam masala. This popular snack is known for its crunchy exterior and soft, savory interior, making it a delicious treat often enjoyed with chutneys or tea.",
     category: "Starters",
     imageUrl:
-      "https://res.cloudinary.com/difmxsysx/image/upload/v1738584143/samosa_yyuhnl.webp",
+      "https://res.cloudinary.com/difmxsysx/image/upload/v1740566515/icq4qsf1sux3wj0veni9.jpg",
     availability: "Available",
     restaurant: "67a08c18a817ad598a39bd54",
     ratings: 4.5,

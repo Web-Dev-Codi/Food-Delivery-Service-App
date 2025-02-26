@@ -34,6 +34,7 @@ import SingleOrder from "./components/SingleOrder.jsx";
 import CartCheckoutFlow from "./components/cartFlow/CartCheckoutFlowComponent.jsx";
 import Invoice from "./components/Invoice.jsx";
 import UpdateMenuForm from "./components/UpdateMenu.jsx";
+import DeleteMenu from "./components/DeleteMenu.jsx";
 
 const stripePromise = loadStripe(
 	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
@@ -141,6 +142,10 @@ const router = createBrowserRouter(
 				<Route
 				path="/invoice"
 					element={<Invoice />}
+				/>
+				<Route
+				path="/delete-menu"
+					element={<DeleteMenu />}
 				/>
 
 				<Route

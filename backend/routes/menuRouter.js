@@ -10,18 +10,19 @@ import {
 	getMenuByName,
 	updateMenuByName,
 } from "../controllers/Menu.js";
+import { verifyToken, verifyAdmin } from "../middleware/auth.js";
 
 const menuRouter = Router();
 menuRouter.get("/menu/getByName/:name", getMenuByName);
 menuRouter.get("/menu/singlemenu/:id", getMenuById);
 menuRouter.get("/menu/restaurant/:id", getMenusByRestaurant);
-menuRouter.patch("/menu/updateByName/:name", updateMenuByName);
+menuRouter.patch("/menu/updateByName/:name",verifyToken,verifyAdmin, updateMenuByName);
 
 
 menuRouter.get("/menu/:category", getMenusByCategory);
 menuRouter.get("/menu", getMenus);
-menuRouter.post("/menu", addMenu);
-menuRouter.patch("/menu/:id", updateMenu);
-menuRouter.delete("/menu/:id", deleteMenu);
+menuRouter.post("/menu",verifyToken,verifyAdmin ,addMenu);
+menuRouter.patch("/menu/:id",verifyToken,verifyAdmin, updateMenu);
+menuRouter.delete("/menu/:id",verifyToken,verifyAdmin, deleteMenu);
 
 export default menuRouter;

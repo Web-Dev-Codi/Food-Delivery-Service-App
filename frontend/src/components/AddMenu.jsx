@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddMenuForm = () => {
   const [formData, setFormData] = useState({
@@ -19,12 +21,17 @@ const AddMenuForm = () => {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
+           
+
+
         const response = await axios.get(
           "http://localhost:8000/api/restaurants"
+          
         );
         setRestaurants(response.data.data);
       } catch (error) {
         console.error("Error fetching restaurants:", error);
+        toast.error("Failed to load restaurants. Please try again.");
       }
     };
 
@@ -41,7 +48,7 @@ const AddMenuForm = () => {
 
   const openCloudinaryWidget = () => {
     if (!window.cloudinary) {
-      alert("Cloudinary is not loaded properly.");
+      toast.error("Cloudinary is not loaded properly.");
       return;
     }
     const widget = window.cloudinary.createUploadWidget(
@@ -53,29 +60,37 @@ const AddMenuForm = () => {
       },
       (error, result) => {
         if (!error && result && result.event === "success") {
-          console.log("Upload Success:", result.info.secure_url);
+          toast.success("Image uploaded successfully!");
           setFormData((prevData) => ({
             ...prevData,
             imageUrl: result.info.secure_url, // Update image in state
           }));
         } else if (error) {
           console.error("Upload Error:", error);
-          alert("Image upload failed. Please try again.");
+          toast.error("Image upload failed. Please try again.");
         }
       }
     );
-  
+
     widget.open();
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8000/food/menu",
-        formData
-      );
-      console.log("Menu added successfully:", response.data.data);
-      alert("Menu added successfully!");
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Unauthorized. Please login.");
+        return;
+      }
+      await axios.post("http://localhost:8000/food/menu", 
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      toast.success("Menu added successfully!");
       // Reset form after submission
       setFormData({
         name: "",
@@ -90,7 +105,7 @@ const AddMenuForm = () => {
       });
     } catch (error) {
       console.error("Error adding menu:", error);
-      alert("Failed to add menu. Please try again.");
+      toast.error("Failed to add menu. Please try again.");
     }
   };
 
@@ -102,9 +117,7 @@ const AddMenuForm = () => {
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="p-1 block font-bold text-neutral-100">
-              Name:
-            </label>
+            <label className="p-1 block font-bold text-neutral-100">Name:</label>
             <input
               type="text"
               id="name"
@@ -112,14 +125,12 @@ const AddMenuForm = () => {
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
             />
           </div>
 
           <div>
-            <label className="p-1 block font-bold text-neutral-100">
-              Price:
-            </label>
+            <label className="p-1 block font-bold text-neutral-100">Price:</label>
             <input
               type="number"
               id="price"
@@ -128,7 +139,7 @@ const AddMenuForm = () => {
               onChange={handleChange}
               min="1"
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
             />
           </div>
 
@@ -143,7 +154,7 @@ const AddMenuForm = () => {
               value={formData.short_desc}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
             />
           </div>
 
@@ -157,21 +168,19 @@ const AddMenuForm = () => {
               value={formData.description}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
             />
           </div>
 
           <div>
-            <label className="p-1 block font-bold text-neutral-100">
-              Category:
-            </label>
+            <label className="p-1 block font-bold text-neutral-100">Category:</label>
             <select
               id="category"
               name="category"
               value={formData.category}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
             >
               <option value="">Select Category</option>
               <option value="Main Course">Main Course</option>
@@ -183,13 +192,11 @@ const AddMenuForm = () => {
 
           {/* Image Upload */}
           <div>
-            <label className="p-1 block font-bold text-neutral-100">
-              Image:
-            </label>
+            <label className="p-1 block font-bold text-neutral-100">Image:</label>
             <button
               type="button"
               onClick={openCloudinaryWidget}
-              className="mt-2 w-full py-2  bg-orange-700 font-bold text-white rounded-lg hover:bg-orange-600"
+              className="mt-2 w-full py-2 bg-orange-700 font-bold text-white rounded-lg hover:bg-orange-600"
             >
               Upload Image
             </button>
@@ -205,51 +212,14 @@ const AddMenuForm = () => {
           </div>
 
           <div>
-            <label className="p-1 block font-bold text-neutral-100">
-              Availability:
-            </label>
-            <select
-              id="availability"
-              name="availability"
-              value={formData.availability}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
-            >
-              <option value="Available">Available</option>
-              <option value="Not Available">Not Available</option>
-            </select>
-          </div>
-          <div>
-            <label className="p-1 block font-bold text-neutral-100">
-              Ratings (0-5):
-            </label>
-            <input
-              type="number"
-              id="ratings"
-              name="ratings"
-              value={formData.ratings}
-              onChange={handleChange}
-              min="0"
-              max="5"
-              required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
-            />
-          </div>
-
-          {/* Hey; I just add extra div here to recover the dropdown option */}
-
-          <div>
-            <label className="p-1 block font-bold text-neutral-100">
-              Restaurant:
-            </label>
+            <label className="p-1 block font-bold text-neutral-100">Restaurant:</label>
             <select
               id="restaurant"
               name="restaurant"
               value={formData.restaurant}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
             >
               <option value="">Select Restaurant</option>
               {restaurants.map((restaurant) => (
@@ -268,6 +238,9 @@ const AddMenuForm = () => {
           </button>
         </form>
       </div>
+
+      {/* Toast Notifications (Bottom Right) */}
+      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
     </div>
   );
 };
