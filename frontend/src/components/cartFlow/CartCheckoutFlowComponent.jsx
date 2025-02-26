@@ -214,7 +214,7 @@ const CartCheckoutFlow = () => {
 				<ul className="space-y-4">
 					{state.cart?.items?.map((item) => (
 						<CartItems
-							key={item.foodItemId._id}
+							key={item.foodItemId?._id}
 							item={item}
 							onQuantityChange={handleQuantityChange}
 							onRemoveClick={handleRemoveClick}
