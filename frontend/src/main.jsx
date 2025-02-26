@@ -33,6 +33,7 @@ import Orders from "./components/Orders.jsx";
 import SingleOrder from "./components/SingleOrder.jsx";
 import CartCheckoutFlow from "./components/cartFlow/CartCheckoutFlowComponent.jsx";
 import Invoice from "./components/Invoice.jsx";
+import UpdateMenuForm from "./components/UpdateMenu.jsx";
 
 const stripePromise = loadStripe(
 	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
@@ -91,18 +92,11 @@ const router = createBrowserRouter(
 						path="single-order/:id"
 						element={<SingleOrder />}
 					/>
+					
 				</Route>
 				<Route
 					path="/menu/:id"
 					element={<SingleMenu />}
-				/>
-				<Route
-					path="/coupons"
-					element={<AddCoupons />}
-				/>
-				<Route
-					path="/restaurants/add"
-					element={<AddRestaurant />}
 				/>
 				<Route
 					path="/restaurants"
@@ -120,6 +114,10 @@ const router = createBrowserRouter(
 					path="/checkout"
 					element={<CartCheckoutFlow />}
 				/>
+				<Route
+						path="/update-menu"
+						element={<UpdateMenuForm />}
+					/>
 				<Route
 					path="/forgot-password"
 					element={<ForgotPassword />}

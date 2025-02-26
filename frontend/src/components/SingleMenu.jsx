@@ -4,6 +4,7 @@ import { UtensilsCrossed } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import { toast, Bounce } from "react-toastify";
+import {FaStar,FaStarHalfAlt, FaRegStar} from "react-icons/fa";
 
 function SingleMenu() {
 	const { id } = useParams();
@@ -87,6 +88,24 @@ function SingleMenu() {
 			setIsLoading(false);
 		}
 	};
+		// Render Star Rating
+		const renderStars = (rating) => {
+			const fullStars = Math.floor(rating);
+			const halfStar = rating % 1 !== 0;
+			const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+			return (
+				<div className="flex items-center text-yellow-500">
+					{[...Array(fullStars)].map((_, i) => (
+						<FaStar key={i} className="text-lg" />
+					))}
+					{halfStar && <FaStarHalfAlt className="text-lg" />}
+					{[...Array(emptyStars)].map((_, i) => (
+						<FaRegStar key={i} className="text-lg" />
+					))}
+				</div>
+			);
+		};
 
 	// Conditional Rendering
 	if (loading) {
@@ -106,8 +125,8 @@ function SingleMenu() {
 	}
 
 	return (
-		<div>
-			<div className="bg-gradient-to-t from-neutral-900 via-[#050407] to-[#4d4c4d] p-2 py-4 sm:p-4 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto overflow-hidden">
+		<div className="flex justify-center items-center h-screen">
+			<div className="bg-gradient-to-t from-neutral-900 via-[#050407] to-[#4d4c4d] p-2  py-4 sm:p-4 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto overflow-hidden">
 				<div className=" bg-neutral-800/10 backdrop-blur-md p-8 rounded-lg shadow-lg w-full max-w-md mx-auto border border-neutral-600 ">
 					<h2 className="text-2xl font-bold text-center text-neutral-100 mb-4 ">
 						{menu.name}
@@ -130,7 +149,15 @@ function SingleMenu() {
 							{menu.description}
 						</span>
 					</p>
-					{/* Availability is hacked with the ternary condition if available or not. It is also styled with inline red or green color */}
+					<p className="text-green-600 mb-2">
+					<strong>Category:</strong>{" "}
+					<span className="text-neutral-100">{menu.category}</span>
+				</p>
+					{/* Rating (with Stars) */}
+					<p className="text-green-600 mb-2 flex items-center">
+					<strong className="mr-2">Rating:</strong> {renderStars(menu.ratings)}
+				</p>
+				{/* Availability is hacked with the ternary condition if available or not. It is also styled with inline red or green color */}
 					<p className="mb-2">
 						<strong>Availability:</strong>{" "}
 						<span

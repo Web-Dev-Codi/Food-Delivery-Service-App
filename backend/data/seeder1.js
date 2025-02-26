@@ -899,18 +899,6 @@ const menuItems = [
     restaurant: "67a08f0fa817ad598a39bd5a",
     ratings: 4.5,
   },
-  {
-    name: "Samosa",
-    price: 5,
-    short_desc: "Crispy fried pastry filled with spiced potatoes",
-    description:
-      "A crispy, golden-brown fried pastry filled with a flavorful and spicy mashed potato mixture, seasoned with aromatic spices like cumin, coriander, and garam masala. This popular snack is known for its crunchy exterior and soft, savory interior, making it a delicious treat often enjoyed with chutneys or tea.",
-    category: "Starters",
-    imageUrl:
-      "https://res.cloudinary.com/difmxsysx/image/upload/v1738584143/samosa_yyuhnl.webp",
-    availability: "Available",
-    restaurant: "67a08c18a817ad598a39bd54",
-    ratings: 4.5,
-  },
+  
 ];
 export default menuItems;
