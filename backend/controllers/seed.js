@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 // import FoodItem from "../models/menuSchema.js";
-import menuItems from "../data/seeder.js";
+import menuItems from "../data/seeder1.js";
+import FoodItem from "../models/FoodItem.js";
 
 
 

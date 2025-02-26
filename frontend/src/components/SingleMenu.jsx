@@ -4,6 +4,7 @@ import { UtensilsCrossed } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import { toast, Bounce } from "react-toastify";
+import {FaStar,FaStarHalfAlt, FaRegStar} from "react-icons/fa";
 
 function SingleMenu() {
 	const { id } = useParams();
@@ -87,6 +88,24 @@ function SingleMenu() {
 			setIsLoading(false);
 		}
 	};
+		// Render Star Rating
+		const renderStars = (rating) => {
+			const fullStars = Math.floor(rating);
+			const halfStar = rating % 1 !== 0;
+			const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+			return (
+				<div className="flex items-center text-yellow-500">
+					{[...Array(fullStars)].map((_, i) => (
+						<FaStar key={i} className="text-lg" />
+					))}
+					{halfStar && <FaStarHalfAlt className="text-lg" />}
+					{[...Array(emptyStars)].map((_, i) => (
+						<FaRegStar key={i} className="text-lg" />
+					))}
+				</div>
+			);
+		};
 
 	// Conditional Rendering
 	if (loading) {
@@ -130,7 +149,15 @@ function SingleMenu() {
 							{menu.description}
 						</span>
 					</p>
-					{/* Availability is hacked with the ternary condition if available or not. It is also styled with inline red or green color */}
+					<p className="text-green-600 mb-2">
+					<strong>Category:</strong>{" "}
+					<span className="text-neutral-100">{menu.category}</span>
+				</p>
+					{/* Rating (with Stars) */}
+					<p className="text-green-600 mb-2 flex items-center">
+					<strong className="mr-2">Rating:</strong> {renderStars(menu.ratings)}
+				</p>
+				{/* Availability is hacked with the ternary condition if available or not. It is also styled with inline red or green color */}
 					<p className="mb-2">
 						<strong>Availability:</strong>{" "}
 						<span

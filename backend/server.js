@@ -21,12 +21,12 @@ const app = express();
 
 // ✅ Enable CORS for frontend requests
 app.use(
-  cors({
-    origin: "http://localhost:5173", // Replace with your front-end URL
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-    allowedHeaders: "Content-Type, Authorization",
-  }),
+	cors({
+		origin: "http://localhost:5173", // Replace with your front-end URL
+		methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
+		credentials: true,
+		allowedHeaders: "Content-Type, Authorization",
+	})
 );
 
 // ✅ Webhook route - MUST use `express.raw()` BEFORE `express.json()`
