@@ -10,7 +10,6 @@ import {
   FaAddressCard,
   FaArrowCircleRight,
 } from "react-icons/fa";
-import { ExternalLink } from "lucide-react";
 
 const Dashboard = () => {
   const [isHovered, setIsHovered] = useState(false);

@@ -5,7 +5,6 @@ import {
   FaConciergeBell,
   FaTags,
   FaFileInvoiceDollar,
-  FaPagelines,
   FaTimes,
   FaBarcode,
   FaAddressCard,
