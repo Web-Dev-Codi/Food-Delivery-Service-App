@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import logo from "../assets/images/logo.png"; // Import your logo
-//import ffe1 from "../assets/images/ffe1.jpg"; // Import your food image
-import form1Animation from "../assets/animations/form1Animation.json";
-import Lottie from "lottie-react";
+import ffe1 from "../assets/images/ffe1.jpg"; // Import your food image
+//import form1Animation from "../assets/animations/form1Animation.json";
+//import Lottie from "lottie-react";
 
 
 function LoginForm() {
@@ -63,12 +63,15 @@ function LoginForm() {
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
         <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
           
-        <Lottie
+        {/* <Lottie
 									animationData={form1Animation}
 									loop={true}
 									autoPlay={true}
 									className="w-full h-full"
-								/>
+								/> */}
+
+
+                < img src= {ffe1} alt = "image" className =  "w-full h-full rounded-2xl object-cover" />
         </aside>
 
         <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
@@ -104,7 +107,7 @@ function LoginForm() {
                 <input
                   type="email"
                   required
-                  className="w-full px-4 py-3 border border-[hsl(24,33%,97%)] rounded-xl bg-gray-700 
+                  className="w-full px-4 py-3 border border-[hsl(24,33%,97%)] rounded-xl bg-black/40
                   text-white outline-none focus:ring-2 focus:ring-[rgb(231,228,225)] focus:border-[rgb(250,248,246)]"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -118,7 +121,7 @@ function LoginForm() {
                 <input
                   type={showPassword ? "text" : "password"}
                   required
-                  className="w-full px-4 py-3 border border-[hsl(26,23%,94%)] rounded-xl bg-gray-700 
+                  className="w-full px-4 py-3 border border-[hsl(26,23%,94%)] rounded-xl bg-black/40
                   text-white outline-none focus:ring-2 focus:ring-[rgb(241,239,237)] focus:border-[rgb(252,251,250)] pr-10"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

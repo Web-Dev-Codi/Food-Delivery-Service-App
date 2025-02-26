@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import logo from "../assets/images/logo.png"; // Import your logo
-import ffe1 from "../assets/images/ffe1.jpg"; // Import your background image
+import logo from "../assets/images/logo.png";
+import ffe1 from "../assets/images/ffe1.jpg";
 
 function SignupForm() {
   const [name, setName] = useState("");
@@ -44,12 +44,10 @@ function SignupForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black/40 backdrop-blur-lg">
-      <div className="lg:flex lg:min-h-screen w-full">
-        {/* Left side: Form */}
-        <div className="flex-1 flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6 flex-col">
-          <div className="max-w-xl lg:max-w-3xl w-full">
-            {/* Logo Section */}
+    <div className="min-h-screen flex items-center justify-center px-4 sm:px-8 md:px-12 bg-black/40 backdrop-blur-lg">
+      <div className="flex flex-col lg:flex-row w-full max-w-7xl shadow-xl rounded-2xl overflow-hidden">
+        <div className="flex-1 flex flex-col items-center justify-center p-6 sm:p-12 lg:p-16 bg-black/40">
+          <div className="w-full max-w-lg">
             <div className="flex justify-center mb-6">
               <img
                 src={logo}
@@ -57,8 +55,7 @@ function SignupForm() {
                 className="h-20 w-20 rounded-full border-4 border-yellow-500 shadow-xl transform hover:scale-110 transition duration-300"
               />
             </div>
-
-            <h2 className="text-3xl font-bold text-center text-white mb-6">
+            <h2 className="text-2xl sm:text-3xl font-bold text-center text-white mb-6">
               Join the FoodieExpress Community!
             </h2>
 
@@ -69,123 +66,88 @@ function SignupForm() {
               <div className="mb-4 text-red-600">{errorMessage}</div>
             )}
 
-            <form
-              className="bg-black/80 p-10 rounded-2xl shadow-xl w-full"
-              onSubmit={handleSubmit}
-            >
-              {/* Grid layout for large screens */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* Full Name */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-white">Full Name</label>
-                  <input
-                    type="text"
-                    required
-                    className="w-full px-4 py-3 border border-white rounded-xl bg-gray-700 text-white outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-
-                {/* Email */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-white">Email</label>
-                  <input
-                    type="email"
-                    required
-                    className="w-full px-4 py-3 border border-white rounded-xl bg-gray-700 text-white outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-
-                {/* Contact Number */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-white">Contact Number</label>
-                  <input
-                    type="text"
-                    required
-                    className="w-full px-4 py-3 border border-white rounded-xl bg-gray-700 text-white outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                    value={contact}
-                    onChange={(e) => setContact(e.target.value)}
-                  />
-                </div>
-
-                {/* Street Address */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-white">Street Address</label>
-                  <input
-                    type="text"
-                    required
-                    className="w-full px-4 py-3 border border-white rounded-xl bg-gray-700 text-white outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                    value={street}
-                    onChange={(e) => setStreet(e.target.value)}
-                  />
-                </div>
-
-                {/* City */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-white">City</label>
-                  <input
-                    type="text"
-                    required
-                    className="w-full px-4 py-3 border border-white rounded-xl bg-gray-700 text-white outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                  />
-                </div>
-
-                {/* Zip Code */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-white">Zip Code</label>
-                  <input
-                    type="text"
-                    required
-                    className="w-full px-4 py-3 border border-white rounded-xl bg-gray-700 text-white outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-                    value={zipCode}
-                    onChange={(e) => setZipCode(e.target.value)}
-                  />
-                </div>
-
-                {/* Password Field */}
-                <div className="mb-6 relative col-span-2">
-                  <label className="block text-sm font-medium text-white">Password</label>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    required
-                    className="w-full px-4 py-3 border border-white rounded-xl bg-gray-700 text-white outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 pr-10"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <span
-                    className="absolute right-3 top-8 cursor-pointer text-white"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </span>
-                </div>
-
-                {/* Remember Me */}
-                <div className="flex justify-between items-center mb-4 col-span-2">
-                  <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={rememberMe}
-                      onChange={() => setRememberMe(!rememberMe)}
-                      className="mr-2"
-                    />
-                    <label className="text-sm text-white">Remember Me</label>
-                  </div>
-                </div>
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  required
+                  className="input-field"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  required
+                  className="input-field"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Contact Number"
+                  required
+                  className="input-field"
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Street Address"
+                  required
+                  className="input-field"
+                  value={street}
+                  onChange={(e) => setStreet(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="City"
+                  required
+                  className="input-field"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Zip Code"
+                  required
+                  className="input-field"
+                  value={zipCode}
+                  onChange={(e) => setZipCode(e.target.value)}
+                />
               </div>
-
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  required
+                  className="input-field pr-10"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <span
+                  className="absolute right-3 top-3 cursor-pointer text-white"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={() => setRememberMe(!rememberMe)}
+                  className="h-4 w-4"
+                />
+                <label className="text-white text-sm">Remember Me</label>
+              </div>
               <button
                 type="submit"
-                className="w-full py-3 bg-yellow-500 text-black rounded-xl hover:bg-yellow-600 transition duration-300"
+                className="w-full py-3 bg-[#f97316] text-black rounded-xl hover:bg-yellow-600 transition duration-300"
               >
                 Sign Up
               </button>
-
               <p className="text-center mt-4 text-white">
                 Already have an account?{" "}
                 <button
@@ -199,19 +161,10 @@ function SignupForm() {
             </form>
           </div>
         </div>
-
-        {/* Right side: Image */}
         <div
-          className="lg:flex-1 hidden lg:block"
-          style={{
-            backgroundImage: `url(${ffe1})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            minHeight: "100vh",
-          }}
-        >
-          {/* Image Section */}
-        </div>
+          className="hidden lg:flex lg:w-1/2 bg-cover bg-center"
+          style={{ backgroundImage: `url(${ffe1})` }}
+        ></div>
       </div>
     </div>
   );
