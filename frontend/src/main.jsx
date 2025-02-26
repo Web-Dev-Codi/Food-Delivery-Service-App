@@ -99,14 +99,6 @@ const router = createBrowserRouter(
 					element={<SingleMenu />}
 				/>
 				<Route
-					path="/coupons"
-					element={<AddCoupons />}
-				/>
-				<Route
-					path="/restaurants/add"
-					element={<AddRestaurant />}
-				/>
-				<Route
 					path="/restaurants"
 					element={<ListRestaurant />}
 				/>

@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+import { Plus, Minus } from "lucide-react";
+import { toast, Bounce } from "react-toastify";
 
 function CartItems({ item, onQuantityChange, onRemoveClick, isProcessed }) {
 	return (
@@ -30,12 +32,26 @@ function CartItems({ item, onQuantityChange, onRemoveClick, isProcessed }) {
 						onClick={() =>
 							onQuantityChange(
 								item.foodItemId?._id,
-								Math.max(1, item.quantity - 1)
+								Math.max(1, item.quantity - 1),
+								toast.warning(
+									`Removed 1x ${item.foodItemId?.name} from cart`,
+									{
+										position: "bottom-right",
+										autoClose: 3000,
+										hideProgressBar: false,
+										closeOnClick: false,
+										pauseOnHover: true,
+										draggable: false,
+										transition: Bounce,
+										theme: "dark",
+										icon: <Minus />,
+									}
+								)
 							)
 						}
 						className="px-3 py-1 text-gray-600 hover:bg-gray-100"
 						disabled={isProcessed}>
-						-
+						<Minus />
 					</button>
 					<span className="px-3 py-1">{item.quantity}</span>
 					{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
@@ -43,12 +59,26 @@ function CartItems({ item, onQuantityChange, onRemoveClick, isProcessed }) {
 						onClick={() =>
 							onQuantityChange(
 								item.foodItemId?._id,
-								item.quantity + 1
+								item.quantity + 1,
+								toast.success(
+									`Added 1x ${item.foodItemId?.name} to cart`,
+									{
+										position: "bottom-right",
+										autoClose: 3000,
+										hideProgressBar: false,
+										closeOnClick: false,
+										pauseOnHover: true,
+										draggable: false,
+										transition: Bounce,
+										theme: "dark",
+										icon: <Plus />,
+									}
+								)
 							)
 						}
 						className="px-3 py-1 text-gray-600 hover:bg-gray-100"
 						disabled={isProcessed}>
-						+
+						<Plus />
 					</button>
 				</div>
 				{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
