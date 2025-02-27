@@ -1,8 +1,8 @@
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
+	createBrowserRouter,
+	createRoutesFromElements,
+	Route,
+	RouterProvider,
 } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -35,10 +35,10 @@ import CartCheckoutFlow from "./components/cartFlow/CartCheckoutFlowComponent.js
 import Invoice from "./components/Invoice.jsx";
 import UpdateMenuForm from "./components/UpdateMenu.jsx";
 import DeleteMenu from "./components/DeleteMenu.jsx";
-import CheckoutForm from "./components/CheckoutForm.jsx";
+// import CheckoutForm from "./components/CheckoutForm.jsx";
 
 const stripePromise = loadStripe(
-  "pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
+	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
 );
 
 const router = createBrowserRouter(
@@ -71,13 +71,30 @@ const router = createBrowserRouter(
 						</Elements>
 					}
 				/>
-			 <Route path="/dashboard" element={<Dashboard />}>
-          <Route path="restaurants/add" element={<AddRestaurant />} />
-          <Route path="add-menu" element={<AddMenu />} />
-          <Route path="coupons" element={<AddCoupons />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="single-order/:id" element={<SingleOrder />} />
-        </Route>
+				<Route
+					path="/dashboard"
+					element={<Dashboard />}>
+					<Route
+						path="restaurants/add"
+						element={<AddRestaurant />}
+					/>
+					<Route
+						path="add-menu"
+						element={<AddMenu />}
+					/>
+					<Route
+						path="coupons"
+						element={<AddCoupons />}
+					/>
+					<Route
+						path="orders"
+						element={<Orders />}
+					/>
+					<Route
+						path="single-order/:id"
+						element={<SingleOrder />}
+					/>
+				</Route>
 				<Route
 					path="/menu/:id"
 					element={<SingleMenu />}
@@ -99,9 +116,9 @@ const router = createBrowserRouter(
 					element={<CartCheckoutFlow />}
 				/>
 				<Route
-						path="/update-menu"
-						element={<UpdateMenuForm />}
-					/>
+					path="/update-menu"
+					element={<UpdateMenuForm />}
+				/>
 				<Route
 					path="/forgot-password"
 					element={<ForgotPassword />}
@@ -115,27 +132,27 @@ const router = createBrowserRouter(
 					element={<ContactUs />}
 				/>
 				<Route
-						path="/orders"
-						element={<Orders />}
-					/>
-					<Route
-						path="/single-order/:id"
-						element={<SingleOrder />}
-					/>
+					path="/orders"
+					element={<Orders />}
+				/>
+				<Route
+					path="/single-order/:id"
+					element={<SingleOrder />}
+				/>
 				<Route
 					path="/reset-password/:token"
 					element={<ResetPasswordPage />}
 				/>
 				<Route
-					path="/user-profile"
+					path="/profile/:userId"
 					element={<UserProfile />}
 				/>
 				<Route
-				path="/invoice"
+					path="/invoice"
 					element={<Invoice />}
 				/>
 				<Route
-				path="/delete-menu"
+					path="/delete-menu"
 					element={<DeleteMenu />}
 				/>
 
@@ -149,7 +166,7 @@ const router = createBrowserRouter(
 );
 
 createRoot(document.getElementById("root")).render(
-  <CartProvider>
-    <RouterProvider router={router} />
-  </CartProvider>
+	<CartProvider>
+		<RouterProvider router={router} />
+	</CartProvider>
 );

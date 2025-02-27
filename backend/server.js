@@ -40,7 +40,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoutes);
 app.use("/payment", paymentRoutes); //paymentRouter
-app.use("/", router); //userRouter
+app.use("/", router); 
 app.use("/data", userRouter); //userRouter
 app.use("/cart", cartRouter);
 app.use("/order", orderRouter);

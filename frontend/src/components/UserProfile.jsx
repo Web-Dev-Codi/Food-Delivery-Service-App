@@ -1,14 +1,9 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
 	User,
-	MapPin,
-	// CreditCard,
-	// Clock,
-	// ShoppingBag,
-	// Heart,
-	// Settings,
-	// Gift,
-	// Star,
 	Bell,
 	Share2,
 	HelpCircle,
@@ -17,30 +12,77 @@ import {
 	Edit2,
 	Plus,
 } from "lucide-react";
+import EditableAddress from "./EditableAddress";
 
 const UserProfile = () => {
+	const { userId } = useParams();
+	const navigate = useNavigate();
 	const [activeTab, setActiveTab] = useState("profile");
+	const [userData, setUserData] = useState({
+		name: "",
+		email: "",
+		contact: "",
+		address: { street: "", city: "", zipCode: "" },
+	});
+	const [error, setError] = useState(null);
+
+
+
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				const token = localStorage.getItem("token");
+
+				if (!token) {
+					setError("No authentication token found");
+					navigate("/login");
+					return;
+				}
+
+				if (!userId) {
+					setError("No user ID provided");
+					navigate("/");
+					return;
+				}
+
+				const response = await axios.get(
+					`http://localhost:8000/data/users/${userId}`,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+							"Content-Type": "application/json",
+						},
+					}
+				);
+
+				const data = response.data.data;
+				if (!data) {
+					throw new Error("User not found");
+				}
+
+				setUserData(data);
+				console.log("User data:", data);
+			} catch (error) {
+				console.error("Error fetching user data:", error);
+				setError(error.response?.data?.message);
+			}
+		};
+		fetchUserData();
+	}, []);
+
+	// Update address in state
+	const handleAddressUpdate = (updatedAddress) => {
+		if (!userData?.address) return;
+
+		setUserData((prevData) => ({
+			...prevData,
+			address: updatedAddress,
+		}));
+	};
 
 	// Mock data - would come from API in real app
-	const userData = {
-		name: "Brian Cordisco",
-		email: "brian.cordisco@example.com",
-		phone: "(555) 123-4567",
+	const user = {
 		profilePic: "https://placehold.co/600x400",
-		addresses: [
-			{
-				id: 1,
-				name: "Home",
-				address: "123 Main St, Apt 4B, New York, NY 10001",
-				isDefault: true,
-			},
-			{
-				id: 2,
-				name: "Work",
-				address: "456 Business Ave, Suite 300, New York, NY 10002",
-				isDefault: false,
-			},
-		],
 		paymentMethods: [
 			{ id: 1, type: "Visa", last4: "4242", isDefault: true },
 			{ id: 2, type: "Mastercard", last4: "5678", isDefault: false },
@@ -81,6 +123,11 @@ const UserProfile = () => {
 
 	return (
 		<div className="max-w-4xl mx-auto bg-black/40 backdrop-blur-lg rounded-lg shadow-lg p-4 min-h-screen pb-20 sm:pb-24 lg:pb-32 border-1 border-black">
+			{error && (
+				<div className="bg-red-500/10 border border-red-500 text-red-500 p-4 rounded-lg mb-4">
+					{error}
+				</div>
+			)}
 			{/* Header */}
 			<div className="bg-[#D84418] shadow-md rounded-t-lg">
 				<div className="px-4 py-6 sm:px-6 lg:px-8">
@@ -92,7 +139,7 @@ const UserProfile = () => {
 			<div className="p-4 sm:p-6 lg:p-8 border-b border-[#D84418]/30">
 				<div className="flex flex-col sm:flex-row items-center">
 					<img
-						src={userData.profilePic}
+						src={userData?.profilePic || user.profilePic}
 						alt="Profile"
 						className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover mb-4 sm:mb-0 sm:mr-6 border-2 border-[#D84418]"
 					/>
@@ -100,13 +147,13 @@ const UserProfile = () => {
 						<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
 							<div>
 								<h2 className="text-xl font-semibold text-white">
-									{userData.name}
+									{userData?.name || "Loading..."}
 								</h2>
 								<p className="text-gray-400 mt-1">
-									{userData.email}
+									{userData?.email || "Loading..."}
 								</p>
 								<p className="text-gray-400 mt-1">
-									{userData.phone}
+									{userData?.contact || "Loading..."}
 								</p>
 							</div>
 							<button className="mt-3 sm:mt-0 inline-flex items-center text-[#D84418] hover:text-[#FF6B6B] transition-colors">
@@ -153,10 +200,10 @@ const UserProfile = () => {
 			</div>
 
 			{/* Active Orders Section */}
-			{userData.activeOrders.length > 0 && (
+			{user.activeOrders.length > 0 && (
 				<div className=" p-4 sm:p-6 lg:p-8 border-b border-[#D84418]/30">
 					<div className="space-y-4">
-						{userData.activeOrders.map((order) => (
+						{user.activeOrders.map((order) => (
 							<div
 								key={order.id}
 								className="bg-[#1A1A1A] rounded-lg p-4 sm:p-6 border border-[#D84418]/30">
@@ -198,31 +245,15 @@ const UserProfile = () => {
 					</button>
 				</div>
 				<div className="space-y-4">
-					{userData.addresses.map((address) => (
-						<div
-							key={address.id}
-							className="border rounded-lg p-4 hover:border-[#D84418] transition-colors border-[#D84418]/30">
-							<div className="flex justify-between items-start">
-								<div className="flex items-start space-x-3">
-									<MapPin
-										className="text-[#D84418] mt-1"
-										size={20}
-									/>
-									<div>
-										<h4 className="font-medium text-white">
-											{address.name}
-										</h4>
-										<p className="text-gray-400 text-sm">
-											{address.address}
-										</p>
-									</div>
-								</div>
-								<button className="text-[#D84418] hover:text-[#FF6B6B] transition-colors">
-									<Edit2 size={18} />
-								</button>
-							</div>
-						</div>
-					))}
+					{userData?.address ? (
+						<EditableAddress
+							key={userData?._id}
+							address={userData?.address}
+							onUpdate={handleAddressUpdate}
+						/>
+					) : (
+						<p className="text-gray-400">No address found</p>
+					)}
 				</div>
 			</div>
 
@@ -234,7 +265,7 @@ const UserProfile = () => {
 					</h3>
 					<div className="flex items-center justify-between">
 						<p className="text-4xl font-bold bg-gradient-to-r from-[#D84418] to-[#FF6B6B] bg-clip-text text-transparent">
-							{userData.loyaltyPoints}
+							{userData.loyaltyPoints || 0}
 						</p>
 						<button className="px-4 py-2 bg-[#D84418] text-white rounded-lg hover:opacity-90 transition-opacity">
 							View Rewards
@@ -251,7 +282,7 @@ const UserProfile = () => {
 						<h3 className="text-lg font-semibold text-white mb-3">
 							Favorites
 						</h3>
-						{userData.favorites.map((fav) => (
+						{user.favorites.map((fav) => (
 							<div
 								key={fav.id}
 								className="border-b border-gray-100 py-2 last:border-0">
@@ -282,7 +313,7 @@ const UserProfile = () => {
 							</button>
 						</div>
 						<div className="flex flex-wrap gap-2">
-							{userData.dietaryPreferences.map((pref, index) => (
+							{user.dietaryPreferences.map((pref, index) => (
 								<span
 									key={index}
 									className="bg-gray-100 text-black px-3 py-1 rounded-full text-sm">
@@ -302,7 +333,7 @@ const UserProfile = () => {
 						<h3 className="text-lg font-semibold text-white mb-3">
 							Order History
 						</h3>
-						{userData.orderHistory.map((order) => (
+						{user.orderHistory.map((order) => (
 							<div
 								key={order.id}
 								className="border-b border-gray-100 py-3 last:border-0">
