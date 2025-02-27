@@ -2,202 +2,216 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import logo from "../assets/images/logo.png";
+//import ffe1 from "../assets/images/ffe1.jpg";
+import foodBoy1 from "../assets/animations/foodBoy1.json";
+import Lottie from "lottie-react";
 
 function SignupForm() {
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [contact, setContact] = useState("");
-	const [street, setStreet] = useState("");
-	const [city, setCity] = useState("");
-	const [zipCode, setZipCode] = useState("");
-	const [password, setPassword] = useState("");
-	const [showPassword, setShowPassword] = useState(false);
-	const [rememberMe, setRememberMe] = useState(false);
-	const [successMessage, setSuccessMessage] = useState("");
-	const [errorMessage, setErrorMessage] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [contact, setContact] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		try {
-			const res = await axios.post("http://localhost:8000/data/create", {
-				name,
-				email,
-				contact,
-				address: { street, city, zipCode },
-				password,
-			});
-			localStorage.setItem("token", res.data.token);
-			if (rememberMe) {
-				localStorage.setItem(
-					"rememberMe",
-					JSON.stringify({ email, password })
-				);
-			}
-			setSuccessMessage(res.data.message);
-			setErrorMessage("");
-			setTimeout(() => navigate("/login"), 2000);
-		} catch (err) {
-			setErrorMessage(err.response?.data?.message || "Signup failed");
-			setSuccessMessage("");
-		}
-	};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:8000/data/create", {
+        name,
+        email,
+        contact,
+        address: { street, city, zipCode },
+        password,
+      });
+      localStorage.setItem("token", res.data.token);
+      if (rememberMe) {
+        localStorage.setItem("rememberMe", JSON.stringify({ email, password }));
+      }
+      setSuccessMessage(res.data.message);
+      setErrorMessage("");
+      setTimeout(() => navigate("/login"), 2000);
+    } catch (err) {
+      setErrorMessage(err.response?.data?.message || "Signup failed");
+      setSuccessMessage("");
+    }
+  };
 
-	axios
-		.post("http://localhost:5173/data/create", {
-			name,
-			email,
-			contact,
-			address: { street, city, zipCode },
-			password,
-		})
-		.then((res) => {
-			localStorage.setItem("token", res.data.token);
-			setSuccessMessage(res.data.message);
-			setErrorMessage("");
-			console.log(res.data);
-		})
-		.catch((err) => {
-			setErrorMessage(err.response.data.message);
-			setSuccessMessage("");
-			console.error(err);
-		});
+  return (
+    <div className="min-h-screen flex items-center justify-center px-4 sm:px-8 md:px-12 bg-black/40 backdrop-blur-lg">
+      <div className="flex flex-col lg:flex-row w-full max-w-7xl shadow-xl rounded-2xl overflow-hidden">
+        <div className="flex-1 flex flex-col items-center justify-center p-6 sm:p-12 lg:p-16 bg-black/40">
+          <div className="w-full max-w-7xl">
+            <div className="flex justify-center mb-6">
+              <img
+                src={logo}
+                alt="Logo"
+                className="h-20 w-20 rounded-full border-4 border-yellow-500 shadow-xl transform hover:scale-110 transition duration-300"
+              />
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-center text-white mb-6">
+              Join the FoodieExpress Community!
+            </h2>
 
-	return (
-		<div className="min-h-screen flex items-center justify-center bg-gray-100">
-			<form
-				className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
-				onSubmit={handleSubmit}>
-				<h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
-					Sign Up
-				</h2>
-				{successMessage && (
-					<div className="mb-4 text-green-600">{successMessage}</div>
-				)}
-				{errorMessage && (
-					<div className="mb-4 text-red-600">{errorMessage}</div>
-				)}
+            {successMessage && (
+              <div className="mb-4 text-green-600">{successMessage}</div>
+            )}
+            {errorMessage && (
+              <div className="mb-4 text-red-600">{errorMessage}</div>
+            )}
 
-				<div className="mb-4">
-					<label className="block text-sm font-medium text-gray-600">
-						Name
-					</label>
-					<input
-						type="text"
-						required
-						className="w-full px-4 py-2 border rounded-lg"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-					/>
-				</div>
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {/* Full Name Field */}
+                <div>
+                  <label className="text-white block mb-2">Full Name</label>
+                  <input
+                    type="text"
+                    placeholder="Full Name"
+                    required
+                    className="input-field w-full h-12 rounded-lg px-4 border border-white focus:border-white focus:ring-2 focus:ring-white"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
 
-				<div className="mb-4">
-					<label className="block text-sm font-medium text-gray-600">
-						Email
-					</label>
-					<input
-						type="email"
-						required
-						className="w-full px-4 py-2 border rounded-lg"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-					/>
-				</div>
+                {/* Email Field */}
+                <div>
+                  <label className="text-white block mb-2">Email</label>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    required
+                    className="input-field w-full h-12 rounded-lg px-4 border border-white focus:border-white focus:ring-2 focus:ring-white"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
 
-				<div className="mb-4">
-					<label className="block text-sm font-medium text-gray-600">
-						Contact
-					</label>
-					<input
-						type="text"
-						required
-						className="w-full px-4 py-2 border rounded-lg"
-						value={contact}
-						onChange={(e) => setContact(e.target.value)}
-					/>
-				</div>
+                {/* Contact Number Field */}
+                <div>
+                  <label className="text-white block mb-2">Contact Number</label>
+                  <input
+                    type="text"
+                    placeholder="Contact Number"
+                    required
+                    className="input-field w-full h-12 rounded-lg px-4 border border-white focus:border-white focus:ring-2 focus:ring-white"
+                    value={contact}
+                    onChange={(e) => setContact(e.target.value)}
+                  />
+                </div>
 
-				<div className="mb-4">
-					<label className="block text-sm font-medium text-gray-600">
-						Street
-					</label>
-					<input
-						type="text"
-						required
-						className="w-full px-4 py-2 border rounded-lg"
-						value={street}
-						onChange={(e) => setStreet(e.target.value)}
-					/>
-				</div>
+                {/* Street Address Field */}
+                <div>
+                  <label className="text-white block mb-2">Street Address</label>
+                  <input
+                    type="text"
+                    placeholder="Street Address"
+                    required
+                    className="input-field w-full h-12 rounded-lg px-4 border border-white focus:border-white focus:ring-2 focus:ring-white"
+                    value={street}
+                    onChange={(e) => setStreet(e.target.value)}
+                  />
+                </div>
 
-				<div className="mb-4">
-					<label className="block text-sm font-medium text-gray-600">
-						City
-					</label>
-					<input
-						type="text"
-						required
-						className="w-full px-4 py-2 border rounded-lg"
-						value={city}
-						onChange={(e) => setCity(e.target.value)}
-					/>
-				</div>
+                {/* City Field */}
+                <div>
+                  <label className="text-white block mb-2">City</label>
+                  <input
+                    type="text"
+                    placeholder="City"
+                    required
+                    className="input-field w-full h-12 rounded-lg px-4 border border-white focus:border-white focus:ring-2 focus:ring-white"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                  />
+                </div>
 
-				<div className="mb-4">
-					<label className="block text-sm font-medium text-gray-600">
-						Zip Code
-					</label>
-					<input
-						type="text"
-						required
-						className="w-full px-4 py-2 border rounded-lg"
-						value={zipCode}
-						onChange={(e) => setZipCode(e.target.value)}
-					/>
-				</div>
+                {/* Zip Code Field */}
+                <div>
+                  <label className="text-white block mb-2">Zip Code</label>
+                  <input
+                    type="text"
+                    placeholder="Zip Code"
+                    required
+                    className="input-field w-full h-12 rounded-lg px-4 border border-white focus:border-white focus:ring-2 focus:ring-white"
+                    value={zipCode}
+                    onChange={(e) => setZipCode(e.target.value)}
+                  />
+                </div>
+              </div>
 
-				<div className="mb-6 relative">
-					<label className="block text-sm font-medium text-gray-600">
-						Password
-					</label>
-					<input
-						type={showPassword ? "text" : "password"}
-						required
-						className="w-full px-4 py-2 border rounded-lg pr-10"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-					/>
-					<span
-						className="absolute right-3 top-9 cursor-pointer text-gray-500"
-						onClick={() => setShowPassword(!showPassword)}>
-						{showPassword ? <FaEyeSlash /> : <FaEye />}
-					</span>
-				</div>
+              {/* Password Field */}
+              <div className="relative">
+                <label className="text-white block mb-2">Password</label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  required
+                  className="input-field w-full h-12 rounded-lg px-4 pr-10 border border-white focus:border-white focus:ring-2 focus:ring-white "
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <span
+                  className="absolute right-3 top-12 cursor-pointer text-white focus:border-white focus:ring-2 focus:ring-white"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
 
-				<div className="mb-4 flex items-center">
-					<input
-						type="checkbox"
-						id="rememberMe"
-						className="mr-2"
-						checked={rememberMe}
-						onChange={(e) => setRememberMe(e.target.checked)}
-					/>
-					<label
-						htmlFor="rememberMe"
-						className="text-sm text-gray-600">
-						Remember Me
-					</label>
-				</div>
+              {/* Remember Me */}
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={() => setRememberMe(!rememberMe)}
+                  className="h-4 w-4"
+                />
+                <label className="text-white text-sm">Remember Me</label>
+              </div>
 
-				<button
-					type="submit"
-					className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-					Sign Up
-				</button>
-			</form>
-		</div>
-	);
+              {/* Sign Up Button */}
+              <button
+                type="submit"
+                className="w-full py-3 bg-[#f97316] text-black rounded-xl hover:bg-yellow-600 transition duration-300"
+              >
+                Sign Up
+              </button>
+
+              {/* Login Link */}
+              <p className="text-center mt-4 text-white">
+                Already have an account?{" "}
+                <button
+                  type="button"
+                  className="text-yellow-200 hover:underline"
+                  onClick={() => navigate("/login")}
+                >
+                  Login
+                </button>
+              </p>
+            </form>
+          </div>
+        </div>
+        <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
+          <Lottie
+            animationData={foodBoy1}
+            loop={true}
+            autoPlay={true}
+            className="w-full h-full hidden md:block"
+          />
+        </aside>
+      </div>
+    </div>
+  );
 }
 
 export default SignupForm;
