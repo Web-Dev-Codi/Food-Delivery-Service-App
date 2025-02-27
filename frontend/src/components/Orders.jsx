@@ -26,21 +26,20 @@ function Orders() {
   }, []);
 
   return (
-    <div className="bg-black mt-40 text-red-700 w-full h-screen ">
-      <h1 className="4xl">Orders</h1>
-      <p className="text-white">Click on the button to view details</p>
+    <div>
+      <h1>Orders</h1>
       <ul>
         {orders.map((order) => (
           <li key={order._id}>
-            <p>User: {order.userId.name}</p>
-            <p>Email: {order.userId.email}</p>
-            <p>Amount: ${order.paymentId.amount}</p>
-            <p>Payment Status: {order.paymentId.status}</p>
-            <p>Cart Status: {order.cartId.status}</p>
+            <p>User: {order?.userId?.name || "Unknown"}</p>
+            <p>Email: {order?.userId?.email || "Unknown"}</p>
+            <p>Amount: ${order?.paymentId?.amount || "Unknown"}</p>
+            <p>Payment Status: {order?.paymentId?.status || "Unknown"}</p>
+            <p>Cart Status: {order?.cartId?.status}</p>
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={() => {
-                navigate(`/dashboard/single-order/${order._id}`);
+                navigate(`/single-order/${order._id}`);
               }}
             >
               View Details
