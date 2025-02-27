@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/images/logo.png"; // ✅ Import logo
+import logo from "../assets/images/logo.png"; 
 import foodBoy1 from "../assets/animations/foodBoy1.json";
 import Lottie from "lottie-react";
 
