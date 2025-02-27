@@ -153,10 +153,10 @@ const EditableAddress = ({ address, onAddressUpdate }) => {
 								/>
 								<div>
 									<h4 className="font-medium text-white">
-										{address.name}
+										{address.street}
 									</h4>
 									<p className="text-gray-400 text-sm">
-										{address.address}
+										{address.city}, {address.zipCode}
 									</p>
 								</div>
 							</div>
