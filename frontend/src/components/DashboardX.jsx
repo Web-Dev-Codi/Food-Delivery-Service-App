@@ -58,8 +58,7 @@ const DashboardX = () => {
           {navItems.map(({ to, icon: Icon, label }) => (
             <li
               key={to}
-              className="flex items-center gap-2 transition-all duration-1000 ease-in-out bg-gradient-to-r from-white/10 via-white/5 to-white/5 backdrop-blur hover:bg-[#D84418] rounded-lg py-2 mb-2 md:mb-0"
-            >
+              className="flex items-center gap-2 transition-all duration-1000 ease-in-out bg-gradient-to-r from-white/10 via-white/5 to-white/5 backdrop-blur hover:bg-[#D84418] rounded-lg py-2 mb-2 md:mb-0">
               <Link
                 to={to}
                 className="flex justify-between rounded"

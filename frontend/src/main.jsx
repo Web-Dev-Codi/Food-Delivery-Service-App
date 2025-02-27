@@ -32,48 +32,120 @@ import ContactUs from "./components/views/ContactUs.jsx";
 import Orders from "./components/Orders.jsx";
 import SingleOrder from "./components/SingleOrder.jsx";
 import CartCheckoutFlow from "./components/cartFlow/CartCheckoutFlowComponent.jsx";
+import Invoice from "./components/Invoice.jsx";
+import UpdateMenuForm from "./components/UpdateMenu.jsx";
+import DeleteMenu from "./components/DeleteMenu.jsx";
+import CheckoutForm from "./components/CheckoutForm.jsx";
 
 const stripePromise = loadStripe(
   "pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
 );
 
 const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route>
-      <Route path="/" element={<App />}>
-        <Route index element={<Home />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/signup" element={<SignupForm />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route
-          path="/payment"
-          element={
-            <Elements stripe={stripePromise}>
-              <PaymentForm />
-            </Elements>
-          }
-        />
-        <Route path="/dashboard" element={<Dashboard />}>
+	createRoutesFromElements(
+		<Route>
+			<Route
+				path="/"
+				element={<App />}>
+				<Route
+					index
+					element={<Home />}
+				/>
+				<Route
+					path="/menu"
+					element={<Menu />}
+				/>
+				<Route
+					path="/signup"
+					element={<SignupForm />}
+				/>
+				<Route
+					path="/login"
+					element={<LoginForm />}
+				/>
+				<Route
+					path="/payment"
+					element={
+						<Elements stripe={stripePromise}>
+							<PaymentForm />
+						</Elements>
+					}
+				/>
+			 <Route path="/dashboard" element={<Dashboard />}>
           <Route path="restaurants/add" element={<AddRestaurant />} />
           <Route path="add-menu" element={<AddMenu />} />
           <Route path="coupons" element={<AddCoupons />} />
           <Route path="orders" element={<Orders />} />
           <Route path="single-order/:id" element={<SingleOrder />} />
         </Route>
-        <Route path="/menu/:id" element={<SingleMenu />} />
-        <Route path="/restaurants" element={<ListRestaurant />} />
-        <Route path="/restaurants/:id" element={<SingleRestaurant />} />
-        <Route path="/restaurants/:id/reviews" element={<AddReview />} />
-        <Route path="/checkout" element={<CartCheckoutFlow />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/faqs" element={<FAQ />} />
-        <Route path="/contact-us" element={<ContactUs />} />
-        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-        <Route path="/user-profile" element={<UserProfile />} />
-        <Route path="*" element={<PageNotFound />} />
-      </Route>
-    </Route>
-  )
+				<Route
+					path="/menu/:id"
+					element={<SingleMenu />}
+				/>
+				<Route
+					path="/restaurants"
+					element={<ListRestaurant />}
+				/>
+				<Route
+					path="/restaurants/:id"
+					element={<SingleRestaurant />}
+				/>
+				<Route
+					path="/restaurants/:id/reviews"
+					element={<AddReview />}
+				/>
+				<Route
+					path="/checkout"
+					element={<CartCheckoutFlow />}
+				/>
+				<Route
+						path="/update-menu"
+						element={<UpdateMenuForm />}
+					/>
+				<Route
+					path="/forgot-password"
+					element={<ForgotPassword />}
+				/>
+				<Route
+					path="/faqs"
+					element={<FAQ />}
+				/>
+				<Route
+					path="/contact-us"
+					element={<ContactUs />}
+				/>
+				<Route
+						path="/orders"
+						element={<Orders />}
+					/>
+					<Route
+						path="/single-order/:id"
+						element={<SingleOrder />}
+					/>
+				<Route
+					path="/reset-password/:token"
+					element={<ResetPasswordPage />}
+				/>
+				<Route
+					path="/user-profile"
+					element={<UserProfile />}
+				/>
+				<Route
+				path="/invoice"
+					element={<Invoice />}
+				/>
+				<Route
+				path="/delete-menu"
+					element={<DeleteMenu />}
+				/>
+
+				<Route
+					path="*"
+					element={<PageNotFound />}
+				/>
+			</Route>
+		</Route>
+	)
 );
 
 createRoot(document.getElementById("root")).render(
