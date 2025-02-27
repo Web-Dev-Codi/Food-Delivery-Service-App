@@ -35,6 +35,7 @@ import CartCheckoutFlow from "./components/cartFlow/CartCheckoutFlowComponent.js
 import Invoice from "./components/Invoice.jsx";
 import UpdateMenuForm from "./components/UpdateMenu.jsx";
 import DeleteMenu from "./components/DeleteMenu.jsx";
+import CheckoutForm from "./components/CheckoutForm.jsx";
 
 const stripePromise = loadStripe(
 	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
@@ -85,14 +86,7 @@ const router = createBrowserRouter(
 						path="coupons"
 						element={<AddCoupons />}
 					/>
-					<Route
-						path="orders"
-						element={<Orders />}
-					/>
-					<Route
-						path="single-order/:id"
-						element={<SingleOrder />}
-					/>
+					
 					
 				</Route>
 				<Route
@@ -131,6 +125,14 @@ const router = createBrowserRouter(
 					path="/contact-us"
 					element={<ContactUs />}
 				/>
+				<Route
+						path="/orders"
+						element={<Orders />}
+					/>
+					<Route
+						path="/single-order/:id"
+						element={<SingleOrder />}
+					/>
 				<Route
 					path="/reset-password/:token"
 					element={<ResetPasswordPage />}
