@@ -20,9 +20,9 @@ const UserProfile = () => {
 	const navigate = useNavigate();
 	const [activeTab, setActiveTab] = useState("profile");
 	const [userData, setUserData] = useState({
-		name: "",
-		email: "",
-		contact: "",
+		// name: "",
+		// email: "",
+		// contact: "",
 		address: { street: "", city: "", zipCode: "" },
 	});
 	const [error, setError] = useState(null);
