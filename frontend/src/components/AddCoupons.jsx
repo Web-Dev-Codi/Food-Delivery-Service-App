@@ -64,6 +64,7 @@ const AddCoupons = () => {
 			});
 	};
 
+<<<<<<< HEAD
 	return (
 		<div className="flex items-center justify-center w-full md:mt-28 ">
 			<div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -85,6 +86,27 @@ const AddCoupons = () => {
 							className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
 						/>
 					</div>
+=======
+  return (
+    <div className="flex items-center justify-center w-full md:mt-28 ">
+      <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h1 className="text-2xl font-bold mb-6 text-center text-white">
+          Add Coupons
+        </h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="p-1 block font-bold text-neutral-100">
+              Coupon Code:
+            </label>
+            <input
+              type="text"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              required
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+            />
+          </div>
+>>>>>>> 5ee21dd (update before pulling development 27.02.25)
 
 					<div>
 						<label className="p-1 block font-bold text-neutral-100">

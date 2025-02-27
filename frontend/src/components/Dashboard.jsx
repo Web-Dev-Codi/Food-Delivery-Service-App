@@ -196,7 +196,11 @@ const Dashboard = () => {
           <FaTimes className="text-2xl" />
         </button>
 
+<<<<<<< HEAD
         {/* Updated slide-in-content to Scrollable */}
+=======
+        {/* Scrollable Content */}
+>>>>>>> 5ee21dd (update before pulling development 27.02.25)
         <div className="h-full overflow-y-auto">
           <Outlet />
         </div>
