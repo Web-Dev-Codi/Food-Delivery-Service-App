@@ -5,7 +5,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const EditableAddress = ({ address, onAddressUpdate }) => {
+const EditableAddress = ({ address }) => {
 	const { userId } = useParams();
 	const [isEditing, setIsEditing] = useState(false);
 	const [data, setData] = useState({
@@ -52,10 +52,11 @@ const EditableAddress = ({ address, onAddressUpdate }) => {
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
+						"Content-Type": "application/json",
 					},
 				}
 			);
-			onAddressUpdate(res.data.data);
+			setData(res.data.data);
 			setIsEditing(false);
 		} catch (error) {
 			console.error("Error updating address:", error);

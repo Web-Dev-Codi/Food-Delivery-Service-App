@@ -8,7 +8,7 @@ import { CartContext } from "../../context/CartContext";
 const Header = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const { userId } = useParams();
+	// const { userId } = useParams();
 	const { state } = useContext(CartContext);
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -51,6 +51,7 @@ const Header = () => {
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
+		localStorage.removeItem("userId");
 		setIsLoggedIn(false);
 		setProfileDropdownOpen(false);
 		navigate("/login");
@@ -128,7 +129,9 @@ const Header = () => {
 									{profileDropdownOpen && (
 										<div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
 											<Link
-												to={`/profile/${userId}`}
+												to={`/profile/${localStorage.getItem(
+													"userId"
+												)}`}
 												className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
 												<FaUser className="mr-3 text-orange-500" />
 												My Profile
@@ -207,7 +210,9 @@ const Header = () => {
 										Cart ({state?.cart?.items?.length || 0})
 									</Link>
 									<Link
-										to="/profile"
+										to={`/profile/${localStorage.getItem(
+											"userId"
+										)}`}
 										className="text-white font-bold hover:text-orange-500 transition-colors">
 										Profile
 									</Link>

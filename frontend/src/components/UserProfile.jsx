@@ -26,8 +26,6 @@ const UserProfile = () => {
 	});
 	const [error, setError] = useState(null);
 
-
-
 	useEffect(() => {
 		const fetchUserData = async () => {
 			try {
@@ -68,7 +66,7 @@ const UserProfile = () => {
 			}
 		};
 		fetchUserData();
-	}, []);
+	}, [userId, navigate]);
 
 	// Update address in state
 	const handleAddressUpdate = (updatedAddress) => {
