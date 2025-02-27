@@ -3,10 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import logo from "../assets/images/logo.png"; // Import your logo
-import ffe1 from "../assets/images/ffe1.jpg"; // Import your food image
-//import form1Animation from "../assets/animations/form1Animation.json";
-//import Lottie from "lottie-react";
-
+//import ffe1 from "../assets/images/ffe1.jpg"; // Import your food image
+import foodBoy1 from "../assets/animations/foodBoy1.json";
+import Lottie from "lottie-react";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -62,16 +61,14 @@ function LoginForm() {
     <section className="bg-black/40 backdrop-blur-lg">
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
         <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
-          
-        {/* <Lottie
-									animationData={form1Animation}
-									loop={true}
-									autoPlay={true}
-									className="w-full h-full"
-								/> */}
-
-
-                < img src= {ffe1} alt = "image" className =  "w-full h-full rounded-2xl object-cover" />
+          {
+            <Lottie
+              animationData={foodBoy1}
+              loop={true}
+              autoPlay={true}
+              className="w-full h-full hidden md:block"
+            />
+          }
         </aside>
 
         <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
