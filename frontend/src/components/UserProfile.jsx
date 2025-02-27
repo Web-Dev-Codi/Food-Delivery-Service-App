@@ -231,7 +231,7 @@ const UserProfile = () => {
 			)}
 
 			{/* Addresses Section */}
-			<div className=" sm:p-6 lg:p-8 border-b border-[#D84418]/30">
+			<div className=" p-4 border border-[#D84418]/30 rounded-lg shadow-sm">
 				<div className="flex justify-between items-center mb-4">
 					<h3 className="text-lg font-semibold text-white">
 						Delivery Addresses
@@ -265,7 +265,7 @@ const UserProfile = () => {
 					</h3>
 					<div className="flex items-center justify-between">
 						<p className="text-4xl font-bold bg-gradient-to-r from-[#D84418] to-[#FF6B6B] bg-clip-text text-transparent">
-							{userData.loyaltyPoints || 0}
+							{userData.loyaltyPoints || 456}
 						</p>
 						<button className="px-4 py-2 bg-[#D84418] text-white rounded-lg hover:opacity-90 transition-opacity">
 							View Rewards
@@ -278,7 +278,7 @@ const UserProfile = () => {
 			{activeTab === "profile" && (
 				<div className="space-y-4">
 					{/* Favorites - Tier 2 */}
-					<div className=" p-4 sm:p-6 lg:p-8 border-b border-[#D84418]/30">
+					<div className=" p-4 border border-[#D84418]/30 rounded-lg shadow-sm">
 						<h3 className="text-lg font-semibold text-white mb-3">
 							Favorites
 						</h3>
@@ -300,7 +300,7 @@ const UserProfile = () => {
 					</div>
 
 					{/* Dietary Preferences - Tier 2 */}
-					<div className=" p-4 sm:p-6 lg:p-8 border-b border-[#D84418]/30">
+					<div className=" p-4 border border-[#D84418]/30 rounded-lg shadow-sm">
 						<div className="flex justify-between items-center mb-3">
 							<h3 className="text-lg font-semibold text-white">
 								Dietary Preferences
@@ -329,7 +329,7 @@ const UserProfile = () => {
 			{activeTab === "orders" && (
 				<div className="space-y-4">
 					{/* Order History - Tier 1 */}
-					<div className=" p-4 sm:p-6 lg:p-8 border-b border-[#D84418]/30">
+					<div className=" p-4 border border-[#D84418]/30 rounded-lg shadow-sm">
 						<h3 className="text-lg font-semibold text-white mb-3">
 							Order History
 						</h3>
@@ -369,7 +369,7 @@ const UserProfile = () => {
 			{activeTab === "settings" && (
 				<div className="space-y-4">
 					{/* Account Settings - Tier 3 */}
-					<div className="bg-[#1A1A1A] p-4 border border-[#D84418]/30 rounded-lg shadow-sm">
+					<div className="p-4 border border-[#D84418]/30 rounded-lg shadow-sm">
 						<div className="p-4 border-b border-gray-100">
 							<h3 className="text-lg font-semibold text-white mb-2">
 								Account Settings

@@ -3,11 +3,16 @@ import { Edit2, Check, X, MapPin } from "lucide-react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const EditableAddress = ({ address, onAddressUpdate }) => {
 	const { userId } = useParams();
 	const [isEditing, setIsEditing] = useState(false);
-	const [data, setData] = useState(address);
+	const [data, setData] = useState({
+		street: address.street,
+		city: address.city,
+		zipCode: address.zipCode,
+	});
 
 	// Toggle edit mode
 	const handleEditClick = () => {
@@ -18,14 +23,17 @@ const EditableAddress = ({ address, onAddressUpdate }) => {
 	const handleCancel = () => {
 		setIsEditing(false);
 		setData({
-			...address,
+			street: address.street,
+			city: address.city,
+			zipCode: address.zipCode,
 		});
 	};
 
 	const handleChange = (e) => {
-		setData((data) => {
-			return { ...data, [e.target.name]: e.target.value };
-		});
+		setData((data) => ({
+			...data,
+			[e.target.name]: e.target.value,
+		}));
 	};
 
 	// Handle form submission
@@ -33,9 +41,19 @@ const EditableAddress = ({ address, onAddressUpdate }) => {
 		e.preventDefault();
 
 		try {
-			const res = await axios.put(
+			const token = localStorage.getItem("token");
+			if (!token) {
+				toast.error("Unauthorized. Please login to continue.");
+				return;
+			}
+			const res = await axios.patch(
 				`http://localhost:8000/data/update/${userId}`,
-				data
+				data,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
 			);
 			onAddressUpdate(res.data.data);
 			setIsEditing(false);
@@ -100,23 +118,6 @@ const EditableAddress = ({ address, onAddressUpdate }) => {
 							required
 						/>
 					</div>
-
-					<div className="flex items-center">
-						<input
-							type="checkbox"
-							id="isDefault"
-							name="isDefault"
-							checked={data?.isDefault}
-							onChange={handleChange}
-							className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-						/>
-						<label
-							htmlFor="isDefault"
-							className="ml-2 block text-sm text-gray-700">
-							Set as default address
-						</label>
-					</div>
-
 					<div className="flex justify-end space-x-2">
 						<button
 							type="button"
