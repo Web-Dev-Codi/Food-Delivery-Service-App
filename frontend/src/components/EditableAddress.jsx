@@ -46,7 +46,7 @@ const EditableAddress = ({ address }) => {
 				toast.error("Unauthorized. Please login to continue.");
 				return;
 			}
-			const res = await axios.patch(
+			const res = await axios.put(
 				`http://localhost:8000/data/update/${userId}`,
 				data,
 				{
@@ -56,7 +56,7 @@ const EditableAddress = ({ address }) => {
 					},
 				}
 			);
-			setData(res.data.data);
+			setData(res.data.data.address);
 			setIsEditing(false);
 		} catch (error) {
 			console.error("Error updating address:", error);
@@ -83,7 +83,7 @@ const EditableAddress = ({ address }) => {
 							name="street"
 							value={data?.street}
 							onChange={handleChange}
-							className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50"
+							className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50"
 							required
 						/>
 					</div>
@@ -99,7 +99,7 @@ const EditableAddress = ({ address }) => {
 							name="city"
 							value={data?.city}
 							onChange={handleChange}
-							className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50"
+							className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50"
 							required
 						/>
 					</div>
@@ -115,15 +115,14 @@ const EditableAddress = ({ address }) => {
 							name="zipCode"
 							value={data?.zipCode}
 							onChange={handleChange}
-							className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50"
+							className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50"
 							required
 						/>
 					</div>
 					<div className="flex justify-end space-x-2">
 						<button
-							type="button"
 							onClick={handleCancel}
-							className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+							className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
 							<X
 								size={16}
 								className="mr-1"

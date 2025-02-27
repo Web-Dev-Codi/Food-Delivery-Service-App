@@ -14,7 +14,7 @@ const userRouter = Router();
 userRouter.get("/users", getUsers);
 userRouter.get("/users/:id", verifyToken, getUserById);
 userRouter.post("/create", createUsers);
-userRouter.patch("/update/:id", verifyToken, updateUser);
+userRouter.put("/update/:id", verifyToken, updateUser);
 userRouter.delete("/delete/:id", deleteUser);
 userRouter.post("/login", loginUser);
 

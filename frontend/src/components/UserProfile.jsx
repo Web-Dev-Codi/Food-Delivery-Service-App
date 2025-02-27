@@ -13,6 +13,7 @@ import {
 	Plus,
 } from "lucide-react";
 import EditableAddress from "./EditableAddress";
+import EditableProfile from "./EditableProfile";
 
 const UserProfile = () => {
 	const { userId } = useParams();
@@ -134,36 +135,17 @@ const UserProfile = () => {
 			</div>
 
 			{/* Profile Header - Tier 1 */}
-			<div className="p-4 sm:p-6 lg:p-8 border-b border-[#D84418]/30">
-				<div className="flex flex-col sm:flex-row items-center">
-					<img
-						src={userData?.profilePic || user.profilePic}
-						alt="Profile"
-						className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover mb-4 sm:mb-0 sm:mr-6 border-2 border-[#D84418]"
-					/>
-					<div className="flex-1 text-center sm:text-left">
-						<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-							<div>
-								<h2 className="text-xl font-semibold text-white">
-									{userData?.name || "Loading..."}
-								</h2>
-								<p className="text-gray-400 mt-1">
-									{userData?.email || "Loading..."}
-								</p>
-								<p className="text-gray-400 mt-1">
-									{userData?.contact || "Loading..."}
-								</p>
-							</div>
-							<button className="mt-3 sm:mt-0 inline-flex items-center text-[#D84418] hover:text-[#FF6B6B] transition-colors">
-								<Edit2
-									size={18}
-									className="mr-1"
-								/>
-								<span>Edit Profile</span>
-							</button>
-						</div>
-					</div>
-				</div>
+			<div className="flex items-center  sm:p-6 lg:p-8 border-b border-[#D84418]/30">
+				<img
+					src="https://placehold.co/600x400"
+					alt="Profile"
+					className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover mb-4 sm:mb-0 sm:mr-6 border-2 border-[#D84418]"
+				/>
+				<EditableProfile
+					name={userData?.name}
+					email={userData?.email}
+					contact={userData?.contact}
+				/>
 			</div>
 
 			{/* Navigation Tabs */}
