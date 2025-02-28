@@ -67,11 +67,9 @@ function AddReview() {
 								className="h-20 w-20 rounded-full border-4 border-yellow-500 shadow-xl transform hover:scale-110 transition duration-300"
 							/>
 						</div>
-						<h1 className="text-3xl font-bold text-center text-white mb-2">
-							Add Review
-						</h1>
+						
 						<p className="text-yellow-400 text-center mb-6">
-						Thanks for your review every word matters.
+						We’d love to hear from you  share your thoughts on your experience with us.
 						</p>
 
 						{successMessage && (
@@ -89,7 +87,7 @@ function AddReview() {
 							{/* Rating Field */}
 							<div className="mb-4">
 								<label className="block text-xl font-medium text-white-800">
-									Rating 
+									Rating
 								</label>
 								<input
 									type="number"
@@ -98,6 +96,7 @@ function AddReview() {
 									required
 									min="1"
 									max="5"
+									step="0.1"
 									value={rating}
 									onChange={(e) => setRating(e.target.value)}
 									className="w-full px-4 py-3 border-2 border-white rounded-lg  text-white outline-none focus:ring-2 focus:ring-white-400 focus:border-white-400"
