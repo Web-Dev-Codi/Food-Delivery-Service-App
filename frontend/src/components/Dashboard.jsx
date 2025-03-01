@@ -10,6 +10,8 @@ import {
   FaAddressCard,
   FaArrowCircleRight,
 } from "react-icons/fa";
+import Orders from "./Orders";
+import AddMenu from "./AddMenu";
 
 const Dashboard = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -30,11 +32,17 @@ const Dashboard = () => {
   const gridItems = [
     {
       color: "text-orange-600",
-      label: "Orange",
-      info: "I am an infos box you can add more functionalities or information here!",
-      extraHeight: "h-64",
+      label: "Orange displays orderlists with link to orderItem",
+      component: <Orders />,
+      linkTo: "single-order/:id",
+      extraHeight: "",
     },
-    { color: "text-green-600", label: "Green", info: "Extra Info" },
+    {
+      color: "text-green-600",
+      label: "Green link to coupons",
+      info: "Extra Info",
+      linkTo: "coupons",
+    },
     { color: "text-violet-600", label: "Violet", info: "More Extra Info" },
     { color: "text-pink-600", label: "Pink", info: "Even More Extra Info" },
     { color: "text-blue-600", label: "Blue", info: "Extra Extra Info" },
@@ -47,9 +55,10 @@ const Dashboard = () => {
     { color: "text-red-700", label: "Red", info: "Edit me, too" },
     {
       color: "text-emerald-600",
-      label: "Emerald",
+      label:
+        "Emerald shows that we can display the complete component to the grid",
       info: "Leave me alone",
-      extraHeight: "h-40",
+      component: <AddMenu />,
       externalLink: "https://www.google.com",
     }, // Extra height can be added to very grid item!
   ];
@@ -132,32 +141,45 @@ const Dashboard = () => {
             </div>
 
             {/* Dynamic Grid is mapped from gridItems array */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 w-full max-w-xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mt-4 w-full max-w-xl mx-auto">
               {/* props are passed to here. So set it up in the gridItems array */}
               {gridItems.map(
-                ({ color, label, info, extraHeight, externalLink }, index) => (
+                (
+                  {
+                    color,
+                    label,
+                    info,
+                    component,
+                    linkTo,
+                    extraHeight,
+                    externalLink,
+                  },
+                  index
+                ) => (
                   <div
                     key={index}
-                    className={`flex flex-col items-center justify-center p-4 bg-gradient-to-b from-white/5 via-white/20 to-white/5 text-white hover:bg-neutral-950 backdrop-blur font-bold rounded-md shadow-md w-full ${extraHeight}`}
+                    className={`flex flex-col items-center justify-center p-4 bg-gradient-to-b from-white/5 via-white/20 to-white/5 text-white hover:bg-neutral-950 backdrop-blur font-bold rounded-md shadow-md w-full cursor-pointer ${extraHeight}`}
                     onClick={() => {
-                      {
-                        /*navigate("to wherever you want to go!");*/
+                      if (linkTo) {
+                        setIsOutletOpen(true);
+                        navigate(linkTo);
+                      } else {
+                        alert(`I am a dummy ${label} grid item!`);
                       }
-                      alert(`You clicked on ${label}!`);
                     }}
                   >
                     <span className={`${color} p-2 text-lg`}>{label}</span>
-                    <h4 className="text-neutral-300 text-center text-sm sm:text-base p-2 sm:px-4">
-                      {info}
-                    </h4>
+                    <div className="text-neutral-300 text-center text-sm sm:text-base p-2 sm:px-4 w-full">
+                      {component ? component : info}
+                    </div>
                     {externalLink && (
                       <a
                         href={externalLink}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-white"
+                        className="text-blue-500 underline"
                       >
-                        Click me!
+                        I am external link!
                       </a>
                     )}
                   </div>
