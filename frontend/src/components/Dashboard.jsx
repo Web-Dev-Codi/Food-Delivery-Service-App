@@ -33,8 +33,8 @@ const Dashboard = () => {
     {
       color: "text-orange-600",
       label: "Orange displays orderlists with link to orderItem",
-      component: <Orders />,
-      linkTo: "single-order/:id",
+      component: <Orders />, // display the component
+      linkTo: "single-order/:id", // link to the route
       extraHeight: "",
     },
     {
@@ -52,7 +52,12 @@ const Dashboard = () => {
       label: "Cyan",
       info: "I want to have some links",
     },
-    { color: "text-red-700", label: "Red", info: "Edit me, too" },
+    {
+      color: "text-red-700",
+      label: "Red",
+      info: "Edit me, too",
+      extraHeight: "h-64",
+    },
     {
       color: "text-emerald-600",
       label:
@@ -60,7 +65,7 @@ const Dashboard = () => {
       info: "Leave me alone",
       component: <AddMenu />,
       externalLink: "https://www.google.com",
-    }, // Extra height can be added to very grid item!
+    },
   ];
 
   return (
