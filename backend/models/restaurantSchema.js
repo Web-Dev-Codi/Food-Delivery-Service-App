@@ -7,6 +7,7 @@ const ReviewSchema = new Schema({
     ref: "User",
     required: true,
   },
+  userName: { type: String }, 
   rating: {
     type: Number,
     required: true,
