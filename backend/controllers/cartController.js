@@ -66,7 +66,11 @@ export const getCartForInvoice = async (req, res) => {
       select: "name price description imageUrl category restaurant", // ✅ Fetch food item details
       populate: { path: "restaurant", select: "name location contact" } // ✅ Fetch restaurant details
     })
-    .select("items totalAmount finalAmount")
+	.populate({
+		path: "appliedCoupon",  // ✅ Populate appliedCoupon
+		select: "code discountAmount" // ✅ Select coupon details (code, discountAmount)
+	  })
+    .select("items totalAmount finalAmount discount appliedCoupon");
   
     
     if (!cart) {
