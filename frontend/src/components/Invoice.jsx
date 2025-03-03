@@ -51,8 +51,11 @@ function Invoice() {
   if (!cart) return <p>No items in the cart</p>;
 
   return (
+   
     <div className="flex flex-col items-center p-6">
-      <div
+    <div><h1 className="text-2xl font-bold mt-10 mb-10">Thank you for your order! 🚚 Your order will be delivered soon. Your invoice is ready—feel free to download it for your records. We look forward to serving you again!</h1>
+    </div>
+    <div
         ref={invoiceRef}
         className="bg-white shadow-lg rounded-lg p-6 w-full max-w-2xl"
       >
@@ -125,11 +128,14 @@ function Invoice() {
           <p>Total Amount:</p>
           <p>${cart.totalAmount}</p>
         </div>
+      
+
         <div className="flex justify-between items-center text-lg font-semibold text-gray-800">
           <p>Final Amount:</p>
           <p>${cart.finalAmount}</p>
         </div>
-      </div>
+        </div>
+   
 
       {/* Download Button */}
       <button

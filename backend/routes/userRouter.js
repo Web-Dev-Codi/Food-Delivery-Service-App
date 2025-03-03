@@ -18,4 +18,6 @@ userRouter.put("/update/:id", verifyToken, updateUser);
 userRouter.delete("/delete/:id", deleteUser);
 userRouter.post("/login", loginUser);
 
+
+
 export default userRouter;
