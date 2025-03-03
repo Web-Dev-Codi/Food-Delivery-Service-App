@@ -25,14 +25,15 @@ const Dashboard = () => {
     { to: "coupons", icon: FaTags, label: "Add Coupons" },
     { to: "orders", icon: FaFileInvoiceDollar, label: "Orders" },
     { to: "single-order/:id", icon: FaBarcode, label: "Order/item" },
-    { to: "coupons", icon: FaAddressCard, label: "Add Cards" },
+    { to: "update-menu", icon: FaAddressCard, label: "Update Menu" },
+    { to: "delete-menu", icon: FaAddressCard, label: "Delete Menu" },
   ];
 
   // Grid Items Array
   const gridItems = [
     {
       color: "text-orange-600",
-      label: "Orange displays orderlists with link to orderItem",
+      label: "Order lists with link to orderItem",
       component: <Orders />, // display the component
       linkTo: "single-order/:id", // link to the route
       extraHeight: "",
@@ -131,9 +132,9 @@ const Dashboard = () => {
         {/* CenterContainer-Admin-Area */}
         <div className="flex-1 flex-col lg:flex-row justify-center items-start md:justify-start p-4 sm:p-6 lg:p-0 space-y-6 lg:space-y-0 bg-transparent backdrop-blur shadow-lg">
           {/* Left Side: Admin Section */}
-          <div className="min-h-screen flex-1 flex flex-col items-center justify-start space-y-6 md:mt-0 border-neutral-500 rounded-lg p-4 md:py-1 sm:p-4 w-full lg:max-w-[60%] xl:max-w-[65%]">
+          <div className="min-h-screen flex-1 flex flex-col items-center justify-start space-y-6 md:mt-0 border-neutral-500 rounded-lg p-4 md:py-1 sm:p-4 w-full lg:max-w-[50%] xl:max-w-[75%] border border-dashed ">
             {/* Admin Greeting Box*/}
-            <div className="flex-col items-center justify-center w-full max-w-xl mx-auto bg-gradient-to-r from-white/5 via-white/20 to-white/5 ">
+            <div className="flex-col items-center justify-center w-full bg-gradient-to-r from-white/5 via-white/20 to-white/5 ">
               <h1 className="text-xl p-2 sm:text-2xl font-bold text-center text-white mt-1 md:mt-3">
                 Hello Admin
               </h1>
@@ -146,7 +147,7 @@ const Dashboard = () => {
             </div>
 
             {/* Dynamic Grid is mapped from gridItems array */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mt-4 w-full max-w-xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mt-4 w-full">
               {/* props are passed to here. So set it up in the gridItems array */}
               {gridItems.map(
                 (
@@ -174,7 +175,7 @@ const Dashboard = () => {
                     }}
                   >
                     <span className={`${color} p-2 text-lg`}>{label}</span>
-                    <div className="text-neutral-300 text-center text-sm sm:text-base p-2 sm:px-4 w-full">
+                    <div className="text-neutral-300 text-center text-sm sm:text-base p-2 sm:px-4 w-full bg-black">
                       {component ? component : info}
                     </div>
                     {externalLink && (
@@ -224,7 +225,7 @@ const Dashboard = () => {
         </button>
 
         {/* Updated slide-in-content to Scrollable */}
-        <div className="h-full overflow-y-auto">
+        <div className="h-full overflow-y-auto md:mt-24 ">
           <Outlet />
         </div>
       </div>

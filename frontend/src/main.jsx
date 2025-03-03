@@ -63,20 +63,20 @@ const router = createBrowserRouter(
           <Route path="coupons" element={<AddCoupons />} />
           <Route path="orders" element={<Orders />} />
           <Route path="single-order/:id" element={<SingleOrder />} />
+          <Route path="update-menu" element={<UpdateMenuForm />} />
+          <Route path="delete-menu" element={<DeleteMenu />} />
         </Route>
         <Route path="/menu/:id" element={<SingleMenu />} />
         <Route path="/restaurants" element={<ListRestaurant />} />
         <Route path="/restaurants/:id" element={<SingleRestaurant />} />
         <Route path="/restaurants/:id/reviews" element={<AddReview />} />
         <Route path="/checkout" element={<CartCheckoutFlow />} />
-        <Route path="/update-menu" element={<UpdateMenuForm />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/faqs" element={<FAQ />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/user-profile" element={<UserProfile />} />
         <Route path="/invoice" element={<Invoice />} />
-        <Route path="/delete-menu" element={<DeleteMenu />} />
 
         <Route path="*" element={<PageNotFound />} />
       </Route>
