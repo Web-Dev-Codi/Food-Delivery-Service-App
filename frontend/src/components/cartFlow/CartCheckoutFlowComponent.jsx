@@ -18,6 +18,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from "../CheckoutForm";
 
 
+
 const stripePromise = loadStripe("pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td");
 
 
@@ -37,6 +38,7 @@ const CartCheckoutFlow = () => {
 	const [step, setStep] = useState(1);
 	const [tip, setTip] = useState(15);
 	const [successPayment,setSuccessPayment] = useState(false);
+ 
 
 	useEffect(() => {
 		const token = localStorage.getItem("token");
@@ -326,10 +328,10 @@ const CartCheckoutFlow = () => {
 				<button
 					onClick={() => setStep(3)}
 					className="flex-1 bg-[#F97316] text-white py-3 rounded-lg font-medium">
-					Continue to Payment
+					Review Order
 				</button>
 			</div>
-		</div>
+		</div> 
 	);
 
 	const renderPaymentView = () => (
@@ -343,7 +345,7 @@ const CartCheckoutFlow = () => {
                     <div className="text-center">
                         <p className="text-green-500 font-medium mb-4">✅ Payment Successful!</p>
                         <button
-                            onClick={() => setStep(4)}
+                            onClick={() => setStep(3)}
                             className="w-full bg-[#F97316] text-white py-3 rounded-lg font-medium">
                             Review Order
                         </button>
@@ -403,14 +405,14 @@ const CartCheckoutFlow = () => {
                     Back
                 </button>
                 <button
-                    onClick={() => setStep(4)}
+                    onClick={() => () => navigate("/invoice")}
                     disabled={!successPayment} // Disable if payment is not completed
                     className={`flex-1 py-3 rounded-lg font-medium ${
                         successPayment
                             ? "bg-[#F97316] text-white hover:bg-[#eb7622]"
                             : "bg-gray-400 cursor-not-allowed"
                     }`}>
-                    Review Order
+                Place Order
                 </button>
             </div>
         </div>
@@ -486,8 +488,9 @@ const CartCheckoutFlow = () => {
 					className="flex-1 bg-transparent border border-[#F97316] text-[#F97316] py-3 rounded-lg font-medium">
 					Back
 				</button>
-				<button className="flex-1 bg-[#F97316] text-white py-3 rounded-lg font-medium">
-					Place Order
+				<button className="flex-1 bg-[#F97316] text-white py-3 rounded-lg font-medium"
+				onClick={() => setStep(4)}>
+				Continue to Payment
 				</button>
 			</div>
 		</div>
@@ -503,8 +506,8 @@ const CartCheckoutFlow = () => {
 				<div className="max-w-4xl mx-auto">
 					{step === 1 && renderCartView()}
 					{step === 2 && renderDeliveryView()}
-					{step === 3 && renderPaymentView()}
-					{step === 4 && renderReviewView()}
+					{step === 3 && renderReviewView()}
+					{step === 4 && renderPaymentView()}
 				</div>
 
 				{/* Mobile Bottom Navigation */}
