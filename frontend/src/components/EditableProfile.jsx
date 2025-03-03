@@ -11,7 +11,7 @@ const EditableProfile = ({ name, email, contact }) => {
 		name: name || "",
 		email: email || "",
 		contact: contact || "",
-  });
+	});
 	const [isEditing, setIsEditing] = useState(false);
 	const [error, setError] = useState(null);
 
@@ -37,31 +37,31 @@ const EditableProfile = ({ name, email, contact }) => {
 	};
 
 	const handleSubmit = async (e) => {
-    e.preventDefault();
+		e.preventDefault();
 
-    try {
-      const token = localStorage.getItem("token");
+		try {
+			const token = localStorage.getItem("token");
 			if (!token) {
 				setError("No authentication token found");
 				return;
 			}
 
-      const res = await axios.put(
-        `http://localhost:8000/data/update/${userId}`,
-        userData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      setIsEditing(false);
-      setUserData(res.data.data);
-    } catch (error) {
-      console.error("Error updating user data:", error);
-      setError(error.response?.data?.message);
-    }
+			const res = await axios.put(
+				`http://localhost:8000/data/update/${userId}`,
+				userData,
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+						"Content-Type": "application/json",
+					},
+				}
+			);
+			setIsEditing(false);
+			setUserData(res.data.data);
+		} catch (error) {
+			console.error("Error updating user data:", error);
+			setError(error.response?.data?.message);
+		}
 	};
 
 	useEffect(() => {
@@ -91,8 +91,8 @@ const EditableProfile = ({ name, email, contact }) => {
 					}
 				);
 
-        setUserData(response.data.data);
-        setIsEditing(false);
+				setUserData(response.data.data);
+				setIsEditing(false);
 				console.log("User data:", response.data.data);
 			} catch (error) {
 				console.error("Error fetching user data:", error);
@@ -103,7 +103,7 @@ const EditableProfile = ({ name, email, contact }) => {
 	}, [userId, navigate]);
 
 	return (
-		<div className="border rounded-lg p-4 hover:border-[#D84418] transition-colors border-[#D84418]/30">
+		<div className="border rounded-lg p-4 hover:border-[#D84418] transition-colors border-[#D84418]/30 w-full">
 			{error && (
 				<div className="text-red-500 mb-4 p-2 bg-red-100 rounded">
 					{error}
@@ -112,41 +112,46 @@ const EditableProfile = ({ name, email, contact }) => {
 			{isEditing ? (
 				<form
 					onSubmit={handleSubmit}
-					className="">
-					<label className="block text-sm font-medium text-gray-700">
-						Name:
-					</label>
-					<input
-						type="text"
-						name="name"
-						id="name"
-						value={userData.name}
-            onChange={handleChange}
-            className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50"
-					/>
-					<label className="block text-sm font-medium text-gray-700">
-						Email:
-					</label>
-					<input
-						type="email"
-						name="email"
-						id="email"
-						value={userData.email}
-            onChange={handleChange}
-            className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50"
-
-					/>
-					<label className="block text-sm font-medium text-gray-700">
-						Contact:
-					</label>
-					<input
-						type="text"
-						name="contact"
-						id="contact"
-						value={userData.contact}
-						onChange={handleChange}
-            className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50"
-					/>
+					className="w-full">
+					<div className="mb-3">
+						<label className="block text-sm font-medium text-gray-400 mb-1">
+							Name:
+						</label>
+						<input
+							type="text"
+							name="name"
+							id="name"
+							value={userData.name}
+							onChange={handleChange}
+							className="p-2 block w-full rounded-md border border-gray-700 bg-gray-900 text-white shadow-sm focus:border-[#D84418] focus:ring focus:ring-[#D84418]/50 focus:ring-opacity-50"
+						/>
+					</div>
+					<div className="mb-3">
+						<label className="block text-sm font-medium text-gray-400 mb-1">
+							Email:
+						</label>
+						<input
+							type="email"
+							name="email"
+							id="email"
+							value={userData.email}
+							onChange={handleChange}
+							className="p-2 block w-full rounded-md border border-gray-700 bg-gray-900 text-white shadow-sm focus:border-[#D84418] focus:ring focus:ring-[#D84418]/50 focus:ring-opacity-50"
+						/>
+					</div>
+					<div className="mb-4">
+						<label className="block text-sm font-medium text-gray-400 mb-1">
+							Contact:
+						</label>
+						<input
+							type="text"
+							name="contact"
+							id="contact"
+							value={userData.contact}
+							onChange={handleChange}
+							className="p-2 block w-full rounded-md border border-gray-700 bg-gray-900 text-white shadow-sm focus:border-[#D84418] focus:ring focus:ring-[#D84418]/50 focus:ring-opacity-50"
+						/>
+					</div>
 					<div className="flex justify-end space-x-2">
 						<button
 							onClick={handleCancel}
@@ -169,8 +174,8 @@ const EditableProfile = ({ name, email, contact }) => {
 					</div>
 				</form>
 			) : (
-				<div className="">
-					<div className="flex justify-between items-center">
+				<div className="w-full">
+					<div className="flex justify-between items-center w-full">
 						<div className="flex flex-col items-start">
 							<h2 className="text-xl font-semibold text-white">
 								{userData?.name || "Loading..."}
@@ -184,7 +189,7 @@ const EditableProfile = ({ name, email, contact }) => {
 						</div>
 						<button
 							onClick={handleEditClick}
-							className="mt-3 sm:mt-0 inline-flex items- text-[#D84418] hover:text-[#FF6B6B] transition-colors">
+							className="inline-flex items-center text-[#D84418] hover:text-[#FF6B6B] transition-colors">
 							<Edit2
 								size={18}
 								className="mr-1"

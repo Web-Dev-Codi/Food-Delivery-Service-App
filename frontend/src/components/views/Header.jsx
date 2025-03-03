@@ -1,9 +1,15 @@
 import { useState, useEffect, useContext, useRef } from "react";
-import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
-import { FaShoppingCart, FaUser, FaRegWindowClose } from "react-icons/fa";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import {
+	FaShoppingCart,
+	FaUser,
+	FaRegWindowClose,
+	FaUserCog,
+} from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BiLogOut } from "react-icons/bi";
 import { CartContext } from "../../context/CartContext";
+import axios from "axios";
 
 const Header = () => {
 	const navigate = useNavigate();
@@ -13,6 +19,7 @@ const Header = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+	const [userRole, setUserRole] = useState("");
 	const dropdownRef = useRef(null);
 
 	// Check authentication status whenever location changes
@@ -20,7 +27,37 @@ const Header = () => {
 		const token = localStorage.getItem("token");
 		const isNowLoggedIn = !!token;
 		setIsLoggedIn(isNowLoggedIn);
+
+		// If user is logged in, fetch their role
+		if (isNowLoggedIn) {
+			fetchUserRole();
+		} else {
+			setUserRole("");
+		}
 	}, [location.pathname]);
+
+	// Fetch user role from the backend
+	const fetchUserRole = async () => {
+		try {
+			const token = localStorage.getItem("token");
+			const userId = localStorage.getItem("userId");
+
+			if (!token || !userId) return;
+
+			const response = await axios.get(
+				`http://localhost:8000/data/users/${userId}`,
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+
+			if (response.data && response.data.data) {
+				setUserRole(response.data.data.role);
+			}
+		} catch (error) {
+			console.error("Error fetching user role:", error);
+		}
+	};
 
 	// Handle clicks outside the dropdown
 	useEffect(() => {
@@ -53,6 +90,7 @@ const Header = () => {
 		localStorage.removeItem("token");
 		localStorage.removeItem("userId");
 		setIsLoggedIn(false);
+		setUserRole("");
 		setProfileDropdownOpen(false);
 		navigate("/login");
 	};
@@ -94,6 +132,14 @@ const Header = () => {
 							className="font-bold text-white hover:text-orange-500 transition-colors">
 							FAQs
 						</Link>
+						{isLoggedIn && userRole === "admin" && (
+							<Link
+								to="/dashboard"
+								className="font-bold text-orange-500 hover:text-orange-400 transition-colors flex items-center">
+								<FaUserCog className="mr-1" />
+								Admin
+							</Link>
+						)}
 					</div>
 					<div className="hidden md:flex items-center space-x-4">
 						{isLoggedIn ? (
@@ -136,6 +182,14 @@ const Header = () => {
 												<FaUser className="mr-3 text-orange-500" />
 												My Profile
 											</Link>
+											{userRole === "admin" && (
+												<Link
+													to="/dashboard"
+													className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+													<FaUserCog className="mr-3 text-orange-500" />
+													Admin Dashboard
+												</Link>
+											)}
 											<button
 												onClick={handleLogout}
 												className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
@@ -230,6 +284,14 @@ const Header = () => {
 										Sign Up
 									</Link>
 								</div>
+							)}
+							{isLoggedIn && userRole === "admin" && (
+								<Link
+									to="/dashboard"
+									className="text-orange-500 hover:text-orange-400 transition-colors flex items-center">
+									<FaUserCog className="mr-1" />
+									Admin Dashboard
+								</Link>
 							)}
 						</div>
 					</div>
