@@ -24,11 +24,11 @@ const ContactUs = () => {
 	};
 
 	return (
-		<div className="min-h-screen bg-transparent py-12 px-4 sm:px-6 lg:px-8">
+		<div className="bg-transparent py-12 px-4 sm:px-6 lg:px-8">
 			<div className="max-w-7xl mx-auto">
 				{/* Header Section */}
 				<div className="text-center mb-12">
-					<h1 className="text-4xl font-bold text-white mb-4">
+					<h1 className="text-4xl font-bold text-white mb-4 bg-gradient-to-r from-[#D84418] to-[#FF6B6B] bg-clip-text text-transparent">
 						Contact Us
 					</h1>
 					<p className="text-gray-400 max-w-2xl mx-auto">
@@ -42,7 +42,7 @@ const ContactUs = () => {
 				</div>
 
 				{/* Contact Form */}
-				<div className="max-w-3xl mx-auto bg-black/40 backdrop-blur-lg  rounded-xl shadow-lg p-6 sm:px-6 lg:px-8">
+				<div className="max-w-3xl mx-auto bg-black/40 backdrop-blur-lg  rounded-xl shadow-lg p-6 sm:px-6 lg:px-8 border border-[#D84418]">
 					<form
 						onSubmit={handleSubmit}
 						className="space-y-6">
@@ -59,7 +59,7 @@ const ContactUs = () => {
 									id="firstName"
 									value={formData.firstName}
 									onChange={handleChange}
-									className="mt-1 p-2 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+									className="mt-1 p-2 block w-full rounded-md bg-transparent border border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
 								/>
 							</div>
 							<div>
@@ -74,7 +74,7 @@ const ContactUs = () => {
 									id="lastName"
 									value={formData.lastName}
 									onChange={handleChange}
-									className="mt-1 p-2 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+									className="mt-1 p-2 block w-full rounded-md bg-transparent border border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
 								/>
 							</div>
 						</div>
@@ -92,7 +92,7 @@ const ContactUs = () => {
 									id="email"
 									value={formData.email}
 									onChange={handleChange}
-									className="mt-1 p-2 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+									className="mt-1 p-2 block w-full rounded-md bg-transparent border border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
 									placeholder="support@ffe.com"
 								/>
 							</div>
@@ -108,7 +108,7 @@ const ContactUs = () => {
 									id="phoneNumber"
 									value={formData.phoneNumber}
 									onChange={handleChange}
-									className="mt-1 p-2 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+									className="mt-1 p-2 block w-full rounded-md bg-transparent border border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring	-blue-500"
 									placeholder="+49 30 1234567"
 								/>
 							</div>
@@ -126,7 +126,7 @@ const ContactUs = () => {
 								rows={4}
 								value={formData.message}
 								onChange={handleChange}
-								className="mt-1 p-2 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
+								className="mt-1 p-2 block w-full rounded-md bg-transparent border border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
 								placeholder="Leave a comment..."
 							/>
 						</div>
