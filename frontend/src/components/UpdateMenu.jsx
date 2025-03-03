@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const UpdateMenuForm = () => {
 	const [menuName, setMenuName] = useState(""); // Search input for menu name
@@ -86,10 +87,24 @@ const UpdateMenuForm = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+    if (!formData._id) {
+      toast.error("Invalid menu item. Please try again.");
+      return;
+    }
 		try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Unauthorized. Please login to continue.");
+        return;
+      }
 			await axios.patch(
 				`http://localhost:8000/food/menu/${formData._id}`,
-				formData
+				formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
 			);
 			alert("Menu updated successfully!");
 		} catch (error) {

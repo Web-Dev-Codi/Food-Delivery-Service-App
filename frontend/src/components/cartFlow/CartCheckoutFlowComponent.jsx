@@ -13,6 +13,15 @@ import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import CartItems from "../CartItems";
+import {loadStripe} from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import CheckoutForm from "../CheckoutForm";
+
+
+
+const stripePromise = loadStripe("pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td");
+
+
 
 const CartCheckoutFlow = () => {
 	const {
@@ -28,6 +37,8 @@ const CartCheckoutFlow = () => {
 	const [discountMessage, setDiscountMessage] = useState("");
 	const [step, setStep] = useState(1);
 	const [tip, setTip] = useState(15);
+	const [successPayment,setSuccessPayment] = useState(false);
+ 
 
 	useEffect(() => {
 		const token = localStorage.getItem("token");
@@ -98,18 +109,25 @@ const CartCheckoutFlow = () => {
 			setDiscountMessage("⚠️ Please enter a valid coupon code.");
 			return;
 		}
+		setDiscountMessage(null)
 
 		try {
-			await applyCoupon(couponCode);
-			setDiscountMessage("🎉 Coupon applied successfully!");
+			const response = await applyCoupon(couponCode.trim());
+			if (response?.success) {
+				setDiscountMessage("🎉 Coupon applied successfully!");
+			} else {
+				setDiscountMessage("❌ Invalid or expired coupon.");
+			}
+			
 		} catch (error) {
 			setDiscountMessage(
-				`❌ ${
-					error.response?.data?.message ||
-					"Invalid or expired coupon."
-				}`
+				` ${
+					error.response?.data?.message ?? 
+					"Invalid or expired coupon."}`
+				
 			);
 		}
+		   setTimeout(() => setDiscountMessage(null), 5000);	
 	};
 
 	const subtotal = state.cart?.finalAmount || 0;
@@ -310,111 +328,95 @@ const CartCheckoutFlow = () => {
 				<button
 					onClick={() => setStep(3)}
 					className="flex-1 bg-[#F97316] text-white py-3 rounded-lg font-medium">
-					Continue to Payment
-				</button>
-			</div>
-		</div>
-	);
-
-	const renderPaymentView = () => (
-		<div className="space-y-6">
-			<div className="bg-black/40 backdrop-blur-lg rounded-lg shadow-sm p-4 md:p-6">
-				<h2 className="text-xl font-semibold mb-4">Payment Method</h2>
-
-				<div className="space-y-4">
-					<div className="flex items-center p-3 border rounded-lg ">
-						<input
-							type="radio"
-							name="payment"
-							id="card1"
-							className="mr-3"
-							defaultChecked={true}
-						/>
-						<label
-							htmlFor="card1"
-							className="flex-1">
-							<span className="font-medium">
-								•••• •••• •••• 4242
-							</span>
-							<br />
-							<span className="text-sm text-gray-600">
-								Expires 12/24
-							</span>
-						</label>
-						<CreditCard className="w-6 h-6 text-[#F97316]" />
-					</div>
-
-					<button className="w-full text-left text-[#F97316] font-medium">
-						+ Add New Card
-					</button>
-
-					<div className="mt-6">
-						<h3 className="font-medium mb-3">Tip</h3>
-						<div className="grid grid-cols-4 gap-2">
-							{[10, 15, 20, 25].map((percentage) => (
-								<button
-									key={percentage}
-									onClick={() => setTip(percentage)}
-									className={`py-2 rounded ${
-										tip === percentage
-											? "bg-[#F97316] text-white"
-											: "bg-gray-100 text-gray-700"
-									}`}>
-									{percentage}%
-								</button>
-							))}
-						</div>
-					</div>
-
-					<div className="mt-6">
-						<label className="block text-sm font-medium mb-2">
-							Promo Code
-						</label>
-						<div className="flex space-x-2">
-							<input
-								type="text"
-								placeholder="Enter code"
-								className="flex-1 p-3 border rounded-lg"
-								value={couponCode}
-								onChange={(e) => setCouponCode(e.target.value)}
-							/>
-							{/* <button className="px-4 py-2 bg-gray-100 rounded-lg">
-								Apply
-							</button> */}
-							<button
-								onClick={handleApplyCoupon}
-								disabled={
-									state.cart?.appliedCoupon ||
-									state.user?.usedCoupons?.includes(
-										couponCode
-									)
-								}
-								className={`px-4 py-2 rounded-md ${
-									state.cart?.appliedCoupon
-										? "bg-gray-400 cursor-not-allowed"
-										: "bg-[#F97316] hover:bg-[#eb7622] hover:cursor-pointer hover:text-black"
-								}`}>
-								Apply Coupon
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div className="hidden md:flex space-x-4">
-				<button
-					onClick={() => setStep(2)}
-					className="flex-1 bg-transparent border border-[#F97316] text-[#F97316] py-3 rounded-lg font-medium">
-					Back
-				</button>
-				<button
-					onClick={() => setStep(4)}
-					className="flex-1 bg-[#F97316] text-white py-3 rounded-lg font-medium">
 					Review Order
 				</button>
 			</div>
-		</div>
+		</div> 
 	);
+
+	const renderPaymentView = () => (
+		
+		<div className="space-y-6">
+            <div className="bg-black/40 backdrop-blur-lg rounded-lg shadow-sm p-4 md:p-6">
+                <h2 className="text-xl font-semibold mb-4">Payment Method</h2>
+
+                {/* If Payment is Successful, Show "Review Order" Button */}
+                {successPayment ? (
+                    <div className="text-center">
+                        <p className="text-green-500 font-medium mb-4">✅ Payment Successful!</p>
+                        <button
+                            onClick={() => setStep(3)}
+                            className="w-full bg-[#F97316] text-white py-3 rounded-lg font-medium">
+                            Review Order
+                        </button>
+                    </div>
+                ) : (
+                    <Elements stripe={stripePromise}>
+                        <CheckoutForm setStep={setStep} setSuccessPayment={setSuccessPayment} />
+                    </Elements>
+                )}
+            </div>
+
+					<div className="mt-6">
+                <h3 className="font-medium mb-3">Tip</h3>
+                <div className="grid grid-cols-4 gap-2">
+                    {[10, 15, 20, 25].map((percentage) => (
+                        <button
+                            key={percentage}
+                            onClick={() => setTip(percentage)}
+                            className={`py-2 rounded ${
+                                tip === percentage
+                                    ? "bg-[#F97316] text-white"
+                                    : "bg-gray-100 text-gray-700"
+                            }`}>
+                            {percentage}%
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+					<div className="mt-6">
+                <label className="block text-sm font-medium mb-2">Promo Code</label>
+                <div className="flex space-x-2">
+                    <input
+                        type="text"
+                        placeholder="Enter code"
+                        className="flex-1 p-3 border rounded-lg"
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value)}
+                    />
+                    <button
+                        onClick={handleApplyCoupon}
+                        disabled={state.cart?.appliedCoupon || state.user?.usedCoupons?.includes(couponCode)}
+                        className={`px-4 py-2 rounded-md ${
+                            state.cart?.appliedCoupon
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-[#F97316] hover:bg-[#eb7622] hover:cursor-pointer hover:text-black"
+                        }`}>
+                        Apply Coupon
+                    </button>
+                </div>
+            </div>
+
+			 <div className="hidden md:flex space-x-4">
+                <button
+                    onClick={() => setStep(2)}
+                    className="flex-1 bg-transparent border border-[#F97316] text-[#F97316] py-3 rounded-lg font-medium">
+                    Back
+                </button>
+                <button
+                    onClick={() => () => navigate("/invoice")}
+                    disabled={!successPayment} // Disable if payment is not completed
+                    className={`flex-1 py-3 rounded-lg font-medium ${
+                        successPayment
+                            ? "bg-[#F97316] text-white hover:bg-[#eb7622]"
+                            : "bg-gray-400 cursor-not-allowed"
+                    }`}>
+                Place Order
+                </button>
+            </div>
+        </div>
+    );
 
 	const renderReviewView = () => (
 		<div className="space-y-6">
@@ -486,8 +488,9 @@ const CartCheckoutFlow = () => {
 					className="flex-1 bg-transparent border border-[#F97316] text-[#F97316] py-3 rounded-lg font-medium">
 					Back
 				</button>
-				<button className="flex-1 bg-[#F97316] text-white py-3 rounded-lg font-medium">
-					Place Order
+				<button className="flex-1 bg-[#F97316] text-white py-3 rounded-lg font-medium"
+				onClick={() => setStep(4)}>
+				Continue to Payment
 				</button>
 			</div>
 		</div>
@@ -503,8 +506,8 @@ const CartCheckoutFlow = () => {
 				<div className="max-w-4xl mx-auto">
 					{step === 1 && renderCartView()}
 					{step === 2 && renderDeliveryView()}
-					{step === 3 && renderPaymentView()}
-					{step === 4 && renderReviewView()}
+					{step === 3 && renderReviewView()}
+					{step === 4 && renderPaymentView()}
 				</div>
 
 				{/* Mobile Bottom Navigation */}

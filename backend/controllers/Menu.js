@@ -200,6 +200,10 @@ export const addMenu = async (req, res) => {
 
 export const updateMenu = async (req, res) => {
 	try {
+		const userId = req.userId;
+		if (!userId) {
+			return res.status(401).json({ message: "Unauthorized" });
+		}
 		const id = req.params.id;
 		const updatedMenu = await FoodItem.findByIdAndUpdate(id, req.body, {
 			new: true,
@@ -218,10 +222,14 @@ export const updateMenu = async (req, res) => {
 
 export const deleteMenu = async (req, res) => {
 	try {
+		const userId = req.userId;
+		if (!userId) {
+			return res.status(401).json({ message: "Unauthorized" });
+		}
 		const id = req.params.id;
 		const deletedMenu = await FoodItem.findByIdAndDelete(id);
 		if (!deletedMenu) {
-			res.status(404).json({ message: "No food item found" });
+			 return res.status(404).json({ message: "No food item found" });
 		}
 		res.status(200).json({
 			message: "Menu deleted successfully",

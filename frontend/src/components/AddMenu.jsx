@@ -5,13 +5,11 @@ const AddMenuForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
-    short_desc: "",
     description: "",
     category: "",
     imageUrl: "",
     availability: "Available", // Match backend enum
     restaurant: "", // Store restaurant ID here
-    ratings: 0, // Default rating
   });
 
   const [restaurants, setRestaurants] = useState([]); // Store list of restaurants
@@ -40,38 +38,29 @@ const AddMenuForm = () => {
   };
 
   const openCloudinaryWidget = () => {
-    if (!window.cloudinary) {
-      alert("Cloudinary is not loaded properly.");
-      return;
-    }
-    const widget = window.cloudinary.createUploadWidget(
+    window.cloudinary.openUploadWidget(
       {
         cloudName: "difmxsysx", // Your Cloudinary cloud name
-        uploadPreset: "menu_upload", // Your upload preset
+        uploadPreset: "menu_upload", // Your unsigned upload preset
         multiple: false,
-        sources: ["local", "url", "camera"], // Allow local files, URL, camera
+        sources: ["local", "url", "camera"], // Allow various sources
       },
       (error, result) => {
         if (!error && result && result.event === "success") {
-          console.log("Upload Success:", result.info.secure_url);
+          // Set the uploaded image URL to the formData
           setFormData((prevData) => ({
             ...prevData,
-            imageUrl: result.info.secure_url, // Update image in state
+            imageUrl: result.info.secure_url,
           }));
-        } else if (error) {
-          console.error("Upload Error:", error);
-          alert("Image upload failed. Please try again.");
         }
       }
     );
-  
-    widget.open();
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8000/food/menu",
+        "http://localhost:3006/food/menu",
         formData
       );
       console.log("Menu added successfully:", response.data.data);
@@ -80,13 +69,11 @@ const AddMenuForm = () => {
       setFormData({
         name: "",
         price: "",
-        short_desc: "",
         description: "",
         category: "",
         imageUrl: "",
         availability: "Available",
         restaurant: "",
-        ratings: 0,
       });
     } catch (error) {
       console.error("Error adding menu:", error);
@@ -95,8 +82,8 @@ const AddMenuForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-full">
-      <div className="bg-neutral-800/30 backdrop-blur-md p-8 rounded-lg shadow-lg w-full max-w-md">
+    <div className="flex items-center justify-center w-full md:mt-28 ">
+      <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center text-white">
           Add Menu
         </h1>
@@ -127,21 +114,6 @@ const AddMenuForm = () => {
               value={formData.price}
               onChange={handleChange}
               min="1"
-              required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
-            />
-          </div>
-
-          <div>
-            <label className="p-1 block font-bold text-neutral-100">
-              Short Description:
-            </label>
-            <input
-              type="text"
-              id="short_desc"
-              name="short_desc"
-              value={formData.short_desc}
-              onChange={handleChange}
               required
               className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
             />
@@ -220,22 +192,6 @@ const AddMenuForm = () => {
               <option value="Not Available">Not Available</option>
             </select>
           </div>
-          <div>
-            <label className="p-1 block font-bold text-neutral-100">
-              Ratings (0-5):
-            </label>
-            <input
-              type="number"
-              id="ratings"
-              name="ratings"
-              value={formData.ratings}
-              onChange={handleChange}
-              min="0"
-              max="5"
-              required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
-            />
-          </div>
 
           {/* Hey; I just add extra div here to recover the dropdown option */}
 
@@ -273,3 +229,22 @@ const AddMenuForm = () => {
 };
 
 export default AddMenuForm;
+
+/**
+ * <select
+					id="restaurant"
+					name="restaurant"
+					value={formData.restaurant}
+					onChange={handleChange}
+					className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+					required>
+					<option value="">Select Restaurant</option>
+					{restaurants.map((restaurant) => (
+						<option
+							key={restaurant._id}
+							value={restaurant._id}>
+							{restaurant.name}
+						</option>
+					))}
+				</select>
+ */
