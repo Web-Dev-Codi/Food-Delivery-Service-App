@@ -221,7 +221,7 @@ const Header = () => {
 								<div className="flex flex-col space-y-2">
 									<Link
 										to="/login"
-										className="font-bold text-white hover:text-orange-500 transition-colors">
+										className="bg-transparent border border-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors">
 										Login
 									</Link>
 									<Link
