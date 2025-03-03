@@ -176,7 +176,7 @@ const Dashboard = () => {
                     }}
                   >
                     <span className={`${color} p-2 text-lg`}>{label}</span>
-                    <div className="text-neutral-300 text-center text-sm sm:text-base p-2 sm:px-4 w-full bg-black">
+                    <div className="text-neutral-300 text-center text-sm sm:text-base p-2 sm:px-4 w-full bg-gradient-to-bl from-amber-950 from-20% via-black via-60% to-black rounded-lg mb-6">
                       {component ? component : info}
                     </div>
                     {externalLink && (
