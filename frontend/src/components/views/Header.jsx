@@ -112,11 +112,7 @@ const Header = () => {
 							className="font-bold text-white hover:text-orange-500 transition-colors">
 							Home
 						</Link>
-						<Link
-							to="/menu"
-							className="font-bold text-white hover:text-orange-500 transition-colors">
-							Menu
-						</Link>
+						
 						<Link
 							to="/contact-us"
 							className="font-bold text-white hover:text-orange-500 transition-colors">
