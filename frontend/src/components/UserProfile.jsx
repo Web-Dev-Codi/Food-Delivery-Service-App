@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -19,6 +19,8 @@ const UserProfile = () => {
 	const { userId } = useParams();
 	const navigate = useNavigate();
 	const [activeTab, setActiveTab] = useState("profile");
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [userRole, setUserRole] = useState("");
 	const [userData, setUserData] = useState({
 		// name: "",
 		// email: "",
@@ -26,6 +28,14 @@ const UserProfile = () => {
 		address: { street: "", city: "", zipCode: "" },
 	});
 	const [error, setError] = useState(null);
+
+	const handleLogout = () => {
+		localStorage.removeItem("token");
+		localStorage.removeItem("userId");
+		setIsLoggedIn(false);
+		setUserRole("");
+		navigate("/login");
+	};
 
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -277,7 +287,7 @@ const UserProfile = () => {
 								</p>
 							</div>
 						))}
-						<button className="mt-2 w-full border border-gray-300 text-gray-400 py-2 rounded-lg font-medium">
+						<button className="mt-2 w-full border-2 border-[#D84418]/30 text-[#D84418] py-2 rounded-lg font-medium hover:bg-[#D84418] hover:text-white transition-colors">
 							See All Favorites
 						</button>
 					</div>
@@ -319,7 +329,7 @@ const UserProfile = () => {
 						{user.orderHistory.map((order) => (
 							<div
 								key={order.id}
-								className="border-b border-gray-100 py-3 last:border-0">
+								className="border-b border-[#D84418]/30 py-3 last:border-0">
 								<div className="flex justify-between mb-1">
 									<span className="font-medium text-white">
 										{order.restaurant}
@@ -353,71 +363,73 @@ const UserProfile = () => {
 				<div className="space-y-4">
 					{/* Account Settings - Tier 3 */}
 					<div className="p-4 border border-[#D84418]/30 rounded-lg shadow-sm">
-						<div className="p-4 border-b border-gray-100">
+						<div className="p-4 border-b border-[#D84418]/30">
 							<h3 className="text-lg font-semibold text-white mb-2">
 								Account Settings
 							</h3>
 						</div>
-						<div className="divide-y divide-gray-100">
+						<div className="divide-y divide-[#D84418]/30">
 							<button className="w-full px-4 py-3 flex justify-between items-center">
 								<div className="flex items-center">
 									<User
 										size={20}
-										className="text-gray-400 mr-3"
+										className="text-[#D84418] mr-3"
 									/>
 									<span>Personal Information</span>
 								</div>
 								<ChevronRight
 									size={18}
-									className="text-gray-400"
+									className="text-[#D84418]"
 								/>
 							</button>
 							<button className="w-full px-4 py-3 flex justify-between items-center">
 								<div className="flex items-center">
 									<Bell
 										size={20}
-										className="text-gray-400 mr-3"
+										className="text-[#D84418] mr-3"
 									/>
 									<span>Notifications</span>
 								</div>
 								<ChevronRight
 									size={18}
-									className="text-gray-400"
+									className="text-[#D84418]"
 								/>
 							</button>
 							<button className="w-full px-4 py-3 flex justify-between items-center">
 								<div className="flex items-center">
 									<Share2
 										size={20}
-										className="text-gray-400 mr-3"
+										className="text-[#D84418] mr-3"
 									/>
 									<span>Refer Friends</span>
 								</div>
 								<ChevronRight
 									size={18}
-									className="text-gray-400"
+									className="text-[#D84418]"
 								/>
 							</button>
 							<button className="w-full px-4 py-3 flex justify-between items-center">
 								<div className="flex items-center">
 									<HelpCircle
 										size={20}
-										className="text-gray-400 mr-3"
+										className="text-[#D84418] mr-3"
 									/>
 									<span>Help & Support</span>
 								</div>
 								<ChevronRight
 									size={18}
-									className="text-gray-400"
+									className="text-[#D84418]"
 								/>
 							</button>
-							<button className="w-full px-4 py-3 flex justify-between items-center">
+							<button
+								onClick={handleLogout}
+								className="w-full px-4 py-3 flex justify-between items-center">
 								<div className="flex items-center">
 									<LogOut
 										size={20}
-										className="text-gray-400 mr-3"
+										className="text-[#D84418]"
 									/>
-									<span className="text-red-500">
+									<span className="text-[#D84418] mr-3">
 										Log Out
 									</span>
 								</div>

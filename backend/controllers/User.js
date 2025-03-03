@@ -207,43 +207,40 @@ export const signOut = async (req, res) => {
 	}
 };
 
-
-
 export const getAddressByUserId = async (req, res) => {
-  try {
-    const userId = req.userId; // ✅ Extract userId from middleware
+	try {
+		const userId = req.userId; // ✅ Extract userId from middleware
 
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+		if (!userId) {
+			return res.status(401).json({ message: "Unauthorized" });
+		}
 
-    // ✅ Fetch user and select only "address"
-    const user = await User.findById(userId).select("address");
+		// ✅ Fetch user and select only "address"
+		const user = await User.findById(userId).select("address");
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+		if (!user) {
+			return res.status(404).json({ message: "User not found" });
+		}
 
-    if (!user.address || user.address.length === 0) {
-      return res.status(200).json({ 
-        success: true, 
-        message: "No address found for this user.", 
-        data: [] 
-      });
-    }
- console.log(user.address)
-    res.status(200).json({
-      success: true,
-      message: "Address fetched successfully",
-      data: user, 
-    });
-
-  } catch (err) {
-    console.error("Error fetching address:", err);
-    res.status(500).json({
-      success: false,
-      message: "An error occurred while fetching the address",
-      error: err.message,
-    });
-  }
+		if (!user.address || user.address.length === 0) {
+			return res.status(200).json({
+				success: true,
+				message: "No address found for this user.",
+				data: [],
+			});
+		}
+		console.log(user.address);
+		res.status(200).json({
+			success: true,
+			message: "Address fetched successfully",
+			data: user,
+		});
+	} catch (err) {
+		console.error("Error fetching address:", err);
+		res.status(500).json({
+			success: false,
+			message: "An error occurred while fetching the address",
+			error: err.message,
+		});
+	}
 };

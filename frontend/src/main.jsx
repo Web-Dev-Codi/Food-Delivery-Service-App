@@ -28,7 +28,6 @@ import PageNotFound from "./components/PageNotFound.jsx";
 import SingleMenu from "./components/SingleMenu.jsx";
 import UserProfile from "./components/UserProfile.jsx";
 import FAQ from "./components/views/FAQ.jsx";
-import ContactUs from "./components/views/ContactUs.jsx";
 import Orders from "./components/Orders.jsx";
 import SingleOrder from "./components/SingleOrder.jsx";
 import CartCheckoutFlow from "./components/cartFlow/modified_cartFlow.jsx";
@@ -127,10 +126,6 @@ const router = createBrowserRouter(
 					element={<FAQ />}
 				/>
 				<Route
-					path="/contact-us"
-					element={<ContactUs />}
-				/>
-				<Route
 					path="/orders"
 					element={<Orders />}
 				/>
@@ -154,10 +149,13 @@ const router = createBrowserRouter(
 					path="/delete-menu"
 					element={<DeleteMenu />}
 				/>
-        <Route path="*" element={<PageNotFound />} />
-      </Route>
-    </Route>
-  )
+				<Route
+					path="*"
+					element={<PageNotFound />}
+				/>
+			</Route>
+		</Route>
+	)
 );
 
 createRoot(document.getElementById("root")).render(

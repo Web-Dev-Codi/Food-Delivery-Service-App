@@ -1,4 +1,3 @@
-import React from 'react'
 import { useState,useEffect } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
@@ -40,8 +39,8 @@ return (
       <p><strong>Email:</strong> {order.userId?.email}</p>
      {order.userId?.address && (
   <p>
-    <strong>Address:</strong> 
-    {order.userId.address.street}, {order.userId.address.city}, 
+    <strong>Address:</strong>
+    {order.userId.address.street}, {order.userId.address.city},
     {order.userId.address.state} - {order.userId.address.zipCode}
   </p>
 )}
