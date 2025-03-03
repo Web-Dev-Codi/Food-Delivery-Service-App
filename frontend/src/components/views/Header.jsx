@@ -71,11 +71,10 @@ const Header = () => {
 			}
 		};
 
-		// Add event listener when the dropdown is open
 		if (profileDropdownOpen) {
 			document.addEventListener("mousedown", handleClickOutside);
 		}
-		// Add event listener when the dropdown is open
+
 		if (menuOpen) {
 			document.addEventListener("mousedown", handleClickOutside);
 		}
@@ -112,12 +111,21 @@ const Header = () => {
 							className="font-bold text-white hover:text-orange-500 transition-colors">
 							Home
 						</Link>
-						
-						<Link
-							to="/contact-us"
-							className="font-bold text-white hover:text-orange-500 transition-colors">
-							Contact
-						</Link>
+
+						{location.pathname === "/" ? (
+							<a
+								href="#contact-section"
+								className="font-bold text-white hover:text-orange-500 transition-colors cursor-pointer">
+								Contact
+							</a>
+						) : (
+							<Link
+								to="/#contact-section"
+								className="font-bold text-white hover:text-orange-500 transition-colors">
+								Contact
+							</Link>
+						)}
+
 						<Link
 							to="/restaurants"
 							className="font-bold text-white hover:text-orange-500 transition-colors">
@@ -237,11 +245,19 @@ const Header = () => {
 								className="text-white font-bold hover:text-orange-500 transition-colors">
 								Menu
 							</Link>
-							<Link
-								to="/contact-us"
-								className="text-white font-bold hover:text-orange-500 transition-colors">
-								Contact
-							</Link>
+							{location.pathname === "/" ? (
+								<a
+									href="#contact-section"
+									className="text-white font-bold hover:text-orange-500 transition-colors cursor-pointer">
+									Contact
+								</a>
+							) : (
+								<Link
+									to="/#contact-section"
+									className="text-white font-bold hover:text-orange-500 transition-colors">
+									Contact
+								</Link>
+							)}
 							<Link
 								to="/about"
 								className="text-white font-bold hover:text-orange-500 transition-colors">

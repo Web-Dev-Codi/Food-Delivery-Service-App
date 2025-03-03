@@ -74,7 +74,7 @@ const EditableAddress = ({ street, city, zipCode, onUpdate }) => {
 					<div>
 						<label
 							htmlFor="street"
-							className="block text-sm font-medium text-gray-700">
+							className="block text-sm font-medium text-gray-400 mb-1">
 							Street Name and Number
 						</label>
 						<input
@@ -90,7 +90,7 @@ const EditableAddress = ({ street, city, zipCode, onUpdate }) => {
 					<div>
 						<label
 							htmlFor="city"
-							className="block text-sm font-medium text-gray-700">
+							className="block text-sm font-medium text-gray-400 mb-1">
 							City
 						</label>
 						<input
@@ -106,7 +106,7 @@ const EditableAddress = ({ street, city, zipCode, onUpdate }) => {
 					<div>
 						<label
 							htmlFor="zipCode"
-							className="block text-sm font-medium text-gray-700">
+							className="block text-sm font-medium text-gray-400 mb-1">
 							Zip Code
 						</label>
 						<input
