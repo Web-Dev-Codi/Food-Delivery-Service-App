@@ -135,17 +135,19 @@ const UserProfile = () => {
 			</div>
 
 			{/* Profile Header - Tier 1 */}
-			<div className="flex items-center  sm:p-6 lg:p-8 border-b border-[#D84418]/30">
+			<div className="flex flex-col sm:flex-row items-center sm:p-6 lg:p-8 border-b border-[#D84418]/30">
 				<img
 					src="https://placehold.co/600x400"
 					alt="Profile"
 					className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover mb-4 sm:mb-0 sm:mr-6 border-2 border-[#D84418]"
 				/>
-				<EditableProfile
-					name={userData?.name}
-					email={userData?.email}
-					contact={userData?.contact}
-				/>
+				<div className="w-full">
+					<EditableProfile
+						name={userData?.name}
+						email={userData?.email}
+						contact={userData?.contact}
+					/>
+				</div>
 			</div>
 
 			{/* Navigation Tabs */}
