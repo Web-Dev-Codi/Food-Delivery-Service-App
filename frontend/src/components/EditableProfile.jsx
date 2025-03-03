@@ -41,9 +41,10 @@ const EditableProfile = ({ name, email, contact }) => {
 
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("No authentication token found");
-      }
+			if (!token) {
+				setError("No authentication token found");
+				return;
+			}
 
       const res = await axios.put(
         `http://localhost:8000/data/update/${userId}`,
@@ -102,7 +103,12 @@ const EditableProfile = ({ name, email, contact }) => {
 	}, [userId, navigate]);
 
 	return (
-		<div className="">
+		<div className="border rounded-lg p-4 hover:border-[#D84418] transition-colors border-[#D84418]/30">
+			{error && (
+				<div className="text-red-500 mb-4 p-2 bg-red-100 rounded">
+					{error}
+				</div>
+			)}
 			{isEditing ? (
 				<form
 					onSubmit={handleSubmit}

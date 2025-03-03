@@ -134,6 +134,7 @@ export const getUserById = async (req, res) => {
 				message: "User not found",
 			});
 		}
+
 		res.status(200).json({
 			message: "User fetched successfully",
 			data: user,
@@ -153,11 +154,13 @@ export const updateUser = async (req, res) => {
 			new: true,
 			...req.body,
 		});
+
 		if (!updatedUser) {
 			return res.status(404).json({
 				message: "User not found",
 			});
 		}
+
 		res.status(200).json({
 			message: "User updated successfully",
 			data: updatedUser,

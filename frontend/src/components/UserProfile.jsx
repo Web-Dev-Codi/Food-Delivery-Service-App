@@ -211,7 +211,7 @@ const UserProfile = () => {
 			)}
 
 			{/* Addresses Section */}
-			<div className=" p-4 border border-[#D84418]/30 rounded-lg shadow-sm">
+			<div className="p-4 mt-6 border border-[#D84418]/30 rounded-lg shadow-sm">
 				<div className="flex justify-between items-center mb-4">
 					<h3 className="text-lg font-semibold text-white">
 						Delivery Addresses
@@ -227,8 +227,9 @@ const UserProfile = () => {
 				<div className="space-y-4">
 					{userData?.address ? (
 						<EditableAddress
-							key={userData?._id}
-							address={userData?.address}
+							street={userData?.address?.street}
+							city={userData?.address?.city}
+							zipCode={userData?.address?.zipCode}
 							onUpdate={handleAddressUpdate}
 						/>
 					) : (

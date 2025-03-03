@@ -5,13 +5,13 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const EditableAddress = ({ address }) => {
+const EditableAddress = ({ street, city, zipCode, onUpdate }) => {
 	const { userId } = useParams();
 	const [isEditing, setIsEditing] = useState(false);
 	const [data, setData] = useState({
-		street: address.street,
-		city: address.city,
-		zipCode: address.zipCode,
+		street: street,
+		city: city,
+		zipCode: zipCode,
 	});
 
 	// Toggle edit mode
@@ -23,9 +23,9 @@ const EditableAddress = ({ address }) => {
 	const handleCancel = () => {
 		setIsEditing(false);
 		setData({
-			street: address.street,
-			city: address.city,
-			zipCode: address.zipCode,
+			street,
+			city,
+			zipCode,
 		});
 	};
 
@@ -56,7 +56,7 @@ const EditableAddress = ({ address }) => {
 					},
 				}
 			);
-			setData(res.data.data.address);
+			setData(res.data.data);
 			setIsEditing(false);
 		} catch (error) {
 			console.error("Error updating address:", error);
@@ -143,9 +143,7 @@ const EditableAddress = ({ address }) => {
 			) : (
 				// Display mode
 				<div className=" ">
-					<div
-						key={address.id}
-						className="">
+					<div className="">
 						<div className="flex justify-between items-start">
 							<div className="flex items-start space-x-3">
 								<MapPin
@@ -154,10 +152,10 @@ const EditableAddress = ({ address }) => {
 								/>
 								<div>
 									<h4 className="font-medium text-white">
-										{address.street}
+										{street}
 									</h4>
 									<p className="text-gray-400 text-sm">
-										{address.city}, {address.zipCode}
+										{city}, {zipCode}
 									</p>
 								</div>
 							</div>
@@ -175,8 +173,10 @@ const EditableAddress = ({ address }) => {
 };
 
 EditableAddress.propTypes = {
-	address: PropTypes.object.isRequired,
-	onAddressUpdate: PropTypes.func,
+	street: PropTypes.string,
+	city: PropTypes.string,
+	zipCode: PropTypes.string,
+	onUpdate: PropTypes.func,
 };
 
 export default EditableAddress;
