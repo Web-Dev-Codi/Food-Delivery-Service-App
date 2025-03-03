@@ -111,11 +111,7 @@ const Header = () => {
 							className="font-bold text-white hover:text-orange-500 transition-colors">
 							Home
 						</Link>
-						<Link
-							to="/menu"
-							className="font-bold text-white hover:text-orange-500 transition-colors">
-							Menu
-						</Link>
+
 						{location.pathname === "/" ? (
 							<a
 								href="#contact-section"
@@ -129,6 +125,7 @@ const Header = () => {
 								Contact
 							</Link>
 						)}
+
 						<Link
 							to="/restaurants"
 							className="font-bold text-white hover:text-orange-500 transition-colors">

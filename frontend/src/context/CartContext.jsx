@@ -218,38 +218,17 @@ const applyCoupon = async (couponCode) => {
 			{ code: couponCode },
 			{ headers: getAuthHeaders() }
 		);
+		console.log("the response is :",response)
+		console.log(response.data);
 
-		dispatch({
-			type: "FETCH_CART_SUCCESS",
-			payload: response.data.data,
-		});
-
-		// ✅ Show success toast
-		toast.success(`🎉 Coupon applied! Discount: €${response.data.discount}`, {
-			position: "top-right",
-			autoClose: 3000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			theme: "dark",
-		});
+		return response.data;
 	} catch (error) {
-		dispatch({
-			type: "FETCH_CART_ERROR",
-			payload: error.response?.data?.message || error.message,
-		});
+		
+		console.error("Coupon apply error:", error);
 
-		// ❌ Show error toast
-		toast.error("❌ Invalid or expired coupon.", {
-			position: "top-right",
-			autoClose: 3000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			theme: "dark",
-		});
+	
+		return { success: false, message: error.response?.data?.message || "Invalid or expired coupon." };
+		
 	}
 };
 

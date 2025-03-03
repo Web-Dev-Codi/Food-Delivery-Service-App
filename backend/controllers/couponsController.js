@@ -159,9 +159,12 @@ export const applyCoupon = async (req, res) => {
             validUntil: { $gte: new Date() },
             isActive: true
         });
+        console.log("valid coupon", validCoupon);
 
         if (!validCoupon) {
+            console.log("wrong coupon hello")
             return res.status(404).json({ message: "Coupon not found or expired." });
+
         }
 
         //to check if the coupon is already used by the user

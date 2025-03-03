@@ -146,6 +146,8 @@ const CartCheckoutFlow = () => {
 	};
 
 	const handleApplyCoupon = async () => {
+		console.log("applyCoupon function:", applyCoupon);
+
 		if (!couponCode.trim()) {
 			toast.warn("⚠️ Please enter a valid coupon code.");
 			return;
@@ -153,16 +155,16 @@ const CartCheckoutFlow = () => {
 
 		try {
 			const response = await applyCoupon(couponCode.trim());
+			console.log("handleApplyCoupon response:", response);
 
-			if (response?.success) {
-				toast.success("🎉 Coupon applied successfully!");
+			if (response?.message === "Coupon applied successfully!") {
+				toast.success(`🎉 Coupon applied! Discount: €${response.discount}`);
 			} else {
-				toast.error("❌ Invalid or expired coupon.");
+				toast.error(`❌ ${response.message || "Invalid or expired coupon."}`);
 			}
 		} catch (error) {
-			toast.error(
-				error.response?.data?.message ?? "❌ Invalid or expired coupon."
-			);
+			console.error("handleApplyCoupon error:", error);
+			toast.error(error.message || "❌ Invalid or expired coupon.");
 		}
 	};
 
