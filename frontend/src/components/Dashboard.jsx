@@ -41,8 +41,9 @@ const Dashboard = () => {
     {
       color: "text-green-600",
       label: "Green link to coupons",
-      info: "Extra Info",
+      info: "Extra Info: You can add whatever it suits the wish of the clients. Eg. Total Orders, Total Revenue, Todo List, weather forecast, Current Traffic, Whatever you want in your desktop aka dashboard",
       linkTo: "coupons",
+      extraHeight: "h-44",
     },
     { color: "text-violet-600", label: "Violet", info: "More Extra Info" },
     { color: "text-pink-600", label: "Pink", info: "Even More Extra Info" },
@@ -57,7 +58,7 @@ const Dashboard = () => {
       color: "text-red-700",
       label: "Red",
       info: "Edit me, too",
-      extraHeight: "h-64",
+      extraHeight: "h-24", // Controllable height!
     },
     {
       color: "text-emerald-600",
@@ -78,7 +79,7 @@ const Dashboard = () => {
             setIsMobileMenuOpen(!isMobileMenuOpen);
             setIsOutletOpen(false); // Optional: Close right panel when opening mobile menu
           }}
-          className="md:hidden p-3 bg-neutral-800/10 backdrop-blur shadow-lg text-white fixed bottom-1/2 left-4 rounded-lg z-20"
+          className="md:hidden p-3 bg-neutral-800/10 backdrop-blur shadow-lg text-white fixed top-0 left-2 rounded-lg z-20"
           aria-label="Toggle mobile menu"
         >
           {isMobileMenuOpen ? (
@@ -99,7 +100,7 @@ const Dashboard = () => {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <ul className="flex-col md:mt-4 p-1 md:space-y-4 space-x-3 md:space-x-0 min-h-screen">
+          <ul className="flex-col mt-10 md:mt-4 p-1 md:space-y-4 space-x-3 md:space-x-0 min-h-screen">
             {navItems.map(({ to, icon: Icon, label }) => (
               <li
                 key={to}

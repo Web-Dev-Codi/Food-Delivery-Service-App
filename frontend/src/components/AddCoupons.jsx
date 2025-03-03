@@ -63,8 +63,8 @@ const AddCoupons = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-full md:mt-28 ">
-      <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md">
+    <div className="flex items-center justify-center w-full md:mt-3 ">
+      <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md min-h-screen">
         <h1 className="text-2xl font-bold mb-6 text-center text-white">
           Add Coupons
         </h1>

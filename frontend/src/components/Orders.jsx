@@ -29,7 +29,9 @@ function Orders() {
     <div className="flex items-center justify-center w-full md:mt-3 ">
       <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md">
         <div className="block w-full overflow-x-auto">
-          <h2 className="font-bold mb-6 text-center text-green-500">Orders</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center text-white">
+            Orders
+          </h2>
           <p className="text-red-200 text-center">
             {orders.length === 0 && "No orders found!"}
           </p>

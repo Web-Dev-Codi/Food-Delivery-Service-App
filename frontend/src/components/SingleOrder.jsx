@@ -34,20 +34,13 @@ function SingleOrder() {
 
   return (
     <div className="flex items-center justify-center w-full md:mt-3 ">
-      <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center text-white">
+      <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md min-h-screen">
+        <h2 className="text-2xl font-bold mb-6 text-center text-white">
           Order Details
-        </h1>
+        </h2>
 
         {/* User Details */}
-        <div
-          style={{
-            border: "1px solid #ddd",
-            padding: "10px",
-            borderRadius: "5px",
-            marginBottom: "15px",
-          }}
-        >
+        <div className="border border-gray-300 p-2.5 rounded mb-3.5">
           <h3>User Information</h3>
           <p>
             <strong>Name:</strong> {order.userId?.name}
@@ -68,14 +61,7 @@ function SingleOrder() {
         </div>
 
         {/* Payment Details */}
-        <div
-          style={{
-            border: "1px solid #ddd",
-            padding: "10px",
-            borderRadius: "5px",
-            marginBottom: "15px",
-          }}
-        >
+        <div className="border border-gray-300 p-2.5 rounded mb-3.5">
           <h3>Payment Details</h3>
           <p>
             <strong>Amount:</strong> ${order.paymentId?.amount}
@@ -86,13 +72,7 @@ function SingleOrder() {
         </div>
 
         {/* Food Items List */}
-        <div
-          style={{
-            border: "1px solid #ddd",
-            padding: "10px",
-            borderRadius: "5px",
-          }}
-        >
+        <div className="border border-gray-300 p-2.5 rounded mb-3.5">
           <h3>Ordered Items</h3>
           {order.cartId?.items?.length > 0 ? (
             order.cartId.items.map((item, index) => (
