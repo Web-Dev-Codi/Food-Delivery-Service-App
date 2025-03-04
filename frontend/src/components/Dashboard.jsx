@@ -87,7 +87,7 @@ const Dashboard = () => {
     {
       color: "text-rose-600",
       label: "Top 5 Restaurants This Month",
-      info: "1. Spicy King Diner ($12,340) | 2. Urban Bites ($11,870) | 3. Green Garden ($10,450) | 4. Burger Nation ($9,870) | 5. Sushi Express ($9,200)",
+      info: "1. Spicy Of India ($12,340) | 2. The Classic Diner ($11,870) | 3. Green Garden ($10,450) | 4. Grill & Chill ($9,870) | 5. Sushi Express ($9,200)",
     },
   ];
 
@@ -203,19 +203,25 @@ const Dashboard = () => {
                       </span>
                     </div>
 
-                    {/* Info Block - Split into lines if `|` exists */}
+                    {/* Content Area - Either inject component or show info */}
                     <div className="text-neutral-300 text-sm sm:text-base bg-neutral-800/50 p-3 rounded-lg shadow-inner w-full">
-                      {info.split("|").map((line, lineIndex) => (
-                        <div
-                          key={lineIndex}
-                          className="flex items-center gap-2 py-1 border-b border-white/10 last:border-none"
-                        >
-                          <span className="text-amber-400 font-semibold">
-                            •
-                          </span>
-                          <span>{line.trim()}</span>
+                      {component ? (
+                        <div className="flex justify-center items-center h-full">
+                          {component}
                         </div>
-                      ))}
+                      ) : (
+                        info.split("|").map((line, lineIndex) => (
+                          <div
+                            key={lineIndex}
+                            className="flex items-center gap-2 py-1 border-b border-white/10 last:border-none"
+                          >
+                            <span className="text-amber-400 font-semibold">
+                              •
+                            </span>
+                            <span>{line.trim()}</span>
+                          </div>
+                        ))
+                      )}
                     </div>
 
                     {/* External Link if exists */}
@@ -234,15 +240,6 @@ const Dashboard = () => {
                   </div>
                 )
               )}
-            </div>
-
-            {/* Footer */}
-            <div className="flex-col items-center justify-center w-full max-w-xl mx-auto bg-gradient-to-r from-white/5 via-white/20 to-white/5 ">
-              <p className="text-neutral-300 text-center text-sm sm:text-base p-2 sm:px-4">
-                I am some kind of a footer. You can add notes or update the
-                database here, too. Use this space to add more functionalities
-                or information!
-              </p>
             </div>
           </div>
         </div>
