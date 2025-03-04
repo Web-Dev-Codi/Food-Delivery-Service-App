@@ -22,9 +22,9 @@ const UserProfile = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [userRole, setUserRole] = useState("");
 	const [userData, setUserData] = useState({
-		// name: "",
-		// email: "",
-		// contact: "",
+		name: "",
+		email: "",
+		contact: "",
 		address: { street: "", city: "", zipCode: "" },
 	});
 	const [error, setError] = useState(null);
@@ -278,7 +278,7 @@ const UserProfile = () => {
 						{user.favorites.map((fav) => (
 							<div
 								key={fav.id}
-								className="border-b border-gray-100 py-2 last:border-0">
+								className="border-b border-[#D84418]/30 py-2 last:border-0">
 								<p className="font-medium text-white">
 									{fav.item}
 								</p>
@@ -351,7 +351,7 @@ const UserProfile = () => {
 								</div>
 							</div>
 						))}
-						<button className="mt-2 w-full border border-gray-300 text-gray-400 py-2 rounded-lg font-medium">
+						<button className="mt-2 w-full border-2 border-[#D84418]/30 text-[#D84418] py-2 rounded-lg font-medium hover:bg-[#D84418] hover:text-white transition-colors">
 							View All Orders
 						</button>
 					</div>

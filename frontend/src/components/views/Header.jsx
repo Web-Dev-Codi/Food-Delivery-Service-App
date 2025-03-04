@@ -5,6 +5,7 @@ import {
 	FaUser,
 	FaRegWindowClose,
 	FaUserCog,
+	FaSearch,
 } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BiLogOut } from "react-icons/bi";
@@ -21,6 +22,10 @@ const Header = () => {
 	const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 	const [userRole, setUserRole] = useState("");
 	const dropdownRef = useRef(null);
+	const searchRef = useRef(null);
+	const [searchTerm, setSearchTerm] = useState("");
+	const [searchResults, setSearchResults] = useState([]);
+	const [showSearchResults, setShowSearchResults] = useState(false);
 
 	// Check authentication status whenever location changes
 	useEffect(() => {
@@ -59,7 +64,7 @@ const Header = () => {
 		}
 	};
 
-	// Handle clicks outside the dropdown
+	// Handle clicks outside the dropdown and search results
 	useEffect(() => {
 		const handleClickOutside = (event) => {
 			if (
@@ -69,9 +74,16 @@ const Header = () => {
 				setProfileDropdownOpen(false);
 				setMenuOpen(false);
 			}
+
+			if (
+				searchRef.current &&
+				!searchRef.current.contains(event.target)
+			) {
+				setShowSearchResults(false);
+			}
 		};
 
-		if (profileDropdownOpen) {
+		if (profileDropdownOpen || showSearchResults) {
 			document.addEventListener("mousedown", handleClickOutside);
 		}
 
@@ -83,7 +95,54 @@ const Header = () => {
 		return () => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
-	}, [profileDropdownOpen, menuOpen]);
+	}, [profileDropdownOpen, menuOpen, showSearchResults]);
+
+	// Search functionality
+	useEffect(() => {
+		const fetchRestaurants = async () => {
+			if (searchTerm.trim() === "") {
+				setSearchResults([]);
+				return;
+			}
+
+			try {
+				const response = await axios.get(
+					`http://localhost:8000/api/restaurants?search=${searchTerm}`
+				);
+
+				if (response.data && Array.isArray(response.data.data)) {
+					setSearchResults(response.data.data);
+				} else if (response.data && Array.isArray(response.data)) {
+					setSearchResults(response.data);
+				} else {
+					setSearchResults([]);
+				}
+			} catch (error) {
+				console.error("Error searching restaurants:", error);
+				setSearchResults([]);
+			}
+		};
+
+		// Debounce search requests
+		const timer = setTimeout(() => {
+			if (searchTerm) {
+				fetchRestaurants();
+			}
+		}, 300);
+
+		return () => clearTimeout(timer);
+	}, [searchTerm]);
+
+	const handleSearchChange = (e) => {
+		setSearchTerm(e.target.value);
+		setShowSearchResults(e.target.value.trim() !== "");
+	};
+
+	const handleRestaurantClick = (restaurantId) => {
+		setSearchTerm("");
+		setShowSearchResults(false);
+		navigate(`/restaurants/${restaurantId}`);
+	};
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -144,6 +203,55 @@ const Header = () => {
 								Admin
 							</Link>
 						)}
+
+						{/* Search Component */}
+						<div
+							className="relative"
+							ref={searchRef}>
+							<div className="flex items-center bg-white bg-opacity-20  rounded-full px-3 py-1">
+								<FaSearch className="text-orange-500 mr-2" />
+								<input
+									type="text"
+									placeholder="Search restaurants..."
+									className="bg-transparent text-white placeholder-gray-300 outline-none w-40"
+									value={searchTerm}
+									onChange={handleSearchChange}
+								/>
+							</div>
+
+							{/* Search Results Dropdown - Only show when there are results and search term exists */}
+							{showSearchResults && searchResults.length > 0 && (
+								<div className="absolute mt-2 w-64 bg-white rounded-md shadow-lg py-1 z-50 max-h-80 overflow-y-auto">
+									{searchResults.map((restaurant) => (
+										<div
+											key={
+												restaurant._id || restaurant.id
+											}
+											onClick={() =>
+												handleRestaurantClick(
+													restaurant._id ||
+														restaurant.id
+												)
+											}
+											className="px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 cursor-pointer">
+											<div className="font-medium">
+												{restaurant.name}
+											</div>
+										</div>
+									))}
+								</div>
+							)}
+
+							{showSearchResults &&
+								searchTerm &&
+								searchResults.length === 0 && (
+									<div className="absolute mt-2 w-64 bg-white rounded-md shadow-lg py-2 z-50">
+										<p className="px-4 text-sm text-gray-500">
+											No restaurants found
+										</p>
+									</div>
+								)}
+						</div>
 					</div>
 					<div className="hidden md:flex items-center space-x-4">
 						{isLoggedIn ? (
@@ -259,9 +367,9 @@ const Header = () => {
 								</Link>
 							)}
 							<Link
-								to="/about"
+								to="/about-us"
 								className="text-white font-bold hover:text-orange-500 transition-colors">
-								About Us
+								AboutUs
 							</Link>
 							<Link
 								to="/faqs"
