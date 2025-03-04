@@ -25,8 +25,8 @@ const AboutUs = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-orange-50 text-gray-800 font-sans p-6">
-            <div className="max-w-4xl mx-auto">
+        <div className="min-h-screen mt-10 bg-neutral-800/60 backdrop-blur-md rounded-lg p-6 shadow-lg flex items-center justify-center gap-8  border-neutral-600 text-white-800  font-semibold   font-sans">
+            <div className="max-w-4xl mt-10 mx-auto">
                 <h1 className="text-4xl font-bold text-orange-500 mb-6">About Four Flavors Express</h1>
 
                 <p className="text-lg mb-4">Welcome to <strong>Four Flavors Express</strong> – Fast, Fresh, Flavorful & Future-Focused! 🌍</p>
