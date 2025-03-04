@@ -28,6 +28,9 @@ const Header = () => {
 	const [searchResults, setSearchResults] = useState([]);
 	const [showSearchResults, setShowSearchResults] = useState(false);
 
+
+
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 	// Check authentication status whenever location changes
 	useEffect(() => {
 		const token = localStorage.getItem("token");
@@ -51,7 +54,7 @@ const Header = () => {
 			if (!token || !userId) return;
 
 			const response = await axios.get(
-				`http://localhost:8000/data/users/${userId}`,
+				`${API_URL}/data/users/${userId}`,
 				{
 					headers: { Authorization: `Bearer ${token}` },
 				}
