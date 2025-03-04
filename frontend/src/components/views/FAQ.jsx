@@ -69,7 +69,7 @@ const FAQ = () => {
 						key={category}
 						className={`px-4 py-2 rounded-full ${
 							activeCategory === category
-								? "bg-[#F97316] text-black font-semibold  border-white border"
+								? "bg-[#F97316] text-white font-semibold  border-white border"
 								: "bg-gray-100 bg-opacity-25 text-white"
 						}`}
 						onClick={() => setActiveCategory(category)}>
@@ -77,23 +77,6 @@ const FAQ = () => {
 					</button>
 				))}
 			</div>
-
-			{/* Quick Jump Links */}
-			{/* <div className="mb-8 p-4 bg-transparent rounded-lg">
-				<h2 className="text-lg font-semibold mb-2">Quick Links</h2>
-				<div className="flex flex-wrap gap-4">
-					{Object.keys(faqData).map((category) => (
-						<a
-							key={category}
-							href={`#${category
-								.toLowerCase()
-								.replace(/\s+/g, "-")}`}
-							className="text-primary hover:underline">
-							{category}
-						</a>
-					))}
-				</div>
-			</div> */}
 
 			{/* FAQ Accordion */}
 			<div className="space-y-6">
