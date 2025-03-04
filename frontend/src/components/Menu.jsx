@@ -1,11 +1,9 @@
-const Menu = () => {
-	return (
-		<div className="min-h-screen">
-			<div className="flex justify-center items-center h-screen text-lg font-semibold">
-				Menu
-			</div>
-		</div>
-	);
-};
+import React from 'react'
 
-export default Menu;
+function Menu() {
+  return (
+    <div>Menu</div>
+  )
+}
+
+export default Menu
