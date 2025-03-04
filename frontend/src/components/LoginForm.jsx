@@ -50,7 +50,7 @@ function LoginForm() {
 			if (res.data.data.role === "admin") {
 				navigate("/dashboard");
 			} else {
-				navigate(`/profile/${localStorage.getItem("userId")}`);
+				navigate(`/`);
 			}
 		} catch (err) {
 			setErrorMessage(err.response?.data?.message || "Login failed");
