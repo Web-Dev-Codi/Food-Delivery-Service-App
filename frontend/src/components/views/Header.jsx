@@ -259,9 +259,9 @@ const Header = () => {
 								</Link>
 							)}
 							<Link
-								to="/about"
+								to="/about-us"
 								className="text-white font-bold hover:text-orange-500 transition-colors">
-								About Us
+								AboutUs
 							</Link>
 							<Link
 								to="/faqs"

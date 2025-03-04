@@ -61,9 +61,9 @@ const Footer = () => {
 						Restaurants
 					</Link>
 					<Link
-						to="/about"
+						to="/about-us"
 						className="hover:text-white transition-all hover:scale-105">
-						About Us
+						AboutUs
 					</Link>
 					<Link
 						to="/contact"
