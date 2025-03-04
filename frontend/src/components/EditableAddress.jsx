@@ -14,6 +14,8 @@ const EditableAddress = ({ street, city, zipCode, onUpdate }) => {
 		zipCode: zipCode,
 	});
 
+	const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 	// Toggle edit mode
 	const handleEditClick = () => {
 		setIsEditing(true);
@@ -47,7 +49,7 @@ const EditableAddress = ({ street, city, zipCode, onUpdate }) => {
 				return;
 			}
 			const res = await axios.put(
-				`http://localhost:8000/data/update/${userId}`,
+				`${API_URL}/data/update/${userId}`,
 				data,
 				{
 					headers: {

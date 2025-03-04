@@ -28,6 +28,7 @@ const UserProfile = () => {
 		address: { street: "", city: "", zipCode: "" },
 	});
 	const [error, setError] = useState(null);
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -55,7 +56,7 @@ const UserProfile = () => {
 				}
 
 				const response = await axios.get(
-					`http://localhost:8000/data/users/${userId}`,
+					`${API_URL}/data/users/${userId}`,
 					{
 						headers: {
 							Authorization: `Bearer ${token}`,

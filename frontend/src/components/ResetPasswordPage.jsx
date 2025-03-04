@@ -13,6 +13,8 @@ const ResetPasswordPage = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
+
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
   const handlePasswordReset = async (e) => {
     e.preventDefault();
 
@@ -23,7 +25,7 @@ const ResetPasswordPage = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/auth/reset-password/${token}`,
+        `${API_URL}/auth/reset-password/${token}`,
         { password }
       );
 
@@ -85,7 +87,7 @@ const ResetPasswordPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full p-3 mt-1 border border-white-300 rounded-lg bg-black/40 
+                  className="w-full p-3 mt-1 border border-white-300 rounded-lg bg-black/40
                   text-white outline-none focus:ring-2 focus:ring-white-400 focus:border-white-400"
                 />
               </div>
@@ -99,14 +101,14 @@ const ResetPasswordPage = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
-                  className="w-full p-3 mt-1 border border-white-300 rounded-lg bg-black/40 
+                  className="w-full p-3 mt-1 border border-white-300 rounded-lg bg-black/40
                   text-white outline-none focus:ring-2 focus:ring-white-400 focus:border-white-400"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-orange-400 text-black py-3 rounded-lg hover:bg-yellow-500 
+                className="w-full bg-orange-400 text-black py-3 rounded-lg hover:bg-yellow-500
                 transition-transform transform hover:scale-105"
               >
                 Reset Password

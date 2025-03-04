@@ -13,6 +13,8 @@ function AddReview() {
 	const [isLoading, setIsLoading] = useState(false);
 	const { id } = useParams();
 
+	const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
@@ -29,7 +31,7 @@ function AddReview() {
 				return;
 			}
 			const response = await axios.post(
-				`http://localhost:8000/api/${id}/reviews`,
+				`${API_URL}/api/${id}/reviews`,
 				{ rating, comment },
 				{
 					headers: {
@@ -67,7 +69,7 @@ function AddReview() {
 								className="h-20 w-20 rounded-full border-4 border-yellow-500 shadow-xl transform hover:scale-110 transition duration-300"
 							/>
 						</div>
-						
+
 						<p className="text-yellow-400 text-center mb-6">
 						We’d love to hear from you  share your thoughts on your experience with us.
 						</p>
