@@ -130,7 +130,7 @@ function SingleRestaurant() {
                       {menu.name}
                     </p>
                     <p className="text-gray-200 text-lg font-medium mb-4">
-                      €{menu.price}
+                      ${menu.price}
                     </p>
                     <button
                       type="button"

@@ -10,6 +10,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { BiLogOut } from "react-icons/bi";
 import { CartContext } from "../../context/CartContext";
 import axios from "axios";
+import { Tooltip } from "react-tooltip";
 
 const Header = () => {
 	const navigate = useNavigate();
@@ -200,6 +201,7 @@ const Header = () => {
 												<BiLogOut className="mr-3 text-orange-500" />
 												Logout
 											</button>
+
 										</div>
 									)}
 								</div>
@@ -209,9 +211,13 @@ const Header = () => {
 							<div className="flex items-center space-x-2">
 								<Link
 									to="/login"
+									data-tooltip-id="admin-login-tooltip" // This connects the link to the tooltip
 									className="px-4 py-2 text-white font-bold hover:text-orange-500 transition-colors">
 									Sign In
 								</Link>
+								<Tooltip id="admin-login-tooltip" place="bottom" effect="solid">
+								To Login as Admin use Email: "admin@ffe.com" | Password: "123456789"
+							  </Tooltip>
 								<Link
 									to="/signup"
 									className="px-4 py-2 bg-orange-500 text-white font-bold rounded-full hover:bg-white hover:text-orange-500 transition-colors">
