@@ -82,7 +82,7 @@ function SingleMenu() {
 				</div>,
 				{
 					position: "bottom-right",
-					autoClose: 5000, // Extended to give more time to use the button
+					autoClose: 3000, // Extended to give more time to use the button
 					hideProgressBar: false,
 					closeOnClick: false,
 					pauseOnHover: true,
