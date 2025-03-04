@@ -38,7 +38,9 @@ const CartCheckoutFlow = () => {
 	const [step, setStep] = useState(1);
 	const [tip, setTip] = useState(15);
 	const [successPayment,setSuccessPayment] = useState(false);
- 
+
+
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 	useEffect(() => {
 		const token = localStorage.getItem("token");
@@ -118,16 +120,16 @@ const CartCheckoutFlow = () => {
 			} else {
 				setDiscountMessage("❌ Invalid or expired coupon.");
 			}
-			
+
 		} catch (error) {
 			setDiscountMessage(
 				` ${
-					error.response?.data?.message ?? 
+					error.response?.data?.message ??
 					"Invalid or expired coupon."}`
-				
+
 			);
 		}
-		   setTimeout(() => setDiscountMessage(null), 5000);	
+		   setTimeout(() => setDiscountMessage(null), 5000);
 	};
 
 	const subtotal = state.cart?.finalAmount || 0;
@@ -331,11 +333,11 @@ const CartCheckoutFlow = () => {
 					Review Order
 				</button>
 			</div>
-		</div> 
+		</div>
 	);
 
 	const renderPaymentView = () => (
-		
+
 		<div className="space-y-6">
             <div className="bg-black/40 backdrop-blur-lg rounded-lg shadow-sm p-4 md:p-6">
                 <h2 className="text-xl font-semibold mb-4">Payment Method</h2>

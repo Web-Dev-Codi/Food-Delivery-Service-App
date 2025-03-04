@@ -14,7 +14,8 @@ function LoginForm() {
 	const [showPassword, setShowPassword] = useState(false);
 	const [successMessage, setSuccessMessage] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
-	const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 	const navigate = useNavigate();
 
