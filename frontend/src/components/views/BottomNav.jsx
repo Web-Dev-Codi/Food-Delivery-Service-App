@@ -10,9 +10,9 @@ const BottomNav = () => {
       <Link to="/restaurants">
         <FaSearch className="text-lg sm:text-xl text-gray-400 hover:text-white" />
       </Link>
-      <Link to="/menu">
+     {/*  <Link to="/menu">
         <FaShoppingCart className="text-lg sm:text-xl text-gray-400 hover:text-white" />
-      </Link>
+      </Link> */}
       <Link to="/login">
         <FaUser className="text-lg sm:text-xl text-gray-400 hover:text-white" />
       </Link>
