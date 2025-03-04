@@ -65,6 +65,8 @@ const router = createBrowserRouter(
           <Route path="coupons" element={<AddCoupons />} />
           <Route path="orders" element={<Orders />} />
           <Route path="single-order/:id" element={<SingleOrder />} />
+          {/* Double check the path or if this components is in the right place, if not move it where it needs to be */}
+          <Route path="update-restaurant/:id" element={<UpdateRestaurantForm />} />
         </Route>
         <Route path="/menu/:id" element={<SingleMenu />} />
         <Route path="/restaurants" element={<ListRestaurant />} />
@@ -74,7 +76,6 @@ const router = createBrowserRouter(
         <Route path="/update-menu" element={<UpdateMenuForm />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/faqs" element={<FAQ />} />
-        <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
         <Route path="/user-profile" element={<UserProfile />} />
         <Route path="/invoice" element={<Invoice />} />
