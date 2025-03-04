@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-import defaultLogo from "../assets/images/defaultLogo.png";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { logosMap } from "../assets";
