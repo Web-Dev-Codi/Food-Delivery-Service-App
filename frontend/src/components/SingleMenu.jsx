@@ -1,13 +1,14 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { UtensilsCrossed } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { UtensilsCrossed, ArrowLeft } from "lucide-react";
+import { useParams, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import { toast, Bounce } from "react-toastify";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
 function SingleMenu() {
 	const { id } = useParams();
+	const navigate = useNavigate();
 	const [menu, setMenu] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [errorMessage, setErrorMessage] = useState("");
@@ -88,6 +89,12 @@ function SingleMenu() {
 			setIsLoading(false);
 		}
 	};
+
+	// Handle back button click
+	const handleBackClick = () => {
+		navigate(-1); // Go back to previous page
+	};
+
 	// Render Star Rating
 	const renderStars = (rating) => {
 		const fullStars = Math.floor(rating);
@@ -131,66 +138,99 @@ function SingleMenu() {
 	}
 
 	return (
-		<div className="flex justify-center items-center h-screen">
-			<div className="bg-gradient-to-t from-neutral-900 via-[#050407] to-[#4d4c4d] p-2  py-4 sm:p-4 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto overflow-hidden">
-				<div className=" bg-neutral-800/10 backdrop-blur-md p-8 rounded-lg shadow-lg w-full max-w-md mx-auto border border-neutral-600 ">
-					<h2 className="text-2xl font-bold text-center text-neutral-100 mb-4 ">
-						{menu.name}
-					</h2>
-					<img
-						src={menu.imageUrl}
-						alt={menu.name}
-						className="w-full h-64 object-cover mb-4 rounded-md"
+		<div className="flex justify-center items-center min-h-screen py-8">
+			<div className="bg-gradient-to-t from-neutral-900 via-[#050407] to-[#4d4c4d] p-4 rounded-lg shadow-lg w-full max-w-md md:max-w-4xl mx-auto overflow-hidden">
+				{/* Back button for mobile view */}
+				<button
+					onClick={handleBackClick}
+					className="flex items-center text-neutral-100 mb-4 hover:text-green-500 transition md:hidden">
+					<ArrowLeft
+						className="mr-1"
+						size={18}
 					/>
-					{/* Menu Details are hacked with inline styles for color details */}
-					<p className="text-green-600 mb-2">
-						<strong>Category:</strong>{" "}
-						<span className="text-neutral-100">
-							{menu.category || "N/A"}
-						</span>
-					</p>
-					<p className="text-green-600 mb-2">
-						<strong>Description:</strong>{" "}
-						<span className="text-neutral-100">
-							{menu.description}
-						</span>
-					</p>
-					<p className="text-green-600 mb-2">
-						<strong>Category:</strong>{" "}
-						<span className="text-neutral-100">
-							{menu.category}
-						</span>
-					</p>
-					{/* Rating (with Stars) */}
-					<p className="text-green-600 mb-2 flex items-center">
-						<strong className="mr-2">Rating:</strong>{" "}
-						{renderStars(menu.ratings)}
-					</p>
-					{/* Availability is hacked with the ternary condition if available or not. It is also styled with inline red or green color */}
-					<p className="mb-2">
-						<strong>Availability:</strong>{" "}
-						<span
-							className={
-								menu.availability === "Available"
-									? "text-green-300"
-									: "text-red-600"
-							}
-							onClick={handleClick}>
-							{menu.availability || "Unknown"}
-						</span>
-					</p>
-					<p className="text-lg font-semibold text-green-600 mb-4">
-						${menu.price}
-					</p>
-					<button
-						type="button"
-						className="w-full bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-						onClick={handleClick}>
-						Add to Cart
-					</button>
-					{errorMessage && (
-						<div className="text-red-600 mt-4">{errorMessage}</div>
-					)}
+					Back to Restaurant
+				</button>
+
+				<div className="bg-neutral-800/10 backdrop-blur-md rounded-lg shadow-lg w-full border border-neutral-600 overflow-hidden">
+					{/* Flex container for desktop layout */}
+					<div className="flex flex-col md:flex-row">
+						{/* Left side - Image (full height on desktop) */}
+						<div className="md:w-1/2 md:h-full">
+							<img
+								src={menu.imageUrl}
+								alt={menu.name}
+								className="w-full h-64 md:h-full object-cover"
+							/>
+						</div>
+
+						{/* Right side - Details */}
+						<div className="p-8 md:w-1/2">
+							{/* Back button for desktop view */}
+							<button
+								onClick={handleBackClick}
+								className="hidden md:flex items-center text-neutral-100 mb-4 hover:text-green-500 transition">
+								<ArrowLeft
+									className="mr-1"
+									size={18}
+								/>
+								Back to Restaurant
+							</button>
+
+							<h2 className="text-2xl font-bold text-neutral-100 mb-4">
+								{menu.name}
+							</h2>
+
+							{/* Menu Details */}
+							<p className="text-[#D84418] mb-2">
+								<strong>Category:</strong>{" "}
+								<span className="text-neutral-100">
+									{menu.category || "N/A"}
+								</span>
+							</p>
+							<p className="text-[#D84418] mb-2">
+								<strong>Description:</strong>{" "}
+								<span className="text-neutral-100">
+									{menu.description}
+								</span>
+							</p>
+
+							{/* Rating (with Stars) */}
+							<p className="text-[#D84418] mb-2 flex items-center">
+								<strong className="mr-2">Rating:</strong>{" "}
+								{renderStars(menu.ratings)}
+							</p>
+
+							{/* Availability */}
+							<p className="mb-2">
+								<strong className="text-[#D84418]">Availability:</strong>{" "}
+								<span
+									className={
+										menu.availability === "Available"
+											? "text-green-300"
+											: "text-red-600"
+									}>
+									{menu.availability || "Unknown"}
+								</span>
+							</p>
+
+							<p className="text-lg font-semibold text-[#D84418] mb-4">
+								${menu.price}
+							</p>
+
+							<button
+								type="button"
+								className="w-full bg-[#D84418] text-white px-4 py-2 rounded-md hover:bg-green-500 hover:text-black transition"
+								onClick={handleClick}>
+								Add to Cart
+							</button>
+
+							{errorMessage && (
+								<div className="text-red-600 mt-4">
+									{errorMessage}
+								</div>
+							)}
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

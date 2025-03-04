@@ -35,6 +35,7 @@ function LoginForm() {
         password,
       });
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("userId", res.data.data._id)
       setSuccessMessage(res.data.message);
       setErrorMessage("");
 
@@ -49,7 +50,7 @@ function LoginForm() {
       if (res.data.data.role === "admin") {
         navigate("/dashboard");
       } else {
-        navigate("/");
+       navigate(`/profile/${localStorage.getItem("userId")}`);
       }
     } catch (err) {
       setErrorMessage(err.response?.data?.message || "Login failed");
@@ -153,7 +154,7 @@ function LoginForm() {
 
               <button
                 type="submit"
-                className="w-full py-3 bg-[#f97316] text-white rounded-xl hover:bg-orange-700 
+                className="w-full py-3 bg-[#f97316] text-white rounded-xl hover:bg-orange-700
                            transition duration-300 transform hover:scale-105"
               >
                 Login

@@ -2,6 +2,7 @@
 import { createContext, useReducer, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import { toast } from "react-toastify";
 
 // Initial state
 const initialState = {
@@ -31,7 +32,7 @@ const cartReducer = (state, action) => {
 				},
 			};
 
-		case "UPDATE_QUANTITY":
+		/* case "UPDATE_QUANTITY":
 			return {
 				...state,
 				cart: state.cart.map((item) =>
@@ -40,7 +41,22 @@ const cartReducer = (state, action) => {
 						: item
 				),
 				totalAmount: action.payload.totalAmount,
-			};
+			}; */
+
+			case "UPDATE_QUANTITY":
+    return {
+        ...state,
+        cart: {
+            ...state.cart,
+            items: state.cart.items.map((item) =>
+                item.foodItemId === action.payload.foodItemId
+                    ? { ...item, quantity: action.payload.quantity }
+                    : item
+            ),
+            totalAmount: action.payload.totalAmount,
+        },
+    };
+
 
 		case "CLEAR_CART":
 			return {
@@ -53,7 +69,7 @@ const cartReducer = (state, action) => {
 				},
 			};
 
-		case "FETCH_CART_SUCCESS":
+		/* case "FETCH_CART_SUCCESS":
 			return {
 				...state,
 				cart: action.payload || {
@@ -62,7 +78,16 @@ const cartReducer = (state, action) => {
 					discount: 0,
 					finalAmount: 0,
 				},
-			};
+			}; */
+			case "FETCH_CART_SUCCESS":
+    return {
+        ...state,
+        cart: {
+            ...state.cart,
+            ...action.payload, // Ensures `appliedCoupon` and other properties are included correctly
+        },
+    };
+
 
 		case "FETCH_CART_ERROR":
 			return { ...state, error: action.payload };
@@ -184,29 +209,28 @@ export const CartProvider = ({ children }) => {
 	};
 
 	// Apply Coupon Code
-	const applyCoupon = async (couponCode, setDiscountMessage) => {
-		try {
-			const response = await axios.post(
-				"http://localhost:8000/offers/apply",
-				{ code: couponCode },
-				{ headers: getAuthHeaders() }
-			);
+	
 
-			dispatch({
-				type: "FETCH_CART_SUCCESS",
-				payload: response.data.data,
-			});
-			setDiscountMessage(
-				`🎉 Coupon applied! Discount: €${response.data.discount}`
-			);
-		} catch (error) {
-			dispatch({
-				type: "FETCH_CART_ERROR",
-				payload: error.response?.data?.message || error.message,
-			});
-			setDiscountMessage("❌ Invalid or expired coupon.");
-		}
-	};
+const applyCoupon = async (couponCode) => {
+	try {
+		const response = await axios.post(
+			"http://localhost:8000/offers/apply",
+			{ code: couponCode },
+			{ headers: getAuthHeaders() }
+		);
+		console.log("the response is :",response)
+		console.log(response.data);
+
+		return response.data;
+	} catch (error) {
+		
+		console.error("Coupon apply error:", error);
+
+	
+		return { success: false, message: error.response?.data?.message || "Invalid or expired coupon." };
+		
+	}
+};
 
 	const clearCart = async () => {
 		try {

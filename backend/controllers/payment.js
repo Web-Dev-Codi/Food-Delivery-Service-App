@@ -3,6 +3,7 @@ import Payment from "../models/paymentSchema.js";
 import dotenv from "dotenv";
 import { sendPaymentSuccessEmail } from "./emailService.js";
 import Cart from "../models/cartSchema.js";
+import Order from "../models/orderSchema.js";
 
 dotenv.config();
 
@@ -165,3 +166,40 @@ export const handleStripeWebhook = async (req, res) => {
     }
 };
 
+export const getPaymentByCart = async (req, res) => {
+    try {
+      const { cartId } = req.params;
+  
+      // ✅ Fetch payment details
+      const payment = await Payment.findOne({ cartId, status: "Succeeded" })
+        .populate("userId", "name email address contact") // Populate user details
+        .populate("cartId"); // Populate cart details
+  
+      if (!payment) {
+        return res.status(404).json({ message: "No successful payment found for this cart" });
+      }
+  
+      // ✅ Ensure the cart exists and is processed
+      const cart = await Cart.findOne({ _id: cartId, status: "Processed" }).populate("items.foodItemId");
+      if (!cart) {
+        return res.status(400).json({ message: "Cart not found or not processed" });
+      }
+  
+      // ✅ Create the order
+      const order = new Order({
+        userId: payment.userId._id, // Store user ID
+        cartId,
+        totalAmount: payment.amount, // Store total amount
+        paymentId: payment._id, // Link payment ID
+       
+      });
+  
+      await order.save();
+  
+      res.status(201).json({ message: "Order created successfully", order });
+    } catch (error) {
+      console.error("Error creating order:", error);
+      res.status(500).json({ message: "Server error" });
+    }
+  };
+  
