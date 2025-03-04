@@ -39,7 +39,7 @@ const AddCoupons = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		axios
-			.post("http://localhost:8000/offers/create", {
+			.post(`${API_URL}/offers/create`, {
 				code,
 				description,
 				discount,

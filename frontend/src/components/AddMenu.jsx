@@ -60,7 +60,7 @@ const AddMenuForm = () => {
 		e.preventDefault();
 		try {
 			const response = await axios.post(
-				"http://localhost:3006/food/menu",
+				`${API_URL}/food/menu`,
 				formData
 			);
 			console.log("Menu added successfully:", response.data.data);

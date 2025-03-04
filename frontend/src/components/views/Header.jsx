@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useContext, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
@@ -111,7 +112,7 @@ const Header = () => {
 
 			try {
 				const response = await axios.get(
-					`http://localhost:8000/api/restaurants?search=${searchTerm}`
+					`${API_URL}/restaurants?search=${searchTerm}`
 				);
 
 				if (response.data && Array.isArray(response.data.data)) {
