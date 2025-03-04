@@ -11,6 +11,8 @@ function PaymentForm() {
 	const [userId, setUserId] = useState(null);
 	const [message, setMessage] = useState("");
 
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 	// 🔥 Get userId from JWT stored in localStorage
 	useEffect(() => {
 		const token = localStorage.getItem("token"); // Get token from localStorage
@@ -37,7 +39,7 @@ function PaymentForm() {
 		try {
 			// 1. Create a PaymentIntent by calling  backend
 			const response = await fetch(
-				"http://localhost:8000/payment/create-payment-intent",
+				`${API_URL}/payment/create-payment-intent`,
 				{
 					method: "POST",
 					headers: {

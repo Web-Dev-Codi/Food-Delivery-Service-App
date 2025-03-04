@@ -14,6 +14,7 @@ function LoginForm() {
 	const [showPassword, setShowPassword] = useState(false);
 	const [successMessage, setSuccessMessage] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
+	const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 	const navigate = useNavigate();
 
@@ -30,7 +31,7 @@ function LoginForm() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await axios.post("http://localhost:8000/data/login", {
+			const res = await axios.post(`${API_URL}/data/login`, {
 				email,
 				password,
 			});

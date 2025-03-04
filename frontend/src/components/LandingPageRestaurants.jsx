@@ -8,11 +8,14 @@ function LandingPageRestaurants() {
 	const [restaurants, setRestaurants] = useState([]);
 	const [errorMessage, setErrorMessage] = useState("");
 
+
+	const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 	useEffect(() => {
 		const fetchRestaurants = async () => {
 			try {
 				const response = await axios.get(
-					"http://localhost:8000/api/restaurants"
+					`${API_URL}/api/restaurants`
 				);
 				setRestaurants(response.data.data.slice(0, 8)); // Fetch 8 restaurants for scrolling
 			} catch (error) {

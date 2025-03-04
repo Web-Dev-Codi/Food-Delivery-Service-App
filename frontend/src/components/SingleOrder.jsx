@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState,useEffect } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
@@ -6,11 +7,14 @@ function SingleOrder() {
   const [order, setOrder] = useState({});
   const { id } = useParams();
 
+
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 useEffect(() => {
   const fetchOrder = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:8000/order/get/${id}`, {
+      const response = await axios.get(`${API_URL}/order/get/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
