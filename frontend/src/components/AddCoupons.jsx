@@ -23,7 +23,7 @@ const AddCoupons = () => {
       })
       .catch((err) => {
         console.error("Failed to fetch restaurants:", err);
-        setErrorMessage("Failed to load restaurants. Please try again later.");
+        toast.error(":x: Failed to load restaurants. Please try again later.");
       });
   }, []);
 
@@ -47,8 +47,8 @@ const AddCoupons = () => {
         applicableToRestaurants: selectedRestaurants,
       })
       .then((res) => {
-        setSuccessMessage(res.data.message);
-        alert("Coupon added successfully");
+        console.log(res.data);
+        toast.success(":tada: Coupon added successfully!");
         setCode("");
         setDescription("");
         setDiscount("");
@@ -60,7 +60,7 @@ const AddCoupons = () => {
         const errorMsg = err.response
           ? err.response.data.message
           : "Something went wrong. Please try again.";
-        setErrorMessage(errorMsg);
+        toast.error(`:x: ${errorMsg}`);
       });
   };
 
