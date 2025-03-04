@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddCoupons = () => {
 	const [code, setCode] = useState("");
@@ -7,10 +9,7 @@ const AddCoupons = () => {
 	const [discount, setDiscount] = useState("");
 	const [validFrom, setValidFrom] = useState("");
 	const [validUntil, setValidUntil] = useState("");
-
-	const [successMessage, setSuccessMessage] = useState("");
-	const [errorMessage, setErrorMessage] = useState("");
-	const [restaurants, setRestaurants] = useState([]);
+    const [restaurants, setRestaurants] = useState([]);
 	const [selectedRestaurants, setSelectedRestaurants] = useState([]);
 
 	useEffect(() => {
@@ -21,11 +20,9 @@ const AddCoupons = () => {
 			})
 			.catch((err) => {
 				console.error("Failed to fetch restaurants:", err);
-				setErrorMessage(
-					"Failed to load restaurants. Please try again later."
-				);
+				toast.error("❌ Failed to load restaurants. Please try again later.");
 			});
-	}, []);
+		}, []);
 
 	const handleRestaurantChange = (e) => {
 		const selectedOptions = Array.from(
@@ -47,8 +44,9 @@ const AddCoupons = () => {
 				applicableToRestaurants: selectedRestaurants,
 			})
 			.then((res) => {
-				setSuccessMessage(res.data.message);
-				alert("Coupon added successfully");
+				console.log(res.data);
+				toast.success("🎉 Coupon added successfully!");
+			
 				setCode("");
 				setDescription("");
 				setDiscount("");
@@ -60,7 +58,7 @@ const AddCoupons = () => {
 				const errorMsg = err.response
 					? err.response.data.message
 					: "Something went wrong. Please try again.";
-				setErrorMessage(errorMsg);
+					toast.error(`❌ ${errorMsg}`);
 			});
 	};
 
@@ -165,12 +163,7 @@ const AddCoupons = () => {
 					</button>
 				</form>
 
-				{successMessage && (
-					<div className="mt-4 text-green-400">{successMessage}</div>
-				)}
-				{errorMessage && (
-					<div className="mt-4 text-red-400">{errorMessage}</div>
-				)}
+			
 			</div>
 		</div>
 	);

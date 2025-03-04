@@ -34,6 +34,7 @@ import CartCheckoutFlow from "./components/cartFlow/modified_cartFlow.jsx";
 import Invoice from "./components/Invoice-new.jsx";
 import UpdateMenuForm from "./components/UpdateMenu.jsx";
 import DeleteMenu from "./components/DeleteMenu.jsx";
+import UpdateRestaurantForm from "./components/UpdateRestaurant.jsx";
 
 const stripePromise = loadStripe(
 	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
@@ -100,6 +101,10 @@ const router = createBrowserRouter(
 				<Route
 					path="/restaurants"
 					element={<ListRestaurant />}
+				/>
+				<Route
+					path="/update-restaurants"
+					element={<UpdateRestaurantForm />}
 				/>
 				<Route
 					path="/restaurants/:id"

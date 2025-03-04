@@ -45,30 +45,39 @@ export const getRestaurantById = async (req, res) => {
 };
 
 export const getRestaurantByName = async (req, res) => {
-  try{
+  try {
     const { name } = req.params;
-    if(!name){
-        return res.status(400).json({
-            message: "Please provide a restaurant name",
-        });
-      }
-      const restaurant = await Restaurant.findOne({ name: new RegExp(name, 'i') });
 
-    if(!restaurant){
-        return res.status(404).json({
-            message: "Restaurant not found",
-        });
+    if (!name || !name.trim()) {
+      return res.status(400).json({
+        message: "Please provide a valid restaurant name.",
+      });
     }
+
+    const restaurant = await Restaurant.findOne({ 
+      name: new RegExp(`^${name.trim()}$`, "i") 
+    }).lean();
+
+    if (!restaurant) {
+      return res.status(404).json({
+        message: `No restaurant found with the name "${name}".`,
+      });
+    }
+
     res.status(200).json({
-        message: "Restaurant fetched successfully",
-        data: restaurant
+      message: "Restaurant fetched successfully.",
+      data: restaurant,
     });
 
- }
- catch(err){
-      res.status(500).json({ message: "An error occurred while fetching restaurant", error: err.message });
+  } catch (err) {
+    console.error("Error fetching restaurant:", err);
+    res.status(500).json({ 
+      message: "An error occurred while fetching the restaurant.", 
+      error: err.message 
+    });
   }
 };
+
 
 export const createRestaurant = async (req, res) => {
     try{
@@ -112,7 +121,7 @@ export const updateRestaurant = async (req, res) => {
     const updatedRestaurant = await Restaurant.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true },
+      { new: true , runValidators: true },
     );
     if (!updatedRestaurant) {
       return res.status(404).json({
