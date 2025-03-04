@@ -1,17 +1,25 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { FaShoppingCart, FaUser, FaRegWindowClose } from "react-icons/fa";
+import {
+	FaShoppingCart,
+	FaUser,
+	FaRegWindowClose,
+	FaUserCog,
+} from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BiLogOut } from "react-icons/bi";
 import { CartContext } from "../../context/CartContext";
+import axios from "axios";
 
 const Header = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
+	// const { userId } = useParams();
 	const { state } = useContext(CartContext);
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+	const [userRole, setUserRole] = useState("");
 	const dropdownRef = useRef(null);
 
 	// Check authentication status whenever location changes
@@ -19,7 +27,37 @@ const Header = () => {
 		const token = localStorage.getItem("token");
 		const isNowLoggedIn = !!token;
 		setIsLoggedIn(isNowLoggedIn);
+
+		// If user is logged in, fetch their role
+		if (isNowLoggedIn) {
+			fetchUserRole();
+		} else {
+			setUserRole("");
+		}
 	}, [location.pathname]);
+
+	// Fetch user role from the backend
+	const fetchUserRole = async () => {
+		try {
+			const token = localStorage.getItem("token");
+			const userId = localStorage.getItem("userId");
+
+			if (!token || !userId) return;
+
+			const response = await axios.get(
+				`http://localhost:8000/data/users/${userId}`,
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+
+			if (response.data && response.data.data) {
+				setUserRole(response.data.data.role);
+			}
+		} catch (error) {
+			console.error("Error fetching user role:", error);
+		}
+	};
 
 	// Handle clicks outside the dropdown
 	useEffect(() => {
@@ -33,11 +71,10 @@ const Header = () => {
 			}
 		};
 
-		// Add event listener when the dropdown is open
 		if (profileDropdownOpen) {
 			document.addEventListener("mousedown", handleClickOutside);
 		}
-		// Add event listener when the dropdown is open
+
 		if (menuOpen) {
 			document.addEventListener("mousedown", handleClickOutside);
 		}
@@ -50,7 +87,9 @@ const Header = () => {
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
+		localStorage.removeItem("userId");
 		setIsLoggedIn(false);
+		setUserRole("");
 		setProfileDropdownOpen(false);
 		navigate("/login");
 	};
@@ -72,16 +111,21 @@ const Header = () => {
 							className="font-bold text-white hover:text-orange-500 transition-colors">
 							Home
 						</Link>
-						<Link
-							to="/menu"
-							className="font-bold text-white hover:text-orange-500 transition-colors">
-							Menu
-						</Link>
-						<Link
-							to="/contact-us"
-							className="font-bold text-white hover:text-orange-500 transition-colors">
-							Contact
-						</Link>
+
+						{location.pathname === "/" ? (
+							<a
+								href="#contact-section"
+								className="font-bold text-white hover:text-orange-500 transition-colors cursor-pointer">
+								Contact
+							</a>
+						) : (
+							<Link
+								to="/#contact-section"
+								className="font-bold text-white hover:text-orange-500 transition-colors">
+								Contact
+							</Link>
+						)}
+
 						<Link
 							to="/restaurants"
 							className="font-bold text-white hover:text-orange-500 transition-colors">
@@ -92,6 +136,14 @@ const Header = () => {
 							className="font-bold text-white hover:text-orange-500 transition-colors">
 							FAQs
 						</Link>
+						{isLoggedIn && userRole === "admin" && (
+							<Link
+								to="/dashboard"
+								className="font-bold text-orange-500 hover:text-orange-400 transition-colors flex items-center">
+								<FaUserCog className="mr-1" />
+								Admin
+							</Link>
+						)}
 					</div>
 					<div className="hidden md:flex items-center space-x-4">
 						{isLoggedIn ? (
@@ -127,11 +179,21 @@ const Header = () => {
 									{profileDropdownOpen && (
 										<div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
 											<Link
-												to="/user-profile"
+												to={`/profile/${localStorage.getItem(
+													"userId"
+												)}`}
 												className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
 												<FaUser className="mr-3 text-orange-500" />
 												My Profile
 											</Link>
+											{userRole === "admin" && (
+												<Link
+													to="/dashboard"
+													className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+													<FaUserCog className="mr-3 text-orange-500" />
+													Admin Dashboard
+												</Link>
+											)}
 											<button
 												onClick={handleLogout}
 												className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
@@ -183,11 +245,19 @@ const Header = () => {
 								className="text-white font-bold hover:text-orange-500 transition-colors">
 								Menu
 							</Link>
-							<Link
-								to="/contact-us"
-								className="text-white font-bold hover:text-orange-500 transition-colors">
-								Contact
-							</Link>
+							{location.pathname === "/" ? (
+								<a
+									href="#contact-section"
+									className="text-white font-bold hover:text-orange-500 transition-colors cursor-pointer">
+									Contact
+								</a>
+							) : (
+								<Link
+									to="/#contact-section"
+									className="text-white font-bold hover:text-orange-500 transition-colors">
+									Contact
+								</Link>
+							)}
 							<Link
 								to="/about-us"
 								className="text-white font-bold hover:text-orange-500 transition-colors">
@@ -206,7 +276,9 @@ const Header = () => {
 										Cart ({state?.cart?.items?.length || 0})
 									</Link>
 									<Link
-										to="/profile"
+										to={`/profile/${localStorage.getItem(
+											"userId"
+										)}`}
 										className="text-white font-bold hover:text-orange-500 transition-colors">
 										Profile
 									</Link>
@@ -215,7 +287,7 @@ const Header = () => {
 								<div className="flex flex-col space-y-2">
 									<Link
 										to="/login"
-										className="font-bold text-white hover:text-orange-500 transition-colors">
+										className="bg-transparent border border-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors">
 										Login
 									</Link>
 									<Link
@@ -224,6 +296,14 @@ const Header = () => {
 										Sign Up
 									</Link>
 								</div>
+							)}
+							{isLoggedIn && userRole === "admin" && (
+								<Link
+									to="/dashboard"
+									className="text-orange-500 hover:text-orange-400 transition-colors flex items-center">
+									<FaUserCog className="mr-1" />
+									Admin Dashboard
+								</Link>
 							)}
 						</div>
 					</div>

@@ -32,12 +32,12 @@ export default function HeroSection() {
 								Order Now
 							</Link>
 							<Link
-								to="/menu"
+								to="/restaurants"
 								className="px-6 py-5 bg-transparent border-2 border-[#D84418] rounded-full text-white font-semibold flex items-center justify-center gap-2 hover:bg-[#D84418]/10 transition-colors">
 								{/* <span className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
 									<div className="w-3 h-3 border-t-[6px] border-t-[#D84418] border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent" />
 								</span> */}
-								View Menu
+								View Restaurants
 							</Link>
 						</div>
 					</div>

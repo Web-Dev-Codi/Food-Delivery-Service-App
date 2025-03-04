@@ -45,30 +45,39 @@ export const getRestaurantById = async (req, res) => {
 };
 
 export const getRestaurantByName = async (req, res) => {
-  try{
+  try {
     const { name } = req.params;
-    if(!name){
-        return res.status(400).json({
-            message: "Please provide a restaurant name",
-        });
-      }
-      const restaurant = await Restaurant.findOne({ name: new RegExp(name, 'i') });
 
-    if(!restaurant){
-        return res.status(404).json({
-            message: "Restaurant not found",
-        });
+    if (!name || !name.trim()) {
+      return res.status(400).json({
+        message: "Please provide a valid restaurant name.",
+      });
     }
+
+    const restaurant = await Restaurant.findOne({ 
+      name: new RegExp(`^${name.trim()}$`, "i") 
+    }).lean();
+
+    if (!restaurant) {
+      return res.status(404).json({
+        message: `No restaurant found with the name "${name}".`,
+      });
+    }
+
     res.status(200).json({
-        message: "Restaurant fetched successfully",
-        data: restaurant
+      message: "Restaurant fetched successfully.",
+      data: restaurant,
     });
 
- }
- catch(err){
-      res.status(500).json({ message: "An error occurred while fetching restaurant", error: err.message });
+  } catch (err) {
+    console.error("Error fetching restaurant:", err);
+    res.status(500).json({ 
+      message: "An error occurred while fetching the restaurant.", 
+      error: err.message 
+    });
   }
 };
+
 
 export const createRestaurant = async (req, res) => {
     try{
@@ -112,7 +121,7 @@ export const updateRestaurant = async (req, res) => {
     const updatedRestaurant = await Restaurant.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true },
+      { new: true , runValidators: true },
     );
     if (!updatedRestaurant) {
       return res.status(404).json({
@@ -156,7 +165,8 @@ export const addReview = async (req, res) => {
     try{
         const { rating, comment } = req.body;
            //  Ensure user exists
-        const validUser = await User.findById(req.user._id);
+        const validUser = await User.findById(req.userId);
+        console.log("Username",validUser.name)
         if (!validUser) {
           return res.status(401).json({
             message: "User needs to sign up or log in to add a review.",
@@ -180,7 +190,7 @@ export const addReview = async (req, res) => {
         }
 
         // Ensure rating and comment are provided
-        if(!rating || rating < 1 || rating >= 5){
+        if(!rating || rating < 1 || rating >= 6){
             return res.status(400).json({
                 message: "Rating must be between 1 and 6.",
               });
@@ -193,7 +203,7 @@ export const addReview = async (req, res) => {
 
         // Ensure user has not already reviewed
         const alreadyReviewed = restaurant.reviews.find(
-            (review) => review.user.toString() === req.user._id.toString()
+            (review) => review.user.toString() === req.userId.toString()
           );
           if (alreadyReviewed) {
             return res.status(400).json({
@@ -201,11 +211,13 @@ export const addReview = async (req, res) => {
             });
           }
           const newReview = {
-            user: req.user._id,
-            userName: validUser.name, // Store user's name in the review
+            user: req.userId,
+            userName: validUser.name , // Store user's name in the review
             rating,
             comment,
           };
+          console.log("New Review Data:", newReview);
+
         restaurant.reviews.push(newReview);
         restaurant.calculateAverageRating();
         await restaurant.save();

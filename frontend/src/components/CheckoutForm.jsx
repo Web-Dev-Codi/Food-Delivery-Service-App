@@ -1,14 +1,39 @@
 import { useState, useEffect } from "react";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import PropTypes from "prop-types";
+// import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 
+const CheckoutForm = ({ setSuccessPayment, loading, setLoading }) => {
+	console.log("CheckoutForm props:", {
+		setSuccessPayment,
+		loading,
+		setLoading,
+	});
 
-const CheckoutForm = ({ setStep, setSuccessPayment }) => {
+	if (typeof setLoading !== "function") {
+		console.error(
+			"❌ setLoading is not a function! Check how it is passed."
+		);
+	}
+
 	const stripe = useStripe();
 	const elements = useElements();
-	const [loading, setLoading] = useState(false);
+	// const navigate = useNavigate();
 	const [userId, setUserId] = useState(null);
+
+	// ✅ Check if Stripe is loaded
+	useEffect(() => {
+		console.log("Stripe Object:", stripe);
+		console.log("Elements Object:", elements);
+
+		if (!stripe || !elements) {
+			console.warn("⚠️ Stripe is still loading...");
+		} else {
+			console.log("✅ Stripe and Elements are ready!");
+		}
+	}, [stripe, elements]);
 
 	// ✅ Get user ID from JWT token
 	useEffect(() => {
@@ -22,32 +47,34 @@ const CheckoutForm = ({ setStep, setSuccessPayment }) => {
 	}, []);
 
 	if (!userId) {
-		return <p>Error: User ID is missing!</p>;
+		return <p>Loading user data...</p>;
 	}
 
-	const handleSubmit = async (e) => {
+	const handlePayment = async (e) => {
 		e.preventDefault();
-		setLoading(true);
+		console.log("Payment initiated, loading:", loading);
 
-		if (!stripe || !elements) {
-			toast.error("Stripe is not loaded yet.");
-			setLoading(false);
-			return;
-		}
+		setLoading(true);
+		console.log("loading set to true");
 
 		try {
-			// ✅ Step 1: Create PaymentIntent from backend
-			const response = await fetch("http://localhost:8000/payment/create-payment-intent", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
-				body: JSON.stringify({ userId }),
-			});
+			// ✅ Step 1: Create PaymentIntent
+			const response = await fetch(
+				"http://localhost:8000/payment/create-payment-intent",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem(
+							"token"
+						)}`,
+					},
+					body: JSON.stringify({ userId }),
+				}
+			);
 
-			if (!response.ok) throw new Error("Failed to create payment intent.");
-
+			if (!response.ok)
+				throw new Error("Failed to create payment intent.");
 			const { clientSecret, error } = await response.json();
 			if (error) throw new Error(error);
 
@@ -63,14 +90,12 @@ const CheckoutForm = ({ setStep, setSuccessPayment }) => {
 				payment_method: { card: cardElement },
 			});
 
-			if (result.error) {
-				throw new Error(result.error.message);
-			}
+			if (result.error) throw new Error(result.error.message);
 
 			if (result.paymentIntent.status === "succeeded") {
+				console.log("Stripe Payment Result:", result);
 				toast.success("✅ Payment Successful!");
 				setSuccessPayment(true);
-				setStep(4); // Move to Review Order step
 			} else {
 				toast.info("⏳ Payment processing...");
 			}
@@ -81,9 +106,24 @@ const CheckoutForm = ({ setStep, setSuccessPayment }) => {
 		}
 	};
 
+	console.log("Rendering CheckoutForm...");
 	return (
-		<form onSubmit={handleSubmit} className="space-y-4">
-			<CardElement className="p-3 border rounded-lg" />
+		<form
+			onSubmit={handlePayment}
+			className="space-y-4">
+			<CardElement
+				options={{
+					style: {
+						base: {
+							color: "white",
+							fontSize: "16px",
+							"::placeholder": { color: "#bbbbbb" },
+						},
+						invalid: { color: "#ff4d4d" },
+					},
+				}}
+				className="p-3 border rounded-lg text-white"
+			/>
 			<button
 				type="submit"
 				disabled={!stripe || loading}
@@ -99,3 +139,9 @@ const CheckoutForm = ({ setStep, setSuccessPayment }) => {
 };
 
 export default CheckoutForm;
+
+CheckoutForm.propTypes = {
+	setSuccessPayment: PropTypes.func,
+	loading: PropTypes.bool,
+	setLoading: PropTypes.func,
+};

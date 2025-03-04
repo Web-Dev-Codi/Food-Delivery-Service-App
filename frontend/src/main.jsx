@@ -1,8 +1,8 @@
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
+	createBrowserRouter,
+	createRoutesFromElements,
+	Route,
+	RouterProvider,
 } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -28,18 +28,19 @@ import PageNotFound from "./components/PageNotFound.jsx";
 import SingleMenu from "./components/SingleMenu.jsx";
 import UserProfile from "./components/UserProfile.jsx";
 import FAQ from "./components/views/FAQ.jsx";
-import ContactUs from "./components/views/ContactUs.jsx";
 import Orders from "./components/Orders.jsx";
 import SingleOrder from "./components/SingleOrder.jsx";
-import CartCheckoutFlow from "./components/cartFlow/CartCheckoutFlowComponent.jsx";
-import Invoice from "./components/Invoice.jsx";
+import CartCheckoutFlow from "./components/cartFlow/modified_cartFlow.jsx";
+import Invoice from "./components/Invoice-new.jsx";
 import UpdateMenuForm from "./components/UpdateMenu.jsx";
 import DeleteMenu from "./components/DeleteMenu.jsx";
 // import CheckoutForm from "./components/CheckoutForm.jsx";
 import AboutUs from "./components/AboutUs.jsx";
+import UpdateRestaurantForm from "./components/UpdateRestaurant.jsx";
+
 
 const stripePromise = loadStripe(
-  "pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
+	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
 );
 
 const router = createBrowserRouter(
@@ -79,7 +80,6 @@ const router = createBrowserRouter(
         <Route path="/invoice" element={<Invoice />} />
         <Route path="/delete-menu" element={<DeleteMenu />} />
         <Route path="/about-us" element={<AboutUs />} />
-
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Route>
@@ -87,7 +87,7 @@ const router = createBrowserRouter(
 );
 
 createRoot(document.getElementById("root")).render(
-  <CartProvider>
-    <RouterProvider router={router} />
-  </CartProvider>
+	<CartProvider>
+		<RouterProvider router={router} />
+	</CartProvider>
 );
