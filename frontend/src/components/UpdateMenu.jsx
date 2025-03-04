@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -16,15 +17,15 @@ const UpdateMenuForm = () => {
 		ratings: 0,
 	});
 
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 	const [restaurants, setRestaurants] = useState([]);
 	const [isMenuFound, setIsMenuFound] = useState(false);
 
 	useEffect(() => {
 		const fetchRestaurants = async () => {
 			try {
-				const response = await axios.get(
-					"http://localhost:8000/api/restaurants"
-				);
+				const response = await axios.get(`${API_URL}/api/restaurants`);
 				setRestaurants(response.data.data);
 			} catch (error) {
 				console.error("Error fetching restaurants:", error);
@@ -36,7 +37,7 @@ const UpdateMenuForm = () => {
 	const fetchMenuByName = async () => {
 		try {
 			const response = await axios.get(
-				`http://localhost:8000/food/menu/getByName/${menuName}`
+				`${API_URL}/food/menu/getByName/${menuName}`
 			);
 			if (response.data.data) {
 				setFormData(response.data.data);
@@ -87,24 +88,24 @@ const UpdateMenuForm = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-    if (!formData._id) {
-      toast.error("Invalid menu item. Please try again.");
-      return;
-    }
+		if (!formData._id) {
+			toast.error("Invalid menu item. Please try again.");
+			return;
+		}
 		try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("Unauthorized. Please login to continue.");
-        return;
-      }
+			const token = localStorage.getItem("token");
+			if (!token) {
+				toast.error("Unauthorized. Please login to continue.");
+				return;
+			}
 			await axios.patch(
 				`http://localhost:8000/food/menu/${formData._id}`,
 				formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
 			);
 			alert("Menu updated successfully!");
 		} catch (error) {

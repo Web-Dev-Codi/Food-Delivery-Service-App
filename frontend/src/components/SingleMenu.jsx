@@ -18,6 +18,7 @@ function SingleMenu() {
 	});
 	const [isLoading, setIsLoading] = useState(false);
 
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 	const { state, addToCart } = useContext(CartContext); // Removed dispatch since it's not used
 
 	// Fetch Menu Data
@@ -25,7 +26,7 @@ function SingleMenu() {
 		const fetchMenu = async () => {
 			try {
 				const response = await axios.get(
-					`http://localhost:8000/food/menu/singlemenu/${id}`
+					`${API_URL}/food/menu/singlemenu/${id}`
 				);
 				setMenu(response.data.data);
 			} catch (error) {

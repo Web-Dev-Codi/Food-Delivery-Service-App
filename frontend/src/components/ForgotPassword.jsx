@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/images/logo.png"; 
+import logo from "../assets/images/logo.png";
 import foodBoy1 from "../assets/animations/foodBoy1.json";
 import Lottie from "lottie-react";
 
@@ -9,6 +9,7 @@ function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
   const navigate = useNavigate();
 
@@ -16,7 +17,7 @@ function ForgotPassword() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/auth/forgot-password",
+        `${API_URL}/api/auth/forgot-password`,
         { email }
       );
       setMessage(response.data.message);

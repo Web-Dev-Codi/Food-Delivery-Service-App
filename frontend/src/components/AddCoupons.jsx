@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AddCoupons = () => {
@@ -9,20 +9,24 @@ const AddCoupons = () => {
 	const [discount, setDiscount] = useState("");
 	const [validFrom, setValidFrom] = useState("");
 	const [validUntil, setValidUntil] = useState("");
-    const [restaurants, setRestaurants] = useState([]);
+	const [restaurants, setRestaurants] = useState([]);
 	const [selectedRestaurants, setSelectedRestaurants] = useState([]);
+
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 	useEffect(() => {
 		axios
-			.get("http://localhost:8000/api/restaurants")
+			.get(`${API_URL}/api/restaurants`)
 			.then((res) => {
 				setRestaurants(res.data.data);
 			})
 			.catch((err) => {
 				console.error("Failed to fetch restaurants:", err);
-				toast.error("❌ Failed to load restaurants. Please try again later.");
+				toast.error(
+					"❌ Failed to load restaurants. Please try again later."
+				);
 			});
-		}, []);
+	}, []);
 
 	const handleRestaurantChange = (e) => {
 		const selectedOptions = Array.from(
@@ -46,7 +50,7 @@ const AddCoupons = () => {
 			.then((res) => {
 				console.log(res.data);
 				toast.success("🎉 Coupon added successfully!");
-			
+
 				setCode("");
 				setDescription("");
 				setDiscount("");
@@ -58,7 +62,7 @@ const AddCoupons = () => {
 				const errorMsg = err.response
 					? err.response.data.message
 					: "Something went wrong. Please try again.";
-					toast.error(`❌ ${errorMsg}`);
+				toast.error(`❌ ${errorMsg}`);
 			});
 	};
 
@@ -162,8 +166,6 @@ const AddCoupons = () => {
 						Add Coupon
 					</button>
 				</form>
-
-			
 			</div>
 		</div>
 	);
