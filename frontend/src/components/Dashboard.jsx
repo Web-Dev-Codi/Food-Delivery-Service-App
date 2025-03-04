@@ -185,7 +185,7 @@ const Dashboard = () => {
                 ) => (
                   <div
                     key={index}
-                    className={`flex flex-col justify-between p-4 bg-neutral-900 text-white hover:bg-neutral-950 backdrop-blur-lg font-bold rounded-lg shadow-md w-full cursor-pointer ${extraHeight}`}
+                    className={`flex flex-col justify-between p-4 bg-gradient-to-b from-white/5 via-white/20 to-white/5 text-white hover:bg-neutral-950 backdrop-blur font-bold rounded-xl shadow-lg w-full cursor-pointer ${extraHeight}`}
                     onClick={() => {
                       if (linkTo) {
                         setIsOutletOpen(true);
@@ -195,48 +195,41 @@ const Dashboard = () => {
                       }
                     }}
                   >
-                    {/* Header (Label) */}
-                    <div className={`text-lg font-extrabold ${color} mb-2`}>
-                      {label}
+                    {/* Header */}
+                    <div className="flex justify-between items-center w-full mb-2">
+                      <span className={`text-xl ${color}`}>{label}</span>
+                      <span className="text-neutral-400 text-xs">
+                        # {index + 1}
+                      </span>
                     </div>
 
-                    {/* Info Box - redesigned */}
-                    <div className="p-3 sm:p-4 bg-neutral-800/30 rounded-lg shadow-inner text-neutral-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap">
-                      {component ? (
-                        component
-                      ) : (
-                        <>
-                          {/* Breaking the info into key-value pairs using |(pipe) separator */}
-                          {info.split("|").map((line, i) => (
-                            <div key={i} className="flex justify-between gap-2">
-                              {line.includes(":") ? (
-                                <>
-                                  <span className="font-medium text-white">
-                                    {line.split(":")[0].trim()}:
-                                  </span>
-                                  <span className="text-amber-400">
-                                    {line.split(":")[1].trim()}
-                                  </span>
-                                </>
-                              ) : (
-                                <span className="text-neutral-300">{line}</span>
-                              )}
-                            </div>
-                          ))}
-                        </>
-                      )}
+                    {/* Info Block - Split into lines if `|` exists */}
+                    <div className="text-neutral-300 text-sm sm:text-base bg-neutral-800/50 p-3 rounded-lg shadow-inner w-full">
+                      {info.split("|").map((line, lineIndex) => (
+                        <div
+                          key={lineIndex}
+                          className="flex items-center gap-2 py-1 border-b border-white/10 last:border-none"
+                        >
+                          <span className="text-amber-400 font-semibold">
+                            •
+                          </span>
+                          <span>{line.trim()}</span>
+                        </div>
+                      ))}
                     </div>
 
-                    {/* Optional External Link */}
+                    {/* External Link if exists */}
                     {externalLink && (
-                      <a
-                        href={externalLink}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-2 text-blue-400 underline text-sm self-end"
-                      >
-                        View More Details
-                      </a>
+                      <div className="mt-3 text-right">
+                        <a
+                          href={externalLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-blue-400 hover:text-blue-300 underline text-xs"
+                        >
+                          View Full Report
+                        </a>
+                      </div>
                     )}
                   </div>
                 )
