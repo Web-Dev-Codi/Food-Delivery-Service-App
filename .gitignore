@@ -134,3 +134,6 @@ mexican food
 
 .vscode/*
 .vscode/
+
+.env.production
+.env.development
