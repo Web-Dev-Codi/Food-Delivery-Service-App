@@ -1,17 +1,16 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
-  FaUtensils,
+  FaEdit,
+  FaTag,
+  FaClipboardList,
+  FaPlusSquare,
+  FaSyncAlt,
+  FaTrashAlt,
   FaConciergeBell,
-  FaTags,
-  FaFileInvoiceDollar,
   FaTimes,
-  FaBarcode,
-  FaAddressCard,
   FaArrowCircleRight,
 } from "react-icons/fa";
-import Orders from "./Orders";
-import AddMenu from "./AddMenu";
 
 const Dashboard = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -20,53 +19,75 @@ const Dashboard = () => {
   const [isOutletOpen, setIsOutletOpen] = useState(false);
   // wrapped navItems in an array of objects and map over in ul!
   const navItems = [
-    { to: "restaurants/add", icon: FaUtensils, label: "Add Restaurant" },
+    { to: "restaurants/add", icon: FaPlusSquare, label: "Add Restaurant" },
+    {
+      to: "update-restaurants",
+      icon: FaEdit,
+      label: "Update Restaurant",
+    },
+    { to: "coupons", icon: FaTag, label: "Add Coupons" },
+    { to: "orders", icon: FaClipboardList, label: "Orders" },
     { to: "add-menu", icon: FaConciergeBell, label: "Add Menu" },
-    { to: "coupons", icon: FaTags, label: "Add Coupons" },
-    { to: "orders", icon: FaFileInvoiceDollar, label: "Orders" },
-    { to: "single-order/:id", icon: FaBarcode, label: "Order/item" },
-    { to: "update-menu", icon: FaAddressCard, label: "Update Menu" },
-    { to: "delete-menu", icon: FaAddressCard, label: "Delete Menu" },
+    { to: "update-menu", icon: FaSyncAlt, label: "Update Menu" },
+    { to: "delete-menu", icon: FaTrashAlt, label: "Delete Menu" },
   ];
 
   // Grid Items Array
   const gridItems = [
     {
       color: "text-orange-600",
-      label: "Order lists with link to orderItem",
-      component: <Orders />, // display the component
-      linkTo: "single-order/:id", // link to the route
+      label: "Revenue & Orders this month",
+      info: "Total Revenue: $52,340 | Total Orders: 2,340 | Avg Order Value: $22.36",
       extraHeight: "",
     },
     {
       color: "text-green-600",
-      label: "Green link to coupons",
-      info: "Extra Info: You can add whatever it suits the wish of the clients. Eg. Total Orders, Total Revenue, Todo List, weather forecast, Current Traffic, Whatever you want in your desktop aka dashboard",
+      label: "Total Growth Rate (Current Month)",
+      info: "Growth Rate: +18.7% | Compared to Last Month: +4.2%",
       linkTo: "coupons",
       extraHeight: "h-44",
     },
-    { color: "text-violet-600", label: "Violet", info: "More Extra Info" },
-    { color: "text-pink-600", label: "Pink", info: "Even More Extra Info" },
-    { color: "text-blue-600", label: "Blue", info: "Extra Extra Info" },
-    { color: "text-amber-400", label: "Amber", info: "Edit me" },
+    {
+      color: "text-violet-600",
+      label: "Total Customers",
+      info: "Total Customers: 12,489 | New Customers This Month: 934",
+    },
+    {
+      color: "text-pink-600",
+      label: "Low Stock Alert",
+      info: "Burger Buns | Chicken Breast | Spicy Sauce | Soda Cans | Cheese Slices",
+    },
+    {
+      color: "text-blue-600",
+      label: "Total Restaurants List",
+      info: "Restaurants Onboarded: 147 | New This Month: 6 | Top Performing: Spicy King Diner",
+    },
+    {
+      color: "text-amber-400",
+      label: "Total Orders",
+      info: "All-Time Orders: 124,580 | Orders Last 6 Months: 12,347 | Orders This Month: 2,340",
+    },
     {
       color: "text-cyan-400",
-      label: "Cyan",
-      info: "I want to have some links",
+      label: "Total Menu Items",
+      info: "Total Items: 1,893 | Best Seller: Spicy Chicken Burger",
     },
     {
       color: "text-red-700",
-      label: "Red",
-      info: "Edit me, too",
-      extraHeight: "h-24", // Controllable height!
+      label: "Pending Orders",
+      info: "Pending: 85 | Canceled: 23 | Returned: 12",
+      extraHeight: "",
     },
     {
       color: "text-emerald-600",
-      label:
-        "Emerald shows that we can display the complete component to the grid",
-      info: "Leave me alone",
-      component: <AddMenu />,
+      label: "Top 5 Most Ordered Items",
+      info: "1. Spicy Chicken Burger | 2. BBQ Ribs | 3. Classic Cheeseburger | 4. Vegan Bowl | 5. Loaded Fries",
       externalLink: "https://www.google.com",
+    },
+    {
+      color: "text-rose-600",
+      label: "Top 5 Restaurants This Month",
+      info: "1. Spicy King Diner ($12,340) | 2. Urban Bites ($11,870) | 3. Green Garden ($10,450) | 4. Burger Nation ($9,870) | 5. Sushi Express ($9,200)",
     },
   ];
 
@@ -95,7 +116,7 @@ const Dashboard = () => {
         ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         } md:relative md:translate-x-0
-        md:w-20 md:p-6 md:border-l ${isHovered ? "md:w-64" : "md:w-24"}
+        md:w-20 md:p-6 md:border-l ${isHovered ? "md:w-72" : "md:w-24"}
       `}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -149,7 +170,6 @@ const Dashboard = () => {
 
             {/* Dynamic Grid is mapped from gridItems array */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 mt-4 w-full">
-              {/* props are passed to here. So set it up in the gridItems array */}
               {gridItems.map(
                 (
                   {
@@ -165,7 +185,7 @@ const Dashboard = () => {
                 ) => (
                   <div
                     key={index}
-                    className={`flex flex-col items-center justify-center p-4 bg-gradient-to-b from-white/5 via-white/20 to-white/5 text-white hover:bg-neutral-950 backdrop-blur font-bold rounded-md shadow-md w-full cursor-pointer ${extraHeight}`}
+                    className={`flex flex-col justify-between p-4 bg-neutral-900 text-white hover:bg-neutral-950 backdrop-blur-lg font-bold rounded-lg shadow-md w-full cursor-pointer ${extraHeight}`}
                     onClick={() => {
                       if (linkTo) {
                         setIsOutletOpen(true);
@@ -175,18 +195,47 @@ const Dashboard = () => {
                       }
                     }}
                   >
-                    <span className={`${color} p-2 text-lg`}>{label}</span>
-                    <div className="text-neutral-300 text-center text-sm sm:text-base p-2 sm:px-4 w-full bg-gradient-to-bl from-amber-950 from-20% via-black via-60% to-black rounded-lg mb-6">
-                      {component ? component : info}
+                    {/* Header (Label) */}
+                    <div className={`text-lg font-extrabold ${color} mb-2`}>
+                      {label}
                     </div>
+
+                    {/* Info Box - redesigned */}
+                    <div className="p-3 sm:p-4 bg-neutral-800/30 rounded-lg shadow-inner text-neutral-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap">
+                      {component ? (
+                        component
+                      ) : (
+                        <>
+                          {/* Breaking the info into key-value pairs using |(pipe) separator */}
+                          {info.split("|").map((line, i) => (
+                            <div key={i} className="flex justify-between gap-2">
+                              {line.includes(":") ? (
+                                <>
+                                  <span className="font-medium text-white">
+                                    {line.split(":")[0].trim()}:
+                                  </span>
+                                  <span className="text-amber-400">
+                                    {line.split(":")[1].trim()}
+                                  </span>
+                                </>
+                              ) : (
+                                <span className="text-neutral-300">{line}</span>
+                              )}
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </div>
+
+                    {/* Optional External Link */}
                     {externalLink && (
                       <a
                         href={externalLink}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-blue-500 underline"
+                        className="mt-2 text-blue-400 underline text-sm self-end"
                       >
-                        I am external link!
+                        View More Details
                       </a>
                     )}
                   </div>
