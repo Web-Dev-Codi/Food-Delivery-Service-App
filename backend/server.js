@@ -22,8 +22,8 @@ const app = express();
 // ✅ Enable CORS for frontend requests
 app.use(
 	cors({
-		origin: "http://localhost:5173", // Replace with your front-end URL
-		methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
+		origin: process.env.FRONTEND_URL || "http://localhost:5173",
+		methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 		credentials: true,
 		allowedHeaders: "Content-Type, Authorization",
 	})
@@ -40,7 +40,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoutes);
 app.use("/payment", paymentRoutes); //paymentRouter
-app.use("/", router); 
+app.use("/", router);
 app.use("/data", userRouter); //userRouter
 app.use("/cart", cartRouter);
 app.use("/order", orderRouter);
