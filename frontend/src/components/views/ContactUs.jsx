@@ -128,6 +128,7 @@ const ContactUs = () => {
 								onChange={handleChange}
 								className="mt-1 p-2 block w-full rounded-md bg-transparent border border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"
 								placeholder="Leave a comment..."
+								style={{ resize: "none" }}
 							/>
 						</div>
 
