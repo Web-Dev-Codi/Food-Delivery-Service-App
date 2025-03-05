@@ -112,11 +112,13 @@ const Dashboard = () => {
 
         {/* Slide-NavBar*/}
         <nav
-          className={`fixed left-0 w-2/3 p-2 border-l border-neutral-500 transition-all duration-1000 ease-in-out bg-red-700/10 backdrop-blur z-10
+          className={`fixed left-0 w-2/3 p-2 border-l border-neutral-500 transition-all duration-1000 ease-in-out bg-black/10 backdrop-blur z-10
         ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         } md:relative md:translate-x-0
-        md:w-20 md:p-6 md:border-l ${isHovered ? "md:w-72" : "md:w-24"}
+        md:w-20 md:p-6 md:border-l ${
+          isHovered || isMobileMenuOpen ? "md:w-72" : "md:w-24"
+        }
       `}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -125,7 +127,7 @@ const Dashboard = () => {
             {navItems.map(({ to, icon: Icon, label }) => (
               <li
                 key={to}
-                className="flex items-center justify-start gap-2 transition-all duration-1000 ease-in-out bg-gradient-to-r from-white/10 via-white/5 to-white/5 backdrop-blur hover:bg-[#D84418] rounded-lg py-2 mb-4 md:mb-0"
+                className="flex items-center justify-start gap-2 transition-all duration-1000 ease-in-out bg-black/80 hover:bg-[#D84418] rounded-lg py-2 mb-4 md:mb-0"
               >
                 <Link
                   to={to}
@@ -139,7 +141,9 @@ const Dashboard = () => {
                   <span
                     className={`text-neutral-300 ml-10 md:ml-4 text-lg font-semibold transition-all duration-1000 transform whitespace-nowrap
           ${
-            isHovered ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+            isHovered || isMobileMenuOpen
+              ? "opacity-100 translate-x-0"
+              : "opacity-0 -translate-x-8"
           }
         `}
                   >
@@ -203,7 +207,7 @@ const Dashboard = () => {
                       </span>
                     </div>
 
-                    {/* Content Area - Either inject component or show info */}
+                    {/* Content Area - Yoc inject component or show info */}
                     <div className="text-neutral-300 text-sm sm:text-base bg-neutral-800/50 p-3 rounded-lg shadow-inner w-full">
                       {component ? (
                         <div className="flex justify-center items-center h-full">
@@ -224,7 +228,7 @@ const Dashboard = () => {
                       )}
                     </div>
 
-                    {/* External Link if exists */}
+                    {/*Optional External Link if exists */}
                     {externalLink && (
                       <div className="mt-3 text-right">
                         <a
