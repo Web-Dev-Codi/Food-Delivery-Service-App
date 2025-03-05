@@ -2,7 +2,6 @@
 import { createContext, useReducer, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { toast } from "react-toastify";
 
 // Initial state
 const initialState = {
@@ -43,20 +42,19 @@ const cartReducer = (state, action) => {
 				totalAmount: action.payload.totalAmount,
 			}; */
 
-			case "UPDATE_QUANTITY":
-    return {
-        ...state,
-        cart: {
-            ...state.cart,
-            items: state.cart.items.map((item) =>
-                item.foodItemId === action.payload.foodItemId
-                    ? { ...item, quantity: action.payload.quantity }
-                    : item
-            ),
-            totalAmount: action.payload.totalAmount,
-        },
-    };
-
+		case "UPDATE_QUANTITY":
+			return {
+				...state,
+				cart: {
+					...state.cart,
+					items: state.cart.items.map((item) =>
+						item.foodItemId === action.payload.foodItemId
+							? { ...item, quantity: action.payload.quantity }
+							: item
+					),
+					totalAmount: action.payload.totalAmount,
+				},
+			};
 
 		case "CLEAR_CART":
 			return {
@@ -79,15 +77,14 @@ const cartReducer = (state, action) => {
 					finalAmount: 0,
 				},
 			}; */
-			case "FETCH_CART_SUCCESS":
-    return {
-        ...state,
-        cart: {
-            ...state.cart,
-            ...action.payload, // Ensures `appliedCoupon` and other properties are included correctly
-        },
-    };
-
+		case "FETCH_CART_SUCCESS":
+			return {
+				...state,
+				cart: {
+					...state.cart,
+					...action.payload, // Ensures `appliedCoupon` and other properties are included correctly
+				},
+			};
 
 		case "FETCH_CART_ERROR":
 			return { ...state, error: action.payload };
@@ -110,13 +107,15 @@ export const CartProvider = ({ children }) => {
 		return { Authorization: `Bearer ${token}` };
 	};
 
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 	// Fetch Cart
 	const fetchCart = async () => {
 		const token = localStorage.getItem("token");
 		if (!token) return;
 
 		try {
-			const response = await axios.get("http://localhost:8000/cart/get", {
+			const response = await axios.get(`${API_URL}/cart/get`, {
 				headers: getAuthHeaders(),
 			});
 			const cartData = response.data.data || {
@@ -141,13 +140,9 @@ export const CartProvider = ({ children }) => {
 	// Add to Cart
 	const addToCart = async (payload) => {
 		try {
-			const response = await axios.post(
-				"http://localhost:8000/cart/add",
-				payload,
-				{
-					headers: getAuthHeaders(),
-				}
-			);
+			const response = await axios.post(`${API_URL}/cart/add`, payload, {
+				headers: getAuthHeaders(),
+			});
 
 			// Immediately update the local state with the new cart data
 			dispatch({
@@ -166,7 +161,7 @@ export const CartProvider = ({ children }) => {
 	const updateCartItem = async (foodItemId, quantity) => {
 		try {
 			const response = await axios.put(
-				"http://localhost:8000/cart/update",
+				`${API_URL}/cart/update`,
 				{ items: [{ foodItemId, quantity }] },
 				{ headers: getAuthHeaders() }
 			);
@@ -183,13 +178,13 @@ export const CartProvider = ({ children }) => {
 	// Remove Item from Cart
 	const removeCartItem = async (foodItemId) => {
 		try {
-			await axios.delete("http://localhost:8000/cart/deleteitem", {
+			await axios.delete(`${API_URL}/cart/deleteitem`, {
 				data: { items: [{ foodItemId }] },
 				headers: getAuthHeaders(),
 			});
 
 			// Fetch the updated cart data after removal
-			const response = await axios.get("http://localhost:8000/cart/get", {
+			const response = await axios.get(`${API_URL}/cart/get`, {
 				headers: getAuthHeaders(),
 			});
 
@@ -209,37 +204,35 @@ export const CartProvider = ({ children }) => {
 	};
 
 	// Apply Coupon Code
-	
 
-const applyCoupon = async (couponCode) => {
-	try {
-		const response = await axios.post(
-			"http://localhost:8000/offers/apply",
-			{ code: couponCode },
-			{ headers: getAuthHeaders() }
-		);
-		console.log("the response is :",response)
-		console.log(response.data);
+	const applyCoupon = async (couponCode) => {
+		try {
+			const response = await axios.post(
+				`${API_URL}/offers/apply`,
+				{ code: couponCode },
+				{ headers: getAuthHeaders() }
+			);
+			console.log("the response is :", response);
+			console.log(response.data);
 
-		return response.data;
-	} catch (error) {
-		
-		console.error("Coupon apply error:", error);
+			return response.data;
+		} catch (error) {
+			console.error("Coupon apply error:", error);
 
-	
-		return { success: false, message: error.response?.data?.message || "Invalid or expired coupon." };
-		
-	}
-};
+			return {
+				success: false,
+				message:
+					error.response?.data?.message ||
+					"Invalid or expired coupon.",
+			};
+		}
+	};
 
 	const clearCart = async () => {
 		try {
-			const response = await axios.delete(
-				"http://localhost:8000/cart/clear",
-				{
-					headers: getAuthHeaders(),
-				}
-			);
+			const response = await axios.delete(`${API_URL}/cart/clear`, {
+				headers: getAuthHeaders(),
+			});
 
 			dispatch({
 				type: "CLEAR_CART",

@@ -18,6 +18,7 @@ function SingleMenu() {
 	});
 	const [isLoading, setIsLoading] = useState(false);
 
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 	const { state, addToCart } = useContext(CartContext); // Removed dispatch since it's not used
 
 	// Fetch Menu Data
@@ -25,7 +26,7 @@ function SingleMenu() {
 		const fetchMenu = async () => {
 			try {
 				const response = await axios.get(
-					`http://localhost:8000/food/menu/singlemenu/${id}`
+					`${API_URL}/food/menu/singlemenu/${id}`
 				);
 				setMenu(response.data.data);
 			} catch (error) {
@@ -70,18 +71,28 @@ function SingleMenu() {
 			};
 			await addToCart(payload);
 
-			// Show toast notification with the menu item name
-			toast.success(`Added 1x ${menu.name} to cart`, {
-				position: "bottom-right",
-				autoClose: 3000,
-				hideProgressBar: false,
-				closeOnClick: false,
-				pauseOnHover: true,
-				draggable: false,
-				transition: Bounce,
-				theme: "dark",
-				icon: <UtensilsCrossed />,
-			});
+			// Enhanced toast notification with action button
+			toast.success(
+				<div className="flex flex-col">
+					<div>Added 1x {menu.name} to cart</div>
+					<button
+						onClick={() => navigate(-1)}
+						className="text-xs mt-2 bg-orange-700 text-white px-2 py-1 rounded self-start hover:bg-green-500 hover:text-white transition-colors text-semibold">
+						Back to Restaurant
+					</button>
+				</div>,
+				{
+					position: "bottom-right",
+					autoClose: 3000, // Extended to give more time to use the button
+					hideProgressBar: false,
+					closeOnClick: false,
+					pauseOnHover: true,
+					draggable: false,
+					transition: Bounce,
+					theme: "dark",
+					icon: <UtensilsCrossed />,
+				}
+			);
 		} catch (err) {
 			console.error("Failed to add to cart:", err);
 			toast.error("Failed to add item to cart");
@@ -202,7 +213,9 @@ function SingleMenu() {
 
 							{/* Availability */}
 							<p className="mb-2">
-								<strong className="text-[#D84418]">Availability:</strong>{" "}
+								<strong className="text-[#D84418]">
+									Availability:
+								</strong>{" "}
 								<span
 									className={
 										menu.availability === "Available"

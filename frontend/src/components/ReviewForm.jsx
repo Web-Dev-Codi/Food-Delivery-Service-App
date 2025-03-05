@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 function ReviewForm({ restaurantId }) {
@@ -6,6 +6,8 @@ function ReviewForm({ restaurantId }) {
 	const [comment, setComment] = useState("");
 	const [successMessage, setSuccessMessage] = useState(""); // State for success message
 	const [errorMessage, setErrorMessage] = useState(""); // State for error message
+
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -19,7 +21,7 @@ function ReviewForm({ restaurantId }) {
 
 		try {
 			const response = await axios.post(
-				`http://localhost:8000/data/${restaurantId}/review`,
+				`${API_URL}/data/${restaurantId}/review`,
 				{ rating, comment },
 				{
 					headers: {

@@ -50,20 +50,16 @@ const Footer = () => {
 						className="hover:text-white transition-all hover:scale-105">
 						Home
 					</Link>
-					<Link
-						to="/menu"
-						className="hover:text-white transition-all hover:scale-105">
-						Menu
-					</Link>
+				
 					<Link
 						to="/restaurants"
 						className="hover:text-white transition-all hover:scale-105">
 						Restaurants
 					</Link>
 					<Link
-						to="/about"
+						to="/about-us"
 						className="hover:text-white transition-all hover:scale-105">
-						About Us
+						AboutUs
 					</Link>
 					<Link
 						to="/contact"

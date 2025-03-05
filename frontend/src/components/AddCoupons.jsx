@@ -35,34 +35,35 @@ const AddCoupons = () => {
     setSelectedRestaurants(selectedOptions);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post("http://localhost:8000/offers/create", {
-        code,
-        description,
-        discount,
-        validFrom,
-        validUntil,
-        applicableToRestaurants: selectedRestaurants,
-      })
-      .then((res) => {
-        console.log(res.data);
-        toast.success(":tada: Coupon added successfully!");
-        setCode("");
-        setDescription("");
-        setDiscount("");
-        setValidFrom("");
-        setValidUntil("");
-        setSelectedRestaurants([]);
-      })
-      .catch((err) => {
-        const errorMsg = err.response
-          ? err.response.data.message
-          : "Something went wrong. Please try again.";
-        toast.error(`:x: ${errorMsg}`);
-      });
-  };
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		axios
+			.post("http://localhost:8000/offers/create", {
+				code,
+				description,
+				discount,
+				validFrom,
+				validUntil,
+				applicableToRestaurants: selectedRestaurants,
+			})
+			.then((res) => {
+				console.log(res.data);
+				toast.success("🎉 Coupon added successfully!");
+
+				setCode("");
+				setDescription("");
+				setDiscount("");
+				setValidFrom("");
+				setValidUntil("");
+				setSelectedRestaurants([]);
+			})
+			.catch((err) => {
+				const errorMsg = err.response
+					? err.response.data.message
+					: "Something went wrong. Please try again.";
+					toast.error(`❌ ${errorMsg}`);
+			});
+	};
 
   return (
     <div className="flex items-center justify-center w-full md:mt-3 ">
@@ -155,23 +156,17 @@ const AddCoupons = () => {
             </select>
           </div>
 
-          <button
-            type="submit"
-            className="w-full py-2  bg-orange-700 font-bold text-white rounded-lg hover:bg-orange-600"
-          >
-            Add Coupon
-          </button>
-        </form>
+					<button
+						type="submit"
+						className="w-full py-2  bg-orange-700 font-bold text-white rounded-lg hover:bg-orange-600">
+						Add Coupon
+					</button>
+				</form>
 
-        {successMessage && (
-          <div className="mt-4 text-green-400">{successMessage}</div>
-        )}
-        {errorMessage && (
-          <div className="mt-4 text-red-400">{errorMessage}</div>
-        )}
-      </div>
-    </div>
-  );
+
+			</div>
+		</div>
+	);
 };
 
 export default AddCoupons;

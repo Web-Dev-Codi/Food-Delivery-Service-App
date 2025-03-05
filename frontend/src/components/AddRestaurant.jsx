@@ -19,6 +19,8 @@ function AddRestaurant() {
   });
   const [isLoading, setIsLoading] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
   const openCloudinaryWidget = () => {
     window.cloudinary.openUploadWidget(
       {
@@ -56,7 +58,7 @@ function AddRestaurant() {
     setIsLoading(true);
     try {
       // Sending data to your backend
-      const response = await axios.post("http://localhost:8000/api/create", {
+      const response = await axios.post(`${API_URL}/api/create`, {
         name,
         location,
         images,
@@ -255,9 +257,9 @@ function AddRestaurant() {
 export default AddRestaurant;
 
 /** With this code if the image failed to upload, the error message will be displayed.
- * I will leave to our discussion to decide if we should display an error message or not. 
+ * I will leave to our discussion to decide if we should display an error message or not.
  * I hope it is ok. to mention that!
- * 
+ *
  * const openCloudinaryWidget = () => {
     window.cloudinary.openUploadWidget(
         {

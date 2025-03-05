@@ -13,15 +13,14 @@ import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import CartItems from "../CartItems";
-import {loadStripe} from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
-import CheckoutForm from "../CheckoutForm";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import Checkout from "./CheckPayment";
+import axios from "axios";
 
-
-
-const stripePromise = loadStripe("pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td");
-
-
+const stripePromise = loadStripe(
+	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
+);
 
 const CartCheckoutFlow = () => {
 	const {
@@ -34,13 +33,55 @@ const CartCheckoutFlow = () => {
 	} = useContext(CartContext);
 	const navigate = useNavigate();
 	const [couponCode, setCouponCode] = useState("");
-	const [discountMessage, setDiscountMessage] = useState("");
+
 	const [step, setStep] = useState(1);
 	const [tip, setTip] = useState(15);
-	const [successPayment,setSuccessPayment] = useState(false);
 
+	const [loading, setLoading] = useState(false);
+	const [addresses, setAddresses] = useState([]);
+	const [selectedAddress, setSelectedAddress] = useState("");
 
 	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
+	useEffect(() => {
+		const fetchAddresses = async () => {
+			try {
+				const token = localStorage.getItem("token");
+				if (!token) {
+					toast.error("User not authenticated", {
+						position: "bottom-right",
+					});
+					return;
+				}
+
+				const response = await axios.get(
+					`${API_URL}/data/userAddress`,
+					{
+						headers: { Authorization: `Bearer ${token}` },
+					}
+				);
+
+				if (response.data.data.address) {
+					// Since address is an object
+					setAddresses([response.data.data.address]); // Store it as an array for consistency
+					setSelectedAddress(response.data.data.address); // Directly set it
+				} else {
+					toast.error("No address found", {
+						position: "bottom-right",
+					});
+				}
+			} catch (error) {
+				toast.error(
+					error.response?.data?.message || "Failed to fetch address",
+					{ position: "bottom-right", autoClose: 3000 }
+				);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchAddresses();
+	}, []);
 
 	useEffect(() => {
 		const token = localStorage.getItem("token");
@@ -95,7 +136,7 @@ const CartCheckoutFlow = () => {
 				autoClose: 3000,
 				hideProgressBar: false,
 				closeOnClick: false,
-				pauseOnHover: true,
+				pauseOnHover: false,
 				draggable: false,
 				transition: Bounce,
 				theme: "dark",
@@ -107,38 +148,35 @@ const CartCheckoutFlow = () => {
 	};
 
 	const handleApplyCoupon = async () => {
+		console.log("applyCoupon function:", applyCoupon);
+
 		if (!couponCode.trim()) {
-			setDiscountMessage("⚠️ Please enter a valid coupon code.");
+			toast.warn("⚠️ Please enter a valid coupon code.");
 			return;
 		}
-		setDiscountMessage(null)
 
 		try {
 			const response = await applyCoupon(couponCode.trim());
-			if (response?.success) {
-				setDiscountMessage("🎉 Coupon applied successfully!");
+			console.log("handleApplyCoupon response:", response);
+
+			if (response?.message === "Coupon applied successfully!") {
+				toast.success(`🎉 Coupon applied! Discount: €${response.discount}`);
 			} else {
-				setDiscountMessage("❌ Invalid or expired coupon.");
+				toast.error(`❌ ${response.message || "Invalid or expired coupon."}`);
 			}
-
 		} catch (error) {
-			setDiscountMessage(
-				` ${
-					error.response?.data?.message ??
-					"Invalid or expired coupon."}`
-
-			);
+			console.error("handleApplyCoupon error:", error);
+			toast.error(error.message || "❌ Invalid or expired coupon.");
 		}
-		   setTimeout(() => setDiscountMessage(null), 5000);
 	};
 
-	const subtotal = state.cart?.finalAmount || 0;
-	const deliveryFee = state.cart?.deliveryFee || 2.99;
-	const tax = state.cart?.tax || 0;
-	const serviceFee = state.cart?.serviceFee || 1.99;
-	const tipAmount = (subtotal * tip) / 100;
-	const totalFee = deliveryFee + tax + serviceFee + tipAmount;
-	const total = totalFee + subtotal || 0;
+	const subtotal = state.cart?.totalAmount || 0;
+	/*  const deliveryFee = state.cart?.deliveryFee || 2.99;
+  const tax = state.cart?.tax || 0;
+  const serviceFee = state.cart?.serviceFee || 1.99;
+  const tipAmount = (subtotal * tip) / 100;
+  const totalFee = deliveryFee + tax + serviceFee + tipAmount; */
+	const total = subtotal || 0;
 
 	const renderMobileStepIndicator = () => (
 		<div className="flex md:hidden items-center justify-center mb-6">
@@ -248,17 +286,9 @@ const CartCheckoutFlow = () => {
 
 				<div className="mt-6 space-y-2 text-sm md:text-base">
 					<div className="flex justify-between">
-						<span>Subtotal</span>
+						<span>Total</span>
 						<span>${subtotal.toFixed(2)}</span>
 					</div>
-					<div className="flex justify-between">
-						<span>Delivery Fee</span>
-						<span>${deliveryFee.toFixed(2)}</span>
-					</div>
-					{/* <div className="flex justify-between pt-2 border-t">
-						<span className="font-medium">Total</span>
-						<span className="font-medium">${total.toFixed(2)}</span>
-					</div> */}
 				</div>
 			</div>
 
@@ -274,16 +304,34 @@ const CartCheckoutFlow = () => {
 		<div className="space-y-6">
 			<div className="bg-black/40 backdrop-blur-lg rounded-lg shadow-sm p-4 md:p-6">
 				<h2 className="text-xl font-semibold mb-4">Delivery Details</h2>
-
 				<div className="space-y-4">
 					<div>
 						<label className="block text-sm font-medium mb-2">
 							Delivery Address
 						</label>
-						<select className="w-full p-3 border rounded-lg">
-							<option>Home - 123 Main St, Apt 4B</option>
-							<option>Work - 456 Office Ave</option>
-							<option>Add New Address</option>
+						<select
+							className="w-full p-3 border rounded-lg"
+							value={
+								selectedAddress
+									? addresses.indexOf(selectedAddress)
+									: ""
+							}
+							onChange={(e) =>
+								setSelectedAddress(addresses[e.target.value])
+							} // Get object by index
+						>
+							{addresses.length > 0 ? (
+								addresses.map((address, index) => (
+									<option
+										key={index}
+										value={index}>
+										{address.street}, {address.city},{" "}
+										{address.state} - {address.zipCode}
+									</option>
+								))
+							) : (
+								<option value="">No Address Available</option>
+							)}
 						</select>
 					</div>
 
@@ -291,7 +339,7 @@ const CartCheckoutFlow = () => {
 						<label className="block text-sm font-medium mb-2">
 							Delivery Time
 						</label>
-						<select className="w-full p-3 border rounded-lg ">
+						<select className="w-full p-3 border rounded-lg">
 							<option>As soon as possible (35-45 min)</option>
 							<option>Schedule for later</option>
 						</select>
@@ -333,92 +381,72 @@ const CartCheckoutFlow = () => {
 					Review Order
 				</button>
 			</div>
-		</div>
+		</div> // ✅ This ensures the return function has a single root element.
 	);
 
 	const renderPaymentView = () => (
-
 		<div className="space-y-6">
-            <div className="bg-black/40 backdrop-blur-lg rounded-lg shadow-sm p-4 md:p-6">
-                <h2 className="text-xl font-semibold mb-4">Payment Method</h2>
+			{console.log("Rendering Payment View, loading:", loading)}
 
-                {/* If Payment is Successful, Show "Review Order" Button */}
-                {successPayment ? (
-                    <div className="text-center">
-                        <p className="text-green-500 font-medium mb-4">✅ Payment Successful!</p>
-                        <button
-                            onClick={() => setStep(3)}
-                            className="w-full bg-[#F97316] text-white py-3 rounded-lg font-medium">
-                            Review Order
-                        </button>
-                    </div>
-                ) : (
-                    <Elements stripe={stripePromise}>
-                        <CheckoutForm setStep={setStep} setSuccessPayment={setSuccessPayment} />
-                    </Elements>
-                )}
-            </div>
+			{/* ✅ Promo Code Section */}
+			<div className="mt-6">
+				<label className="block text-sm font-medium mb-2">
+					Promo Code
+				</label>
+				<div className="flex space-x-2">
+					<input
+						type="text"
+						placeholder="Enter coupon code"
+						className="flex-1 p-3 border rounded-lg"
+						value={couponCode}
+						onChange={(e) => setCouponCode(e.target.value)} // ✅ Moved function outside
+					/>
+					<button
+						onClick={handleApplyCoupon}
+						disabled={
+							state.cart?.appliedCoupon ||
+							state.user?.usedCoupons?.includes(couponCode)
+						}
+						className={`px-4 py-2 rounded-md ${
+							state.cart?.appliedCoupon
+								? "bg-gray-400 cursor-not-allowed"
+								: "bg-[#F97316] hover:bg-[#eb7622] hover:cursor-pointer hover:text-black"
+						}`}>
+						Apply Coupon
+					</button>
+				</div>
+			</div>
 
-					<div className="mt-6">
-                <h3 className="font-medium mb-3">Tip</h3>
-                <div className="grid grid-cols-4 gap-2">
-                    {[10, 15, 20, 25].map((percentage) => (
-                        <button
-                            key={percentage}
-                            onClick={() => setTip(percentage)}
-                            className={`py-2 rounded ${
-                                tip === percentage
-                                    ? "bg-[#F97316] text-white"
-                                    : "bg-gray-100 text-gray-700"
-                            }`}>
-                            {percentage}%
-                        </button>
-                    ))}
-                </div>
-            </div>
+			{/* ✅ Payment Method Section */}
+			<div className="bg-black/40 backdrop-blur-lg rounded-lg shadow-sm p-4 md:p-6">
+				<h2 className="text-xl font-semibold mb-4">Payment Method</h2>
 
-					<div className="mt-6">
-                <label className="block text-sm font-medium mb-2">Promo Code</label>
-                <div className="flex space-x-2">
-                    <input
-                        type="text"
-                        placeholder="Enter code"
-                        className="flex-1 p-3 border rounded-lg"
-                        value={couponCode}
-                        onChange={(e) => setCouponCode(e.target.value)}
-                    />
-                    <button
-                        onClick={handleApplyCoupon}
-                        disabled={state.cart?.appliedCoupon || state.user?.usedCoupons?.includes(couponCode)}
-                        className={`px-4 py-2 rounded-md ${
-                            state.cart?.appliedCoupon
-                                ? "bg-gray-400 cursor-not-allowed"
-                                : "bg-[#F97316] hover:bg-[#eb7622] hover:cursor-pointer hover:text-black"
-                        }`}>
-                        Apply Coupon
-                    </button>
-                </div>
-            </div>
+				{/* ✅ Add Checkout Component Here */}
+				<Checkout />
+			</div>
 
-			 <div className="hidden md:flex space-x-4">
-                <button
-                    onClick={() => setStep(2)}
-                    className="flex-1 bg-transparent border border-[#F97316] text-[#F97316] py-3 rounded-lg font-medium">
-                    Back
-                </button>
-                <button
-                    onClick={() => () => navigate("/invoice")}
-                    disabled={!successPayment} // Disable if payment is not completed
-                    className={`flex-1 py-3 rounded-lg font-medium ${
-                        successPayment
-                            ? "bg-[#F97316] text-white hover:bg-[#eb7622]"
-                            : "bg-gray-400 cursor-not-allowed"
-                    }`}>
-                Place Order
-                </button>
-            </div>
-        </div>
-    );
+			{/* ✅ Navigation Buttons */}
+			<div className="hidden md:flex space-x-4">
+				<button
+					onClick={() => setStep(2)}
+					className="flex-1 bg-transparent border border-[#F97316] text-[#F97316] py-3 rounded-lg font-medium">
+					Back
+				</button>
+				<button
+					onClick={() => {
+						setLoading(true);
+						navigate("/invoice");
+					}}
+					className={`flex-1 py-3 rounded-lg font-medium ${
+						loading
+							? "bg-gray-400 cursor-not-allowed"
+							: "bg-[#F97316] text-white hover:bg-[#eb7622]"
+					}`}>
+					{loading ? "Processing..." : " Dispaly Invoice "}
+				</button>
+			</div>
+		</div>
+	);
 
 	const renderReviewView = () => (
 		<div className="space-y-6">
@@ -431,12 +459,22 @@ const CartCheckoutFlow = () => {
 							<MapPin className="w-5 h-5 text-gray-400 mt-1" />
 							<div className="ml-3">
 								<p className="font-medium">Delivery Address</p>
-								<p className="text-sm text-gray-600">
-									123 Main St, Apt 4B
-								</p>
-								<p className="text-sm text-gray-600">
-									New York, NY 10001
-								</p>
+								{selectedAddress ? (
+									<>
+										<p className="text-sm text-gray-600">
+											{selectedAddress.street},{" "}
+											{selectedAddress.city}
+										</p>
+										<p className="text-sm text-gray-600">
+											{selectedAddress.state} -{" "}
+											{selectedAddress.zipCode}
+										</p>
+									</>
+								) : (
+									<p className="text-sm text-gray-600">
+										No Address Selected
+									</p>
+								)}
 							</div>
 						</div>
 						<button className="text-[#F97316] text-sm">Edit</button>
@@ -457,28 +495,8 @@ const CartCheckoutFlow = () => {
 
 					<div className="space-y-2 text-sm">
 						<div className="flex justify-between">
-							<span>Subtotal</span>
-							<span>${subtotal.toFixed(2)}</span>
-						</div>
-						<div className="flex justify-between">
-							<span>Delivery Fee</span>
-							<span>${deliveryFee.toFixed(2)}</span>
-						</div>
-						<div className="flex justify-between">
-							<span>Tax</span>
-							<span>${tax.toFixed(2)}</span>
-						</div>
-						<div className="flex justify-between">
-							<span>Service Fee</span>
-							<span>${serviceFee.toFixed(2)}</span>
-						</div>
-						<div className="flex justify-between">
-							<span>Tip ({tip}%)</span>
-							<span>${tipAmount.toFixed(2)}</span>
-						</div>
-						<div className="flex justify-between pt-2 border-t font-medium">
 							<span>Total</span>
-							<span>${total.toFixed(2)}</span>
+							<span>${subtotal.toFixed(2)}</span>
 						</div>
 					</div>
 				</div>
@@ -490,9 +508,10 @@ const CartCheckoutFlow = () => {
 					className="flex-1 bg-transparent border border-[#F97316] text-[#F97316] py-3 rounded-lg font-medium">
 					Back
 				</button>
-				<button className="flex-1 bg-[#F97316] text-white py-3 rounded-lg font-medium"
-				onClick={() => setStep(4)}>
-				Continue to Payment
+				<button
+					className="flex-1 bg-[#F97316] text-white py-3 rounded-lg font-medium"
+					onClick={() => setStep(4)}>
+					Continue to Payment
 				</button>
 			</div>
 		</div>

@@ -14,6 +14,7 @@ const EditableProfile = ({ name, email, contact }) => {
 	});
 	const [isEditing, setIsEditing] = useState(false);
 	const [error, setError] = useState(null);
+	const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 	// Toggle edit mode
 	const handleEditClick = () => {
@@ -47,7 +48,7 @@ const EditableProfile = ({ name, email, contact }) => {
 			}
 
 			const res = await axios.put(
-				`http://localhost:8000/data/update/${userId}`,
+				`${API_URL}/data/update/${userId}`,
 				userData,
 				{
 					headers: {
@@ -82,7 +83,7 @@ const EditableProfile = ({ name, email, contact }) => {
 				}
 
 				const response = await axios.get(
-					`http://localhost:8000/data/users/${userId}`,
+					`${API_URL}/data/users/${userId}`,
 					{
 						headers: {
 							Authorization: `Bearer ${token}`,

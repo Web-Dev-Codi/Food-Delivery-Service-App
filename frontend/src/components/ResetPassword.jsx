@@ -11,6 +11,8 @@ function ResetPassword() {
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 	useEffect(() => {
 		if (message || errorMessage) {
 			const timer = setTimeout(() => {
@@ -32,7 +34,7 @@ function ResetPassword() {
 
 		try {
 			const response = await axios.post(
-				`http://localhost:8000/api/auth/reset-password/${token}`, //  Correct API URL
+				`${API_URL}/auth/reset-password/${token}`, //  Correct API URL
 				{ password }
 			);
 			setMessage(response.data.message);
@@ -76,7 +78,7 @@ function ResetPassword() {
 					</label>
 					<input
 						type="password"
-						className="w-full px-4 py-2 border border-orange-300 rounded-lg bg-[#c13915] 
+						className="w-full px-4 py-2 border border-orange-300 rounded-lg bg-[#c13915]
 							text-white outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
@@ -89,7 +91,7 @@ function ResetPassword() {
 					</label>
 					<input
 						type="password"
-						className="w-full px-4 py-2 border border-orange-300 rounded-lg bg-[#c13915] 
+						className="w-full px-4 py-2 border border-orange-300 rounded-lg bg-[#c13915]
 							text-white outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
 						value={confirmPassword}
 						onChange={(e) => setConfirmPassword(e.target.value)}
