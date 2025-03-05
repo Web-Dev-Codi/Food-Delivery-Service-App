@@ -45,7 +45,7 @@ export default function HeroSection() {
 					<div className="w-full flex items-center justify-center h-full sm:h-[600px] lg:h-[800px] relative">
 						<div className="relative h-full w-full flex items-center justify-center">
 							{/* Main Image */}
-							<div className="w-[140%] sm:w-[150%] lg:w-[180%] scale-125 relative flex items-center justify-center">
+							<div className="w-[150%] sm:w-[150%] lg:w-[180%] scale-125 relative flex items-center justify-center overflow-hidden">
 								<Lottie
 									animationData={animationData}
 									loop={true}

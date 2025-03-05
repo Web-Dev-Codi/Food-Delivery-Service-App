@@ -83,7 +83,7 @@ const EditableProfile = ({ name, email, contact }) => {
 				}
 
 				const response = await axios.get(
-					`http://localhost:8000/data/users/${userId}`,
+					`${API_URL}/data/users/${userId}`,
 					{
 						headers: {
 							Authorization: `Bearer ${token}`,

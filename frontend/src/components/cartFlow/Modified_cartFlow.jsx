@@ -41,6 +41,8 @@ const CartCheckoutFlow = () => {
 	const [addresses, setAddresses] = useState([]);
 	const [selectedAddress, setSelectedAddress] = useState("");
 
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 	useEffect(() => {
 		const fetchAddresses = async () => {
 			try {
@@ -53,7 +55,7 @@ const CartCheckoutFlow = () => {
 				}
 
 				const response = await axios.get(
-					"http://localhost:8000/data/userAddress",
+					`${API_URL}/data/userAddress`,
 					{
 						headers: { Authorization: `Bearer ${token}` },
 					}

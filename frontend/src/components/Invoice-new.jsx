@@ -47,8 +47,6 @@ function Invoice() {
 
 				const response = await axios.post(
 					`${API_URL}/payment/save-order/${cartId}`,
-					{},
-
 					{
 						headers: {
 							Authorization: `Bearer ${token}`,

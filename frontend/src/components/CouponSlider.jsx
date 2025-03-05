@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -8,12 +9,13 @@ import axios from "axios";
 export const CouponSlider = () => {
 	const [errorMessage, setErrorMessage] = useState("");
 	const [coupons, setCoupons] = useState([]);
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 	useEffect(() => {
 		const fetchCoupons = async () => {
 			try {
 				const response = await axios.get(
-					"http://localhost:8000/offers"
+					`${API_URL}/offers`
 				);
 				setCoupons(response.data.data);
 			} catch (error) {
