@@ -81,29 +81,27 @@ const AddMenuForm = () => {
 		}
 	};
 
-	return (
-		<div className="flex items-center justify-center w-full md:mt-28 ">
-			<div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md">
-				<h1 className="text-2xl font-bold mb-6 text-center text-white">
-					Add Menu
-				</h1>
-				<form
-					onSubmit={handleSubmit}
-					className="space-y-4">
-					<div>
-						<label className="p-1 block font-bold text-neutral-100">
-							Name:
-						</label>
-						<input
-							type="text"
-							id="name"
-							name="name"
-							value={formData.name}
-							onChange={handleChange}
-							required
-							className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
-						/>
-					</div>
+  return (
+    <div className="flex items-center justify-center w-full md:mt-3 ">
+      <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md min-h-screen ">
+        <h1 className="text-2xl font-bold mb-6 text-center text-white">
+          Add Menu
+        </h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="p-1 block font-bold text-neutral-100">
+              Name:
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+            />
+          </div>
 
 					<div>
 						<label className="p-1 block font-bold text-neutral-100">

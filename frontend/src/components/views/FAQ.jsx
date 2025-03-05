@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useRef } from "react";
+import TawkToChat from "../TawkChat";
+
 import {
 	FaChevronUp,
 	FaChevronDown,
@@ -44,9 +47,15 @@ const FAQ = () => {
 			`Feedback recorded: ${helpful ? "Helpful" : "Not helpful"}`
 		);
 	};
+	const handleToggleChat = () => {
+		if (window.Tawk_API) {
+			window.Tawk_API.toggle(); // This toggles the chat widget visibility
+		}
+	};
 
 	return (
-		<div className="flex flex-col justify-center max-w-4xl mx-auto px-4 py-8 text-white h-screen">
+		<div className="flex flex-col min-h-screen justify-center max-w-4xl mx-auto px-4 py-8 text-white">
+			<TawkToChat /> {/* <-- TawkToChat component is rendered here */}
 			{/* Breadcrumb Navigation */}
 			<div className="text-sm mb-6">
 				<Link
@@ -57,11 +66,9 @@ const FAQ = () => {
 				<span className="mx-2">/</span>
 				<span className="text-[#F97316] font-semibold">FAQ</span>
 			</div>
-
 			<h1 className="text-3xl font-bold mb-8">
 				Frequently Asked Questions
 			</h1>
-
 			{/* Category Tabs */}
 			<div className="flex flex-wrap gap-2 mb-8">
 				{Object.keys(faqData).map((category) => (
@@ -77,7 +84,6 @@ const FAQ = () => {
 					</button>
 				))}
 			</div>
-
 			{/* FAQ Accordion */}
 			<div className="space-y-6">
 				{faqData[activeCategory].map((item, questionIndex) => (
@@ -140,19 +146,19 @@ const FAQ = () => {
 					</div>
 				))}
 			</div>
-
 			{/* Support Options */}
 			<div className="flex flex-col justify-center  mt-12 bg-transparent p-6 rounded-lg">
 				<h2 className="text-xl font-semibold text-center mb-4">
 					Need More Help?
 				</h2>
 				<div className="flex flex-row justify-between md:grid md:grid-cols-3 gap-4">
-					<Link
-						href="#live-chat"
+					<button
+						onClick={handleToggleChat}
 						className="flex flex-col items-center gap-2 text-primary hover:underline">
-						<FaComments className="text-[#F97316]" /> Start Live
-						Chat
-					</Link>
+						<FaComments className="text-[#F97316]" />
+						Open Live Chat
+					</button>
+
 					<Link
 						href="mailto:support@fooddelivery.com"
 						className="flex flex-col items-center gap-2 text-primary hover:underline">
@@ -165,7 +171,6 @@ const FAQ = () => {
 					</Link>
 				</div>
 			</div>
-
 			{/* Back to Top Button */}
 			{showBackToTop && (
 				<button
