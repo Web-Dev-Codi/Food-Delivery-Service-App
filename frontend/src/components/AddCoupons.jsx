@@ -10,14 +10,17 @@ const AddCoupons = () => {
   const [validFrom, setValidFrom] = useState("");
   const [validUntil, setValidUntil] = useState("");
 
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  // const [successMessage, setSuccessMessage] = useState("");
+  // const [errorMessage, setErrorMessage] = useState("");
   const [restaurants, setRestaurants] = useState([]);
   const [selectedRestaurants, setSelectedRestaurants] = useState([]);
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
+
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/restaurants")
+      .get(`${API_URL}/api/restaurants`)
       .then((res) => {
         setRestaurants(res.data.data);
       })

@@ -135,7 +135,7 @@ function AddReview() {
 				</div>
 
 				{/* Animation Section - Smaller size */}
-				<aside className="flex items-center justify-center bg-black/30 p-4 lg:w-1/3 hidden lg:flex">
+				<aside className="flex-1 items-center justify-center bg-black/30 p-4 lg:w-1/3 hidden lg:flex">
 					<div className="w-64 h-64">
 						<Lottie
 							animationData={reviewAnimation}
