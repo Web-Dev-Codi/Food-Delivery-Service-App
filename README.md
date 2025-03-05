@@ -6,7 +6,8 @@
 
 
 ###### 🌐 Website
-###### Visit us at: www.fourflavorsexpress.com
+###### Visit us at: [Four Flavors Express](https://fourflavoursexpress.onrender.com/)
+
 
 
 
@@ -49,7 +50,6 @@ This project follows a **full-stack architecture** with a **React frontend** and
 │   │   ├── components/       # Reusable UI components
 │   │   ├── pages/            # Pages (Home, Menu, Cart, Profile, etc.)
 │   │   ├── services/         # API calls (Axios/Fetch)
-│   │   ├── hooks/            # Custom React Hooks
 │   │   ├── context/          # Global State (Context API)
 │   │   ├── App.jsx            # Main App Component
 │   │   ├── main.jsx           # React entry point
@@ -91,7 +91,7 @@ This project follows a **full-stack architecture** with a **React frontend** and
 1. ###### Clone the repository: 
 
 ```
-git clone https://github.com/yourusername/four-flavors-express.git
+git clone https://github.com/Web-Dev-Codi/four-flavors-express.git
 
 ```
 
@@ -145,9 +145,14 @@ npm run dev
 
 
 
-### 🍽️ Made with ❤️ by the Four Flavors Express Team
+### 🍽️ Made with ❤️ by the Four Flavors Express
 
 
 
+Tabassum Khan :[Linkedin](https://www.linkedin.com/in/tabassum-khan-3688602b7/)
 
+Ashwini Bheemireddy :[Linkedin]()
 
+Brian : [Email](webdevcodi@gmail.com)
+ 
+Tuanth 
