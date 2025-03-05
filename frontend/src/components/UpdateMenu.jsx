@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -20,6 +19,9 @@ const UpdateMenuForm = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [isMenuFound, setIsMenuFound] = useState(false);
 
+
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
@@ -37,7 +39,7 @@ const UpdateMenuForm = () => {
   const fetchMenuByName = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/food/menu/getByName/${menuName}`
+        `${API_URL}/food/menu/getByName/${menuName}`
       );
       if (response.data.data) {
         setFormData(response.data.data);

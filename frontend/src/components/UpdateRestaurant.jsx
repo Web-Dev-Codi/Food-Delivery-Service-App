@@ -21,6 +21,7 @@ const UpdateRestaurantForm = () => {
 	});
 	const [isRestaurantFound, setIsRestaurantFound] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+
 	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 	const fetchRestaurantByName = async () => {
