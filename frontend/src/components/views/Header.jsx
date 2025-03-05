@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useContext, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
@@ -29,9 +30,8 @@ const Header = () => {
 	const [searchResults, setSearchResults] = useState([]);
 	const [showSearchResults, setShowSearchResults] = useState(false);
 
-
-
 	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 	// Check authentication status whenever location changes
 	useEffect(() => {
 		const token = localStorage.getItem("token");
@@ -112,7 +112,7 @@ const Header = () => {
 
 			try {
 				const response = await axios.get(
-					`${API_URL}/restaurants?search=${searchTerm}`
+					`${API_URL}/restaurants/name/${searchTerm}`
 				);
 
 				if (response.data && Array.isArray(response.data.data)) {
@@ -313,7 +313,6 @@ const Header = () => {
 												<BiLogOut className="mr-3 text-orange-500" />
 												Logout
 											</button>
-
 										</div>
 									)}
 								</div>
@@ -327,9 +326,13 @@ const Header = () => {
 									className="px-4 py-2 text-white font-bold hover:text-orange-500 transition-colors">
 									Sign In
 								</Link>
-								<Tooltip id="admin-login-tooltip" place="bottom" effect="solid">
-								To Login as Admin use Email: "admin@ffe.com" | Password: "123456789"
-							  </Tooltip>
+								<Tooltip
+									id="admin-login-tooltip"
+									place="bottom"
+									effect="solid">
+									To Login as Admin use Email: "admin@ffe.com"
+									| Password: "123456789"
+								</Tooltip>
 								<Link
 									to="/signup"
 									className="px-4 py-2 bg-orange-500 text-white font-bold rounded-full hover:bg-white hover:text-orange-500 transition-colors">
