@@ -11,10 +11,10 @@ export default function HeroSection() {
 					{/* Left Content */}
 					<div className="w-full lg:w-1/2 space-y-4 md:space-y-6">
 						<h1 className="text-5xl text-center flex flex-col md:text-left sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-							Locally Inspired
+							Craving tasty food?
 							<br />
 							<span className="text-[#FF5733] drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] tracking-wide">
-								Crave It. Click It. Get It
+								Click It. Get It
 							</span>
 							Delivered Fast
 						</h1>
