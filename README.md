@@ -98,7 +98,7 @@ git clone https://github.com/Web-Dev-Codi/Food-Delivery-Service-App
 2. ###### Navigate to the project directory:
 
 ```
-cd four-flavors-express
+cd Food-Delivery-Service-App
 
 ```
 
