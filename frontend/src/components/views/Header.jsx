@@ -211,11 +211,11 @@ const Header = () => {
 						className="flex items-center text-2xl font-extrabold text-orange-500">
 						<span className="flex flex-row gap-2 items-center">
 							<img
-                src={logo} // Change this path to your actual logo
-                alt="Logo"
-                className="w-10 h-10 object-cover rounded-full border-2 border-yellow-400 shadow-lg"
-              />
-						FFE.
+								src={logo} // Change this path to your actual logo
+								alt="Logo"
+								className="w-10 h-10 object-cover rounded-full border-2 border-yellow-400 shadow-lg"
+							/>
+							FFE.
 						</span>
 					</Link>
 					<div className="hidden md:flex items-center space-x-8">
@@ -439,7 +439,7 @@ const Header = () => {
 								FAQs
 							</Link>
 							{isLoggedIn ? (
-								<div className="flex items-center space-x-4">
+								<div className="flex flex-col space-y-4">
 									<Link
 										to="/checkout"
 										className="text-white font-bold hover:text-orange-500 transition-colors">
@@ -452,6 +452,12 @@ const Header = () => {
 										className="text-white font-bold hover:text-orange-500 transition-colors">
 										Profile
 									</Link>
+									<button
+										onClick={handleLogout}
+										className="bg-orange-500 text-white font-bold py-2 px-4 rounded-md hover:bg-orange-600 transition-colors flex items-center">
+										<BiLogOut className="mr-2" />
+										Logout
+									</button>
 								</div>
 							) : (
 								<div className="flex flex-col space-y-2">
