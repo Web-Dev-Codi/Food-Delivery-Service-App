@@ -41,7 +41,7 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		axios
-			.post("http://localhost:8000/offers/create", {
+			.post(`${API_URL}/offers/create`, {
 				code,
 				description,
 				discount,
