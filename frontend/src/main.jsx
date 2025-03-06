@@ -80,6 +80,7 @@ const router = createBrowserRouter(
         <Route path="/profile/:userId" element={<UserProfile />} />
         <Route path="/invoice" element={<Invoice />} />
         <Route path="*" element={<PageNotFound />} />
+        <Route path="/about-us" element={<AboutUs />} />
       </Route>
     </Route>
   )
