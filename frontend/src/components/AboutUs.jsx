@@ -8,13 +8,12 @@ const AboutUs = () => {
     const [showJoinMovement, setShowJoinMovement] = useState(false);
 
     useEffect(() => {
-        const timer1 = setTimeout(() => setShowMission(true), 1000); // Shows mission after 1 second
-        const timer2 = setTimeout(() => setShowWhy(true), 3000); // Shows 'Why Four Flavors' after 3 seconds
-        const timer3 = setTimeout(() => setShowSpecial(true), 5000); // Shows 'What Makes Us Special' after 5 seconds
-        const timer4 = setTimeout(() => setShowGreenCommitment(true), 7000); // Shows 'Green Commitment' after 7 seconds
-        const timer5 = setTimeout(() => setShowJoinMovement(true), 9000); // Shows 'Join the Movement' after 9 seconds
+        const timer1 = setTimeout(() => setShowMission(true), 1000); 
+        const timer2 = setTimeout(() => setShowWhy(true), 2000); 
+        const timer3 = setTimeout(() => setShowSpecial(true), 2500); 
+        const timer4 = setTimeout(() => setShowGreenCommitment(true), 3000); 
+        const timer5 = setTimeout(() => setShowJoinMovement(true), 3500); 
 
-        // Cleanup timers on component unmount
         return () => {
             clearTimeout(timer1);
             clearTimeout(timer2);
@@ -50,14 +49,14 @@ const AboutUs = () => {
                 {showSpecial && (
                     <div>
                         <h2 className="text-2xl font-semibold text-orange-400 mt-6">What Makes Us Special?</h2>
-                        <ul className="list-disc pl-6 space-y-2">
-                            <li><strong>Eco-Friendly Electric Scooters</strong> – All our deliveries are made using electric scooters, ensuring zero emissions.</li>
-                            <li><strong>Recyclable & Minimal Packaging</strong> – We work with partners to reduce plastic waste and use biodegradable materials whenever possible.</li>
-                            <li><strong>Diverse Menu</strong> – From your local favorites to exotic dishes, we cover all cravings.</li>
-                            <li><strong>Lightning-Fast Delivery</strong> – Because fresh food tastes best when it’s hot!</li>
-                            <li><strong>Easy Ordering</strong> – Our app is designed for smooth ordering and real-time tracking.</li>
-                            <li><strong>Local Love</strong> – We support small restaurants and home chefs, giving local talent a platform to shine.</li>
-                        </ul>
+                        <div className="space-y-2 pl-6">
+                            <p>🛵 <strong>Eco-Friendly Electric Scooters</strong> – All our deliveries are made using electric scooters, ensuring zero emissions.</p>
+                            <p>📦 <strong>Recyclable & Minimal Packaging</strong> – We work with partners to reduce plastic waste and use biodegradable materials whenever possible.</p>
+                            <p>🍽️ <strong>Diverse Menu</strong> – From your local favorites to exotic dishes, we cover all cravings.</p>
+                            <p>⚡ <strong>Lightning-Fast Delivery</strong> – Because fresh food tastes best when it’s hot!</p>
+                            <p>📱 <strong>Easy Ordering</strong> – Our app is designed for smooth ordering and real-time tracking.</p>
+                            <p>❤️ <strong>Local Love</strong> – We support small restaurants and home chefs, giving local talent a platform to shine.</p>
+                        </div>
                     </div>
                 )}
 
@@ -66,13 +65,13 @@ const AboutUs = () => {
                         <h2 className="text-2xl font-semibold text-orange-400 mt-6">Our Green Commitment 🌱</h2>
                         <p className="mb-4">We understand the impact of food delivery on the environment. That’s why sustainability is baked into our DNA:</p>
 
-                        <ul className="list-disc pl-6 space-y-2">
-                            <li>🛵 Electric scooters = <strong>Zero tailpipe emissions</strong></li>
-                            <li>🍃 Paperless receipts & digital menus = <strong>Less paper waste</strong></li>
-                            <li>📦 Biodegradable cutlery & containers = <strong>Cleaner future</strong></li>
-                            <li>🌐 Encouraging restaurants to adopt = <strong>sustainable packaging</strong></li>
-                            <li>♻️ We actively recycle packaging returned by customers</li>
-                        </ul>
+                        <div className="space-y-2 pl-6">
+                            <p>🛵 Electric scooters = <strong>Zero tailpipe emissions</strong></p>
+                            <p>📲 Paperless receipts & digital menus = <strong>Less paper waste</strong></p>
+                            <p>🍴 Biodegradable cutlery & containers = <strong>Cleaner future</strong></p>
+                            <p>📦 Encouraging restaurants to adopt = <strong>sustainable packaging</strong></p>
+                            <p>♻️ We actively recycle packaging returned by customers</p>
+                        </div>
                     </div>
                 )}
 

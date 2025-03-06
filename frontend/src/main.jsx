@@ -125,7 +125,7 @@ const router = createBrowserRouter(
 					element={<AddReview />}
 				/>
 				<Route
-					path="/about"
+					path="/about-us"
 					element={<AboutUs />}
 				/>
 				<Route
