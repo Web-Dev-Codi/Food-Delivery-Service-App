@@ -1,8 +1,8 @@
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
+	createBrowserRouter,
+	createRoutesFromElements,
+	Route,
+	RouterProvider,
 } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -38,55 +38,131 @@ import DeleteMenu from "./components/DeleteMenu.jsx";
 import AboutUs from "./components/AboutUs.jsx";
 import UpdateRestaurantForm from "./components/UpdateRestaurant.jsx";
 
-
 const stripePromise = loadStripe(
-  "pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
+	"pk_test_51QpRWNGOBWdkGRw0ZvcDq67gGtXySdQUxNZif5af8M7v1H12kAujDscDWXd4vcExcQXYNy5iSYreTU1CCZCpbCTU00AFm9G6td"
 );
 
 const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route>
-      <Route path="/" element={<App />}>
-        <Route index element={<Home />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/signup" element={<SignupForm />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route
-          path="/payment"
-          element={
-            <Elements stripe={stripePromise}>
-              <PaymentForm />
-            </Elements>
-          }
-        />
-        <Route path="/dashboard" element={<Dashboard />}>
-          <Route path="restaurants/add" element={<AddRestaurant />} />
-          <Route path="add-menu" element={<AddMenu />} />
-          <Route path="coupons" element={<AddCoupons />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="single-order/:id" element={<SingleOrder />} />
-          <Route path="update-menu" element={<UpdateMenuForm />} />
-          <Route path="delete-menu" element={<DeleteMenu />} />
-          <Route path="update-restaurants" element={<UpdateRestaurantForm />} />
-        </Route>
-        <Route path="/menu/:id" element={<SingleMenu />} />
-        <Route path="/restaurants" element={<ListRestaurant />} />
-        <Route path="/restaurants/:id" element={<SingleRestaurant />} />
-        <Route path="/restaurants/:id/reviews" element={<AddReview />} />
-        <Route path="/checkout" element={<CartCheckoutFlow />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/faqs" element={<FAQ />} />
-        <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-        <Route path="/profile/:userId" element={<UserProfile />} />
-        <Route path="/invoice" element={<Invoice />} />
-        <Route path="*" element={<PageNotFound />} />
-      </Route>
-    </Route>
-  )
+	createRoutesFromElements(
+		<Route>
+			<Route
+				path="/"
+				element={<App />}>
+				<Route
+					index
+					element={<Home />}
+				/>
+				<Route
+					path="/menu"
+					element={<Menu />}
+				/>
+				<Route
+					path="/signup"
+					element={<SignupForm />}
+				/>
+				<Route
+					path="/login"
+					element={<LoginForm />}
+				/>
+				<Route
+					path="/payment"
+					element={
+						<Elements stripe={stripePromise}>
+							<PaymentForm />
+						</Elements>
+					}
+				/>
+				<Route
+					path="/dashboard"
+					element={<Dashboard />}>
+					<Route
+						path="restaurants/add"
+						element={<AddRestaurant />}
+					/>
+					<Route
+						path="add-menu"
+						element={<AddMenu />}
+					/>
+					<Route
+						path="coupons"
+						element={<AddCoupons />}
+					/>
+					<Route
+						path="orders"
+						element={<Orders />}
+					/>
+					<Route
+						path="single-order/:id"
+						element={<SingleOrder />}
+					/>
+					<Route
+						path="update-menu"
+						element={<UpdateMenuForm />}
+					/>
+					<Route
+						path="delete-menu"
+						element={<DeleteMenu />}
+					/>
+					<Route
+						path="update-restaurants"
+						element={<UpdateRestaurantForm />}
+					/>
+				</Route>
+				<Route
+					path="/menu/:id"
+					element={<SingleMenu />}
+				/>
+				<Route
+					path="/restaurants"
+					element={<ListRestaurant />}
+				/>
+				<Route
+					path="/restaurants/:id"
+					element={<SingleRestaurant />}
+				/>
+				<Route
+					path="/restaurants/:id/reviews"
+					element={<AddReview />}
+				/>
+				<Route
+					path="/about"
+					element={<AboutUs />}
+				/>
+				<Route
+					path="/checkout"
+					element={<CartCheckoutFlow />}
+				/>
+				<Route
+					path="/forgot-password"
+					element={<ForgotPassword />}
+				/>
+				<Route
+					path="/faqs"
+					element={<FAQ />}
+				/>
+				<Route
+					path="/reset-password/:token"
+					element={<ResetPasswordPage />}
+				/>
+				<Route
+					path="/profile/:userId"
+					element={<UserProfile />}
+				/>
+				<Route
+					path="/invoice"
+					element={<Invoice />}
+				/>
+				<Route
+					path="*"
+					element={<PageNotFound />}
+				/>
+			</Route>
+		</Route>
+	)
 );
 
 createRoot(document.getElementById("root")).render(
-  <CartProvider>
-    <RouterProvider router={router} />
-  </CartProvider>
+	<CartProvider>
+		<RouterProvider router={router} />
+	</CartProvider>
 );
