@@ -100,19 +100,19 @@ const UserProfile = () => {
 		activeOrders: [
 			{
 				id: 1001,
-				restaurant: "Burger Palace",
+				restaurant: "Bangkok Bites",
 				status: "On the way",
 				estimatedDelivery: "12:45 PM",
-				items: ["Double Cheeseburger", "Fries", "Soda"],
+				items: ["Green Curry", "Rice", "Soda"],
 			},
 		],
 		orderHistory: [
 			{
 				id: 1000,
-				restaurant: "Pizza Place",
+				restaurant: "Spice of India",
 				date: "Feb 20, 2025",
 				total: "$24.99",
-				items: ["Large Pepperoni Pizza", "Garlic Knots"],
+				items: ["Butter Chicken", "Naan Bread"],
 			},
 			{
 				id: 999,
