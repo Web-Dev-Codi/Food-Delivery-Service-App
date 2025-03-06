@@ -50,7 +50,7 @@ const Footer = () => {
 						className="hover:text-white transition-all hover:scale-105">
 						Home
 					</Link>
-				
+
 					<Link
 						to="/restaurants"
 						className="hover:text-white transition-all hover:scale-105">
@@ -60,11 +60,6 @@ const Footer = () => {
 						to="/about-us"
 						className="hover:text-white transition-all hover:scale-105">
 						AboutUs
-					</Link>
-					<Link
-						to="/contact"
-						className="hover:text-white transition-all hover:scale-105">
-						Contact
 					</Link>
 				</nav>
 				{/* 📢 Newsletter Signup */}

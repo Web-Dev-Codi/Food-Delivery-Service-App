@@ -411,23 +411,10 @@ const Header = () => {
 								Home
 							</Link>
 							<Link
-								to="/menu"
+								to="/restaurants"
 								className="text-white font-bold hover:text-orange-500 transition-colors">
-								Menu
+								Resturant
 							</Link>
-							{location.pathname === "/" ? (
-								<a
-									href="#contact-section"
-									className="text-white font-bold hover:text-orange-500 transition-colors cursor-pointer">
-									Contact
-								</a>
-							) : (
-								<Link
-									to="/#contact-section"
-									className="text-white font-bold hover:text-orange-500 transition-colors">
-									Contact
-								</Link>
-							)}
 							<Link
 								to="/about-us"
 								className="text-white font-bold hover:text-orange-500 transition-colors">
