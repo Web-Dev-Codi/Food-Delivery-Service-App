@@ -13,7 +13,9 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { BiLogOut } from "react-icons/bi";
 import { CartContext } from "../../context/CartContext";
 import axios from "axios";
+import logo from "../../assets/images/logo.png";
 import { Tooltip } from "react-tooltip";
+import { jwtDecode } from "jwt-decode";
 
 const Header = () => {
 	const navigate = useNavigate();
@@ -32,18 +34,53 @@ const Header = () => {
 
 	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
-	// Check authentication status whenever location changes
-	useEffect(() => {
-		const token = localStorage.getItem("token");
-		const isNowLoggedIn = !!token;
-		setIsLoggedIn(isNowLoggedIn);
+	// Function to check if token is expired
+	const isTokenExpired = (token) => {
+		if (!token) return true;
 
-		// If user is logged in, fetch their role
-		if (isNowLoggedIn) {
-			fetchUserRole();
-		} else {
-			setUserRole("");
+		try {
+			const decoded = jwtDecode(token);
+			const currentTime = Date.now() / 1000;
+
+			// Check if token is expired
+			if (decoded.exp < currentTime) {
+				return true;
+			}
+			return false;
+		} catch (error) {
+			console.error("Error decoding token:", error);
+			return true;
 		}
+	};
+
+	// Check authentication status whenever location changes or periodically
+	useEffect(() => {
+		const checkAuthStatus = () => {
+			const token = localStorage.getItem("token");
+
+			// If token doesn't exist or is expired, log the user out
+			if (!token || isTokenExpired(token)) {
+				if (token && isTokenExpired(token)) {
+					// If token exists but is expired, remove it
+					localStorage.removeItem("token");
+					localStorage.removeItem("userId");
+				}
+				setIsLoggedIn(false);
+				setUserRole("");
+			} else {
+				setIsLoggedIn(true);
+				fetchUserRole();
+			}
+		};
+
+		// Check auth status immediately
+		checkAuthStatus();
+
+		// Also set up an interval to check periodically (every minute)
+		const intervalId = setInterval(checkAuthStatus, 60000);
+
+		// Clean up interval on component unmount
+		return () => clearInterval(intervalId);
 	}, [location.pathname]);
 
 	// Fetch user role from the backend
@@ -52,7 +89,7 @@ const Header = () => {
 			const token = localStorage.getItem("token");
 			const userId = localStorage.getItem("userId");
 
-			if (!token || !userId) return;
+			if (!token || !userId || isTokenExpired(token)) return;
 
 			const response = await axios.get(
 				`${API_URL}/data/users/${userId}`,
@@ -66,6 +103,13 @@ const Header = () => {
 			}
 		} catch (error) {
 			console.error("Error fetching user role:", error);
+			// If we get a 401 Unauthorized error, the token is likely invalid or expired
+			if (error.response && error.response.status === 401) {
+				localStorage.removeItem("token");
+				localStorage.removeItem("userId");
+				setIsLoggedIn(false);
+				setUserRole("");
+			}
 		}
 	};
 
@@ -164,9 +208,14 @@ const Header = () => {
 				<div className="flex items-center justify-between">
 					<Link
 						to="/"
-						className="flex items-center">
-						<span className="text-2xl font-extrabold text-orange-500">
-							🍽️ FFE.
+						className="flex items-center text-2xl font-extrabold text-orange-500">
+						<span className="flex flex-row gap-2 items-center">
+							<img
+                src={logo} // Change this path to your actual logo
+                alt="Logo"
+                className="w-10 h-10 object-cover rounded-full border-2 border-yellow-400 shadow-lg"
+              />
+						FFE.
 						</span>
 					</Link>
 					<div className="hidden md:flex items-center space-x-8">
