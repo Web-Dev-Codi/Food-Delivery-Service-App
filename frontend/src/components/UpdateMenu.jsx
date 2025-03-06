@@ -26,7 +26,7 @@ const UpdateMenuForm = () => {
     const fetchRestaurants = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/restaurants"
+          `${API_URL}/api/restaurants`
         );
         setRestaurants(response.data.data);
       } catch (error) {
