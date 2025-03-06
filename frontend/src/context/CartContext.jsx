@@ -160,15 +160,27 @@ export const CartProvider = ({ children }) => {
 	// Update Cart Item Quantity
 	const updateCartItem = async (foodItemId, quantity) => {
 		try {
-			const response = await axios.put(
+			// First, update the cart item quantity
+			await axios.put(
 				`${API_URL}/cart/update`,
 				{ items: [{ foodItemId, quantity }] },
 				{ headers: getAuthHeaders() }
 			);
 
+			// Then fetch the updated cart data to ensure we have complete item details
+			const response = await axios.get(`${API_URL}/cart/get`, {
+				headers: getAuthHeaders(),
+			});
+
+			// Update state with the fresh cart data
 			dispatch({
 				type: "FETCH_CART_SUCCESS",
-				payload: response.data.data,
+				payload: response.data.data || {
+					items: [],
+					totalAmount: 0,
+					discount: 0,
+					finalAmount: 0,
+				},
 			});
 		} catch (error) {
 			dispatch({ type: "FETCH_CART_ERROR", payload: error.message });
