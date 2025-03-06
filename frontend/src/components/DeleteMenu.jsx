@@ -37,7 +37,7 @@ const DeleteMenu = () => {
 		}
 
 		try {
-			await axios.delete(`http://localhost:8000/food/menu/${menuId}`);
+			await axios.delete(`${API_URL}/food/menu/${menuId}`);
 			toast.success(`Menu "${menuName}" deleted successfully!`);
 			setMenuName(""); // Clear input
 			setMenuId(null); // Reset ID

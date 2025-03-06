@@ -6,12 +6,14 @@ function SingleOrder() {
   const [order, setOrder] = useState({});
   const { id } = useParams();
 
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
   useEffect(() => {
     const fetchOrder = async () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `http://localhost:8000/order/get/${id}`,
+          `${API_URL}/order/get/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
