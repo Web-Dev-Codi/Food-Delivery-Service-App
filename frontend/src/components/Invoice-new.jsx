@@ -38,6 +38,7 @@ function Invoice() {
 
 			try {
 				const token = localStorage.getItem("token");
+				console.log("token from localstorage in save-order",token)
 				const { _id: cartId } = cart;
 
 				if (!cartId) {
@@ -47,6 +48,7 @@ function Invoice() {
 
 				const response = await axios.post(
 					`${API_URL}/payment/save-order/${cartId}`,
+					{}, // Empty body (if no data is sent)
 					{
 						headers: {
 							Authorization: `Bearer ${token}`,

@@ -5,6 +5,7 @@ dotenv.config();
 
 export const verifyToken = (req, res, next) => {
 	const authHeader = req.headers.authorization;
+	console.log("Authorization Header:", authHeader); // Debugging
 
 	if (!authHeader) {
 		return res.status(401).json({
