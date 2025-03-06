@@ -13,6 +13,8 @@ function SingleRestaurant() {
 	const [menuCategory, setMenuCategory] = useState("Select");
 
 	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
+	
 	const navigate = useNavigate();
 	// Fetch restaurant and menu data in a single useEffect
 	useEffect(() => {
