@@ -159,16 +159,16 @@ const FAQ = () => {
 						Open Live Chat
 					</button>
 
-					<Link
+					<a
 						href="mailto:support@fooddelivery.com"
 						className="flex flex-col items-center gap-2 text-primary hover:underline">
 						<FaEnvelope className="text-[#F97316]" /> Email Support
-					</Link>
-					<Link
+					</a>
+					<a
 						href="tel:1-800-FOOD-DEL"
 						className="flex flex-col items-center gap-2 text-primary hover:underline ">
 						<FaPhone className="text-[#F97316]" /> Call Us
-					</Link>
+					</a>
 				</div>
 			</div>
 			{/* Back to Top Button */}
