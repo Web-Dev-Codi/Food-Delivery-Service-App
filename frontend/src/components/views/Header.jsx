@@ -29,59 +29,59 @@ const Header = () => {
   const dropdownRef = useRef(null);
   const searchRef = useRef(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
 
-	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
-	// Function to check if token is expired
-	const isTokenExpired = (token) => {
-		if (!token) return true;
+  // Function to check if token is expired
+  const isTokenExpired = (token) => {
+    if (!token) return true;
 
-		try {
-			const decoded = jwtDecode(token);
-			const currentTime = Date.now() / 1000;
+    try {
+      const decoded = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
 
-			// Check if token is expired
-			if (decoded.exp < currentTime) {
-				return true;
-			}
-			return false;
-		} catch (error) {
-			console.error("Error decoding token:", error);
-			return true;
-		}
-	};
+      // Check if token is expired
+      if (decoded.exp < currentTime) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return true;
+    }
+  };
 
-	// Check authentication status whenever location changes or periodically
-	useEffect(() => {
-		const checkAuthStatus = () => {
-			const token = localStorage.getItem("token");
+  // Check authentication status whenever location changes or periodically
+  useEffect(() => {
+    const checkAuthStatus = () => {
+      const token = localStorage.getItem("token");
 
-			// If token doesn't exist or is expired, log the user out
-			if (!token || isTokenExpired(token)) {
-				if (token && isTokenExpired(token)) {
-					// If token exists but is expired, remove it
-					localStorage.removeItem("token");
-					localStorage.removeItem("userId");
-				}
-				setIsLoggedIn(false);
-				setUserRole("");
-			} else {
-				setIsLoggedIn(true);
-				fetchUserRole();
-			}
-		};
+      // If token doesn't exist or is expired, log the user out
+      if (!token || isTokenExpired(token)) {
+        if (token && isTokenExpired(token)) {
+          // If token exists but is expired, remove it
+          localStorage.removeItem("token");
+          localStorage.removeItem("userId");
+        }
+        setIsLoggedIn(false);
+        setUserRole("");
+      } else {
+        setIsLoggedIn(true);
+        fetchUserRole();
+      }
+    };
 
-		// Check auth status immediately
-		checkAuthStatus();
+    // Check auth status immediately
+    checkAuthStatus();
 
-		// Also set up an interval to check periodically (every minute)
-		const intervalId = setInterval(checkAuthStatus, 60000);
+    // Also set up an interval to check periodically (every minute)
+    const intervalId = setInterval(checkAuthStatus, 60000);
 
-		// Clean up interval on component unmount
-		return () => clearInterval(intervalId);
-	}, [location.pathname]);
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [location.pathname]);
 
   // Fetch user role from the backend
   const fetchUserRole = async () => {
@@ -100,13 +100,13 @@ const Header = () => {
       }
     } catch (error) {
       console.error("Error fetching user role:", error);
-			// If we get a 401 Unauthorized error, the token is likely invalid or expired
-			if (error.response && error.response.status === 401) {
-				localStorage.removeItem("token");
-				localStorage.removeItem("userId");
-				setIsLoggedIn(false);
-				setUserRole("");
-			}
+      // If we get a 401 Unauthorized error, the token is likely invalid or expired
+      if (error.response && error.response.status === 401) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        setIsLoggedIn(false);
+        setUserRole("");
+      }
     }
   };
 
@@ -155,16 +155,16 @@ const Header = () => {
         );
         console.log("Response from search restaurant:", response);
 
-        if (response.data && response.data.data) {
+        if (response.data && response.data.data.length > 0) {
           setSearchResults(response.data.data); // Store as an object
           setShowSearchResults(true);
         } else {
-          setSearchResults(null);
+          setSearchResults([]);
           setShowSearchResults(false);
         }
       } catch (error) {
         console.error("Error fetching restaurant:", error);
-        setSearchResults(null);
+        setSearchResults([]);
         setShowSearchResults(false);
       }
     };
@@ -181,12 +181,10 @@ const Header = () => {
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
     setShowSearchResults(e.target.value.trim() !== "");
-
   };
   useEffect(() => {
     setShowSearchResults(searchResults !== null);
   }, [searchResults]);
-
 
   const handleRestaurantClick = (restaurantId) => {
     setSearchTerm("");
@@ -203,28 +201,30 @@ const Header = () => {
     navigate("/login");
   };
 
-	return (
-		<header className="relative w-full top-0 z-50 bg-transparent backdrop-blur-sm">
-			<nav className="container mx-auto px-4 py-3">
-				<div className="flex items-center justify-between">
-					<Link
-						to="/"
-						className="flex items-center text-2xl font-extrabold text-orange-500">
-						<span className="flex flex-row gap-2 items-center">
-							<img
-								src={logo} // Change this path to your actual logo
-								alt="Logo"
-								className="w-10 h-10 object-cover rounded-full border-2 border-yellow-400 shadow-lg"
-							/>
-							FFE.
-						</span>
-					</Link>
-					<div className="hidden md:flex items-center space-x-8">
-						<Link
-							to="/"
-							className="font-bold text-white hover:text-orange-500 transition-colors">
-							Home
-						</Link>
+  return (
+    <header className="relative w-full top-0 z-50 bg-transparent backdrop-blur-sm">
+      <nav className="container mx-auto px-4 py-3">
+        <div className="flex items-center justify-between">
+          <Link
+            to="/"
+            className="flex items-center text-2xl font-extrabold text-orange-500"
+          >
+            <span className="flex flex-row gap-2 items-center">
+              <img
+                src={logo} // Change this path to your actual logo
+                alt="Logo"
+                className="w-10 h-10 object-cover rounded-full border-2 border-yellow-400 shadow-lg"
+              />
+              FFE.
+            </span>
+          </Link>
+          <div className="hidden md:flex items-center space-x-8">
+            <Link
+              to="/"
+              className="font-bold text-white hover:text-orange-500 transition-colors"
+            >
+              Home
+            </Link>
 
             {location.pathname === "/" ? (
               <a
@@ -277,25 +277,34 @@ const Header = () => {
                 />
               </div>
 
-              {/* Search Results Dropdown - Only show when there are results and search term exists */}
-              {showSearchResults && searchResults && searchResults !== null && (
+              {/* Search Results Dropdown - Show when results exist */}
+              {showSearchResults && searchResults.length > 0 && (
                 <div className="absolute mt-2 w-64 bg-white rounded-md shadow-lg py-1 z-[9999] max-h-80 overflow-y-auto border border-gray-300">
-                  <div className="p-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleRestaurantClick(searchResults._id)} >
-                    <h3 className="text-lg font-semibold text-black">{searchResults.name}</h3>
-                    <p className="text-sm text-gray-500">{searchResults.location}</p>
-                  </div>
+                  {searchResults.map((restaurant) => (
+                    <div
+                      key={restaurant._id}
+                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => handleRestaurantClick(restaurant._id)}
+                    >
+                      <h3 className="text-lg font-semibold text-black">
+                        {restaurant.name}
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        {restaurant.location}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               )}
 
               {/* Show "No restaurant found" when search returns no results */}
-              {showSearchResults && searchResults === null && searchTerm.trim() !== "" && (
-                  <div className="absolute mt-2 w-64 bg-white rounded-md shadow-lg py-2 z-50">
-                    <p className="px-4 text-sm text-gray-500">
-                      No restaurant found
-                    </p>
-                  </div>
-                )}
+              {showSearchResults && searchResults.length === 0 && (
+                <div className="absolute mt-2 w-64 bg-white rounded-md shadow-lg py-2 z-50">
+                  <p className="px-4 text-sm text-gray-500">
+                    No restaurant found
+                  </p>
+                </div>
+              )}
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-4">
@@ -321,143 +330,153 @@ const Header = () => {
                     </div>
                   </button>
 
-									{/* Dropdown Menu */}
-									{profileDropdownOpen && (
-										<div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-											<Link
-												to={`/profile/${localStorage.getItem(
-													"userId"
-												)}`}
-												className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
-												<FaUser className="mr-3 text-orange-500" />
-												My Profile
-											</Link>
-											{userRole === "admin" && (
-												<Link
-													to="/dashboard"
-													className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
-													<FaUserCog className="mr-3 text-orange-500" />
-													Admin Dashboard
-												</Link>
-											)}
-											<button
-												onClick={handleLogout}
-												className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
-												<BiLogOut className="mr-3 text-orange-500" />
-												Logout
-											</button>
-										</div>
-									)}
-								</div>
-							</>
-						) : (
-							// Auth Buttons - Only shown when logged out
-							<div className="flex items-center space-x-2">
-								<Link
-									to="/login"
-									data-tooltip-id="admin-login-tooltip" // This connects the link to the tooltip
-									className="px-4 py-2 text-white font-bold hover:text-orange-500 transition-colors">
-									Sign In
-								</Link>
-								<Tooltip
-									id="admin-login-tooltip"
-									place="bottom"
-									effect="solid">
-									To Login as Admin use Email: "admin@ffe.com"
-									| Password: "123456789"
-								</Tooltip>
-								<Link
-									to="/signup"
-									className="px-4 py-2 bg-orange-500 text-white font-bold rounded-full hover:bg-white hover:text-orange-500 transition-colors">
-									Sign Up
-								</Link>
-							</div>
-						)}
-					</div>
-					<button
-						onClick={() => setMenuOpen(!menuOpen)}
-						className="md:hidden text-white hover:text-orange-500 transition-colors h-5 w-5">
-						{menuOpen ? (
-							<FaRegWindowClose style={{ fontSize: "26px" }} />
-						) : (
-							<GiHamburgerMenu style={{ fontSize: "26px" }} />
-						)}
-					</button>
-				</div>
-				{menuOpen && (
-					<div
-						className="md:hidden absolute top-full left-0 w-full bg-black bg-opacity-90 backdrop-blur-sm z-50"
-						ref={dropdownRef}>
-						<div className="flex flex-col space-y-4 p-4 z-50">
-							<Link
-								to="/"
-								className="text-white font-bold hover:text-orange-500 transition-colors">
-								Home
-							</Link>
-							<Link
-								to="/restaurants"
-								className="text-white font-bold hover:text-orange-500 transition-colors">
-								Resturant
-							</Link>
-							<Link
-								to="/about-us"
-								className="text-white font-bold hover:text-orange-500 transition-colors">
-								AboutUs
-							</Link>
-							<Link
-								to="/faqs"
-								className="text-white font-bold hover:text-orange-500 transition-colors">
-								FAQs
-							</Link>
-							{isLoggedIn ? (
-								<div className="flex flex-col space-y-4">
-									<Link
-										to="/checkout"
-										className="text-white font-bold hover:text-orange-500 transition-colors">
-										Cart ({state?.cart?.items?.length || 0})
-									</Link>
-									<Link
-										to={`/profile/${localStorage.getItem(
-											"userId"
-										)}`}
-										className="text-white font-bold hover:text-orange-500 transition-colors">
-										Profile
-									</Link>
-									<button
-										onClick={handleLogout}
-										className="bg-orange-500 text-white font-bold py-2 px-4 rounded-md hover:bg-orange-600 transition-colors flex items-center">
-										<BiLogOut className="mr-2" />
-										Logout
-									</button>
-								</div>
-							) : (
-								<div className="flex flex-col space-y-2">
-									<Link
-										to="/login"
-										className="bg-transparent border border-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors">
-										Login
-									</Link>
-									<Link
-										to="/signup"
-										className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors">
-										Sign Up
-									</Link>
-								</div>
-							)}
-							{isLoggedIn && userRole === "admin" && (
-								<Link
-									to="/dashboard"
-									className="text-orange-500 hover:text-orange-400 transition-colors flex items-center">
-									<FaUserCog className="mr-1" />
-									Admin Dashboard
-								</Link>
-							)}
-						</div>
-					</div>
-				)}
-			</nav>
-		</header>
-	);
+                  {/* Dropdown Menu */}
+                  {profileDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                      <Link
+                        to={`/profile/${localStorage.getItem("userId")}`}
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50"
+                      >
+                        <FaUser className="mr-3 text-orange-500" />
+                        My Profile
+                      </Link>
+                      {userRole === "admin" && (
+                        <Link
+                          to="/dashboard"
+                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-orange-50"
+                        >
+                          <FaUserCog className="mr-3 text-orange-500" />
+                          Admin Dashboard
+                        </Link>
+                      )}
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-orange-50"
+                      >
+                        <BiLogOut className="mr-3 text-orange-500" />
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              // Auth Buttons - Only shown when logged out
+              <div className="flex items-center space-x-2">
+                <Link
+                  to="/login"
+                  data-tooltip-id="admin-login-tooltip" // This connects the link to the tooltip
+                  className="px-4 py-2 text-white font-bold hover:text-orange-500 transition-colors"
+                >
+                  Sign In
+                </Link>
+                <Tooltip id="admin-login-tooltip" place="bottom" effect="solid">
+                  To Login as Admin use Email: "admin@ffe.com" | Password:
+                  "123456789"
+                </Tooltip>
+                <Link
+                  to="/signup"
+                  className="px-4 py-2 bg-orange-500 text-white font-bold rounded-full hover:bg-white hover:text-orange-500 transition-colors"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
+          </div>
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden text-white hover:text-orange-500 transition-colors h-5 w-5"
+          >
+            {menuOpen ? (
+              <FaRegWindowClose style={{ fontSize: "26px" }} />
+            ) : (
+              <GiHamburgerMenu style={{ fontSize: "26px" }} />
+            )}
+          </button>
+        </div>
+        {menuOpen && (
+          <div
+            className="md:hidden absolute top-full left-0 w-full bg-black bg-opacity-90 backdrop-blur-sm z-50"
+            ref={dropdownRef}
+          >
+            <div className="flex flex-col space-y-4 p-4 z-50">
+              <Link
+                to="/"
+                className="text-white font-bold hover:text-orange-500 transition-colors"
+              >
+                Home
+              </Link>
+              <Link
+                to="/restaurants"
+                className="text-white font-bold hover:text-orange-500 transition-colors"
+              >
+                Resturant
+              </Link>
+              <Link
+                to="/about-us"
+                className="text-white font-bold hover:text-orange-500 transition-colors"
+              >
+                AboutUs
+              </Link>
+              <Link
+                to="/faqs"
+                className="text-white font-bold hover:text-orange-500 transition-colors"
+              >
+                FAQs
+              </Link>
+              {isLoggedIn ? (
+                <div className="flex flex-col space-y-4">
+                  <Link
+                    to="/checkout"
+                    className="text-white font-bold hover:text-orange-500 transition-colors"
+                  >
+                    Cart ({state?.cart?.items?.length || 0})
+                  </Link>
+                  <Link
+                    to={`/profile/${localStorage.getItem("userId")}`}
+                    className="text-white font-bold hover:text-orange-500 transition-colors"
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="bg-orange-500 text-white font-bold py-2 px-4 rounded-md hover:bg-orange-600 transition-colors flex items-center"
+                  >
+                    <BiLogOut className="mr-2" />
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col space-y-2">
+                  <Link
+                    to="/login"
+                    className="bg-transparent border border-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )}
+              {isLoggedIn && userRole === "admin" && (
+                <Link
+                  to="/dashboard"
+                  className="text-orange-500 hover:text-orange-400 transition-colors flex items-center"
+                >
+                  <FaUserCog className="mr-1" />
+                  Admin Dashboard
+                </Link>
+              )}
+            </div>
+          </div>
+        )}
+      </nav>
+    </header>
+  );
 };
 
 export default Header;
