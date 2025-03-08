@@ -96,7 +96,7 @@ const AddMenuForm = () => {
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             />
           </div>
 
@@ -112,7 +112,7 @@ const AddMenuForm = () => {
               onChange={handleChange}
               min="1"
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             />
           </div>
 
@@ -126,7 +126,7 @@ const AddMenuForm = () => {
               value={formData.description}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             />
           </div>
 
@@ -140,13 +140,23 @@ const AddMenuForm = () => {
               value={formData.category}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             >
-              <option value="">Select Category</option>
-              <option value="Main Course">Main Course</option>
-              <option value="Dessert">Dessert</option>
-              <option value="Starters">Starters</option>
-              <option value="Beverages">Beverages</option>
+              <option className="bg-black/60 focus:bg-black/80" value="">
+                Select Category
+              </option>
+              <option className="bg-black" value="Main Course">
+                Main Course
+              </option>
+              <option className="bg-black" value="Dessert">
+                Dessert
+              </option>
+              <option className="bg-black" value="Starters">
+                Starters
+              </option>
+              <option className="bg-black" value="Beverages">
+                Beverages
+              </option>
             </select>
           </div>
 
@@ -183,7 +193,7 @@ const AddMenuForm = () => {
               value={formData.availability}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             >
               <option value="Available">Available</option>
               <option value="Not Available">Not Available</option>
@@ -202,11 +212,15 @@ const AddMenuForm = () => {
               value={formData.restaurant}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             >
               <option value="">Select Restaurant</option>
               {restaurants.map((restaurant) => (
-                <option key={restaurant._id} value={restaurant._id}>
+                <option
+                  className="bg-black"
+                  key={restaurant._id}
+                  value={restaurant._id}
+                >
                   {restaurant.name}
                 </option>
               ))}

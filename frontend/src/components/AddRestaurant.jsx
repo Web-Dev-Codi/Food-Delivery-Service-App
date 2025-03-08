@@ -129,7 +129,7 @@ function AddRestaurant() {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             />
           </div>
 
@@ -147,7 +147,7 @@ function AddRestaurant() {
               name="location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             />
           </div>
 
@@ -205,7 +205,7 @@ function AddRestaurant() {
               name="contact"
               value={contact}
               onChange={(e) => setContact(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             />
           </div>
 
@@ -234,7 +234,7 @@ function AddRestaurant() {
                         [day]: e.target.value,
                       })
                     }
-                    className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+                    className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
                   />
                 </div>
               ))}
@@ -255,32 +255,3 @@ function AddRestaurant() {
 }
 
 export default AddRestaurant;
-
-/** With this code if the image failed to upload, the error message will be displayed.
- * I will leave to our discussion to decide if we should display an error message or not.
- * I hope it is ok. to mention that!
- *
- * const openCloudinaryWidget = () => {
-    window.cloudinary.openUploadWidget(
-        {
-            cloudName: "difmxsysx",
-            uploadPreset: "restaurant_images_upload",
-            multiple: true,
-            sources: ["local", "url", "camera"],
-            maxFiles: 5,
-        },
-        (error, result) => {
-            if (error) {
-                console.error("Cloudinary Error:", error);
-                setErrorMessage("Image upload failed. Please try again.");
-                return;
-            }
-            if (result.event === "success") {
-                setImages((prevImages) => [...prevImages, result.info.secure_url]);
-                setErrorMessage(""); // Clear any previous errors
-            }
-        }
-    );
-};
-
- */

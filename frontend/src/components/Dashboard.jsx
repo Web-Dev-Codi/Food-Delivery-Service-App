@@ -127,7 +127,7 @@ const Dashboard = () => {
             {navItems.map(({ to, icon: Icon, label }) => (
               <li
                 key={to}
-                className="flex items-center justify-start gap-2 transition-all duration-1000 ease-in-out bg-red-700/10 hover:bg-[#D84418] rounded-lg py-2 mb-4 md:mb-0"
+                className="flex items-center justify-start gap-2 transition-all duration-1000 ease-in-out bg-black/60 hover:bg-[#D84418] rounded-lg py-2 mb-4 md:mb-0"
               >
                 <Link
                   to={to}

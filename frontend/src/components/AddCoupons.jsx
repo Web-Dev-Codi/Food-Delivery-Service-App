@@ -83,7 +83,7 @@ const AddCoupons = () => {
               value={code}
               onChange={(e) => setCode(e.target.value)}
               required
-              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             />
           </div>
 
@@ -96,7 +96,7 @@ const AddCoupons = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             />
           </div>
 
@@ -109,7 +109,7 @@ const AddCoupons = () => {
               value={discount}
               onChange={(e) => setDiscount(e.target.value)}
               required
-              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             />
           </div>
 
@@ -122,7 +122,7 @@ const AddCoupons = () => {
               value={validFrom}
               onChange={(e) => setValidFrom(e.target.value)}
               required
-              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             />
           </div>
 
@@ -135,7 +135,7 @@ const AddCoupons = () => {
               value={validUntil}
               onChange={(e) => setValidUntil(e.target.value)}
               required
-              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             />
           </div>
 
@@ -148,7 +148,7 @@ const AddCoupons = () => {
               onChange={handleRestaurantChange}
               multiple
               required
-              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white mb-4"
+              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 font-extrabold text-white mb-4"
             >
               {restaurants.map((rest) => (
                 <option className="py-2" key={rest._id} value={rest._id}>

@@ -47,7 +47,7 @@ function Orders() {
               >
                 {/* User Info */}
                 <div className="mb-4">
-                  <h3 className="text-2xl font-semibold text-orange-500 py-2 tracking-wide">
+                  <h3 className="text-2xl font-semibold text-gray-300 py-2 tracking-wide">
                     {order?.userId?.name || "Unknown"}
                   </h3>
                   <p className="text-sm text-gray-300 italic">
@@ -82,12 +82,12 @@ function Orders() {
                   </p>
 
                   <p className="text-gray-300 flex items-center">
-                    <span className="font-semibold text-yellow-400">Cart:</span>
+                    <span className="font-semibold text-grey-600">Cart:</span>
                     <span
                       className={`ml-2 px-3 py-1 rounded-md text-sm font-bold ${
                         order?.cartId?.status === "Processed"
                           ? "bg-green-600 text-white"
-                          : "bg-gray-600 text-white"
+                          : "bg-red-600 text-white"
                       }`}
                     >
                       {order?.cartId?.status || "Unknown"}

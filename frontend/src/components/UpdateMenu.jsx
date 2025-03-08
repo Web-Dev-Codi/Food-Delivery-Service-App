@@ -129,7 +129,7 @@ const UpdateMenuForm = () => {
             type="text"
             value={menuName}
             onChange={(e) => setMenuName(e.target.value)}
-            className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white mb-4"
+            className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white mb-4"
           />
           <button
             onClick={fetchMenuByName}
@@ -152,7 +152,7 @@ const UpdateMenuForm = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white mb-4"
+                className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white mb-4"
               />
             </div>
 
@@ -167,7 +167,7 @@ const UpdateMenuForm = () => {
                 onChange={handleChange}
                 min="1"
                 required
-                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
+                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-black/60 focus:bg-black/80 text-white"
               />
             </div>
 
@@ -181,20 +181,26 @@ const UpdateMenuForm = () => {
                 value={formData.short_desc}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
+                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-black/60 focus:bg-black/80 text-white"
               />
             </div>
 
-            <div>
-              <label className="p-1 block font-bold text-neutral-100">
+            <div className="bg-black/50 p-2 rounded-lg shadow-lg border border-gray-700">
+              <label className="block text-lg font-semibold text-neutral-100 mb-2">
                 Description:
               </label>
+
+              {/* A bit of Improvement in textarea */}
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
+                rows={8} // textarea default with 8 rows
+                className="w-full px-4 py-3 border border-gray-600 rounded-lg bg-black/60 text-white focus:bg-black/80 focus:ring-2 focus:ring-white focus:outline-none transition-all resize-none sm:resize-y"
+                placeholder="Enter menu description..."
+                onFocus={(e) => (e.target.rows = 12)} // Add event to expand on focus to 12 rows
+                onBlur={(e) => (e.target.rows = 8)} // Shrink back on blur
               />
             </div>
 
@@ -207,20 +213,30 @@ const UpdateMenuForm = () => {
                 value={formData.category}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
+                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-black/60 focus:bg-black/80 text-white"
               >
-                <option value="">Select Category</option>
-                <option value="Main Course">Main Course</option>
-                <option value="Dessert">Dessert</option>
-                <option value="Starters">Starters</option>
-                <option value="Beverages">Beverages</option>
+                <option className="bg-black" value="">
+                  Select Category
+                </option>
+                <option className="bg-black" value="Main Course">
+                  Main Course
+                </option>
+                <option className="bg-black" value="Dessert">
+                  Dessert
+                </option>
+                <option className="bg-black" value="Starters">
+                  Starters
+                </option>
+                <option className="bg-black" value="Beverages">
+                  Beverages
+                </option>
               </select>
             </div>
 
             {/* Image Upload */}
-            <div>
-              <label className="p-1 block font-bold text-neutral-100">
-                Image:
+            <div className="bg-black/50 p-2 rounded-lg shadow-lg border border-gray-700">
+              <label className="block text-lg font-semibold text-neutral-100 mb-2">
+                Upload Images:
               </label>
               <button
                 type="button"
@@ -230,11 +246,11 @@ const UpdateMenuForm = () => {
                 Upload Image
               </button>
               {formData.imageUrl && (
-                <div className="mt-4">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 mt-3 mb-1 overflow-hidden rounded-lg border border-gray-500 shadow-md">
                   <img
                     src={formData.imageUrl}
                     alt="Uploaded"
-                    className="w-32 h-32 object-cover rounded-md"
+                    className="w-full h-full object-cover"
                   />
                 </div>
               )}
@@ -253,7 +269,7 @@ const UpdateMenuForm = () => {
                 max="5"
                 step="0.1" // Allow decimal ratings
                 required
-                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
+                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-black/60 focus:bg-black/80 text-white"
               />
             </div>
 

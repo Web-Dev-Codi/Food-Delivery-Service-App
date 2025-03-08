@@ -138,7 +138,7 @@ const UpdateRestaurantForm = () => {
             type="text"
             value={restaurantName}
             onChange={(e) => setRestaurantName(e.target.value)}
-            className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+            className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
           />
           <button
             onClick={fetchRestaurantByName}
@@ -162,7 +162,7 @@ const UpdateRestaurantForm = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
+                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-black/60 focus:bg-black/80 text-white"
               />
             </div>
 
@@ -177,7 +177,7 @@ const UpdateRestaurantForm = () => {
                 value={formData.location}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
+                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-black/60 focus:bg-black/80 text-white"
               />
             </div>
 
@@ -192,14 +192,14 @@ const UpdateRestaurantForm = () => {
                 value={formData.contact}
                 onChange={handleChange}
                 required
-                className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+                className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
               />
             </div>
 
             {/* Image Upload */}
-            <div>
-              <label className="p-1 block font-bold text-neutral-100">
-                Images:
+            <div className="bg-black/60 p-4 rounded-lg shadow-lg border border-gray-700">
+              <label className="block text-lg font-semibold text-neutral-100 mb-2">
+                Update Images:
               </label>
               <button
                 type="button"
@@ -212,7 +212,7 @@ const UpdateRestaurantForm = () => {
                 {formData.images.map((image, index) => (
                   <div
                     key={index}
-                    className="relative w-24 h-24 border border-gray-200 rounded-md overflow-hidden"
+                    className="relative w-24 h-24 sm:w-28 sm:h-28 overflow-hidden rounded-lg border border-gray-500 shadow-md"
                   >
                     <img
                       src={image}
@@ -226,7 +226,7 @@ const UpdateRestaurantForm = () => {
                           images: prevData.images.filter((_, i) => i !== index),
                         }))
                       }
-                      className="absolute top-1 right-1 text-red-600 bg-white rounded-full p-1 shadow-md hover:bg-red-600 hover:text-white"
+                      className="absolute top-1 right-1 bg-red-700 text-white w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold shadow-lg opacity-80 hover:opacity-100 transition"
                     >
                       X
                     </button>
@@ -244,7 +244,7 @@ const UpdateRestaurantForm = () => {
                 {Object.entries(formData.operatingHours).map(([day, hours]) => (
                   <div key={day}>
                     <label className="block text-sm font-medium text-gray-100 capitalize">
-                      {day}
+                      <span className="p-1 block font-bold">{day}</span>
                     </label>
                     <input
                       type="text"
@@ -252,7 +252,7 @@ const UpdateRestaurantForm = () => {
                       onChange={(e) =>
                         handleOperatingHoursChange(day, e.target.value)
                       }
-                      className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+                      className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
                     />
                   </div>
                 ))}
