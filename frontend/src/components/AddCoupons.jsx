@@ -15,8 +15,7 @@ const AddCoupons = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [selectedRestaurants, setSelectedRestaurants] = useState([]);
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
-
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
   useEffect(() => {
     axios
@@ -38,38 +37,38 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
     setSelectedRestaurants(selectedOptions);
   };
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		axios
-			.post(`${API_URL}/offers/create`, {
-				code,
-				description,
-				discount,
-				validFrom,
-				validUntil,
-				applicableToRestaurants: selectedRestaurants,
-			})
-			.then((res) => {
-				console.log(res.data);
-				toast.success("🎉 Coupon added successfully!");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post(`${API_URL}/offers/create`, {
+        code,
+        description,
+        discount,
+        validFrom,
+        validUntil,
+        applicableToRestaurants: selectedRestaurants,
+      })
+      .then((res) => {
+        console.log(res.data);
+        toast.success("🎉 Coupon added successfully!");
 
-				setCode("");
-				setDescription("");
-				setDiscount("");
-				setValidFrom("");
-				setValidUntil("");
-				setSelectedRestaurants([]);
-			})
-			.catch((err) => {
-				const errorMsg = err.response
-					? err.response.data.message
-					: "Something went wrong. Please try again.";
-					toast.error(`❌ ${errorMsg}`);
-			});
-	};
+        setCode("");
+        setDescription("");
+        setDiscount("");
+        setValidFrom("");
+        setValidUntil("");
+        setSelectedRestaurants([]);
+      })
+      .catch((err) => {
+        const errorMsg = err.response
+          ? err.response.data.message
+          : "Something went wrong. Please try again.";
+        toast.error(`❌ ${errorMsg}`);
+      });
+  };
 
   return (
-    <div className="flex items-center justify-center w-full md:mt-3 ">
+    <div className="flex items-center justify-center w-full md:mt-4 md:pt-24 ">
       <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md min-h-screen">
         <h1 className="text-2xl font-bold mb-6 text-center text-white">
           Add Coupons
@@ -84,7 +83,7 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
               value={code}
               onChange={(e) => setCode(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
             />
           </div>
 
@@ -97,7 +96,7 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
             />
           </div>
 
@@ -110,7 +109,7 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
               value={discount}
               onChange={(e) => setDiscount(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
             />
           </div>
 
@@ -123,7 +122,7 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
               value={validFrom}
               onChange={(e) => setValidFrom(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
             />
           </div>
 
@@ -136,7 +135,7 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
               value={validUntil}
               onChange={(e) => setValidUntil(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
             />
           </div>
 
@@ -149,27 +148,26 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
               onChange={handleRestaurantChange}
               multiple
               required
-              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
+              className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white mb-4"
             >
               {restaurants.map((rest) => (
-                <option key={rest._id} value={rest._id}>
+                <option className="py-2" key={rest._id} value={rest._id}>
                   {rest.name}
                 </option>
               ))}
             </select>
           </div>
 
-					<button
-						type="submit"
-						className="w-full py-2  bg-orange-700 font-bold text-white rounded-lg hover:bg-orange-600">
-						Add Coupon
-					</button>
-				</form>
-
-
-			</div>
-		</div>
-	);
+          <button
+            type="submit"
+            className="w-full py-3 bg-orange-700 font-bold text-white rounded-lg hover:bg-orange-600"
+          >
+            Add Coupon
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default AddCoupons;

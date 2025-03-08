@@ -94,8 +94,8 @@ function AddRestaurant() {
   };
 
   return (
-    <div className="flex items-center justify-center w-full md:mt-3 ">
-      <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md">
+    <div className="flex items-center justify-center w-full md:mt-4 md:pt-24 ">
+      <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md min-h-screen">
         <h1 className="text-2xl font-bold mb-6 text-center text-white">
           Add Restaurant
         </h1>
@@ -129,7 +129,7 @@ function AddRestaurant() {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:border-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
             />
           </div>
 
@@ -147,7 +147,7 @@ function AddRestaurant() {
               name="location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:border-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
             />
           </div>
 
@@ -205,7 +205,7 @@ function AddRestaurant() {
               name="contact"
               value={contact}
               onChange={(e) => setContact(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-white"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
             />
           </div>
 
@@ -234,7 +234,7 @@ function AddRestaurant() {
                         [day]: e.target.value,
                       })
                     }
-                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white"
                   />
                 </div>
               ))}

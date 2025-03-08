@@ -112,7 +112,7 @@ const Dashboard = () => {
 
         {/* Slide-NavBar*/}
         <nav
-          className={`fixed left-0 w-2/3 p-2 border-l border-neutral-500 transition-all duration-1000 ease-in-out bg-black/10 backdrop-blur z-10
+          className={`fixed left-0 w-2/3 p-2 border-l border-neutral-500 transition-all duration-1000 ease-in-out bg-neutral-800/10 backdrop-blur z-10
         ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         } md:relative md:translate-x-0
@@ -127,7 +127,7 @@ const Dashboard = () => {
             {navItems.map(({ to, icon: Icon, label }) => (
               <li
                 key={to}
-                className="flex items-center justify-start gap-2 transition-all duration-1000 ease-in-out bg-black/80 hover:bg-[#D84418] rounded-lg py-2 mb-4 md:mb-0"
+                className="flex items-center justify-start gap-2 transition-all duration-1000 ease-in-out bg-red-700/10 hover:bg-[#D84418] rounded-lg py-2 mb-4 md:mb-0"
               >
                 <Link
                   to={to}
@@ -161,7 +161,7 @@ const Dashboard = () => {
           <div className="min-h-screen flex-1 flex flex-col items-center justify-start space-y-6 md:mt-0 border-neutral-500 rounded-lg p-4 md:py-1 sm:p-4 w-full lg:max-w-[50%] xl:max-w-[75%] border border-dashed ">
             {/* Admin Greeting Box*/}
             <div className="flex-col items-center justify-center w-full bg-gradient-to-r from-white/5 via-white/20 to-white/5 ">
-              <h1 className="text-xl p-2 sm:text-2xl font-bold text-center text-white mt-1 md:mt-3">
+              <h1 className="text-xl font-bold p-2 sm:text-2xl text-center text-white mt-1 md:mt-3">
                 Hello Admin
               </h1>
               <p className="text-neutral-300 text-center text-sm sm:text-base p-2 sm:px-4">
@@ -207,7 +207,7 @@ const Dashboard = () => {
                       </span>
                     </div>
 
-                    {/* Content Area - Yoc inject component or show info */}
+                    {/* Content Area - You can inject component or show info */}
                     <div className="text-neutral-300 text-sm sm:text-base bg-neutral-800/50 p-3 rounded-lg shadow-inner w-full">
                       {component ? (
                         <div className="flex justify-center items-center h-full">
@@ -262,14 +262,14 @@ const Dashboard = () => {
             navigate("/dashboard"); // Navigate back to /dashboard when closing the outlet panel
             document.body.style.overflow = "auto"; // Restore scrolling to body
           }}
-          className="fixed p-3 bg-neutral-800/10 backdrop-blur shadow-lg text-white hover:text-orange-600 top-6 right-4 md:top-28 md:right-14 rounded-lg z-30"
+          className="fixed p-3 bg-neutral-800/10 backdrop-blur shadow-lg text-white hover:text-orange-600 top-6 right-4 md:top-[8.5rem] md:right-16 rounded-lg z-30"
           aria-label="Close Outlet Panel"
         >
           <FaTimes className="text-2xl" />
         </button>
 
         {/* Updated slide-in-content to Scrollable */}
-        <div className="h-full overflow-y-auto md:mt-24 ">
+        <div className="h-full overflow-y-auto">
           <Outlet />
         </div>
       </div>

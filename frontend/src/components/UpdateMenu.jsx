@@ -19,15 +19,12 @@ const UpdateMenuForm = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [isMenuFound, setIsMenuFound] = useState(false);
 
-
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const response = await axios.get(
-          `${API_URL}/api/restaurants`
-        );
+        const response = await axios.get(`${API_URL}/api/restaurants`);
         setRestaurants(response.data.data);
       } catch (error) {
         console.error("Error fetching restaurants:", error);
@@ -117,7 +114,7 @@ const UpdateMenuForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-full md:mt-3">
+    <div className="flex items-center justify-center w-full md:mt-4 md:pt-24 ">
       <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md min-h-screen">
         <h1 className="text-2xl font-bold mb-6 text-center text-white">
           Update Menu
@@ -132,11 +129,11 @@ const UpdateMenuForm = () => {
             type="text"
             value={menuName}
             onChange={(e) => setMenuName(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
+            className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white mb-4"
           />
           <button
             onClick={fetchMenuByName}
-            className="mt-2 w-full py-2 bg-blue-700 font-bold text-white rounded-lg hover:bg-blue-600"
+            className="mt-4 w-full py-2 bg-orange-600 font-bold text-white rounded-lg hover:bg-orange-500 transition"
           >
             Search Menu
           </button>
@@ -155,7 +152,7 @@ const UpdateMenuForm = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
+                className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-gray-900 text-white mb-4"
               />
             </div>
 
