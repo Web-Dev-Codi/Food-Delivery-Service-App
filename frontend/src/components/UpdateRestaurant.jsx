@@ -124,7 +124,7 @@ const UpdateRestaurantForm = () => {
 
   return (
     <div className="min-h-screen flex justify-center items-start w-full md:mt-4 md:pt-24">
-      <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md overflow-y-auto border border-red-50 min-h-screen ">
+      <div className="bg-red-950/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md overflow-y-auto min-h-screen ">
         <h1 className="text-2xl font-bold mb-6 md:mt-[-.5rem] text-center text-white">
           Update Restaurant
         </h1>
@@ -142,7 +142,7 @@ const UpdateRestaurantForm = () => {
           />
           <button
             onClick={fetchRestaurantByName}
-            className="mt-4 w-full py-2 bg-blue-700 font-bold text-white rounded-lg hover:bg-blue-600"
+            className="mt-4 w-full py-2 bg-orange-700 font-bold text-white rounded-lg hover:bg-orange-600"
           >
             {isLoading ? "Searching..." : "Search Restaurant"}
           </button>

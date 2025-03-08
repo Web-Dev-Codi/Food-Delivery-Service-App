@@ -28,26 +28,29 @@ function Orders() {
 
   return (
     <div className="flex items-center justify-center w-full md:mt-4 md:pt-24 ">
-      <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md min-h-screen">
+      <div className="bg-red-950/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md min-h-screen">
         <div className="block w-full overflow-x-auto">
-          <h2 className="text-2xl font-bold mb-6 text-center text-white">
+          <h2 className="text-2xl font-extrabold mb-6 text-center text-white uppercase tracking-wider relative">
             Orders
+            <span className="block w-24 h-1 bg-orange-500 mx-auto mt-1 rounded-full"></span>
           </h2>
-          <p className="text-red-200 text-center">
+
+          <p className="text-red-300 text-center text-lg">
             {orders.length === 0 && "No orders found!"}
           </p>
+
           <ul className="grid grid-cols-1 gap-6">
             {orders.map((order) => (
               <li
                 key={order._id}
-                className="border border-gray-700 bg-black/50 p-4 rounded-xl shadow-lg transition hover:bg-black  "
+                className="bg-black/40 p-5 rounded-lg shadow-lg transition hover:bg-black/80"
               >
                 {/* User Info */}
                 <div className="mb-4">
-                  <h3 className="text-xl font-semibold text-white py-2">
+                  <h3 className="text-2xl font-semibold text-orange-500 py-2 tracking-wide">
                     {order?.userId?.name || "Unknown"}
                   </h3>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-gray-300 italic">
                     {order?.userId?.email || "Unknown"}
                   </p>
                 </div>
@@ -55,7 +58,7 @@ function Orders() {
                 {/* Order Details */}
                 <div className="space-y-4">
                   <p className="text-gray-300">
-                    <span className="font-semibold text-green-500">
+                    <span className="font-semibold text-green-400">
                       Amount:
                     </span>
                     <span className="ml-2">
@@ -64,14 +67,14 @@ function Orders() {
                   </p>
 
                   <p className="text-gray-300 flex items-center">
-                    <span className="font-semibold text-yellow-500">
+                    <span className="font-semibold text-yellow-400">
                       Payment:
                     </span>
                     <span
-                      className={`ml-2 px-2 py-1 rounded-md text-sm font-bold ${
+                      className={`ml-2 px-3 py-1 rounded-md text-sm font-bold ${
                         order?.paymentId?.status === "Succeeded"
-                          ? "bg-green-700 text-white"
-                          : "bg-red-700 text-white"
+                          ? "bg-green-600 text-white"
+                          : "bg-red-600 text-white"
                       }`}
                     >
                       {order?.paymentId?.status || "Unknown"}
@@ -79,12 +82,12 @@ function Orders() {
                   </p>
 
                   <p className="text-gray-300 flex items-center">
-                    <span className="font-semibold text-green-500">Cart:</span>
+                    <span className="font-semibold text-yellow-400">Cart:</span>
                     <span
-                      className={`ml-2 px-2 py-1 rounded-md text-sm font-bold ${
-                        order?.cartId?.status === "Active"
-                          ? "bg-blue-700 text-white"
-                          : "bg-gray-700 text-white"
+                      className={`ml-2 px-3 py-1 rounded-md text-sm font-bold ${
+                        order?.cartId?.status === "Processed"
+                          ? "bg-green-600 text-white"
+                          : "bg-gray-600 text-white"
                       }`}
                     >
                       {order?.cartId?.status || "Unknown"}
@@ -92,9 +95,9 @@ function Orders() {
                   </p>
                 </div>
 
-                {/* View Order Button */}
+                {/* View Details Btn*/}
                 <button
-                  className="mt-4 w-full py-2 bg-orange-600 font-bold text-white rounded-lg hover:bg-orange-500 transition"
+                  className="mt-4 w-full py-2 bg-orange-700 font-bold text-white rounded-lg hover:bg-orange-600 transition duration-500"
                   onClick={() =>
                     navigate(`/dashboard/single-order/${order._id}`)
                   }

@@ -115,7 +115,7 @@ const UpdateMenuForm = () => {
 
   return (
     <div className="flex items-center justify-center w-full md:mt-4 md:pt-24 ">
-      <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md min-h-screen">
+      <div className="bg-red-950/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md min-h-screen">
         <h1 className="text-2xl font-bold mb-6 text-center text-white">
           Update Menu
         </h1>

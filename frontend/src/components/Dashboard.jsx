@@ -159,17 +159,26 @@ const Dashboard = () => {
         <div className="flex-1 flex-col lg:flex-row justify-center items-start md:justify-start p-4 sm:p-6 lg:p-0 space-y-6 lg:space-y-0 bg-transparent backdrop-blur shadow-lg">
           {/* Left Side: Admin Section */}
           <div className="min-h-screen flex-1 flex flex-col items-center justify-start space-y-6 md:mt-0 border-neutral-500 rounded-lg p-4 md:py-1 sm:p-4 w-full lg:max-w-[50%] xl:max-w-[75%] border border-dashed ">
-            {/* Admin Greeting Box*/}
-            <div className="flex-col items-center justify-center w-full bg-gradient-to-r from-white/5 via-white/20 to-white/5 ">
-              <h1 className="text-xl font-bold p-2 sm:text-2xl text-center text-white mt-1 md:mt-3">
-                Hello Admin
-              </h1>
-              <p className="text-neutral-300 text-center text-sm sm:text-base p-2 sm:px-4">
-                Welcome to the Admin Dashboard of the Restaurant Management
-                System. You can add Restaurants, Menus, Coupons, and more from
-                the sidebar. Click on the menu icon to view the options. Enjoy
-                your day!
+            {/* Admin Greeting Box */}
+            <div className="w-full bg-red-950/30 p-6 rounded-lg shadow-lg text-center">
+              <h2 className="text-2xl font-extrabold mb-6 text-center text-white uppercase tracking-wider relative">
+                Admin Dashboard
+                <span className="block w-24 h-1 bg-orange-500 mx-auto mt-1 rounded-full"></span>
+              </h2>
+              <p className="text-neutral-300 text-sm sm:text-base">
+                Welcome to the{" "}
+                <span className="text-green-400">Admin Dashboard</span> of the
+                Restaurant Management System. Manage{" "}
+                <span className="text-orange-400">Restaurants</span>,
+                <span className="text-orange-400"> Menus</span>,{" "}
+                <span className="text-orange-400">Coupons</span>, and more from
+                the sidebar. Click on the menu icon to view the options.
               </p>
+              <div className="mt-4">
+                <span className="inline-block bg-green-600 text-white px-4 py-1 rounded-full text-xs font-bold">
+                  Dashboard Access Granted
+                </span>
+              </div>
             </div>
 
             {/* Dynamic Grid is mapped from gridItems array */}
@@ -208,7 +217,7 @@ const Dashboard = () => {
                     </div>
 
                     {/* Content Area - You can inject component or show info */}
-                    <div className="text-neutral-300 text-sm sm:text-base bg-neutral-800/50 p-3 rounded-lg shadow-inner w-full">
+                    <div className="text-neutral-300 text-sm sm:text-base bg-red-950/30 p-3 rounded-lg shadow-inner w-full">
                       {component ? (
                         <div className="flex justify-center items-center h-full">
                           {component}
