@@ -40,11 +40,11 @@ function ListRestaurant() {
                 className="bg-black/30 p-6 rounded-xl shadow-md hover:shadow-xl transition transform hover:bg-black/50 duration-300 ease-in-out"
               >
                 <Link to={`/restaurants/${restaurant._id}`}>
-                  <h2 className="text-2xl font-bold text-[#FF5733] text-center mb-4">
+                  <h2 className="text-2xl font-extrabold text-[#FF5733] text-center mb-4">
                     {restaurant?.name}
                   </h2>
                 </Link>
-                <p className="text-neutral-300 text-center">
+                <p className="text-neutral-300 text-center mb-2">
                   {restaurant?.location || "Location not available"}
                 </p>
                 <p className="text-neutral-300 text-center mb-4">
@@ -68,6 +68,7 @@ function ListRestaurant() {
 
                 {/* Average Star Rating */}
                 <div className="flex justify-center items-center mt-4">
+                  {/** Check the average rating if available */}
                   {restaurant?.averageRating ? (
                     <div className="flex items-center gap-2">
                       {/* Star Ratings */}
@@ -101,10 +102,10 @@ function ListRestaurant() {
                       {Object.entries(restaurant.operatingHours).map(
                         ([day, hours]) => (
                           <li key={day} className="p-1">
-                            <span className="text-[#D84418] ">
+                            <span className="text-[#D84418] font-bold ">
                               {day.charAt(0).toUpperCase() + day.slice(1)}:
                             </span>{" "}
-                            <span className=" text-neutral-100 font-medium ">
+                            <span className=" text-neutral-100 font-medium p-1">
                               {hours || "Closed"}
                             </span>
                           </li>
@@ -134,7 +135,7 @@ function ListRestaurant() {
                           className="bg-black/40 p-4 rounded-lg mt-3 border border-gray-700 shadow-md hover:bg-black/80 transition duration-300"
                         >
                           {/* Star Rating */}
-                          <div className="flex items-center mb-1">
+                          <div className="flex items-center mb-2">
                             {Array.from({ length: review.rating }, (_, i) => (
                               <span key={i} className="text-xs">
                                 ⭐
