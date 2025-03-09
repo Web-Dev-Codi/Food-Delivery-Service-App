@@ -61,7 +61,9 @@ function LoginForm() {
 	};
 
 	return (
-		<section className="bg-black/40 backdrop-blur-lg">
+		<section
+			className="bg-black/40 backdrop-blur-lg"
+			aria-labelledby="login-heading">
 			<div className="lg:grid lg:min-h-screen lg:grid-cols-12">
 				<aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
 					{
@@ -70,6 +72,7 @@ function LoginForm() {
 							loop={true}
 							autoPlay={true}
 							className="w-full h-full hidden md:block"
+							aria-hidden="true"
 						/>
 					}
 				</aside>
@@ -79,48 +82,66 @@ function LoginForm() {
 						<div className="flex justify-center mb-4">
 							<img
 								src={logo}
-								alt="Logo"
+								alt="Four Flavours Express Logo"
 								className="h-24 w-24 rounded-full border-4 border-[#F97316] shadow-xl transform hover:scale-110 transition duration-300"
 							/>
 						</div>
 
-						<h2 className="text-3xl font-bold text-center text-white mb-6">
+						<h2
+							id="login-heading"
+							className="text-3xl font-bold text-center text-white mb-6">
 							Welcome to Four Flavours Express!
 						</h2>
 
 						{successMessage && (
-							<div className="mb-4 text-green-600">
+							<div
+								className="mb-4 text-green-600"
+								role="status"
+								aria-live="polite">
 								{successMessage}
 							</div>
 						)}
 						{errorMessage && (
-							<div className="mb-4 text-red-600">
+							<div
+								className="mb-4 text-red-600"
+								role="alert">
 								{errorMessage}
 							</div>
 						)}
 
 						<form
-							className=" bg-black/80 backdrop-blur-lg  p-10 rounded-2xl shadow-xl w-full"
-							onSubmit={handleSubmit}>
+							className="bg-black/80 backdrop-blur-lg p-10 rounded-2xl shadow-xl w-full"
+							onSubmit={handleSubmit}
+							aria-labelledby="login-heading">
 							<div className="mb-4">
-								<label className="block text-sm font-medium text-gray-300">
+								<label
+									htmlFor="email"
+									className="block text-sm font-medium text-gray-300">
 									Email
 								</label>
 								<input
+									id="email"
 									type="email"
 									required
 									className="w-full px-4 py-3 border border-[hsl(24,33%,97%)] rounded-xl bg-black/40
                   text-white outline-none focus:ring-2 focus:ring-[rgb(231,228,225)] focus:border-[rgb(250,248,246)]"
 									value={email}
 									onChange={(e) => setEmail(e.target.value)}
+									aria-required="true"
+									aria-describedby={
+										errorMessage ? "login-error" : undefined
+									}
 								/>
 							</div>
 
 							<div className="mb-4 relative">
-								<label className="block text-sm font-medium text-gray-300">
+								<label
+									htmlFor="password"
+									className="block text-sm font-medium text-gray-300">
 									Password
 								</label>
 								<input
+									id="password"
 									type={showPassword ? "text" : "password"}
 									required
 									className="w-full px-4 py-3 border border-[hsl(26,23%,94%)] rounded-xl bg-black/40
@@ -129,19 +150,31 @@ function LoginForm() {
 									onChange={(e) =>
 										setPassword(e.target.value)
 									}
+									aria-required="true"
 								/>
-								<span
-									className="absolute right-3 top-9 cursor-pointer text-white"
+								<button
+									type="button"
+									className="absolute right-3 top-9 cursor-pointer text-white focus:outline-none focus:ring-2 focus:ring-[#F97316] rounded-full p-1"
 									onClick={() =>
 										setShowPassword(!showPassword)
+									}
+									aria-label={
+										showPassword
+											? "Hide password"
+											: "Show password"
 									}>
-									{showPassword ? <FaEyeSlash /> : <FaEye />}
-								</span>
+									{showPassword ? (
+										<FaEyeSlash aria-hidden="true" />
+									) : (
+										<FaEye aria-hidden="true" />
+									)}
+								</button>
 							</div>
 
 							<div className="flex justify-between items-center mb-4">
 								<div className="flex items-center">
 									<input
+										id="remember-me"
 										type="checkbox"
 										checked={rememberMe}
 										onChange={() =>
@@ -149,14 +182,16 @@ function LoginForm() {
 										}
 										className="mr-2 custom-checkbox"
 									/>
-									<label className="text-sm text-white">
+									<label
+										htmlFor="remember-me"
+										className="text-sm text-white">
 										Remember Me
 									</label>
 								</div>
 
 								<button
 									type="button"
-									className="text-sm text-white hover:underline"
+									className="text-sm text-white hover:underline focus:outline-none focus:ring-2 focus:ring-[#F97316] rounded px-2 py-1"
 									onClick={() =>
 										navigate("/forgot-password")
 									}>
@@ -166,7 +201,7 @@ function LoginForm() {
 
 							<button
 								type="submit"
-								className="w-full py-3 bg-[#f97316] text-white rounded-xl hover:bg-orange-700 transition duration-300 transform hover:scale-105">
+								className="w-full py-3 bg-[#f97316] text-white rounded-xl hover:bg-orange-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:ring-offset-2 focus:ring-offset-black">
 								Login
 							</button>
 
@@ -174,7 +209,7 @@ function LoginForm() {
 								Don&apos;t have an account?{" "}
 								<button
 									type="button"
-									className="text-[#F97316] hover:underline"
+									className="text-[#F97316] hover:underline focus:outline-none focus:ring-2 focus:ring-[#F97316] rounded px-2 py-1"
 									onClick={() => navigate("/signup")}>
 									Sign up
 								</button>
