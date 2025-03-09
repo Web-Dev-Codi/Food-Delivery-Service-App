@@ -37,7 +37,7 @@ function ListRestaurant() {
             {restaurants.map((restaurant) => (
               <div
                 key={restaurant._id}
-                className="bg-neutral-900 p-6 rounded-xl shadow-md hover:shadow-xl transition transform hover:bg-neutral-950 duration-300 ease-in-out"
+                className="bg-black/30 p-6 rounded-xl shadow-md hover:shadow-xl transition transform hover:bg-black/50 duration-300 ease-in-out"
               >
                 <Link to={`/restaurants/${restaurant._id}`}>
                   <h2 className="text-2xl font-bold text-[#FF5733] text-center mb-4">
@@ -66,19 +66,41 @@ function ListRestaurant() {
                   )}
                 </div>
 
-                {/* Rating */}
-                <p className="text-center text-yellow-500 font-semibold mt-4">
-                  ⭐ {restaurant?.averageRating ?? "No ratings yet"}
-                </p>
+                {/* Average Star Rating */}
+                <div className="flex justify-center items-center mt-4">
+                  {restaurant?.averageRating ? (
+                    <div className="flex items-center gap-2">
+                      {/* Star Ratings */}
+                      <div className="text-xs">
+                        {Array.from(
+                          { length: Math.floor(restaurant.averageRating) },
+                          (_, i) => (
+                            <span key={i}>⭐</span>
+                          )
+                        )}
+
+                        {/* Show a half-star if the rating is in decimal */}
+                        {restaurant.averageRating % 1 !== 0 && <span>⭐️</span>}
+                      </div>
+
+                      {/* Numeric Rating */}
+                      <p className="text-neutral-300 text-sm font-semibold">
+                        ({restaurant.averageRating.toFixed(1)})
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-gray-500">No ratings yet</p>
+                  )}
+                </div>
 
                 {/* Operating Hours */}
                 <div className="text-neutral-100 font-semibold mt-4">
-                  <h3 className="font-bold text-lg">🕒 Operating Hours:</h3>
+                  <h3 className="font-bold text-lg p-1">Operating Hours:</h3>
                   {restaurant?.operatingHours ? (
                     <ul className="text-sm">
                       {Object.entries(restaurant.operatingHours).map(
                         ([day, hours]) => (
-                          <li key={day}>
+                          <li key={day} className="p-1">
                             <span className="text-[#D84418] ">
                               {day.charAt(0).toUpperCase() + day.slice(1)}:
                             </span>{" "}
@@ -102,17 +124,29 @@ function ListRestaurant() {
                 <div className="mt-6">
                   {restaurant?.reviews?.length > 0 ? (
                     <div>
-                      <h3 className="text-lg font-bold text-neutral-300">
-                        Customer Reviews:
+                      <h3 className="text-xl font-bold text-neutral-200 mb-3">
+                        Customer Reviews
                       </h3>
+
                       {restaurant.reviews.slice(0, 2).map((review) => (
                         <div
                           key={review._id}
-                          className="bg-neutral-400 p-3 rounded-lg mt-2"
+                          className="bg-black/40 p-4 rounded-lg mt-3 border border-gray-700 shadow-md hover:bg-black/80 transition duration-300"
                         >
-                          <p className="text-black">⭐ {review.rating}</p>
-                          <p className="text-gray-900">{review.comment}</p>
-                          <p className="text-gray-800 text-sm">
+                          {/* Star Rating */}
+                          <div className="flex items-center mb-1">
+                            {Array.from({ length: review.rating }, (_, i) => (
+                              <span key={i} className="text-xs">
+                                ⭐
+                              </span>
+                            ))}
+                          </div>
+
+                          {/* Review Text */}
+                          <p className="text-neutral-400">{review.comment}</p>
+
+                          {/* Reviewer Info */}
+                          <p className="text-neutral-300 text-sm mt-2">
                             - {review?.userName || "Anonymous"}
                           </p>
                         </div>
@@ -123,12 +157,12 @@ function ListRestaurant() {
                   )}
 
                   {/* Add Review Button */}
-                  <div className="text-center mt-4">
+                  <div className="text-center mt-6">
                     <Link
                       to={`/restaurants/${restaurant._id}/reviews`}
-                      className="text-green-200 font-bold hover:underline"
+                      className="bg-transparent text-neutral-300 font-semibold px-4 py-2 rounded-full hover:bg-green-700 transition duration-200"
                     >
-                      Add a review
+                      Add a Review
                     </Link>
                   </div>
                 </div>

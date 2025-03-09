@@ -70,7 +70,7 @@ function SingleRestaurant() {
 
   return (
     <>
-      <div className="bg-neutral-900 p-2 py-4 sm:p-4 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto overflow-hidden">
+      <div className="bg-black/30 p-2 py-4 sm:p-4 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto overflow-hidden cursor-pointer">
         {/* Restaurant Image */}
         <div className="relative justify-center">
           <img
@@ -80,7 +80,7 @@ function SingleRestaurant() {
           />
 
           {/* Restaurant Info */}
-          <div className="absolute left-4 right-4 bottom-[-2] transform -translate-y-1/2 bg-neutral-800/60 backdrop-blur-md rounded-lg p-6 shadow-lg flex items-center justify-center gap-8 border border-neutral-600">
+          <div className="absolute left-4 right-4 bottom-[-2] transform -translate-y-1/2 bg-black/30 backdrop-blur-md rounded-lg p-6 shadow-lg flex items-center justify-center gap-8 border border-transparent">
             {/* Restaurant Logo */}
             <img
               className="w-16 h-16 object-cover rounded-full overflow-hidden"
@@ -99,25 +99,41 @@ function SingleRestaurant() {
             </div>
           </div>
         </div>
-        <select
-          className="w-full bg-neutral-900 text-neutral-300 px-4 py-2 rounded-md mt-20 mb-4"
-          value={menuCategory}
-          onChange={(e) => setMenuCategory(e.target.value)}
-        >
-          <option value="Select">All Categories</option>
-          <option value="Main Course">Main Course</option>
-          <option value="Dessert">Dessert</option>
-          <option value="Beverages">Beverages</option>
-        </select>
+        <div className="relative w-full mt-32 mb-4 ">
+          <select
+            className="w-full px-4 py-4 rounded-md focus:outline-none focus:ring-2 focus:ring-white bg-red-950/30 focus:bg-black/80 text-white font-extrabold border border-gray-600 cursor-pointer appearance-none shadow-lg transition-all"
+            value={menuCategory}
+            onChange={(e) => setMenuCategory(e.target.value)}
+          >
+            <option className="bg-black" value="Select">
+              All Categories
+            </option>
+            <option className="bg-black" value="Main Course">
+              Main Course
+            </option>
+            <option className="bg-black" value="Dessert">
+              Dessert
+            </option>
+            <option className="bg-black" value="Beverages">
+              Beverages
+            </option>
+          </select>
+
+          {/* appearance-none and custom a new Arrow Icon */}
+          <div className="absolute text-3xl font-extrabold p-1 top-1/2 right-4 -translate-y-1/2 pointer-events-none">
+            ⌄
+          </div>
+        </div>
 
         {/* Menu Section */}
-        <div className="text-center bg-gradient-to-r from-neutral-900 via-[#050407] to-[#4d4c4d] p-4 rounded-lg shadow-lg">
+        <div className="text-center bg-transparent p-4 rounded-lg shadow-lg cursor-pointer">
           {filteredMenus.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredMenus.map((menu) => (
                 <div
                   key={menu._id}
-                  className="flex flex-row md:flex-col items-center gap-6 bg-neutral-800/60 backdrop-blur-md p-3 rounded-lg shadow-md border border-neutral-600 hover:shadow-xl transition transform hover:bg-neutral-950 duration-300 ease-in-out"
+                  onClick={() => handleClick(menu._id)}
+                  className="flex flex-row md:flex-col items-center gap-6 bg-black/30 backdrop-blur-md p-3 rounded-lg shadow-md border border-gray-800 hover:shadow-xl hover:bg-black/60 hover:scale-105 transition-transform duration-300 ease-in-out"
                 >
                   {/* Menu Image */}
                   <img
@@ -137,9 +153,9 @@ function SingleRestaurant() {
                     <button
                       type="button"
                       onClick={() => handleClick(menu._id)}
-                      className="bg-transparent text-green-400 px-4 py-2 rounded-md hover:text-neutral-100"
+                      className="bg-transparent font-semibold text-md text-green-600 px-4 py-2 rounded-md hover:text-neutral-100"
                     >
-                      Show Details
+                      Yummy Details
                     </button>
                   </div>
                 </div>
