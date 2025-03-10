@@ -37,13 +37,15 @@ export default function TestimonialSlider() {
 					<h2 className="text-4xl font-bold text-white mb-4 bg-gradient-to-r from-[#D84418] to-[#FF6B6B] bg-clip-text text-transparent">
 						What Our Customers Say
 					</h2>
-					<p className="text-gray-400 max-w-2xl mx-auto">
+					<p className="text-gray-300 max-w-2xl mx-auto">
 						Real experiences from our valued customers, restaurant
 						partners, and delivery team members.
 					</p>
 				</div>
 
-				<div className="navigation-wrapper relative px-16">
+				<div
+					className="navigation-wrapper relative px-16"
+					aria-label="Testimonial carousel">
 					{loaded && instanceRef.current && (
 						<>
 							<Arrow
@@ -70,34 +72,45 @@ export default function TestimonialSlider() {
 					)}
 					<div
 						ref={sliderRef}
-						className="keen-slider">
-						{testimonials.map((testimonial) => (
+						className="keen-slider"
+						role="region"
+						aria-roledescription="carousel"
+						aria-label="Customer testimonials">
+						{testimonials.map((testimonial, index) => (
 							<div
 								key={testimonial.id}
-								className="keen-slider__slide">
+								className="keen-slider__slide"
+								role="group"
+								aria-roledescription="slide"
+								aria-label={`Testimonial ${index + 1} of ${
+									testimonials.length
+								}`}>
 								<div className="bg-[#1A1A1A] p-6 rounded-2xl border-2 border-[#D84418] h-full transform transition-all duration-300 hover:border-opacity-80 hover:shadow-[0_0_15px_rgba(216,68,24,0.3)]">
 									<div className="flex items-center mb-4">
 										<img
 											src={testimonial.image}
-											alt={testimonial.name}
+											alt={`${testimonial.name}'s profile`}
 											className="w-12 h-12 rounded-full mr-4"
 										/>
 										<div>
 											<h3 className="text-white font-semibold">
 												{testimonial.name}
 											</h3>
-											<p className="text-gray-400 text-sm">
+											<p className="text-gray-300 text-sm">
 												{testimonial.location}
 											</p>
 										</div>
 									</div>
-									<div className="flex mb-4">
+									<div
+										className="flex mb-4"
+										aria-label={`Rating: ${testimonial.rating} out of 5 stars`}>
 										{[...Array(testimonial.rating)].map(
 											(_, i) => (
 												<Star
 													key={i}
 													className="w-5 h-5 text-[#D84418]"
 													fill="#D84418"
+													aria-hidden="true"
 												/>
 											)
 										)}
@@ -114,7 +127,10 @@ export default function TestimonialSlider() {
 					</div>
 
 					{loaded && instanceRef.current && (
-						<div className="flex justify-center mt-8 gap-2">
+						<div
+							className="flex justify-center mt-8 gap-2"
+							role="tablist"
+							aria-label="Testimonial navigation">
 							{[
 								...Array(
 									instanceRef.current.track.details.slides
@@ -132,6 +148,9 @@ export default function TestimonialSlider() {
 											: "bg-gray-600 hover:bg-gray-500"
 									}`}
 									aria-label={`Go to slide ${idx + 1}`}
+									aria-selected={currentSlide === idx}
+									role="tab"
+									tabIndex={currentSlide === idx ? 0 : -1}
 								/>
 							))}
 						</div>
@@ -154,12 +173,14 @@ function Arrow({ left, onClick, disabled }) {
 					: "opacity-75 hover:opacity-100"
 			} bg-[#D84418] text-white p-2 rounded-full transform transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#D84418] focus:ring-opacity-50 z-10`}
 			disabled={disabled}
-			aria-label={left ? "Previous slide" : "Next slide"}>
+			aria-label={left ? "Previous slide" : "Next slide"}
+			aria-disabled={disabled}>
 			<svg
 				className={`w-6 h-6 ${left ? "rotate-180" : ""}`}
 				fill="none"
 				stroke="currentColor"
-				viewBox="0 0 24 24">
+				viewBox="0 0 24 24"
+				aria-hidden="true">
 				<path
 					strokeLinecap="round"
 					strokeLinejoin="round"

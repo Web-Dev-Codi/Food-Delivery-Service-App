@@ -77,7 +77,10 @@ export const handleStripeWebhook = async (req, res) => {
         return res.status(400).send("Missing Stripe Signature");
     }
 
-    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+   // Dynamically select the correct webhook secret based on environment
+   const endpointSecret = process.env.IS_PRODUCTION === "true"
+   ? process.env.STRIPE_WEBHOOK_SECRET_PRODUCTION // Use the production secret
+   : process.env.STRIPE_WEBHOOK_SECRET; // Use the local secret
     let event;
 
     try {

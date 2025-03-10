@@ -54,19 +54,19 @@ export const getRestaurantByName = async (req, res) => {
       });
     }
 
-    const restaurant = await Restaurant.findOne({ 
-      name: new RegExp(`^${name.trim()}$`, "i") 
+    const restaurants = await Restaurant.find({
+      name: new RegExp(name.trim(), "i"), // 'i' makes it case-insensitive
     }).lean();
 
-    if (!restaurant) {
+    if (restaurants.length === 0) {
       return res.status(404).json({
         message: `No restaurant found with the name "${name}".`,
       });
     }
 
     res.status(200).json({
-      message: "Restaurant fetched successfully.",
-      data: restaurant,
+      message: "Restaurants fetched successfully.",
+      data: restaurants, // Now returning an array
     });
 
   } catch (err) {

@@ -12,7 +12,7 @@ const DeleteMenu = () => {
   const fetchMenu = async () => {
     try {
       const response = await axios.get(
-        `${API_URL}/food/menu/getByName/${menuName}`
+        `${API_URL}/food/menu/getByName/${menuName}`,
       );
 
       if (response.data.data) {
