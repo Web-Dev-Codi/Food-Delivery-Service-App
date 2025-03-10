@@ -80,7 +80,7 @@ function ListRestaurant() {
                           )
                         )}
 
-                        {/* Show a half-star if the rating is in decimal */}
+                        {/* If the rating is in decimal show the half star */}
                         {restaurant.averageRating % 1 !== 0 && <span>⭐️</span>}
                       </div>
 
@@ -105,7 +105,7 @@ function ListRestaurant() {
                             <span className="text-[#D84418] font-bold ">
                               {day.charAt(0).toUpperCase() + day.slice(1)}:
                             </span>{" "}
-                            <span className=" text-neutral-100 font-medium p-1">
+                            <span className=" text-neutral-100 font-semibold p-1">
                               {hours || "Closed"}
                             </span>
                           </li>
@@ -144,7 +144,9 @@ function ListRestaurant() {
                           </div>
 
                           {/* Review Text */}
-                          <p className="text-neutral-400">{review.comment}</p>
+                          <p className="text-neutral-300 font-medium">
+                            {review.comment}
+                          </p>
 
                           {/* Reviewer Info */}
                           <p className="text-neutral-300 text-sm mt-2">

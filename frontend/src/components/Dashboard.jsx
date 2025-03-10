@@ -87,7 +87,7 @@ const Dashboard = () => {
     {
       color: "text-rose-600",
       label: "Top 5 Restaurants This Month",
-      info: "1. Spicy Of India ($12,340) | 2. The Classic Diner ($11,870) | 3. Green Garden ($10,450) | 4. Grill & Chill ($9,870) | 5. Sushi Express ($9,200)",
+      info: "1. Spice Of India ($12,340) | 2. The Classic Diner ($11,870) | 3. Green Garden ($10,450) | 4. Grill & Chill ($9,870) | 5. Sushi Express ($9,200)",
     },
   ];
 
