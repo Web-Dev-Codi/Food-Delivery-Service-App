@@ -18,39 +18,49 @@ import orderRouter from "./routes/orderRouter.js";
 connectDB();
 
 const app = express();
+// :white_check_mark: CORS configuration: Allow both frontend and backend communication
 
-// ✅ Enable CORS for frontend requests
+const allowedOrigins = [
+	"http://localhost:5173", // Development URL for frontend
+	process.env.FRONTEND_URL || "https://fourflavoursexpress.onrender.com", // Production URL for frontend
+];
+
 app.use(
 	cors({
-		origin: process.env.FRONTEND_URL || "http://localhost:5173",
+		origin: function (origin, callback) {
+			if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+				callback(null, true); // Allow the request
+			} else {
+				callback(new Error("Not allowed by CORS")); // Reject the request
+			}
+		},
 		methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 		credentials: true,
 		allowedHeaders: "Content-Type, Authorization",
 	})
 );
 
-// ✅ Webhook route - MUST use `express.raw()` BEFORE `express.json()`
+// :white_check_mark: Webhook route: Must use `express.raw()` before `express.json()` for Stripe webhook
 app.post(
-  "/webhook",
-  express.raw({ type: "application/json" }),
-  handleStripeWebhook,
+	"/webhook",
+	express.raw({ type: "application/json" }), // Handle raw body for Stripe webhook
+	handleStripeWebhook
 );
+// Middleware to parse JSON and URL-encoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+// Routes
 app.use("/api/auth", authRoutes);
-app.use("/payment", paymentRoutes); //paymentRouter
+app.use("/payment", paymentRoutes); // paymentRouter
 app.use("/", router);
-app.use("/data", userRouter); //userRouter
+app.use("/data", userRouter); // userRouter
 app.use("/cart", cartRouter);
 app.use("/order", orderRouter);
 app.use("/api", restaurantRouter);
 app.use("/food", menuRouter);
 app.use("/offers", couponRouter);
-
-// ✅ Seed database
+// :white_check_mark: Seed database route (for debugging or initializing)
 app.post("/seed", seedData);
-
-// ✅ Start server
-const port = process.env.PORT || 8001;
-app.listen(port, () => console.log(`🚀 Server running on port ${port}`));
+// :white_check_mark: Start server
+const port = process.env.PORT || 5000;
+app.listen(port, () => console.log(`:rocket: Server running on port ${port}`));
