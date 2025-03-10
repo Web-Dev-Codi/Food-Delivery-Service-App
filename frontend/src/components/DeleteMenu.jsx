@@ -48,8 +48,8 @@ const DeleteMenu = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-full md:mt-3 ">
-      <div className="bg-red-800/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md min-h-screen ">
+    <div className="flex items-center justify-center w-full md:mt-4 md:pt-24 ">
+      <div className="bg-red-950/30 backdrop-blur p-8 rounded-lg shadow-lg w-full max-w-md min-h-screen">
         <h1 className="text-2xl font-bold mb-6 text-center text-white">
           Delete Menu
         </h1>
@@ -64,11 +64,11 @@ const DeleteMenu = () => {
             placeholder="Enter Menu Name"
             value={menuName}
             onChange={(e) => setMenuName(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-900 text-white"
+            className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg bg-black/60 focus:bg-black/80 text-white"
           />
           <button
             onClick={fetchMenu}
-            className="mt-2 w-full py-2 bg-blue-700 font-bold text-white rounded-lg hover:bg-blue-600"
+            className="mt-4 w-full py-2 bg-orange-600 font-bold text-white rounded-lg hover:bg-orange-500 transition"
           >
             Search Menu
           </button>

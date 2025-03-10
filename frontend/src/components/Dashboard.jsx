@@ -87,7 +87,7 @@ const Dashboard = () => {
     {
       color: "text-rose-600",
       label: "Top 5 Restaurants This Month",
-      info: "1. Spicy Of India ($12,340) | 2. The Classic Diner ($11,870) | 3. Green Garden ($10,450) | 4. Grill & Chill ($9,870) | 5. Sushi Express ($9,200)",
+      info: "1. Spice Of India ($12,340) | 2. The Classic Diner ($11,870) | 3. Green Garden ($10,450) | 4. Grill & Chill ($9,870) | 5. Sushi Express ($9,200)",
     },
   ];
 
@@ -112,7 +112,7 @@ const Dashboard = () => {
 
         {/* Slide-NavBar*/}
         <nav
-          className={`fixed left-0 w-2/3 p-2 border-l border-neutral-500 transition-all duration-1000 ease-in-out bg-black/10 backdrop-blur z-10
+          className={`fixed left-0 w-2/3 p-2 border-l border-neutral-500 transition-all duration-1000 ease-in-out bg-neutral-800/10 backdrop-blur z-10
         ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         } md:relative md:translate-x-0
@@ -127,7 +127,7 @@ const Dashboard = () => {
             {navItems.map(({ to, icon: Icon, label }) => (
               <li
                 key={to}
-                className="flex items-center justify-start gap-2 transition-all duration-1000 ease-in-out bg-black/80 hover:bg-[#D84418] rounded-lg py-2 mb-4 md:mb-0"
+                className="flex items-center justify-start gap-2 transition-all duration-1000 ease-in-out bg-black/60 hover:bg-[#D84418] rounded-lg py-2 mb-4 md:mb-0"
               >
                 <Link
                   to={to}
@@ -159,17 +159,26 @@ const Dashboard = () => {
         <div className="flex-1 flex-col lg:flex-row justify-center items-start md:justify-start p-4 sm:p-6 lg:p-0 space-y-6 lg:space-y-0 bg-transparent backdrop-blur shadow-lg">
           {/* Left Side: Admin Section */}
           <div className="min-h-screen flex-1 flex flex-col items-center justify-start space-y-6 md:mt-0 border-neutral-500 rounded-lg p-4 md:py-1 sm:p-4 w-full lg:max-w-[50%] xl:max-w-[75%] border border-dashed ">
-            {/* Admin Greeting Box*/}
-            <div className="flex-col items-center justify-center w-full bg-gradient-to-r from-white/5 via-white/20 to-white/5 ">
-              <h1 className="text-xl p-2 sm:text-2xl font-bold text-center text-white mt-1 md:mt-3">
-                Hello Admin
-              </h1>
-              <p className="text-neutral-300 text-center text-sm sm:text-base p-2 sm:px-4">
-                Welcome to the Admin Dashboard of the Restaurant Management
-                System. You can add Restaurants, Menus, Coupons, and more from
-                the sidebar. Click on the menu icon to view the options. Enjoy
-                your day!
+            {/* Admin Greeting Box */}
+            <div className="w-full bg-red-950/30 p-6 rounded-lg shadow-lg text-center">
+              <h2 className="text-2xl font-extrabold mb-6 text-center text-white uppercase tracking-wider relative">
+                Admin Dashboard
+                <span className="block w-24 h-1 bg-orange-500 mx-auto mt-1 rounded-full"></span>
+              </h2>
+              <p className="text-neutral-300 text-sm sm:text-base">
+                Welcome to the{" "}
+                <span className="text-green-400">Admin Dashboard</span> of the
+                Restaurant Management System. Manage{" "}
+                <span className="text-orange-400">Restaurants</span>,
+                <span className="text-orange-400"> Menus</span>,{" "}
+                <span className="text-orange-400">Coupons</span>, and more from
+                the sidebar. Click on the menu icon to view the options.
               </p>
+              <div className="mt-4">
+                <span className="inline-block bg-green-600 text-white px-4 py-1 rounded-full text-xs font-bold">
+                  Dashboard Access Granted
+                </span>
+              </div>
             </div>
 
             {/* Dynamic Grid is mapped from gridItems array */}
@@ -207,8 +216,8 @@ const Dashboard = () => {
                       </span>
                     </div>
 
-                    {/* Content Area - Yoc inject component or show info */}
-                    <div className="text-neutral-300 text-sm sm:text-base bg-neutral-800/50 p-3 rounded-lg shadow-inner w-full">
+                    {/* Content Area - You can inject component or show info */}
+                    <div className="text-neutral-300 text-sm sm:text-base bg-red-950/30 p-3 rounded-lg shadow-inner w-full">
                       {component ? (
                         <div className="flex justify-center items-center h-full">
                           {component}
@@ -262,14 +271,14 @@ const Dashboard = () => {
             navigate("/dashboard"); // Navigate back to /dashboard when closing the outlet panel
             document.body.style.overflow = "auto"; // Restore scrolling to body
           }}
-          className="fixed p-3 bg-neutral-800/10 backdrop-blur shadow-lg text-white hover:text-orange-600 top-6 right-4 md:top-28 md:right-14 rounded-lg z-30"
+          className="fixed p-3 bg-neutral-800/10 backdrop-blur shadow-lg text-white hover:text-orange-600 top-6 right-4 md:top-[8.5rem] md:right-16 rounded-lg z-30"
           aria-label="Close Outlet Panel"
         >
           <FaTimes className="text-2xl" />
         </button>
 
         {/* Updated slide-in-content to Scrollable */}
-        <div className="h-full overflow-y-auto md:mt-24 ">
+        <div className="h-full overflow-y-auto">
           <Outlet />
         </div>
       </div>
