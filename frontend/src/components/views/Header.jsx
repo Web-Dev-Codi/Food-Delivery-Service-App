@@ -336,6 +336,7 @@ const Header = () => {
 									className="relative"
 									ref={dropdownRef}>
 									<button
+										aria-label="User Profile"
 										onClick={() =>
 											setProfileDropdownOpen(
 												!profileDropdownOpen
@@ -368,6 +369,7 @@ const Header = () => {
 											)}
 											<button
 												onClick={handleLogout}
+												aria-label="Logout"
 												className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
 												<BiLogOut className="mr-3 text-orange-500" />
 												Logout
