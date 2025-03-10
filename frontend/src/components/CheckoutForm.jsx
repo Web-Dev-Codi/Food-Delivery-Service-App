@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 // import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 const CheckoutForm = ({ setSuccessPayment, loading, setLoading }) => {
 	console.log("CheckoutForm props:", {
@@ -59,29 +62,29 @@ const CheckoutForm = ({ setSuccessPayment, loading, setLoading }) => {
 
 		try {
 			// ✅ Step 1: Create PaymentIntent
-			const response = await fetch(
-				"http://localhost:8000/payment/create-payment-intent",
+			const { data } = await axios.post(
+				`${API_URL}/payment/create-payment-intent`,
+				{ userId },
 				{
-					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 						Authorization: `Bearer ${localStorage.getItem(
 							"token"
 						)}`,
 					},
-					body: JSON.stringify({ userId }),
+					withCredentials: true, // Ensures credentials are sent if needed
 				}
 			);
 
-			if (!response.ok)
-				throw new Error("Failed to create payment intent.");
-			const { clientSecret, error } = await response.json();
+			const { clientSecret, error } = data;
 			if (error) throw new Error(error);
 
 			// ✅ Step 2: Confirm Card Payment
+
 			const cardElement = elements.getElement(CardElement);
-			if (!cardElement) {
-				toast.error("Please enter your card details.");
+
+			if (!stripe || !elements || !cardElement) {
+				toast.error("❌ Please enter your card details.");
 				setLoading(false);
 				return;
 			}
@@ -93,14 +96,14 @@ const CheckoutForm = ({ setSuccessPayment, loading, setLoading }) => {
 			if (result.error) throw new Error(result.error.message);
 
 			if (result.paymentIntent.status === "succeeded") {
-				console.log("Stripe Payment Result:", result);
+				console.log("✅ Stripe Payment Result:", result);
 				toast.success("✅ Payment Successful!");
 				setSuccessPayment(true);
 			} else {
 				toast.info("⏳ Payment processing...");
 			}
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(error.response?.data?.message || error.message);
 		} finally {
 			setLoading(false);
 		}
