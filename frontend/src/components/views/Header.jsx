@@ -94,7 +94,7 @@ const Header = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (response.data && response.data.data) {
+      if (response.data?.data) {
         setUserRole(response.data.data.role);
       }
     } catch (error) {
@@ -112,8 +112,6 @@ const Header = () => {
   // Handle clicks outside the dropdown and search results
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // console.log("Clicked element:", event.target); // Debugging
-      // console.log("Search Ref:", searchRef.current); // Debugging
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setProfileDropdownOpen(false);
         setMenuOpen(false);
