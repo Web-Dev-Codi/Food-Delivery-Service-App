@@ -13,8 +13,9 @@ const ResetPasswordPage = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
+  const VITE_FRONTEND_URL =
+    import.meta.env.VITE_FRONTEND_URL || "http://localhost:8000";
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
   const handlePasswordReset = async (e) => {
     e.preventDefault();
 
@@ -25,8 +26,8 @@ const ResetPasswordPage = () => {
 
     try {
       const response = await axios.post(
-        `${API_URL}/auth/reset-password/${token}`,
-        { password }
+        `${VITE_FRONTEND_URL}/auth/reset-password/${token}`,
+        { password },
       );
 
       setMessage(response.data.message);
@@ -35,7 +36,7 @@ const ResetPasswordPage = () => {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Something went wrong. Please try again."
+          "Something went wrong. Please try again.",
       );
       setMessage("");
     }
@@ -73,37 +74,35 @@ const ResetPasswordPage = () => {
             {message && (
               <p className="text-green-500 text-center mb-4">{message}</p>
             )}
-            {error && (
-              <p className="text-red-500 text-center mb-4">{error}</p>
-            )}
+            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
             <form onSubmit={handlePasswordReset}>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-white-200">
                   New Password
-                </label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full p-3 mt-1 border border-white-300 rounded-lg bg-black/40
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full p-3 mt-1 border border-white-300 rounded-lg bg-black/40
                   text-white outline-none focus:ring-2 focus:ring-white-400 focus:border-white-400"
-                />
+                  />
+                </label>
               </div>
 
               <div className="mb-6">
                 <label className="block text-sm font-medium text-white-200">
                   Confirm Password
-                </label>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  className="w-full p-3 mt-1 border border-white-300 rounded-lg bg-black/40
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    className="w-full p-3 mt-1 border border-white-300 rounded-lg bg-black/40
                   text-white outline-none focus:ring-2 focus:ring-white-400 focus:border-white-400"
-                />
+                  />
+                </label>
               </div>
 
               <button

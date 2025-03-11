@@ -21,30 +21,30 @@ const app = express();
 // :white_check_mark: CORS configuration: Allow both frontend and backend communication
 
 const allowedOrigins = [
-	"http://localhost:5173", // Development URL for frontend
-	process.env.FRONTEND_URL || "https://fourflavoursexpress.onrender.com", // Production URL for frontend
+  "http://localhost:5173", // Development URL for frontend
+  process.env.FRONTEND_URL || "https://fourflavoursexpress.onrender.com", // Production URL for frontend
 ];
 
 app.use(
-	cors({
-		origin: function (origin, callback) {
-			if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-				callback(null, true); // Allow the request
-			} else {
-				callback(new Error("Not allowed by CORS")); // Reject the request
-			}
-		},
-		methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-		credentials: true,
-		allowedHeaders: "Content-Type, Authorization",
-	})
+  cors({
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true); // Allow the request
+      } else {
+        callback(new Error("Not allowed by CORS")); // Reject the request
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    credentials: true,
+    allowedHeaders: "Content-Type, Authorization",
+  }),
 );
 
 // :white_check_mark: Webhook route: Must use `express.raw()` before `express.json()` for Stripe webhook
 app.post(
-	"/webhook",
-	express.raw({ type: "application/json" }), // Handle raw body for Stripe webhook
-	handleStripeWebhook
+  "/webhook",
+  express.raw({ type: "application/json" }), // Handle raw body for Stripe webhook
+  handleStripeWebhook,
 );
 // Middleware to parse JSON and URL-encoded data
 app.use(express.json());

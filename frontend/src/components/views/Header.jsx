@@ -3,11 +3,11 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
-	FaShoppingCart,
-	FaUser,
-	FaRegWindowClose,
-	FaUserCog,
-	FaSearch,
+  FaShoppingCart,
+  FaUser,
+  FaRegWindowClose,
+  FaUserCog,
+  FaSearch,
 } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BiLogOut } from "react-icons/bi";
@@ -20,7 +20,6 @@ import { jwtDecode } from "jwt-decode";
 const Header = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	// const { userId } = useParams();
 	const { state } = useContext(CartContext);
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
