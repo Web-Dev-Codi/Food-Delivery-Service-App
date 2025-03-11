@@ -32,7 +32,7 @@ const ResetPasswordPage = () => {
 
 			setMessage(response.data.message);
 			setError("");
-			navigate("/login");
+			setTimeout(() => navigate("/login"), 3000);
 		} catch (err) {
 			setError(
 				err.response?.data?.message ||
