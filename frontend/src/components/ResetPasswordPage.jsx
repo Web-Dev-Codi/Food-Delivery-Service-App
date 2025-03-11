@@ -13,8 +13,9 @@ const ResetPasswordPage = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
+  const BACKEND_URL =
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
   const handlePasswordReset = async (e) => {
     e.preventDefault();
 
@@ -25,8 +26,8 @@ const ResetPasswordPage = () => {
 
     try {
       const response = await axios.post(
-        `${API_URL}/auth/reset-password/${token}`,
-        { password }
+        `${BACKEND_URL}/auth/reset-password/${token}`,
+        { password },
       );
 
       setMessage(response.data.message);
@@ -35,7 +36,7 @@ const ResetPasswordPage = () => {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Something went wrong. Please try again."
+          "Something went wrong. Please try again.",
       );
       setMessage("");
     }
@@ -73,9 +74,7 @@ const ResetPasswordPage = () => {
             {message && (
               <p className="text-green-500 text-center mb-4">{message}</p>
             )}
-            {error && (
-              <p className="text-red-500 text-center mb-4">{error}</p>
-            )}
+            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
             <form onSubmit={handlePasswordReset}>
               <div className="mb-4">
