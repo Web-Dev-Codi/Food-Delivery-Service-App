@@ -6,7 +6,8 @@ import Cart from "../models/cartSchema.js";
 import Order from "../models/orderSchema.js";
 
 dotenv.config();
-
+const isProduction = process.env.PRODUCTION_VALUE === "true";
+console.log(isProduction);
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 //create Pyment Intent
@@ -77,10 +78,11 @@ export const handleStripeWebhook = async (req, res) => {
         return res.status(400).send("Missing Stripe Signature");
     }
 
-   // Dynamically select the correct webhook secret based on environment
-   const endpointSecret = process.env.IS_PRODUCTION === "true"
+ // Dynamically select the correct webhook secret based on environment
+  const endpointSecret = isProduction
    ? process.env.STRIPE_WEBHOOK_SECRET_PRODUCTION // Use the production secret
-   : process.env.STRIPE_WEBHOOK_SECRET; // Use the local secret
+      : process.env.STRIPE_WEBHOOK_SECRET; // Use the local secret
+    console.log(endpointSecret)
     let event;
 
     try {
