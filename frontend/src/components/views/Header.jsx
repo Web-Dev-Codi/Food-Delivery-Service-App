@@ -194,8 +194,9 @@ const Header = () => {
 		setShowSearchResults(e.target.value.trim() !== "");
 	};
 	useEffect(() => {
-		setShowSearchResults(searchResults !== null);
+		setShowSearchResults(Array.isArray(searchResults) && searchResults.length > 0);
 	}, [searchResults]);
+	
 
 	const handleRestaurantClick = (restaurantId) => {
 		setSearchTerm("");
