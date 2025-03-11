@@ -13,8 +13,8 @@ const ResetPasswordPage = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  const BACKEND_URL =
-    import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+  const VITE_FRONTEND_URL =
+    import.meta.env.VITE_FRONTEND_URL || "http://localhost:8000";
 
   const handlePasswordReset = async (e) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ const ResetPasswordPage = () => {
 
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/auth/reset-password/${token}`,
+        `${VITE_FRONTEND_URL}/auth/reset-password/${token}`,
         { password },
       );
 
@@ -80,29 +80,29 @@ const ResetPasswordPage = () => {
               <div className="mb-4">
                 <label className="block text-sm font-medium text-white-200">
                   New Password
-                </label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full p-3 mt-1 border border-white-300 rounded-lg bg-black/40
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full p-3 mt-1 border border-white-300 rounded-lg bg-black/40
                   text-white outline-none focus:ring-2 focus:ring-white-400 focus:border-white-400"
-                />
+                  />
+                </label>
               </div>
 
               <div className="mb-6">
                 <label className="block text-sm font-medium text-white-200">
                   Confirm Password
-                </label>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  className="w-full p-3 mt-1 border border-white-300 rounded-lg bg-black/40
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    className="w-full p-3 mt-1 border border-white-300 rounded-lg bg-black/40
                   text-white outline-none focus:ring-2 focus:ring-white-400 focus:border-white-400"
-                />
+                  />
+                </label>
               </div>
 
               <button
