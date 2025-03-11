@@ -140,19 +140,19 @@ npm run dev
 
 ---
 
+## 🌍 Team Members
 
+### 🚀 Ashwini BHeemireddy
+- [LinkedIn](https://www.linkedin.com/in/ashwini2127/)
+- 📧 [Email]()
 
+### 🌟 Brian Cordisco
+- [LinkedIn]()
+- 📧 [Email](webdevcodi@gmail.com)
 
-
-
-### 🍽️ Made with ❤️ by the Four Flavors Express
-
-
-
-Tabassum Khan :[Linkedin](https://www.linkedin.com/in/tabassum-khan-3688602b7/)
-
-Ashwini Bheemireddy :[Linkedin]()
-
-Brian : [Email](webdevcodi@gmail.com)
- 
-Tuanth 
+### 🔥 Tabassum Khan
+  - [LinkedIn](https://www.linkedin.com/in/tabassum-khan-3688602b7/)
+  - 📧 [Email]()
+  ### ⚡ Tuanthong Vaidyanond
+  - [LinkedIn](https://www.linkedin.com/in/tuanthong-vaidyanond-6789782b2/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
+- 📧 [Email]()
