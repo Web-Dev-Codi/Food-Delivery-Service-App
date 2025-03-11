@@ -42,8 +42,8 @@ console.log("Reset link: ", resetLink); // Debugging log
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+         user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASSWORD,
         /* user:"ashwini.bheemireddy@dci-student.org",
         pass:"xsij vtvk cjje uedz" */
       },
@@ -51,7 +51,7 @@ console.log("Reset link: ", resetLink); // Debugging log
 
 		// Email content
 		const mailOptions = {
-			from: process.env.EMAIL_USER,
+			from: process.env.GMAIL_USER,
 			to: user.email,
 			subject: "Password Reset Request",
 			text: `Click the link below to reset your password:\n\n${resetLink}\n\nIf you didn't request this, ignore this email.`,
