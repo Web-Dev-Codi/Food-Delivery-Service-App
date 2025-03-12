@@ -37,7 +37,7 @@ export const requestPasswordReset = async (req, res) => {
       "host"
     )}/api/auth/reset-password/${resetToken}`;
  */
-		const resetLink = `${req.protocol}://${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+		const resetLink = `${req.protocol}://${process.env.FRONTEND_URL}/api/auth/reset-password/${resetToken}`;
 		console.log("Reset link: ", resetLink); // Debugging log
 		// Configure nodemailer
 		const transporter = nodemailer.createTransport({
