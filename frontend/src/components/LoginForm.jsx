@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Lottie from "lottie-react";
+import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
-import logo from "../assets/images/logo.png"; // Import your logo
+import { useNavigate } from "react-router-dom";
 //import ffe1 from "../assets/images/ffe1.jpg"; // Import your food image
 import foodBoy1 from "../assets/animations/foodBoy1.json";
-import Lottie from "lottie-react";
+import logo from "../assets/images/logo.png"; // Import your logo
 
 function LoginForm() {
 	const [email, setEmail] = useState("");
@@ -52,7 +52,7 @@ function LoginForm() {
 			if (res.data.data.role === "admin") {
 				navigate("/dashboard");
 			} else {
-				navigate(`/`);
+				navigate("/");
 			}
 		} catch (err) {
 			setErrorMessage(err.response?.data?.message || "Login failed");
