@@ -6,12 +6,13 @@ import foodBoy1 from "../assets/animations/foodBoy1.json"; // Import animation
 import logo from "../assets/images/logo.png";
 
 const ResetPasswordPage = () => {
-	const { token } = useParams();
+	const { token } = useParams(); // Get the token from the URL
 	const navigate = useNavigate();
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [error, setError] = useState("");
 	const [message, setMessage] = useState("");
+	const [loading, setLoading] = useState(false);
 
 	const VITE_FRONTEND_URL =
 		import.meta.env.VITE_FRONTEND_URL || "http://localhost:8000";
@@ -19,26 +20,35 @@ const ResetPasswordPage = () => {
 	const handlePasswordReset = async (e) => {
 		e.preventDefault();
 
-		if (password !== confirmPassword) {
+		if (password.trim() !== confirmPassword.trim()) {
 			setError("Passwords do not match");
 			return;
 		}
 
+		setLoading(true); // Start loading
+
 		try {
 			const response = await axios.post(
-				`${VITE_FRONTEND_URL}/auth/reset-password/${token}`,
+				`${VITE_FRONTEND_URL}/api/auth/reset-password/${token}`,
 				{ password }
 			);
-
-			setMessage(response.data.message);
+			setMessage(response.data.message || "Password reset successful");
 			setError("");
+
+	
 			setTimeout(() => navigate("/login"), 3000);
 		} catch (err) {
+			console.error(
+				"Reset password error details:",
+				err.response?.data || err
+			);
 			setError(
 				err.response?.data?.message ||
 					"Something went wrong. Please try again."
 			);
 			setMessage("");
+		} finally {
+			setLoading(false);
 		}
 	};
 
