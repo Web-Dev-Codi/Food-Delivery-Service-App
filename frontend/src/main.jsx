@@ -141,7 +141,7 @@ const router = createBrowserRouter(
 					element={<FAQ />}
 				/>
 				<Route
-					path="/reset-password/:token"
+					path="api/auth/reset-password/:token"
 					element={<ResetPasswordPage />}
 				/>
 				<Route
