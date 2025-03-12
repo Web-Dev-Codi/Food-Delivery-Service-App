@@ -14,8 +14,7 @@ const ResetPasswordPage = () => {
 	const [message, setMessage] = useState("");
 	const [loading, setLoading] = useState(false);
 
-	const VITE_FRONTEND_URL =
-		import.meta.env.VITE_FRONTEND_URL || "http://localhost:8000";
+	const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 	const handlePasswordReset = async (e) => {
 		e.preventDefault();
@@ -29,13 +28,11 @@ const ResetPasswordPage = () => {
 
 		try {
 			const response = await axios.post(
-				`${VITE_FRONTEND_URL}/api/auth/reset-password/${token}`,
+				`${API_URL}/api/auth/reset-password/${token}`,
 				{ password }
 			);
 			setMessage(response.data.message || "Password reset successful");
 			setError("");
-
-	
 			setTimeout(() => navigate("/login"), 3000);
 		} catch (err) {
 			console.error(
