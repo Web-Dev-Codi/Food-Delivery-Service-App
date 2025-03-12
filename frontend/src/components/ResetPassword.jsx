@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 function ResetPassword() {
 	const { token } = useParams();
@@ -59,8 +59,7 @@ function ResetPassword() {
 		<div className="min-h-screen flex items-center justify-center bg-[#D84418]">
 			<form
 				onSubmit={handleSubmit}
-				className="bg-[#9a3412] p-8 rounded-lg shadow-lg w-full max-w-md"
-			>
+				className="bg-[#9a3412] p-8 rounded-lg shadow-lg w-full max-w-md">
 				<h2 className="text-2xl font-bold text-center text-yellow-400 mb-6">
 					Reset Password
 				</h2>
@@ -75,34 +74,33 @@ function ResetPassword() {
 				<div className="mb-4">
 					<label className="block text-sm font-medium text-yellow-200">
 						New Password
+						<input
+							type="password"
+							className="w-full px-4 py-2 border border-orange-300 rounded-lg bg-[#c13915]
+						text-white outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							required
+						/>
 					</label>
-					<input
-						type="password"
-						className="w-full px-4 py-2 border border-orange-300 rounded-lg bg-[#c13915]
-							text-white outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						required
-					/>
 				</div>
 				<div className="mb-6">
 					<label className="block text-sm font-medium text-yellow-200">
 						Confirm Password
+						<input
+							type="password"
+							className="w-full px-4 py-2 border border-orange-300 rounded-lg bg-[#c13915]
+						text-white outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+							value={confirmPassword}
+							onChange={(e) => setConfirmPassword(e.target.value)}
+							required
+						/>
 					</label>
-					<input
-						type="password"
-						className="w-full px-4 py-2 border border-orange-300 rounded-lg bg-[#c13915]
-							text-white outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
-						value={confirmPassword}
-						onChange={(e) => setConfirmPassword(e.target.value)}
-						required
-					/>
 				</div>
 				<button
 					type="submit"
 					className="w-full py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition-transform transform hover:scale-105"
-					disabled={loading}
-				>
+					disabled={loading}>
 					{loading ? "Resetting..." : "Reset Password"}
 				</button>
 			</form>
