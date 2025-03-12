@@ -94,12 +94,11 @@ function LoginForm() {
 						</h2>
 
 						{successMessage && (
-							<div
+							<output
 								className="mb-4 text-green-600"
-								role="status"
 								aria-live="polite">
 								{successMessage}
-							</div>
+							</output>
 						)}
 						{errorMessage && (
 							<div
