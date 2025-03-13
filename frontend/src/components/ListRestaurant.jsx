@@ -129,7 +129,7 @@ function ListRestaurant() {
                         Customer Reviews
                       </h3>
 
-                      {restaurant.reviews.slice(0, 2).map((review) => (
+                      {restaurant.reviews.map((review) => (
                         <div
                           key={review._id}
                           className="bg-black/40 p-4 rounded-lg mt-3 border border-gray-700 shadow-md hover:bg-black/80 transition duration-300"
