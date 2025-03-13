@@ -42,12 +42,11 @@ function SingleRestaurant() {
 
 	if (loading) {
 		return (
-			<div
+			<output
 				className="flex justify-center items-center h-screen text-lg font-semibold"
-				role="status"
 				aria-live="polite">
 				Loading...
-			</div>
+			</output>
 		);
 	}
 
@@ -149,6 +148,11 @@ function SingleRestaurant() {
 								<div
 									key={menu._id}
 									onClick={() => handleClick(menu._id)}
+									onKeyDown={(e) => {
+										if (e.key === "Enter") {
+											handleClick(menu._id);
+										}
+									}}
 									className="flex flex-row md:flex-col items-center gap-6 bg-black/30 backdrop-blur-md p-3 rounded-lg shadow-md border border-gray-800 hover:shadow-xl hover:bg-black/60 hover:scale-105 transition-transform duration-300 ease-in-out">
 									{/* Menu Image */}
 									<img

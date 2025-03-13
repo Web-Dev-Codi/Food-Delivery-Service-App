@@ -1,17 +1,18 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import {
-	User,
 	Bell,
-	Share2,
-	HelpCircle,
-	LogOut,
 	ChevronRight,
 	Edit2,
+	HelpCircle,
+	LogOut,
 	Plus,
+	Share2,
+	User,
 } from "lucide-react";
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import EditableAddress from "./EditableAddress";
 import EditableProfile from "./EditableProfile";
 
@@ -164,6 +165,7 @@ const UserProfile = () => {
 			{/* Navigation Tabs */}
 			<div className="flex space-x-4 p-4 border-b border-[#D84418]/30">
 				<button
+					type="button"
 					onClick={() => setActiveTab("profile")}
 					className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
 						activeTab === "profile"
@@ -173,6 +175,7 @@ const UserProfile = () => {
 					Profile
 				</button>
 				<button
+					type="button"
 					onClick={() => setActiveTab("orders")}
 					className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
 						activeTab === "orders"
@@ -182,6 +185,7 @@ const UserProfile = () => {
 					Orders
 				</button>
 				<button
+					type="button"
 					onClick={() => setActiveTab("settings")}
 					className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
 						activeTab === "settings"
@@ -214,8 +218,10 @@ const UserProfile = () => {
 								<p className="text-gray-400">
 									{order.items.join(", ")}
 								</p>
-								<button className="mt-4 w-full sm:w-auto bg-[#D84418] text-white py-2 px-6 rounded-lg hover:bg-[#FF6B6B] transition-colors">
-									Track Order
+								<button
+									type="button"
+									className="mt-4 w-full sm:w-auto bg-[#D84418] text-white py-2 px-6 rounded-lg hover:bg-[#FF6B6B] transition-colors">
+									button Track Order
 								</button>
 							</div>
 						))}
@@ -229,7 +235,9 @@ const UserProfile = () => {
 					<h3 className="text-lg font-semibold text-white">
 						Delivery Addresses
 					</h3>
-					<button className="text-[#D84418] hover:text-[#FF6B6B] transition-colors inline-flex items-center">
+					<button
+						type="button"
+						className="text-[#D84418] hover:text-[#FF6B6B] transition-colors inline-flex items-center">
 						<Plus
 							size={18}
 							className="mr-1"
@@ -261,7 +269,9 @@ const UserProfile = () => {
 						<p className="text-4xl font-bold bg-gradient-to-r from-[#D84418] to-[#FF6B6B] bg-clip-text text-transparent">
 							{userData.loyaltyPoints || 456}
 						</p>
-						<button className="px-4 py-2 bg-[#D84418] text-white rounded-lg hover:opacity-90 transition-opacity">
+						<button
+							type="button"
+							className="px-4 py-2 bg-[#D84418] text-white rounded-lg hover:opacity-90 transition-opacity">
 							View Rewards
 						</button>
 					</div>
@@ -288,7 +298,9 @@ const UserProfile = () => {
 								</p>
 							</div>
 						))}
-						<button className="mt-2 w-full border-2 border-[#D84418]/30 text-[#D84418] py-2 rounded-lg font-medium hover:bg-[#D84418] hover:text-white transition-colors">
+						<button
+							type="button"
+							className="mt-2 w-full border-2 border-[#D84418]/30 text-[#D84418] py-2 rounded-lg font-medium hover:bg-[#D84418] hover:text-white transition-colors">
 							See All Favorites
 						</button>
 					</div>
@@ -299,7 +311,9 @@ const UserProfile = () => {
 							<h3 className="text-lg font-semibold text-white">
 								Dietary Preferences
 							</h3>
-							<button className="text-gray-400">
+							<button
+								type="button"
+								className="text-gray-400">
 								<Edit2
 									size={16}
 									className="text-[#D84418]"
@@ -309,6 +323,7 @@ const UserProfile = () => {
 						<div className="flex flex-wrap gap-2">
 							{user.dietaryPreferences.map((pref, index) => (
 								<span
+									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 									key={index}
 									className="bg-gray-100 text-black px-3 py-1 rounded-full text-sm">
 									{pref}
@@ -346,13 +361,17 @@ const UserProfile = () => {
 									<span className="text-gray-400">
 										{order.total}
 									</span>
-									<button className="text-green-600 text-sm font-medium">
+									<button
+										type="button"
+										className="text-green-600 text-sm font-medium">
 										Reorder
 									</button>
 								</div>
 							</div>
 						))}
-						<button className="mt-2 w-full border-2 border-[#D84418]/30 text-[#D84418] py-2 rounded-lg font-medium hover:bg-[#D84418] hover:text-white transition-colors">
+						<button
+							type="button"
+							className="mt-2 w-full border-2 border-[#D84418]/30 text-[#D84418] py-2 rounded-lg font-medium hover:bg-[#D84418] hover:text-white transition-colors">
 							View All Orders
 						</button>
 					</div>
@@ -370,7 +389,9 @@ const UserProfile = () => {
 							</h3>
 						</div>
 						<div className="divide-y divide-[#D84418]/30">
-							<button className="w-full px-4 py-3 flex justify-between items-center">
+							<button
+								type="button"
+								className="w-full px-4 py-3 flex justify-between items-center">
 								<div className="flex items-center">
 									<User
 										size={20}
@@ -383,7 +404,9 @@ const UserProfile = () => {
 									className="text-[#D84418]"
 								/>
 							</button>
-							<button className="w-full px-4 py-3 flex justify-between items-center">
+							<button
+								type="button"
+								className="w-full px-4 py-3 flex justify-between items-center">
 								<div className="flex items-center">
 									<Bell
 										size={20}
@@ -396,7 +419,9 @@ const UserProfile = () => {
 									className="text-[#D84418]"
 								/>
 							</button>
-							<button className="w-full px-4 py-3 flex justify-between items-center">
+							<button
+								type="button"
+								className="w-full px-4 py-3 flex justify-between items-center">
 								<div className="flex items-center">
 									<Share2
 										size={20}
@@ -409,7 +434,9 @@ const UserProfile = () => {
 									className="text-[#D84418]"
 								/>
 							</button>
-							<button className="w-full px-4 py-3 flex justify-between items-center">
+							<button
+								type="button"
+								className="w-full px-4 py-3 flex justify-between items-center">
 								<div className="flex items-center">
 									<HelpCircle
 										size={20}
@@ -423,6 +450,7 @@ const UserProfile = () => {
 								/>
 							</button>
 							<button
+								type="button"
 								onClick={handleLogout}
 								className="w-full px-4 py-3 flex justify-between items-center">
 								<div className="flex items-center">
