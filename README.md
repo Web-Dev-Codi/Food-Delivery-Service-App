@@ -151,8 +151,9 @@ npm run dev
 - 📧 [Email](webdevcodi@gmail.com)
 
 ### 🔥 Tabassum Khan
-  - [LinkedIn](https://www.linkedin.com/in/tabassum-khan-3688602b7/)
-  - 📧 [Email]()
-  ### ⚡ Tuanthong Vaidyanond
-  - [LinkedIn](https://www.linkedin.com/in/tuanthong-vaidyanond-6789782b2/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
+- [LinkedIn](https://www.linkedin.com/in/tabassum-khan-3688602b7/)
+- 📧 [Email]()
+  
+### ⚡ Tuanthong Vaidyanond
+- [LinkedIn](https://www.linkedin.com/in/tuanthong-vaidyanond-6789782b2/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
 - 📧 [Email]()

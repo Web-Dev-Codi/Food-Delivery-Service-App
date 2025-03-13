@@ -5,6 +5,7 @@ const AddMenuForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
+    short_desc: "",
     description: "",
     category: "",
     imageUrl: "",
@@ -58,14 +59,24 @@ const AddMenuForm = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token"); // Get token from storage
+    if (!token) {
+      alert("Authentication error. Please log in again.");
+      return;
+    }
     try {
-      const response = await axios.post(`${API_URL}/food/menu`, formData);
+      const response = await axios.post(`${API_URL}/food/menu`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("Menu added successfully:", response.data.data);
       alert("Menu added successfully!");
       // Reset form after submission
       setFormData({
         name: "",
         price: "",
+        short_desc: "",
         description: "",
         category: "",
         imageUrl: "",
@@ -111,6 +122,21 @@ const AddMenuForm = () => {
               value={formData.price}
               onChange={handleChange}
               min="1"
+              required
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
+            />
+          </div>
+
+          <div>
+            <label className="p-1 block font-bold text-neutral-100">
+              Short Description:
+            </label>
+            <input
+              type="text"
+              id="short_desc"
+              name="short_desc"
+              value={formData.short_desc}
+              onChange={handleChange}
               required
               className="w-full px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
             />
