@@ -31,13 +31,23 @@ const DeleteMenu = () => {
 
   // Delete menu if found
   const handleDelete = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      toast.error("Authentication error. Please log in again.");
+      return;
+    }
     if (!menuId) {
       toast.warn("No menu selected for deletion.");
       return;
     }
-
+   
     try {
-      await axios.delete(`${API_URL}/food/menu/${menuId}`);
+      await axios.delete(`${API_URL}/food/menu/${menuId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`, // Send token for protected route
+        },
+      });
       toast.success(`Menu "${menuName}" deleted successfully!`);
       setMenuName(""); // Clear input
       setMenuId(null); // Reset ID
