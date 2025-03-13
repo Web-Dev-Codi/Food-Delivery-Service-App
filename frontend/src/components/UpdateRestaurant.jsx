@@ -214,6 +214,7 @@ const UpdateRestaurantForm = () => {
 							<div className="mt-4 flex flex-wrap gap-4">
 								{formData.images.map((image, index) => (
 									<div
+										// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 										key={index}
 										className="relative w-24 h-24 sm:w-28 sm:h-28 overflow-hidden rounded-lg border border-gray-500 shadow-md">
 										<img

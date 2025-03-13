@@ -1,17 +1,18 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import {
-	User,
 	Bell,
-	Share2,
-	HelpCircle,
-	LogOut,
 	ChevronRight,
 	Edit2,
+	HelpCircle,
+	LogOut,
 	Plus,
+	Share2,
+	User,
 } from "lucide-react";
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import EditableAddress from "./EditableAddress";
 import EditableProfile from "./EditableProfile";
 
@@ -219,7 +220,8 @@ const UserProfile = () => {
 								</p>
 								<button
 									type="button"
-									className="mt-4 w-full sm:w-auto bg-[#D84418] text-white py-2 px-6 rounded-lg hover:bg-[#FF6B6B] transition-colors">button				Track Order
+									className="mt-4 w-full sm:w-auto bg-[#D84418] text-white py-2 px-6 rounded-lg hover:bg-[#FF6B6B] transition-colors">
+									button Track Order
 								</button>
 							</div>
 						))}
@@ -321,6 +323,7 @@ const UserProfile = () => {
 						<div className="flex flex-wrap gap-2">
 							{user.dietaryPreferences.map((pref, index) => (
 								<span
+									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 									key={index}
 									className="bg-gray-100 text-black px-3 py-1 rounded-full text-sm">
 									{pref}
