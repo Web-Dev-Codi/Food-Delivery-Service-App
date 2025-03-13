@@ -18,10 +18,19 @@ export const sendPaymentSuccessEmail = async (user, payment) => {
         return;
     }
 
-    const cart = payment.cartId;
-    const cartItems = (cart?.items ?? []).map(
-        (item) => `${item.foodItemId.name} - ${item.quantity} x €${item.foodItemId.price}`
-    ).join("\n");
+       // Ensure `cartId` exists and contains items
+       if (!payment.cartId || payment.cartId.length === 0) {
+        console.warn("⚠️ No cart data found for this payment.");
+        return;
+    }
+
+    // Extract and format cart details
+    const cartItems = payment.cartId.map(cart => {
+        return cart.items.map(item => 
+            `${item.foodItemId?.name || "Unknown Item"} - ${item.quantity} x €${item.foodItemId?.price || 0}`
+        ).join("\n");
+    }).join("\n\n");
+
 
     const mailOptions = {
         from: process.env.GMAIL_USER,
@@ -30,7 +39,7 @@ export const sendPaymentSuccessEmail = async (user, payment) => {
         text: `
 Dear ${user.name || "Customer"},
 
-Your payment of €${payment.amount} has been successfully processed!
+Your payment of $ ${payment.amount} has been successfully processed!
 
 Transaction ID: ${payment.stripePaymentIntentId}
 

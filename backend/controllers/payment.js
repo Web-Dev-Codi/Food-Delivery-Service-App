@@ -110,6 +110,7 @@ export const handleStripeWebhook = async (req, res) => {
                     }, 
                     { path: "userId", select: "_id name email" }  
                 ]);
+                console.log("✅ Fully Populated Payment Object:", JSON.stringify(updatedPayment, null, 2));
                 if (!updatedPayment) {
                     console.error("❌ Payment record NOT FOUND in DB!");
                     return res.status(404).json({ message: "Payment record not found" });
@@ -117,14 +118,9 @@ export const handleStripeWebhook = async (req, res) => {
                 
                 // Debugging logs
                 console.log("✅ Populated Payment:", updatedPayment);
-                console.log("🛒 Cart ID:", updatedPayment.cartId);
-                console.log("👤 User ID:", updatedPayment.userId);
-                if (!updatedPayment) {
-                    console.error("❌ Payment record NOT FOUND in DB!");
-                    return res.status(404).json({ message: "Payment record not found" });
-                }
+              
 
-                console.log("✅ Payment updated in DB:", updatedPayment);
+             
 
                 if (updatedPayment.cartId && updatedPayment.cartId.length > 0) {
                     for (const cartId of updatedPayment.cartId) {
