@@ -118,7 +118,6 @@ const EditableProfile = ({ name, email, contact }) => {
 					<div className="mb-3">
 						<label className="block text-sm font-medium text-gray-400 mb-1">
 							Name:
-						</label>
 						<input
 							type="text"
 							name="name"
@@ -126,12 +125,12 @@ const EditableProfile = ({ name, email, contact }) => {
 							value={userData.name}
 							onChange={handleChange}
 							className="p-2 block w-full rounded-md border border-gray-700 bg-gray-900 text-white shadow-sm focus:border-[#D84418] focus:ring focus:ring-[#D84418]/50 focus:ring-opacity-50"
-						/>
+							/>
+							</label>
 					</div>
 					<div className="mb-3">
 						<label className="block text-sm font-medium text-gray-400 mb-1">
 							Email:
-						</label>
 						<input
 							type="email"
 							name="email"
@@ -139,12 +138,12 @@ const EditableProfile = ({ name, email, contact }) => {
 							value={userData.email}
 							onChange={handleChange}
 							className="p-2 block w-full rounded-md border border-gray-700 bg-gray-900 text-white shadow-sm focus:border-[#D84418] focus:ring focus:ring-[#D84418]/50 focus:ring-opacity-50"
-						/>
+							/>
+							</label>
 					</div>
 					<div className="mb-4">
 						<label className="block text-sm font-medium text-gray-400 mb-1">
 							Contact:
-						</label>
 						<input
 							type="text"
 							name="contact"
@@ -152,10 +151,12 @@ const EditableProfile = ({ name, email, contact }) => {
 							value={userData.contact}
 							onChange={handleChange}
 							className="p-2 block w-full rounded-md border border-gray-700 bg-gray-900 text-white shadow-sm focus:border-[#D84418] focus:ring focus:ring-[#D84418]/50 focus:ring-opacity-50"
-						/>
+							/>
+							</label>
 					</div>
 					<div className="flex justify-end space-x-2">
 						<button
+							type="button"
 							onClick={handleCancel}
 							className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
 							<X
@@ -190,6 +191,7 @@ const EditableProfile = ({ name, email, contact }) => {
 							</p>
 						</div>
 						<button
+							type="button"
 							onClick={handleEditClick}
 							className="inline-flex items-center text-[#D84418] hover:text-[#FF6B6B] transition-colors">
 							<Edit2
