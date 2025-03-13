@@ -1,5 +1,5 @@
-import { useState } from "react";
 import axios from "axios";
+import { useState } from "react";
 import { toast } from "react-toastify";
 
 const UpdateRestaurantForm = () => {
@@ -135,14 +135,15 @@ const UpdateRestaurantForm = () => {
 				<div className="mb-4">
 					<label className="p-1 block font-bold text-neutral-100">
 						Enter Restaurant Name:
+						<input
+							type="text"
+							value={restaurantName}
+							onChange={(e) => setRestaurantName(e.target.value)}
+							className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
+						/>
 					</label>
-					<input
-						type="text"
-						value={restaurantName}
-						onChange={(e) => setRestaurantName(e.target.value)}
-						className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
-					/>
 					<button
+						type="button"
 						onClick={fetchRestaurantByName}
 						className="mt-4 w-full py-2 bg-orange-700 font-bold text-white rounded-lg hover:bg-orange-600">
 						{isLoading ? "Searching..." : "Search Restaurant"}
@@ -158,52 +159,52 @@ const UpdateRestaurantForm = () => {
 						<div>
 							<label className="p-1 block font-bold text-neutral-100">
 								Name:
+								<input
+									type="text"
+									name="name"
+									value={formData.name}
+									onChange={handleChange}
+									required
+									className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-black/60 focus:bg-black/80 text-white"
+								/>
 							</label>
-							<input
-								type="text"
-								name="name"
-								value={formData.name}
-								onChange={handleChange}
-								required
-								className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-black/60 focus:bg-black/80 text-white"
-							/>
 						</div>
 
 						{/* Location */}
 						<div>
 							<label className="p-1 block font-bold text-neutral-100">
 								Location:
+								<input
+									type="text"
+									name="location"
+									value={formData.location}
+									onChange={handleChange}
+									required
+									className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-black/60 focus:bg-black/80 text-white"
+								/>
 							</label>
-							<input
-								type="text"
-								name="location"
-								value={formData.location}
-								onChange={handleChange}
-								required
-								className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-black/60 focus:bg-black/80 text-white"
-							/>
 						</div>
 
 						{/* Contact */}
 						<div>
 							<label className="p-1 block font-bold text-neutral-100">
 								Contact:
+								<input
+									type="text"
+									name="contact"
+									value={formData.contact}
+									onChange={handleChange}
+									required
+									className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
+								/>
 							</label>
-							<input
-								type="text"
-								name="contact"
-								value={formData.contact}
-								onChange={handleChange}
-								required
-								className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
-							/>
 						</div>
 
 						{/* Image Upload */}
 						<div className="bg-black/60 p-4 rounded-lg shadow-lg border border-gray-700">
-							<label className="block text-lg font-semibold text-neutral-100 mb-2">
+							<p className="block text-lg font-semibold text-neutral-100 mb-2">
 								Update Images:
-							</label>
+							</p>
 							<button
 								type="button"
 								onClick={openCloudinaryWidget}
@@ -217,10 +218,11 @@ const UpdateRestaurantForm = () => {
 										className="relative w-24 h-24 sm:w-28 sm:h-28 overflow-hidden rounded-lg border border-gray-500 shadow-md">
 										<img
 											src={image}
-											alt={`Image ${index + 1}`}
+											alt={`Names ${index + 1}`}
 											className="w-full h-full object-cover"
 										/>
 										<button
+											type="button"
 											onClick={() =>
 												setFormData((prevData) => ({
 													...prevData,
@@ -250,18 +252,18 @@ const UpdateRestaurantForm = () => {
 												<span className="p-1 block font-bold">
 													{day}
 												</span>
+												<input
+													type="text"
+													value={hours}
+													onChange={(e) =>
+														handleOperatingHoursChange(
+															day,
+															e.target.value
+														)
+													}
+													className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
+												/>
 											</label>
-											<input
-												type="text"
-												value={hours}
-												onChange={(e) =>
-													handleOperatingHoursChange(
-														day,
-														e.target.value
-													)
-												}
-												className="w-full mt-1 px-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-white bg-black/60 focus:bg-black/80 text-white"
-											/>
 										</div>
 									)
 								)}

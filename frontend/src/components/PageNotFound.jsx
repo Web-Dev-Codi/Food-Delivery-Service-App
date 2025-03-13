@@ -27,7 +27,7 @@ export default function NotFound() {
         transition={{
           duration: 10,  // Duration for one cycle (adjust for speed)
           ease: "easeInOut",  // Smooth easing for the movement
-          repeat: Infinity,  // Repeat the animation indefinitely
+          repeat: Number.POSITIVE_INFINITY,  // Repeat the animation indefinitely
           repeatType: "loop",  // Continues looping after one complete movement
         }}
       />
