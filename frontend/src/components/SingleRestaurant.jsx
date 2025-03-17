@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { logosMap } from "../assets";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css"; // Blur effect while loading
+
 
 function SingleRestaurant() {
 	const { id } = useParams();
@@ -77,19 +80,21 @@ function SingleRestaurant() {
 			<div className="bg-black/30 p-2 py-4 sm:p-4 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto overflow-hidden cursor-pointer">
 				{/* Restaurant Image */}
 				<div className="relative justify-center">
-					<img
+					<LazyLoadImage
 						src={restaurant.images[0]}
 						alt={restaurant.name}
+						effect="blur" // Blur effect while loading
 						className="w-full h-64 object-cover rounded-lg mb-8"
 					/>
 
 					{/* Restaurant Info */}
 					<div className="absolute left-4 right-4 bottom-[-2] transform -translate-y-1/2 bg-black/30 backdrop-blur-md rounded-lg p-6 shadow-lg flex items-center justify-center gap-8 border border-transparent">
 						{/* Restaurant Logo */}
-						<img
+						<LazyLoadImage
 							className="w-16 h-16 object-cover rounded-full overflow-hidden"
 							src={logosMap[restaurant.name]} // Default to spiceOfIndia if no match
 							alt={restaurant.name}
+							effect="blur"
 						/>
 
 						{/* Restaurant name */}
@@ -155,9 +160,10 @@ function SingleRestaurant() {
 									}}
 									className="flex flex-row md:flex-col items-center gap-6 bg-black/30 backdrop-blur-md p-3 rounded-lg shadow-md border border-gray-800 hover:shadow-xl hover:bg-black/60 hover:scale-105 transition-transform duration-300 ease-in-out">
 									{/* Menu Image */}
-									<img
+									<LazyLoadImage
 										src={menu.imageUrl}
 										alt={menu.name}
+										effect="blur"
 										className="w-32 h-32 md:w-full md:h-48 object-cover rounded-lg shadow-md"
 									/>
 
