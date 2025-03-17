@@ -1,5 +1,7 @@
 import Restaurant from "../models/restaurantSchema.js";
 import User from "../models/userSchema.js";
+import Sentiment from 'sentiment';
+import Order from "../models/orderSchema.js";
 
 export const getRestaurants = async (req, res) => {
     try{
@@ -164,6 +166,7 @@ export const deleteRestaurant = async (req, res) => {
 export const addReview = async (req, res) => {
     try{
         const { rating, comment } = req.body;
+
            //  Ensure user exists
         const validUser = await User.findById(req.userId);
         console.log("Username",validUser.name)
@@ -201,6 +204,51 @@ export const addReview = async (req, res) => {
               });
         }
 
+         // Sentiment analysis: Filter out negative reviews based on comment sentiment
+    const sentiment = new Sentiment();
+    const result = sentiment.analyze(comment);
+    console.log("Sentiment Score:", result.score);  // Helps to debug and adjust thresholds if needed
+
+
+    // Check if the sentiment score is negative (you can adjust this threshold)
+    if (result.score < 0) {
+      return res.status(400).json({
+        message: "Negative comments are not allowed. Please submit a positive review.",
+      });
+    }
+ // Ensure the user has ordered from this restaurant
+ const order = await Order.findOne({
+  userId: req.userId,
+  
+}).populate({
+  path: "cartId",
+  select: "items", 
+  populate: {
+    path: "items.foodItemId", // Populate food items in the cart
+    select: "restaurant", // Only get restaurant reference from the food item
+  },
+});
+if (!order || !order.cartId || !order.cartId.items.length) {
+  return res.status(400).json({
+    message: "No items found in the order. Cannot validate restaurant.",
+  });
+}
+ // Check if the order's food items are from the same restaurant
+ const isFromRestaurant = order.cartId.items.some((item) => {
+  if (!item.foodItemId || !item.foodItemId.restaurant) {
+    console.error("Missing foodItemId or restaurant in cart item", item);
+    return false;
+  }
+  return item.foodItemId.restaurant.toString() === req.params.id;
+});
+
+if (!isFromRestaurant) {
+  return res.status(400).json({
+    message: "You must have ordered from this restaurant to leave a review.",
+  });
+}
+
+
         // Ensure user has not already reviewed
         const alreadyReviewed = restaurant.reviews.find(
             (review) => review.user.toString() === req.userId.toString()
@@ -210,6 +258,8 @@ export const addReview = async (req, res) => {
               message: "You have already reviewed this restaurant.",
             });
           }
+
+          // Create the new review
           const newReview = {
             user: req.userId,
             userName: validUser.name , // Store user's name in the review
@@ -227,11 +277,12 @@ export const addReview = async (req, res) => {
         });
 
     }
-    catch(err){
-        res.status(500).json({
-            message: "An error occurred while adding review",
-            error: err.message
-        });
+    catch (err) {
+      console.error("Error occurred while adding review:", err);  // Log detailed error info
+      res.status(500).json({
+        message: "An error occurred while adding review",
+        error: err.message,
+      });
     }
 };
 
