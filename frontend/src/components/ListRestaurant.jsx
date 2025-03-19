@@ -1,11 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function ListRestaurant() {
   const [restaurants, setRestaurants] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
   useEffect(() => {
@@ -22,6 +27,39 @@ function ListRestaurant() {
     };
     fetchRestaurant();
   }, []);
+ 
+  // Function to check if the restaurant is open
+  const isRestaurantOpen = (operatingHours) => {
+    const today = new Date();
+    const currentDay = today.toLocaleString("en-US", { weekday: "long" }).toLowerCase(); // Get current day
+    const currentTime = today.getHours() * 60 + today.getMinutes(); // Convert current time to minutes
+  
+    const hours = operatingHours?.[currentDay];
+  
+    if (!hours || hours.toLowerCase() === "closed") {
+      return false; // Closed all day or if operating hours are missing
+    }
+  
+    // Replace any dots with colons to standardize time format
+    const [openTime, closeTime] = hours.replace('.', ':').split("-").map((time) => {
+      const [hour, minute] = time.trim().split(":").map(Number);
+      return hour * 60 + (minute || 0); // Convert to minutes
+    });
+  
+    return currentTime >= openTime && currentTime <= closeTime;
+  };
+  
+
+  const handleNavigation = (restaurant) => {
+    if (isRestaurantOpen(restaurant.operatingHours)) {
+      navigate(`/restaurants/${restaurant._id}`);
+    } else {
+      toast.error("Sorry, we are closed today!", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+    }
+  };
 
   return (
     <section className="relative min-h-screen overflow-hidden">
@@ -39,11 +77,11 @@ function ListRestaurant() {
                 key={restaurant._id}
                 className="bg-black/30 p-6 rounded-xl shadow-md hover:shadow-xl transition transform hover:bg-black/50 duration-300 ease-in-out"
               >
-                <Link to={`/restaurants/${restaurant._id}`}>
-                  <h2 className="text-2xl font-extrabold text-[#FF5733] text-center mb-4">
-                    {restaurant?.name}
-                  </h2>
-                </Link>
+              <button onClick={() => handleNavigation(restaurant)}>
+              <h2 className="text-2xl font-extrabold text-[#FF5733] text-center mb-4">
+                {restaurant?.name}
+              </h2>
+            </button>
                 <p className="text-neutral-300 text-center mb-2">
                   {restaurant?.location || "Location not available"}
                 </p>
