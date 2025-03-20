@@ -31,35 +31,64 @@ function ListRestaurant() {
   // Function to check if the restaurant is open
   const isRestaurantOpen = (operatingHours) => {
     const today = new Date();
-    const currentDay = today.toLocaleString("en-US", { weekday: "long" }).toLowerCase(); // Get current day
-    const currentTime = today.getHours() * 60 + today.getMinutes(); // Convert current time to minutes
+    const currentDay = today.toLocaleString("en-US", { weekday: "long" }).toLowerCase();
+    const currentTime = today.getHours() * 60 + today.getMinutes();
   
     const hours = operatingHours?.[currentDay];
   
     if (!hours || hours.toLowerCase() === "closed") {
-      return false; // Closed all day or if operating hours are missing
-    }
-  
-    // Replace any dots with colons to standardize time format
-    const [openTime, closeTime] = hours.replace('.', ':').split("-").map((time) => {
-      const [hour, minute] = time.trim().split(":").map(Number);
-      return hour * 60 + (minute || 0); // Convert to minutes
-    });
-  
-    return currentTime >= openTime && currentTime <= closeTime;
-  };
-  
-
-  const handleNavigation = (restaurant) => {
-    if (isRestaurantOpen(restaurant.operatingHours)) {
-      navigate(`/restaurants/${restaurant._id}`);
-    } else {
+      console.log("Restaurant is closed today.");
       toast.error("Sorry, we are closed today!", {
         position: "top-center",
         autoClose: 2000,
       });
+      return false;
+    }
+  
+    console.log(`Operating hours for ${currentDay}: ${hours}`);
+  
+    // Convert opening and closing times to minutes
+    const [openTime, closeTime] = hours.replace('.', ':').split("-").map((time) => {
+      const [hour, minute] = time.trim().split(":").map(Number);
+      return hour * 60 + (minute || 0);
+    });
+  
+    console.log(`Current time in minutes: ${currentTime}`);
+    console.log(`Opening time in minutes: ${openTime}`);
+    console.log(`Closing time in minutes: ${closeTime}`);
+  
+    if (currentTime < openTime) {
+      const minutesUntilOpen = openTime - currentTime;
+      console.log(`Restaurant opens in ${minutesUntilOpen} minutes.`);
+  
+      if (minutesUntilOpen <= 30) {
+        toast.warn(`We open at ${hours.split("-")[0].trim()}. Please check back soon!`, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      } else {
+        toast.error(`Sorry, we are closed right now! We open at ${hours.split("-")[0].trim()}`, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+  
+      return false; // Prevent navigation
+    }
+  
+    return currentTime >= openTime && currentTime <= closeTime;
+  };
+  
+  const handleNavigation = (restaurant) => {
+    const isOpen = isRestaurantOpen(restaurant.operatingHours);
+    console.log(`Is restaurant open? ${isOpen}`);
+  
+    if (isOpen) {
+      navigate(`/restaurants/${restaurant._id}`);
     }
   };
+  
+  
 
   return (
     <section className="relative min-h-screen overflow-hidden">
@@ -77,7 +106,7 @@ function ListRestaurant() {
                 key={restaurant._id}
                 className="bg-black/30 p-6 rounded-xl shadow-md hover:shadow-xl transition transform hover:bg-black/50 duration-300 ease-in-out"
               >
-              <button onClick={() => handleNavigation(restaurant)}>
+              <button onClick={() => handleNavigation(restaurant)} className="w-full text-center">
               <h2 className="text-2xl font-extrabold text-[#FF5733] text-center mb-4">
                 {restaurant?.name}
               </h2>
