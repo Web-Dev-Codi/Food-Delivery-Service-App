@@ -6,6 +6,7 @@
 
 
 ###### 🌐 Website
+###### Watch Demo: [Demo](https://drive.google.com/file/d/1b_ZirKRo9iAmrkRqNXs8_AtI6kHvCfd_/view?usp=sharing)
 ###### Visit us at: [Four Flavors Express](https://fourflavoursexpress.onrender.com/)
 
 
@@ -142,18 +143,48 @@ npm run dev
 
 ## 🌍 Team Members
 
-### 🚀 Ashwini BHeemireddy
+### 🚀 Ashwini Bheemireddy
+
+  ##### Responsibilities:
+
+- Frontend development using React and Tailwind CSS.
+
+- Designed logo, color scheme, and overall branding.
+
 - [LinkedIn](https://www.linkedin.com/in/ashwini2127/)
-- 📧 [Email]()
+
+
 
 ### 🌟 Brian Cordisco
-- [LinkedIn]()
+
+  ##### Responsibilities:
+
+- Managed GitHub repository and resolved merge conflicts.
+
+- Contributed to frontend and backend integration.
+
 - 📧 [Email](webdevcodi@gmail.com)
 
+
 ### 🔥 Tabassum Khan
+
+##### Responsibilities:
+
+- Team coordinator for backend-frontend development.
+
+- Worked on authentication, order management, and payment integration.
+
 - [LinkedIn](https://www.linkedin.com/in/tabassum-khan-3688602b7/)
-- 📧 [Email]()
-  
+
+
+
 ### ⚡ Tuanthong Vaidyanond
+
+##### Responsibilities:
+
+- Specialized in UI/UX design for responsive interfaces.
+
+- Optimized typography, forms, and navigation for better user interaction.
+
 - [LinkedIn](https://www.linkedin.com/in/tuanthong-vaidyanond-6789782b2/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
-- 📧 [Email]()
+

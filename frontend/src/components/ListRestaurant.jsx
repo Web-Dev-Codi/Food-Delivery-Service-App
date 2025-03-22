@@ -1,11 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function ListRestaurant() {
   const [restaurants, setRestaurants] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
   useEffect(() => {
@@ -22,6 +27,68 @@ function ListRestaurant() {
     };
     fetchRestaurant();
   }, []);
+ 
+  // Function to check if the restaurant is open
+  const isRestaurantOpen = (operatingHours) => {
+    const today = new Date();
+    const currentDay = today.toLocaleString("en-US", { weekday: "long" }).toLowerCase();
+    const currentTime = today.getHours() * 60 + today.getMinutes();
+  
+    const hours = operatingHours?.[currentDay];
+  
+    if (!hours || hours.toLowerCase() === "closed") {
+      console.log("Restaurant is closed today.");
+      toast.error("Sorry, we are closed today!", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+      return false;
+    }
+  
+    console.log(`Operating hours for ${currentDay}: ${hours}`);
+  
+    // Convert opening and closing times to minutes
+    const [openTime, closeTime] = hours.replace('.', ':').split("-").map((time) => {
+      const [hour, minute] = time.trim().split(":").map(Number);
+      return hour * 60 + (minute || 0);
+    });
+  
+    console.log(`Current time in minutes: ${currentTime}`);
+    console.log(`Opening time in minutes: ${openTime}`);
+    console.log(`Closing time in minutes: ${closeTime}`);
+  
+    if (currentTime < openTime) {
+      const minutesUntilOpen = openTime - currentTime;
+      console.log(`Restaurant opens in ${minutesUntilOpen} minutes.`);
+  
+      if (minutesUntilOpen <= 30) {
+        toast.warn(`We open at ${hours.split("-")[0].trim()}. Please check back soon!`, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      } else {
+        toast.error(`Sorry, we are closed right now! We open at ${hours.split("-")[0].trim()}`, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }
+  
+      return false; // Prevent navigation
+    }
+  
+    return currentTime >= openTime && currentTime <= closeTime;
+  };
+  
+  const handleNavigation = (restaurant) => {
+    const isOpen = isRestaurantOpen(restaurant.operatingHours);
+    console.log(`Is restaurant open? ${isOpen}`);
+  
+    if (isOpen) {
+      navigate(`/restaurants/${restaurant._id}`);
+    }
+  };
+  
+  
 
   return (
     <section className="relative min-h-screen overflow-hidden">
@@ -39,11 +106,11 @@ function ListRestaurant() {
                 key={restaurant._id}
                 className="bg-black/30 p-6 rounded-xl shadow-md hover:shadow-xl transition transform hover:bg-black/50 duration-300 ease-in-out"
               >
-                <Link to={`/restaurants/${restaurant._id}`}>
-                  <h2 className="text-2xl font-extrabold text-[#FF5733] text-center mb-4">
-                    {restaurant?.name}
-                  </h2>
-                </Link>
+              <button onClick={() => handleNavigation(restaurant)} className="w-full text-center">
+              <h2 className="text-2xl font-extrabold text-[#FF5733] text-center mb-4">
+                {restaurant?.name}
+              </h2>
+            </button>
                 <p className="text-neutral-300 text-center mb-2">
                   {restaurant?.location || "Location not available"}
                 </p>
