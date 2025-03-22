@@ -221,7 +221,7 @@ const UserProfile = () => {
 								<button
 									type="button"
 									className="mt-4 w-full sm:w-auto bg-[#D84418] text-white py-2 px-6 rounded-lg hover:bg-[#FF6B6B] transition-colors">
-									button Track Order
+									Track Order
 								</button>
 							</div>
 						))}
