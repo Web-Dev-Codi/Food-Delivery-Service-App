@@ -1,11 +1,8 @@
 import { Router } from "express";
 
 import {
-  createRestaurant,
   getRestaurants,
   getRestaurantById,
-  updateRestaurant,
-  deleteRestaurant,
   addReview,
   getRestaurantByName,
 } from "../controllers/Restaurant.js";
@@ -17,9 +14,9 @@ restaurantRouter.get("/restaurants", getRestaurants);
 restaurantRouter.get("/restaurants/name/:name", getRestaurantByName);
 restaurantRouter.get("/restaurants/:id", getRestaurantById);
 
-restaurantRouter.post("/create", createRestaurant);
+// restaurantRouter.post("/create", createRestaurant);
 restaurantRouter.post("/:id/reviews", verifyToken, addReview);
-restaurantRouter.patch("/update/:id", updateRestaurant);
-restaurantRouter.delete("/delete/:id", deleteRestaurant);
+// restaurantRouter.patch("/update/:id", updateRestaurant);
+// restaurantRouter.delete("/delete/:id", deleteRestaurant);
 
 export default restaurantRouter;
